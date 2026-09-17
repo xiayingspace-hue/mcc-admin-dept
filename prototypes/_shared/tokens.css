@@ -1,0 +1,28 @@
+/*
+  品牌 token —— 前端更新品牌视觉时，整份覆盖本文件即可同步所有原型。
+  不要手工编辑取值；proto.css 只引用变量名，不直接写颜色/字体。
+*/
+:root {
+  --brand-bg: #F6F5F2;
+  --brand-sidebar: #22282A;
+  --brand-sidebar-text: #B7BEC0;
+  --brand-sidebar-text-active: #FFFFFF;
+  --brand-sidebar-active-bg: #33393B;
+  --brand-surface: #FFFFFF;
+  --brand-border: #E4E1D9;
+  --brand-border-strong: #D3CFC3;
+  --brand-text-primary: #1E1E1C;
+  --brand-text-secondary: #6B675E;
+  --brand-text-muted: #9C978A;
+  --brand-accent: #3B6E64;
+  --brand-accent-tint: #E6EFEC;
+  --brand-warn: #B0642E;
+  --brand-warn-tint: #F7ECE1;
+  --brand-info-tint: #EEEAF6;
+  --brand-info-text: #574B8C;
+  --brand-danger: #B23A34;
+  --brand-success-tint: #E4F0E8;
+  --brand-success-text: #2F6B45;
+  --brand-radius: 8px;
+  --brand-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}

@@ -1,0 +1,103 @@
+/*
+  组件骨架 —— 内部语义名 → 品牌 token 的映射。
+  每条规则都带 fallback 值，tokens.css 缺席时仍可独立渲染（供快速预览用）。
+  原型 HTML 只使用这里定义的类名，不新增颜色值或自定义样式块。
+*/
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--brand-font, -apple-system, sans-serif);
+  background: var(--brand-bg, #F6F5F2);
+  color: var(--brand-text-primary, #1E1E1C);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- PC 骨架：侧栏 + 顶栏 + 内容 ---------- */
+.p-shell { display: flex; min-height: 100vh; }
+.p-sidebar {
+  width: 216px; flex-shrink: 0; padding: 20px 12px;
+  background: var(--brand-sidebar, #22282A); color: var(--brand-sidebar-text, #B7BEC0);
+  display: flex; flex-direction: column;
+}
+.p-brand { display: flex; align-items: center; gap: 8px; padding: 4px 10px 20px; color: #fff; font-weight: 600; font-size: 15px; }
+.p-brand-mark { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-accent, #3B6E64); }
+.p-nav-label { font-size: 11px; color: #6E7476; padding: 14px 10px 6px; }
+.p-nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; font-size: 13.5px; cursor: pointer; }
+.p-nav-item:hover { background: #2A3032; }
+.p-nav-item.active { background: var(--brand-sidebar-active-bg, #33393B); color: var(--brand-sidebar-text-active, #fff); font-weight: 500; }
+.p-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.p-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; border-bottom: 0.5px solid var(--brand-border, #E4E1D9); background: var(--brand-surface, #fff); }
+.p-content { flex: 1; padding: 32px; display: flex; justify-content: center; }
+.p-panel { width: 100%; max-width: 640px; }
+.p-panel.wide { max-width: 920px; }
+
+/* ---------- 移动骨架：手机边框并排 ---------- */
+.p-phones { display: flex; gap: 24px; flex-wrap: wrap; padding: 32px; }
+.p-phone { width: 375px; height: 720px; border: 8px solid var(--brand-sidebar, #22282A); border-radius: 32px; overflow: hidden; position: relative; background: var(--brand-surface, #fff); }
+.p-phone .p-phone-screen { height: 100%; overflow-y: auto; }
+.p-phone-label { text-align: center; font-size: 12px; color: var(--brand-text-muted, #9C978A); margin-bottom: 8px; }
+
+/* ---------- 多页面容器 ---------- */
+.p-screen { display: none; }
+.p-screen.p-active { display: block; }
+
+/* ---------- 表单 ---------- */
+.p-field { margin-bottom: 20px; }
+.p-field label { display: block; font-size: 13px; color: var(--brand-text-secondary, #6B675E); margin-bottom: 6px; }
+.p-field input, .p-field select, .p-field textarea {
+  width: 100%; padding: 0 12px; height: 36px; border: 0.5px solid var(--brand-border-strong, #D3CFC3);
+  border-radius: var(--brand-radius, 8px); background: var(--brand-surface, #fff); font: inherit; color: inherit;
+}
+.p-field textarea { height: auto; padding: 8px 12px; }
+.p-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ---------- 按钮 ---------- */
+.p-btn { height: 36px; padding: 0 18px; border-radius: var(--brand-radius, 8px); border: 0.5px solid var(--brand-border-strong, #D3CFC3); background: var(--brand-surface, #fff); font-size: 13.5px; cursor: pointer; }
+.p-btn.primary { background: var(--brand-accent, #3B6E64); border-color: var(--brand-accent, #3B6E64); color: #fff; }
+.p-btn.danger-text { color: var(--brand-danger, #B23A34); }
+.p-actions { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 16px; border-top: 0.5px solid var(--brand-border, #E4E1D9); }
+.p-actions.end { justify-content: flex-end; gap: 12px; }
+
+/* ---------- 表格 ---------- */
+.p-table { width: 100%; border-collapse: collapse; border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: 12px; overflow: hidden; }
+.p-table th { text-align: left; font-size: 11.5px; color: var(--brand-text-muted, #9C978A); padding: 10px 14px; background: var(--brand-bg, #F6F5F2); }
+.p-table td { padding: 12px 14px; font-size: 13px; border-top: 0.5px solid var(--brand-border, #E4E1D9); }
+
+/* ---------- 卡片 ---------- */
+.p-card { border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: 12px; padding: 18px 20px; background: var(--brand-surface, #fff); }
+
+/* ---------- 徽章（状态） ---------- */
+.p-badge { font-size: 11px; padding: 2px 8px; border-radius: 5px; display: inline-block; }
+.p-badge.draft { background: var(--brand-border, #E4E1D9); color: var(--brand-text-secondary, #6B675E); }
+.p-badge.review { background: var(--brand-warn-tint, #F7ECE1); color: var(--brand-warn, #B0642E); }
+.p-badge.approved { background: var(--brand-success-tint, #E4F0E8); color: var(--brand-success-text, #2F6B45); }
+.p-badge.rejected { background: #F6E4E2; color: var(--brand-danger, #B23A34); }
+.p-badge.ended { background: var(--brand-border, #E4E1D9); color: var(--brand-text-muted, #9C978A); }
+
+/* ---------- 五态：状态区块 ---------- */
+[data-when] { display: none; }
+[data-when].p-active { display: block; }
+.p-skeleton { height: 14px; border-radius: 4px; background: linear-gradient(90deg, var(--brand-border,#E4E1D9) 25%, var(--brand-bg,#F6F5F2) 50%, var(--brand-border,#E4E1D9) 75%); background-size: 200% 100%; animation: p-shimmer 1.4s infinite; margin-bottom: 8px; }
+@keyframes p-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.p-empty, .p-error, .p-noperm { text-align: center; padding: 48px 20px; color: var(--brand-text-muted, #9C978A); font-size: 13px; }
+.p-error { color: var(--brand-danger, #B23A34); }
+.p-overflow-demo { max-width: 100%; overflow-x: auto; white-space: nowrap; }
+
+/* ---------- 弹窗 / Toast ---------- */
+.p-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); align-items: center; justify-content: center; z-index: 100; }
+.p-modal-overlay.p-open { display: flex; }
+.p-modal { background: var(--brand-surface, #fff); border-radius: 12px; padding: 24px; width: 100%; max-width: 380px; }
+.p-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--brand-sidebar, #22282A); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .2s; z-index: 200; }
+.p-toast.p-show { opacity: 1; }
+
+/* ---------- 交互标注 ---------- */
+.anno { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--brand-danger, #B23A34); color: #fff; font-size: 10px; cursor: pointer; position: relative; }
+.anno-pop { display: none; position: absolute; bottom: 22px; left: 0; width: 220px; background: var(--brand-sidebar, #22282A); color: #fff; font-size: 12px; padding: 8px 10px; border-radius: 6px; z-index: 50; }
+.anno.p-anno-open .anno-pop { display: block; }
+
+/* ---------- 调试控制台 ---------- */
+#p-console { position: fixed; bottom: 16px; right: 16px; background: var(--brand-sidebar, #22282A); color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 12px; z-index: 999; max-width: 260px; }
+#p-console select, #p-console button { font-size: 12px; margin-top: 6px; }

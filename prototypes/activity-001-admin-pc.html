@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>活动运营后台</title>
+<style>
+  :root{
+    --bg: #F6F5F2;
+    --sidebar: #22282A;
+    --sidebar-text: #B7BEC0;
+    --sidebar-text-active: #FFFFFF;
+    --sidebar-active-bg: #33393B;
+    --surface: #FFFFFF;
+    --border: #E4E1D9;
+    --border-strong: #D3CFC3;
+    --text-primary: #1E1E1C;
+    --text-secondary: #6B675E;
+    --text-muted: #9C978A;
+    --accent: #3B6E64;
+    --accent-tint: #E6EFEC;
+    --interactive: #B0642E;
+    --interactive-tint: #F7ECE1;
+    --content-tint: #EEEAF6;
+    --content-text: #574B8C;
+    --radius: 8px;
+    --danger: #B23A34;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text-primary); font-size:14px; line-height:1.6;
+  }
+  .shell{display:flex; min-height:100vh}
+  .sidebar{
+    width:216px; background:var(--sidebar); color:var(--sidebar-text);
+    flex-shrink:0; padding:20px 12px; display:flex; flex-direction:column;
+  }
+  .brand{display:flex; align-items:center; gap:8px; padding:4px 10px 20px; color:#fff; font-weight:600; font-size:15px}
+  .brand-mark{width:22px;height:22px;border-radius:6px;background:var(--accent);flex-shrink:0}
+  .nav-group-label{font-size:11px; color:#6E7476; padding:14px 10px 6px; letter-spacing:0.02em}
+  .nav-item{
+    display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
+    font-size:13.5px; cursor:pointer; color:var(--sidebar-text);
+  }
+  .nav-item:hover{background:#2A3032}
+  .nav-item.active{background:var(--sidebar-active-bg); color:var(--sidebar-text-active); font-weight:500}
+  .nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .main{flex:1; min-width:0; display:flex; flex-direction:column}
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
+  }
+  .breadcrumb{font-size:13px; color:var(--text-secondary)}
+  .breadcrumb b{color:var(--text-primary); font-weight:500}
+  .content{flex:1; padding:32px; display:flex; justify-content:center}
+  .panel{width:100%; max-width:640px}
+
+  .steps{display:flex; align-items:center; margin-bottom:32px}
+  .step{display:flex; align-items:center; gap:8px; cursor:pointer}
+  .step-dot{
+    width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:12px; font-weight:600; background:var(--border); color:var(--text-muted); flex-shrink:0;
+  }
+  .step.done .step-dot{background:var(--accent); color:#fff}
+  .step.current .step-dot{background:var(--accent); color:#fff}
+  .step-label{font-size:13px; color:var(--text-muted)}
+  .step.current .step-label{color:var(--text-primary); font-weight:500}
+  .step.done .step-label{color:var(--text-secondary)}
+  .step-line{width:40px; height:1px; background:var(--border-strong); margin:0 10px}
+
+  h1{font-size:19px; font-weight:600; margin:0 0 4px}
+  .subtitle{font-size:13px; color:var(--text-secondary); margin:0 0 28px}
+
+  .field{margin-bottom:20px}
+  .field label{display:block; font-size:13px; color:var(--text-secondary); margin-bottom:6px}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  input[type=text], input[type=number], input[type=datetime-local], select, textarea{
+    width:100%; height:36px; padding:0 12px; border:0.5px solid var(--border-strong); border-radius:var(--radius);
+    background:var(--surface); font-size:13.5px; color:var(--text-primary); font-family:inherit;
+  }
+  textarea{height:auto; padding:8px 12px; resize:vertical}
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-tint)}
+
+  .scope-toggle{display:flex; gap:8px}
+  .scope-btn{
+    flex:1; height:36px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
+    background:var(--surface); font-size:13.5px; color:var(--text-primary); cursor:pointer;
+  }
+  .scope-btn.selected{border-color:var(--accent); background:var(--accent-tint); color:var(--accent); font-weight:500}
+
+  .upload-box{
+    border:1px dashed var(--border-strong); border-radius:var(--radius); padding:22px; text-align:center;
+    color:var(--text-muted); font-size:13px; cursor:pointer;
+  }
+
+  .module-list{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .module-row{border-bottom:0.5px solid var(--border)}
+  .module-row:last-child{border-bottom:none}
+  .module-head{display:flex; align-items:center; gap:10px; padding:14px 16px}
+  .grip{color:var(--text-muted); cursor:grab; font-size:14px}
+  .module-name{font-size:14px; font-weight:500}
+  .module-name.off{color:var(--text-muted)}
+  .badge{display:inline-block; flex-shrink:0; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:5px; margin-left:8px}
+  .badge.content{background:var(--content-tint); color:var(--content-text)}
+  .badge.interactive{background:var(--interactive-tint); color:var(--interactive)}
+  .toggle{position:relative; width:32px; height:18px; flex-shrink:0}
+  .toggle input{opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer; z-index:1}
+  .toggle .track{position:absolute; inset:0; border-radius:9px; background:var(--border-strong); transition:background .15s}
+  .toggle .thumb{position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition:left .15s}
+  .toggle input:checked + .track{background:var(--accent)}
+  .toggle input:checked ~ .thumb{left:16px}
+  .module-config{padding:0 16px 16px 42px; display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .module-config label{display:block; font-size:12px; color:var(--text-secondary); margin-bottom:4px}
+
+  .summary-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:18px 20px; background:var(--surface); margin-bottom:28px}
+  .summary-card-title{font-size:12px; color:var(--text-muted); margin-bottom:14px}
+  .summary-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px 20px}
+  .summary-item label{display:block; font-size:11px; color:var(--text-muted); margin-bottom:3px}
+  .summary-item .val{font-size:13.5px; color:var(--text-primary)}
+  .summary-cover{width:100%; height:130px; border-radius:8px; margin-bottom:16px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px}
+  .summary-desc{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
+  .summary-desc-label{font-size:11px; color:var(--text-muted); margin-bottom:6px}
+  .summary-desc-content{font-size:13px; color:var(--text-primary); line-height:1.7}
+  .summary-desc-content ul{margin:6px 0; padding-left:20px}
+  .summary-flag{margin-top:14px; padding:9px 12px; border-radius:6px; font-size:12px; background:var(--interactive-tint); color:var(--interactive)}
+
+  .section-title{font-size:13px; font-weight:500; margin:0 0 4px}
+  .section-hint{font-size:12px; color:var(--text-muted); margin:0 0 14px}
+
+  .approval-timeline{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; margin-bottom:24px; background:var(--surface)}
+  .approval-step-row{display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:0.5px solid var(--border)}
+  .approval-step-row:last-child{border-bottom:none}
+  .approval-num{width:26px;height:26px;border-radius:50%;background:var(--border); color:var(--text-secondary); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0}
+  .approval-info{flex:1}
+  .approval-title{font-size:13.5px; font-weight:500}
+  .approval-sub{font-size:12px; color:var(--text-secondary); margin-top:2px}
+  .approval-status{font-size:11px; padding:3px 9px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .approval-status.conditional{background:var(--interactive-tint); color:var(--interactive)}
+
+  .actions{display:flex; justify-content:space-between; margin-top:32px; padding-top:20px; border-top:0.5px solid var(--border)}
+
+  .status-badge{font-size:12px; padding:4px 10px; border-radius:6px; font-weight:500; display:inline-block}
+  .status-badge.review{background:var(--interactive-tint); color:var(--interactive)}
+  .status-badge.approved{background:#E4F0E8; color:#2F6B45}
+  .status-badge.rejected{background:#F6E4E2; color:var(--danger)}
+
+  .detail-header{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+  .detail-meta{font-size:12px; color:var(--text-muted); margin:0 0 28px}
+
+  .approval-num.done{background:var(--accent); color:#fff}
+  .approval-num.current{background:#fff; border:2px solid var(--accent); color:var(--accent)}
+  .approval-status.done{background:#E4F0E8; color:#2F6B45}
+  .approval-status.current{background:var(--accent); color:#fff}
+  .approval-comment{font-size:12px; color:var(--text-secondary); margin-top:8px; padding:9px 11px; background:var(--bg); border-radius:6px; line-height:1.5}
+
+  .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
+
+  .panel.wide{max-width:920px}
+  .list-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px}
+  .filter-bar{display:flex; gap:10px; margin-bottom:18px}
+  .filter-bar select, .filter-bar input{width:auto; height:34px}
+  .filter-bar input[type=text]{flex:1}
+
+  .activity-table{width:100%; border-collapse:collapse; border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden}
+  .activity-table th{
+    text-align:left; font-size:11.5px; font-weight:500; color:var(--text-muted);
+    padding:10px 14px; background:var(--bg); border-bottom:0.5px solid var(--border-strong);
+  }
+  .activity-table td{padding:13px 14px; font-size:13px; border-bottom:0.5px solid var(--border); vertical-align:middle}
+  .activity-table tr:last-child td{border-bottom:none}
+  .activity-table tbody tr{cursor:pointer}
+  .activity-table tbody tr:hover td{background:var(--bg)}
+  .activity-table .title-cell{font-weight:500}
+  .activity-table .muted-cell{color:var(--text-muted)}
+  .status-badge.draft{background:var(--border); color:var(--text-secondary)}
+  .status-badge.ended{background:var(--border); color:var(--text-muted)}
+  .table-actions{display:flex; gap:14px}
+  .action-link{font-size:12.5px; color:var(--accent); cursor:pointer; background:none; border:none; padding:0; font-family:inherit}
+  .action-link.muted{color:var(--text-secondary)}
+  .action-link.danger{color:var(--danger)}
+
+  .module-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .module-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:18px; background:var(--surface); cursor:pointer}
+  .module-card-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+  .module-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .module-icon.content{background:var(--content-tint); color:var(--content-text)}
+  .module-icon.interactive{background:var(--interactive-tint); color:var(--interactive)}
+  .module-card-title{font-size:14px; font-weight:500; margin-bottom:2px}
+  .module-desc{font-size:12.5px; color:var(--text-secondary); line-height:1.65; margin:0 0 12px}
+  .module-meta{display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text-muted); padding-top:10px; border-top:0.5px dashed var(--border)}
+  .module-usage{display:none; margin-top:10px; padding-top:10px; border-top:0.5px dashed var(--border); font-size:12px; color:var(--text-secondary)}
+  .module-usage.open{display:block}
+  .module-usage div{padding:2px 0}
+  .module-attrs{border-top:0.5px dashed var(--border); padding-top:10px; margin-bottom:10px}
+  .module-attrs-label{font-size:11px; color:var(--text-muted); margin-bottom:6px}
+  .attr-row{display:flex; align-items:center; justify-content:space-between; font-size:12px; padding:3px 0}
+  .attr-name{color:var(--text-primary)}
+  .attr-type{color:var(--text-muted); font-size:11px; background:var(--bg); padding:1px 8px; border-radius:5px}
+
+  .upload-panel{border:0.5px solid var(--border-strong); border-radius:12px; padding:20px; margin-bottom:28px; background:var(--surface)}
+  .upload-panel-title{font-size:13px; font-weight:500; margin:0 0 16px}
+
+  .submission-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .submission-card{border:0.5px solid var(--border-strong); border-radius:10px; overflow:hidden; background:var(--surface)}
+  .submission-thumb{
+    width:100%; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
+    color:var(--text-muted); font-size:24px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint));
+  }
+  .submission-body{padding:11px 13px}
+  .submission-author{font-size:13px; font-weight:500}
+  .submission-sub{font-size:11.5px; color:var(--text-muted); margin-top:1px}
+  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0}
+  .submission-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
+  .status-badge.hidden-st{background:var(--border); color:var(--text-muted)}
+
+  .stat-row{display:flex; gap:14px; margin-bottom:24px}
+  .stat-card{flex:1; border:0.5px solid var(--border-strong); border-radius:10px; padding:14px 16px; background:var(--surface)}
+  .stat-num{font-size:22px; font-weight:600; line-height:1.2}
+  .stat-label{font-size:12px; color:var(--text-muted); margin-top:3px}
+
+  .notif-wrap{position:relative}
+  .notif-btn{
+    width:34px; height:34px; border-radius:8px; border:0.5px solid var(--border-strong);
+    background:var(--surface); cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
+    font-size:15px; color:var(--text-secondary);
+  }
+  .notif-btn:hover{background:var(--bg)}
+  .notif-dot{
+    position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 3px; border-radius:8px;
+    background:var(--danger); color:#fff; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center;
+  }
+  .notif-panel{
+    display:none; position:absolute; top:42px; right:0; width:340px; max-height:420px; overflow-y:auto;
+    background:var(--surface); border:0.5px solid var(--border-strong); border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08); z-index:20;
+  }
+  .notif-panel.open{display:block}
+  .notif-panel-head{padding:12px 16px; font-size:13px; font-weight:500; border-bottom:0.5px solid var(--border)}
+  .notif-item{padding:12px 16px; border-bottom:0.5px solid var(--border); cursor:pointer}
+  .notif-item:last-child{border-bottom:none}
+  .notif-item:hover{background:var(--bg)}
+  .notif-item-title{font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:space-between; gap:8px}
+  .notif-item-sub{font-size:12px; color:var(--text-secondary); margin-top:3px}
+  .notif-empty{padding:24px 16px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+
+  /* ---- User-facing preview (scoped) ---- */
+  .uview-frame{border:0.5px solid var(--border-strong); border-radius:14px; overflow:hidden; background:#fff; position:relative}
+  .uview-chrome{display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--bg); border-bottom:0.5px solid var(--border)}
+  .uview-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong)}
+  .uview-url{margin-left:10px; font-size:11.5px; color:var(--text-muted); background:var(--surface); border:0.5px solid var(--border); border-radius:6px; padding:3px 10px}
+  .uview-body{
+    max-height:660px; overflow-y:auto;
+    --u-navy:#16232A; --u-ivory:#F8F5EE; --u-gold:#B8862E; --u-gold-tint:#F1E6CF; --u-text:#232620; --u-text-muted:#6E6A5E;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  .u-hero{background:linear-gradient(160deg, var(--u-navy), #223A41); color:#fff; padding:56px 40px 60px; text-align:center}
+  .u-hero h1{font-size:32px; font-weight:600; margin:0 0 10px; letter-spacing:-0.01em}
+  .u-hero p{font-size:14px; color:#D8D2C2; margin:0 0 16px}
+  .u-hero-meta{font-size:12.5px; color:#B9B2A0}
+  .u-section{padding:44px 40px; background:var(--u-ivory)}
+  .u-section.alt{background:#fff}
+  .u-section-title{font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 22px; text-align:center}
+  .u-ceo{display:flex; gap:20px; align-items:flex-start; max-width:560px; margin:0 auto}
+  .u-ceo-avatar{width:60px;height:60px;border-radius:50%; background:var(--u-gold-tint); flex-shrink:0; display:flex;align-items:center;justify-content:center; font-size:22px; color:var(--u-gold)}
+  .u-ceo-quote{font-size:14px; line-height:1.9; color:var(--u-text)}
+  .u-ceo-name{margin-top:14px; font-size:12.5px; color:var(--u-text-muted)}
+  .u-timeline{max-width:560px; margin:0 auto}
+  .u-tl-item{display:flex; gap:18px; padding-bottom:26px; position:relative}
+  .u-tl-item:not(:last-child)::before{content:'';position:absolute; left:22px; top:46px; bottom:0; width:1px; background:var(--u-gold-tint)}
+  .u-tl-year{width:46px;height:46px;border-radius:50%; background:var(--u-navy); color:#fff; font-size:11.5px; font-weight:600; display:flex;align-items:center;justify-content:center; flex-shrink:0}
+  .u-tl-body{padding-top:6px}
+  .u-tl-title{font-size:13.5px; font-weight:600; color:var(--u-text); margin-bottom:4px}
+  .u-tl-desc{font-size:12.5px; color:var(--u-text-muted); line-height:1.7}
+  .u-vote-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:640px; margin:0 auto}
+  .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
+  .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
+  .u-vote-info{padding:10px 12px}
+  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text)}
+  .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
+  .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
+  .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
+  .u-vote-btn.voted{background:var(--u-gold); color:#fff}
+  .u-wall-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:640px; margin:0 auto}
+  .u-wall-card{background:#fff; border-radius:12px; padding:15px; border:0.5px solid var(--u-gold-tint)}
+  .u-wall-quote{font-size:12.5px; color:var(--u-text); line-height:1.7; margin-bottom:12px}
+  .u-wall-author{display:flex; align-items:center; gap:8px}
+  .u-wall-avatar{width:24px;height:24px;border-radius:50%; background:var(--u-gold-tint); flex-shrink:0}
+  .u-wall-name{font-size:11.5px; font-weight:600; color:var(--u-text)}
+  .u-wall-role{font-size:10.5px; color:var(--u-text-muted)}
+  .u-wall-image{width:100%; height:100px; border-radius:8px; margin-bottom:10px; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--u-gold)}
+  .u-upload-box{border:1px dashed var(--u-gold-tint); border-radius:8px; padding:14px; text-align:center; font-size:12px; color:var(--u-text-muted); margin-bottom:13px; cursor:pointer}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px}
+  .kpi-card{border:0.5px solid var(--border-strong); border-radius:10px; padding:16px; background:var(--surface)}
+  .kpi-num{font-size:24px; font-weight:600; line-height:1.2}
+  .kpi-label{font-size:12px; color:var(--text-muted); margin-top:4px}
+  .kpi-num.accent{color:var(--accent)}
+
+  .chart-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:22px; background:var(--surface); margin-bottom:24px}
+  .chart-title{font-size:13px; font-weight:500; margin:0 0 18px}
+  .bar-row{display:flex; align-items:center; gap:12px; margin-bottom:14px}
+  .bar-row:last-child{margin-bottom:0}
+  .bar-label{width:130px; font-size:12.5px; color:var(--text-secondary); flex-shrink:0}
+  .bar-track{flex:1; height:10px; background:var(--bg); border-radius:5px; overflow:hidden}
+  .bar-fill{height:100%; background:var(--accent); border-radius:5px}
+  .bar-fill.alt{background:var(--interactive)}
+  .bar-value{width:44px; text-align:right; font-size:12px; color:var(--text-muted); flex-shrink:0}
+
+  .req-mark{color:var(--danger); margin-left:2px}
+  .field-error{display:none; color:var(--danger); font-size:11.5px; margin-top:5px}
+  .field-invalid{border-color:var(--danger) !important; box-shadow:0 0 0 2px rgba(178,58,52,.12)}
+
+  .rte-wrap{border:0.5px solid var(--border-strong); border-radius:var(--radius); overflow:hidden}
+  .rte-toolbar{display:flex; gap:2px; padding:6px; background:var(--bg); border-bottom:0.5px solid var(--border)}
+  .rte-btn{
+    width:28px; height:28px; border:none; background:none; border-radius:6px; cursor:pointer;
+    font-size:13px; color:var(--text-secondary); display:flex; align-items:center; justify-content:center;
+  }
+  .rte-btn:hover{background:var(--surface); color:var(--text-primary)}
+  .rte-btn.b{font-weight:700}
+  .rte-btn.i{font-style:italic}
+  .rte-btn.u{text-decoration:underline}
+  .rte-sep{width:1px; background:var(--border-strong); margin:4px 4px}
+  .rte-editable{
+    min-height:88px; padding:10px 12px; font-size:13.5px; color:var(--text-primary); line-height:1.6;
+    outline:none;
+  }
+  .rte-editable:empty::before{content:attr(data-placeholder); color:var(--text-muted)}
+  .rte-editable ul{margin:6px 0; padding-left:20px}
+  .u-cta{text-align:center; padding:50px 40px; background:var(--u-navy); color:#fff}
+  .u-cta h3{font-size:19px; margin:0 0 8px}
+  .u-cta p{font-size:12.5px; color:#C9C3B2; margin:0 0 18px}
+  .u-cta-btn{background:var(--u-gold); color:#16232A; border:none; padding:10px 26px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer}
+  .u-cta-btn:disabled{opacity:.55; cursor:default}
+
+  .u-modal-overlay{display:none; position:absolute; inset:0; background:rgba(22,35,42,.55); align-items:center; justify-content:center; z-index:30; padding:20px}
+  .u-modal-overlay.open{display:flex}
+  .u-modal{background:#fff; border-radius:14px; width:100%; max-width:360px; padding:24px; color:var(--u-text); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+  .u-modal h3{font-size:16px; margin:0 0 4px}
+  .u-modal .u-modal-sub{font-size:12px; color:var(--u-text-muted); margin:0 0 18px}
+  .u-modal .u-field{margin-bottom:13px}
+  .u-modal label{font-size:12px; color:var(--u-text-muted); display:block; margin-bottom:5px}
+  .u-modal input, .u-modal textarea{width:100%; border:0.5px solid var(--u-gold-tint); border-radius:8px; padding:8px 10px; font-size:13px; font-family:inherit; color:var(--u-text); box-sizing:border-box}
+  .u-modal input:disabled{background:var(--u-ivory); color:var(--u-text-muted)}
+  .u-modal-actions{display:flex; justify-content:flex-end; gap:14px; align-items:center; margin-top:6px}
+  .u-modal-cancel{background:none; border:none; color:var(--u-text-muted); font-size:13px; cursor:pointer; padding:8px 2px}
+  .u-modal-submit{background:var(--u-gold); color:#16232A; border:none; padding:9px 20px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer}
+  .u-modal-success{text-align:center; padding:8px 0 4px}
+  .u-modal-success-icon{width:44px;height:44px;border-radius:50%; background:var(--u-gold-tint); color:var(--u-gold); font-size:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px}
+  .u-modal-success h3{margin-bottom:6px}
+  .u-modal-success p{font-size:12.5px; color:var(--u-text-muted); margin:0 0 20px}
+
+  .wall-list{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .wall-row{display:flex; gap:14px; padding:16px; border-bottom:0.5px solid var(--border); align-items:flex-start}
+  .wall-row:last-child{border-bottom:none}
+  .wall-avatar{width:38px;height:38px;border-radius:50%; background:var(--content-tint); color:var(--content-text); flex-shrink:0; display:flex;align-items:center;justify-content:center; font-size:14px}
+  .wall-body{flex:1; min-width:0}
+  .wall-name-row{display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap}
+  .wall-name{font-size:13.5px; font-weight:500}
+  .wall-meta{font-size:11.5px; color:var(--text-muted)}
+  .wall-quote{font-size:13px; color:var(--text-primary); line-height:1.65; margin:0 0 10px}
+  .wall-footer{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .wall-image{width:180px; max-width:100%; height:100px; border-radius:8px; margin-bottom:10px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex;align-items:center;justify-content:center; color:var(--text-muted); font-size:20px}
+  .actions.end{justify-content:flex-end; gap:12px}
+  button.btn{
+    height:36px; padding:0 18px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
+    background:var(--surface); font-size:13.5px; color:var(--text-primary); cursor:pointer;
+  }
+  button.btn:hover{background:var(--bg)}
+  button.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+  button.btn.primary:hover{background:#325D54}
+
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="sidebar">
+    <div class="brand"><div class="brand-mark"></div>活动运营后台</div>
+    <div class="nav-group-label">工作台</div>
+    <div class="nav-item active" id="navActivities" onclick="showList()"><span class="nav-icon">&#9679;</span>活动管理</div>
+    <div class="nav-item" id="navModules" onclick="showModuleLibrary()"><span class="nav-icon">&#9679;</span>模块库</div>
+    <div class="nav-item" id="navSubmissions" onclick="showSubmissions()"><span class="nav-icon">&#9679;</span>作品管理</div>
+    <div class="nav-item" id="navRegistrations" onclick="showRegistrations()"><span class="nav-icon">&#9679;</span>报名管理</div>
+    <div class="nav-item" id="navWall" onclick="showWall()"><span class="nav-icon">&#9679;</span>寄语墙管理</div>
+    <div class="nav-item" id="navStats" onclick="showStats()"><span class="nav-icon">&#9679;</span>数据统计</div>
+    <div class="nav-group-label">用户端预览</div>
+    <div class="nav-item" id="navUserPreview" onclick="showUserPreview()"><span class="nav-icon">&#9679;</span>活动详情页</div>
+    <div class="nav-item" id="navUserWorks" onclick="showUserWorks()"><span class="nav-icon">&#9679;</span>作品展示页面</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb">活动管理 / <b id="crumb">创建活动</b></div>
+      <div class="notif-wrap">
+        <button class="notif-btn" onclick="toggleNotifications()">
+          🔔<span class="notif-dot" id="notifDot">2</span>
+        </button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-panel-head">待办事项</div>
+          <div id="notifList">
+            <div class="notif-item" onclick="viewApproval()">
+              <div class="notif-item-title"><span>公司30周年庆典</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
+            </div>
+            <div class="notif-item" onclick="alert('原型演示：跳转到「中秋福利活动」审批处理页')">
+              <div class="notif-item-title"><span>中秋福利活动</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="panel wide" id="panel">
+
+        <!-- List view -->
+        <div id="listView">
+          <div class="list-header">
+            <h1 style="margin:0">活动管理</h1>
+            <button class="btn primary" onclick="showEditor()">+ 创建活动</button>
+          </div>
+
+          <div class="filter-bar">
+            <select>
+              <option>全部状态</option><option>草稿</option><option>审批中</option>
+              <option>已发布</option><option>已驳回</option><option>已结束</option>
+            </select>
+            <select>
+              <option>全部类型</option><option>周年庆</option><option>年会</option>
+              <option>团建</option><option>生日会</option><option>培训分享会</option>
+            </select>
+            <input type="text" id="activitySearchInput" placeholder="搜索活动标题" onkeydown="if(event.key==='Enter') searchActivities()">
+            <button class="btn primary" onclick="searchActivities()">搜索</button>
+          </div>
+
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>举办时间</th><th>发起人</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="viewActivity()">
+                <td class="title-cell">公司30周年庆典</td>
+                <td>周年庆</td>
+                <td><span class="status-badge review">审批中</span></td>
+                <td>¥68,000</td>
+                <td>2026-11-20</td>
+                <td>XY</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="viewActivity()" id="row-annual">
+                <td class="title-cell">2026年会</td>
+                <td>年会</td>
+                <td><span class="status-badge approved">已发布</span></td>
+                <td>¥120,000</td>
+                <td>2027-01-15</td>
+                <td>王芳</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link muted" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)">下线</button>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="viewActivity()">
+                <td class="title-cell">Q3部门团建</td>
+                <td>团建</td>
+                <td><span class="status-badge ended">已结束</span></td>
+                <td>¥8,000</td>
+                <td>2026-08-02</td>
+                <td>李强</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="showEditor()" id="row-onboarding">
+                <td class="title-cell">新人入职欢迎会</td>
+                <td>培训分享会</td>
+                <td><span class="status-badge draft">草稿</span></td>
+                <td>¥2,000</td>
+                <td class="muted-cell">未设定</td>
+                <td>XY</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="event.stopPropagation(); showEditor()">编辑</button>
+                    <button class="action-link danger" onclick="event.stopPropagation(); deleteActivity('row-onboarding','新人入职欢迎会', this)">删除</button>
+                  </div>
+                </td>
+              </tr>
+              <tr onclick="showEditor()">
+                <td class="title-cell">中秋福利活动</td>
+                <td>生日会</td>
+                <td><span class="status-badge rejected">已驳回</span></td>
+                <td>¥15,000</td>
+                <td>2026-09-25</td>
+                <td>XY</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link muted" onclick="event.stopPropagation(); showEditor()">编辑</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Editor view -->
+        <div id="editorView" class="hidden">
+
+        <button class="btn" style="margin-bottom:20px" onclick="showList()">‹ 返回活动列表</button>
+
+        <div class="steps">
+          <div class="step" id="step1" onclick="goStep(1)">
+            <div class="step-dot">1</div><div class="step-label">基础信息</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="step2" onclick="goStep(2)">
+            <div class="step-dot">2</div><div class="step-label">配置模块</div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="step3">
+            <div class="step-dot">3</div><div class="step-label">提交审批</div>
+          </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div id="panel1">
+          <h1>创建活动</h1>
+          <p class="subtitle">填写基础信息，下一步再配置活动模块</p>
+
+          <div class="field">
+            <label>活动标题<span class="req-mark">*</span></label>
+            <input type="text" id="fieldTitle" placeholder="例如：公司30周年庆典">
+            <div class="field-error" id="errTitle">请填写活动标题</div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label>活动类型<span class="req-mark">*</span></label>
+              <select id="fieldType">
+                <option>周年庆</option><option>年会</option><option>团建</option>
+                <option>生日会</option><option>培训分享会</option>
+              </select>
+              <div class="field-error" id="errType">请选择活动类型</div>
+            </div>
+            <div class="field">
+              <label>布局模板<span class="req-mark">*</span></label>
+              <select id="fieldTemplate">
+                <option>里程碑叙事页</option><option>简单报名页</option><option>团建活动页</option>
+              </select>
+              <div class="field-error" id="errTemplate">请选择布局模板</div>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label>开始时间<span class="req-mark">*</span></label>
+              <input type="datetime-local" id="fieldStart">
+              <div class="field-error" id="errStart">请选择开始时间</div>
+            </div>
+            <div class="field">
+              <label>结束时间<span class="req-mark">*</span></label>
+              <input type="datetime-local" id="fieldEnd">
+              <div class="field-error" id="errEnd">请选择结束时间</div>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label>举办地点<span class="req-mark">*</span></label>
+              <input type="text" id="fieldLocation" placeholder="例如：总部三楼多功能厅">
+              <div class="field-error" id="errLocation">请填写举办地点</div>
+            </div>
+            <div class="field">
+              <label>预算（元）<span class="req-mark">*</span></label>
+              <input type="number" id="fieldBudget" placeholder="0">
+              <div class="field-error" id="errBudget">请填写预算</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>参与范围</label>
+            <div class="scope-toggle">
+              <button class="scope-btn selected" onclick="selectScope(this)">全员</button>
+              <button class="scope-btn" onclick="selectScope(this)">指定部门</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>外部可见性</label>
+            <div class="scope-toggle">
+              <button class="scope-btn selected" onclick="selectScope(this)">仅内部可见</button>
+              <button class="scope-btn" onclick="selectScope(this)">对外部人员开放</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>封面图</label>
+            <div class="upload-box">点击或拖拽上传封面图，建议 1920×1080</div>
+          </div>
+
+          <div class="field">
+            <label>活动简介</label>
+            <div class="rte-wrap">
+              <div class="rte-toolbar">
+                <button type="button" class="rte-btn b" onclick="rteCmd('bold')" title="加粗">B</button>
+                <button type="button" class="rte-btn i" onclick="rteCmd('italic')" title="斜体">I</button>
+                <button type="button" class="rte-btn u" onclick="rteCmd('underline')" title="下划线">U</button>
+                <span class="rte-sep"></span>
+                <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList')" title="无序列表">≡</button>
+                <button type="button" class="rte-btn" onclick="rteCmd('removeFormat')" title="清除格式">✕</button>
+              </div>
+              <div class="rte-editable" contenteditable="true" data-placeholder="简单介绍活动背景和目的"></div>
+            </div>
+          </div>
+
+          <div class="actions end">
+            <button class="btn">保存草稿</button>
+            <button class="btn primary" onclick="validateStep1()">下一步：配置模块 →</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="panel2" class="hidden">
+          <h1>配置活动模块</h1>
+          <p class="subtitle">选择这个活动要启用的模块，拖动排序调整页面展示顺序</p>
+
+          <div class="module-list">
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name">CEO 致辞</span><span class="badge content">内容型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name">历史时间轴</span><span class="badge content">内容型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name off">周年博客列表</span><span class="badge content">内容型</span></div>
+                <label class="toggle"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name">涂鸦评选</span><span class="badge interactive">互动型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+                <div><label>提交截止时间</label><input type="datetime-local"></div>
+                <div><label>投票截止时间</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name">寄语墙</span><span class="badge interactive">互动型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+                <div><label>展示样式</label><select><option>网格</option><option>轮播</option></select></div>
+                <div><label>允许外部人士留言</label><select><option>是</option><option>否</option></select></div>
+                <div><label>留言截止时间</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+            <div class="module-row">
+              <div class="module-head">
+                <span class="grip">&#8942;&#8942;</span>
+                <div style="flex:1"><span class="module-name">报名信息</span><span class="badge interactive">互动型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="actions">
+            <button class="btn" onclick="goStep(1)">‹ 上一步</button>
+            <button class="btn primary" onclick="goStep(3)">下一步：提交审批 →</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="panel3" class="hidden">
+          <h1>提交审批</h1>
+          <p class="subtitle">确认信息无误后提交，审批通过前活动不会对外展示</p>
+
+          <div class="summary-card">
+            <div class="summary-card-title">活动信息</div>
+            <div class="summary-cover">封面图预览</div>
+            <div class="summary-grid">
+              <div class="summary-item"><label>活动标题</label><div class="val">公司30周年庆典</div></div>
+              <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
+              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
+              <div class="summary-item"><label>预算</label><div class="val">¥68,000</div></div>
+              <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
+              <div class="summary-item"><label>外部可见性</label><div class="val">对外部人员开放</div></div>
+            </div>
+            <div class="summary-desc">
+              <div class="summary-desc-label">活动简介</div>
+              <div class="summary-desc-content">感谢<strong>三十年</strong>的陪伴与支持，本次活动将回顾公司发展历程并表彰优秀员工。
+                <ul><li>时间：2026年11月20日 14:00 – 17:00</li><li>地点：总部三楼多功能厅</li></ul>
+              </div>
+            </div>
+            <div class="summary-flag">预算超过 ¥50,000 阈值，将自动加入财务审批环节</div>
+          </div>
+
+          <p class="section-title">将经过以下审批</p>
+          <p class="section-hint">审批人根据活动类型与预算自动匹配，无需手动指定</p>
+          <div class="approval-timeline">
+            <div class="approval-step-row">
+              <div class="approval-num">1</div>
+              <div class="approval-info">
+                <div class="approval-title">部门主管审批</div>
+                <div class="approval-sub">发起人所属部门负责人</div>
+              </div>
+              <div class="approval-status">待发起</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num">2</div>
+              <div class="approval-info">
+                <div class="approval-title">行政初审</div>
+                <div class="approval-sub">核对流程与合规性</div>
+              </div>
+              <div class="approval-status">待发起</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num">3</div>
+              <div class="approval-info">
+                <div class="approval-title">财务审批</div>
+                <div class="approval-sub">预算超阈值触发</div>
+              </div>
+              <div class="approval-status conditional">已触发</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num">4</div>
+              <div class="approval-info">
+                <div class="approval-title">行政终审并发布</div>
+                <div class="approval-sub">通过后自动生成活动页面</div>
+              </div>
+              <div class="approval-status">待发起</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>申请说明（选填）</label>
+            <textarea rows="3" placeholder="简单说明本次活动申请的背景或特殊事项，方便审批人快速了解"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn" onclick="goStep(2)">‹ 上一步</button>
+            <button class="btn primary" onclick="submitApproval()">提交审批 →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: post-submission status -->
+        <div id="panel4" class="hidden">
+          <div class="detail-header">
+            <h1 style="margin:0">公司30周年庆典</h1>
+            <span class="status-badge review" id="approvalHeaderBadge">审批中</span>
+          </div>
+          <p class="detail-meta">由 XY 提交于 2026-09-14 10:32</p>
+
+          <div class="summary-card">
+            <div class="summary-card-title">活动信息</div>
+            <div class="summary-cover">封面图预览</div>
+            <div class="summary-grid">
+              <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
+              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
+              <div class="summary-item"><label>预算</label><div class="val">¥68,000</div></div>
+              <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
+              <div class="summary-item">
+                <label>外部可见性</label>
+                <div class="val" id="extVisibilityDisplay">对外部人员开放
+                  <button class="action-link" style="margin-left:6px; font-size:11px" onclick="editExternalVisibility()">修改</button>
+                </div>
+                <div class="hidden" id="extVisibilityEdit" style="margin-top:6px">
+                  <div class="scope-toggle">
+                    <button class="scope-btn" onclick="selectScope(this)">仅内部可见</button>
+                    <button class="scope-btn selected" onclick="selectScope(this)">对外部人员开放</button>
+                  </div>
+                  <div style="margin-top:8px; display:flex; gap:10px">
+                    <button class="action-link" onclick="saveExternalVisibility()">保存</button>
+                    <button class="action-link muted" onclick="cancelExternalVisibilityEdit()">取消</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="summary-desc">
+              <div class="summary-desc-label">活动简介</div>
+              <div class="summary-desc-content">感谢<strong>三十年</strong>的陪伴与支持，本次活动将回顾公司发展历程并表彰优秀员工。
+                <ul><li>时间：2026年11月20日 14:00 – 17:00</li><li>地点：总部三楼多功能厅</li></ul>
+              </div>
+            </div>
+          </div>
+
+          <p class="section-title">审批进度</p>
+          <p class="section-hint">实时反映各节点的处理状态</p>
+          <div class="approval-timeline">
+            <div class="approval-step-row">
+              <div class="approval-num done">✓</div>
+              <div class="approval-info">
+                <div class="approval-title">部门主管审批</div>
+                <div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>
+                <div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>
+              </div>
+              <div class="approval-status done">已通过</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num current" id="anum2">2</div>
+              <div class="approval-info" id="ainfo2">
+                <div class="approval-title">行政初审</div>
+                <div class="approval-sub">待行政部处理 · 预计1个工作日内</div>
+              </div>
+              <div class="approval-status current" id="astatus2">进行中</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num" id="anum3">3</div>
+              <div class="approval-info" id="ainfo3">
+                <div class="approval-title">财务审批</div>
+                <div class="approval-sub">预算超阈值触发</div>
+              </div>
+              <div class="approval-status conditional" id="astatus3">待处理</div>
+            </div>
+            <div class="approval-step-row">
+              <div class="approval-num">4</div>
+              <div class="approval-info">
+                <div class="approval-title">行政终审并发布</div>
+                <div class="approval-sub">通过后自动生成活动页面</div>
+              </div>
+              <div class="approval-status">待处理</div>
+            </div>
+          </div>
+
+          <!-- Initiator view actions -->
+          <div class="actions" id="initiatorActions">
+            <button class="btn danger-text" onclick="alert('原型演示：撤回后活动将退回草稿状态')">撤回申请</button>
+          </div>
+
+          <!-- Approver view actions (shown when opened from 待办) -->
+          <div class="hidden" id="approverActions">
+            <p class="section-title">我的审批（行政初审）</p>
+            <div class="field">
+              <label>审批意见（驳回时必填）</label>
+              <textarea id="approverComment" rows="2" placeholder="填写审批意见"></textarea>
+            </div>
+            <div class="actions" style="border-top:none; margin-top:8px; padding-top:0">
+              <button class="btn danger-text" onclick="rejectCurrentStep()">驳回</button>
+              <button class="btn primary" onclick="approveCurrentStep()">通过</button>
+            </div>
+          </div>
+          <div class="hidden" id="approvalDoneMsg" style="font-size:12.5px; color:var(--text-secondary); padding:10px 0">
+            已提交处理结果，流程将流转至下一节点。
+          </div>
+        </div>
+
+        </div>
+        <!-- /Editor view -->
+
+        <!-- Module library view -->
+        <div id="moduleLibraryView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">模块库</h1>
+              <p class="subtitle" style="margin:0">系统预置的活动玩法目录，创建活动时从中选用；新增模块类型需要开发支持</p>
+            </div>
+          </div>
+
+          <div class="module-grid">
+
+            <div class="module-card" onclick="toggleUsage('u1')">
+              <div class="module-card-head"><div class="module-card-title">CEO 致辞</div><span class="badge content">内容型</span></div>
+              <p class="module-desc">活动首页展示领导致辞文案与头像，通常放在页面顶部，由行政直接编辑发布。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">致辞正文</span><span class="attr-type">富文本</span></div>
+                <div class="attr-row"><span class="attr-name">致辞人头像</span><span class="attr-type">图片</span></div>
+                <div class="attr-row"><span class="attr-name">致辞人署名</span><span class="attr-type">文本</span></div>
+              </div>
+              <div class="module-meta"><span>已被 3 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u1">
+                <div>· 公司30周年庆典</div><div>· 2026年会</div><div>· 五周年庆典</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u2')">
+              <div class="module-card-head"><div class="module-card-title">历史时间轴</div><span class="badge content">内容型</span></div>
+              <p class="module-desc">按时间顺序展示公司发展里程碑，每条支持配图与描述，适合周年庆类活动。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">时间轴条目（年份/标题/描述/配图）</span><span class="attr-type">列表</span></div>
+                <div class="attr-row"><span class="attr-name">条目排序</span><span class="attr-type">可拖拽</span></div>
+              </div>
+              <div class="module-meta"><span>已被 1 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u2">
+                <div>· 公司30周年庆典</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u3')">
+              <div class="module-card-head"><div class="module-card-title">周年博客列表</div><span class="badge content">内容型</span></div>
+              <p class="module-desc">展示与活动相关的长文章，如员工专访、活动纪实，行政统一编辑发布。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">关联文章（标题/封面/摘要/链接）</span><span class="attr-type">列表</span></div>
+              </div>
+              <div class="module-meta"><span>暂未被使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u3">
+                <div>暂无活动使用该模块</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u4')">
+              <div class="module-card-head"><div class="module-card-title">涂鸦评选</div><span class="badge interactive">互动型</span></div>
+              <p class="module-desc">行政上传员工作品，全员投票评选优胜作品，分"提交""投票"两个阶段依次开放。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">提交截止时间</span><span class="attr-type">日期时间</span></div>
+                <div class="attr-row"><span class="attr-name">投票截止时间</span><span class="attr-type">日期时间</span></div>
+                <div class="attr-row"><span class="attr-name">作品来源</span><span class="attr-type">行政上传</span></div>
+              </div>
+              <div class="module-meta"><span>已被 2 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u4">
+                <div>· Q3部门团建</div><div>· 2025年会</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u5')">
+              <div class="module-card-head"><div class="module-card-title">寄语墙</div><span class="badge interactive">互动型</span></div>
+              <p class="module-desc">收集员工及外部合作伙伴的一句话祝福，支持行政代外部人士录入内容。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">展示样式</span><span class="attr-type">网格 / 轮播</span></div>
+                <div class="attr-row"><span class="attr-name">允许外部人士留言</span><span class="attr-type">开关</span></div>
+                <div class="attr-row"><span class="attr-name">支持配图</span><span class="attr-type">开关</span></div>
+                <div class="attr-row"><span class="attr-name">允许匿名留言</span><span class="attr-type">开关</span></div>
+                <div class="attr-row"><span class="attr-name">留言截止时间</span><span class="attr-type">日期时间</span></div>
+              </div>
+              <div class="module-meta"><span>已被 4 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u5">
+                <div>· 公司30周年庆典</div><div>· 2026年会</div><div>· 中秋福利活动</div><div>· 五周年庆典</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u6')">
+              <div class="module-card-head"><div class="module-card-title">报名信息</div><span class="badge interactive">互动型</span></div>
+              <p class="module-desc">员工在线报名参加活动，自动统计报名人数并支持现场扫码签到。</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
+                <div class="attr-row"><span class="attr-name">报名截止时间</span><span class="attr-type">日期时间</span></div>
+                <div class="attr-row"><span class="attr-name">名额上限</span><span class="attr-type">数字（留空不限）</span></div>
+                <div class="attr-row"><span class="attr-name">需要签到</span><span class="attr-type">开关</span></div>
+              </div>
+              <div class="module-meta"><span>已被 6 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u6">
+                <div>· 公司30周年庆典</div><div>· 2026年会</div><div>· Q3部门团建</div><div>· 新人入职欢迎会</div><div>· 中秋福利活动</div><div>· 五周年庆典</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Submission (works) management view -->
+        <div id="submissionsView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">作品管理</h1>
+              <p class="subtitle" style="margin:0">行政统一上传作品，展示在活动页面供全员投票；员工端不提供自主上传入口</p>
+            </div>
+          </div>
+
+          <div class="upload-panel">
+            <p class="upload-panel-title">上传作品</p>
+            <div class="row2">
+              <div class="field">
+                <label>所属活动 · 模块</label>
+                <select style="width:100%">
+                  <option>公司30周年庆典 · 涂鸦评选</option>
+                  <option>Q3部门团建 · 涂鸦评选</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>作者类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn selected" onclick="selectScope(this)">内部员工</button>
+                  <button class="scope-btn" onclick="selectScope(this)">外部人士</button>
+                </div>
+              </div>
+            </div>
+            <div class="row2">
+              <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：陈思思"></div>
+              <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：产品部"></div>
+            </div>
+            <div class="field">
+              <label>作品图片</label>
+              <div class="upload-box">点击或拖拽上传作品图片</div>
+            </div>
+            <div class="field">
+              <label>作品说明（选填）</label>
+              <textarea rows="2" placeholder="作者想表达的创作说明"></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end">
+              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为未发布')">上传作品</button>
+            </div>
+          </div>
+
+          <p class="section-title">已上传作品</p>
+          <p class="section-hint">全部由行政上传维护，发布后才会出现在员工端投票页</p>
+
+          <div style="display:flex; gap:16px; margin-bottom:16px">
+            <div class="field" style="max-width:280px; margin-bottom:0">
+              <label>按活动筛选</label>
+              <select id="submissionActivityFilter" style="width:100%" onchange="filterSubmissions()">
+                <option value="all">全部活动</option>
+                <option value="30th">公司30周年庆典 · 涂鸦评选</option>
+                <option value="q3">Q3部门团建 · 涂鸦评选</option>
+              </select>
+            </div>
+            <div class="field" style="max-width:200px; margin-bottom:0">
+              <label>按状态筛选</label>
+              <select id="submissionStatusFilter" style="width:100%" onchange="filterSubmissions()">
+                <option value="all">全部状态</option>
+                <option value="draft">未发布</option>
+                <option value="published">已发布</option>
+                <option value="hidden">已隐藏</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="submission-grid" id="submissionGrid">
+
+            <div class="submission-card" id="sub1" data-activity="30th" data-status="draft">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">陈思思</div>
+                <div class="submission-sub">产品部 · 内部员工</div>
+                <p class="submission-desc">灵感来源于公司logo的演变过程</p>
+                <div class="submission-footer">
+                  <span class="status-badge draft">未发布</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSubmissionStatus('sub1','published')">发布</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submission-card" id="sub2" data-activity="30th" data-status="published">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">王芳</div>
+                <div class="submission-sub">行政部 · 内部员工</div>
+                <div class="submission-footer">
+                  <span class="status-badge approved">已发布</span>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub2','hidden')">隐藏</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submission-card" id="sub3" data-activity="q3" data-status="published">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">李强</div>
+                <div class="submission-sub">工程部 · 内部员工</div>
+                <p class="submission-desc">手绘工地场景，致敬三十年建设历程</p>
+                <div class="submission-footer">
+                  <span class="status-badge approved">已发布</span>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub3','hidden')">隐藏</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submission-card" id="sub4" data-activity="30th" data-status="published">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">张伟</div>
+                <div class="submission-sub">技术部 · 内部员工</div>
+                <div class="submission-footer">
+                  <span class="status-badge approved">已发布</span>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub4','hidden')">隐藏</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submission-card" id="sub5" data-activity="q3" data-status="hidden">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">周敏</div>
+                <div class="submission-sub">市场部 · 内部员工</div>
+                <p class="submission-desc">抽象色彩表达团队活力</p>
+                <div class="submission-footer">
+                  <span class="status-badge hidden-st">已隐藏</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSubmissionStatus('sub5','published')">恢复</button>
+                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">删除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submission-card" id="sub6" data-activity="30th" data-status="draft">
+              <div class="submission-thumb">🎨</div>
+              <div class="submission-body">
+                <div class="submission-author">田中一郎</div>
+                <div class="submission-sub">合作伙伴 · 外部人士</div>
+                <p class="submission-desc">感谢合作多年，祝福公司蒸蒸日上</p>
+                <div class="submission-footer">
+                  <span class="status-badge draft">未发布</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSubmissionStatus('sub6','published')">发布</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Registration management view -->
+        <div id="registrationsView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">报名管理</h1>
+              <p class="subtitle" style="margin:0">员工在活动页面自主报名，此处查看名单并管理签到</p>
+            </div>
+            <button class="btn" onclick="toggleManualReg()">+ 手动添加</button>
+          </div>
+
+          <div class="upload-panel hidden" id="manualRegPanel">
+            <p class="upload-panel-title">手动添加报名</p>
+            <div class="row2">
+              <div class="field">
+                <label>类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn selected" onclick="selectScope(this)">内部员工</button>
+                  <button class="scope-btn" onclick="selectScope(this)">外部人士</button>
+                </div>
+              </div>
+              <div class="field"><label>部门 / 头衔</label><input type="text" id="manualRegDept" placeholder="例如：产品部"></div>
+            </div>
+            <div class="field"><label>姓名</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+            <div style="display:flex; justify-content:flex-end; gap:10px">
+              <button class="btn" onclick="toggleManualReg()">取消</button>
+              <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
+            </div>
+          </div>
+
+          <div class="field" style="max-width:340px; margin-bottom:20px">
+            <label>所属活动</label>
+            <select style="width:100%">
+              <option>公司30周年庆典</option>
+              <option>2026年会</option>
+            </select>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-card"><div class="stat-num" id="statRegistered">86</div><div class="stat-label">已报名</div></div>
+            <div class="stat-card"><div class="stat-num" id="statCheckedIn">52</div><div class="stat-label">已签到</div></div>
+            <div class="stat-card"><div class="stat-num">不限</div><div class="stat-label">名额上限</div></div>
+          </div>
+
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>姓名</th><th>部门 / 类型</th><th>报名时间</th><th>签到状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="regTableBody">
+              <tr>
+                <td class="title-cell">陈思思</td>
+                <td>产品部</td>
+                <td>2026-09-10 09:20</td>
+                <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setCheckin('r1','pending')">撤销签到</button>
+                    <button class="action-link danger" onclick="cancelRegistration('r1', this)">取消报名</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title-cell">王芳</td>
+                <td>行政部</td>
+                <td>2026-09-10 10:05</td>
+                <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setCheckin('r2','done')">签到</button>
+                    <button class="action-link danger" onclick="cancelRegistration('r2', this)">取消报名</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title-cell">李强</td>
+                <td>工程部</td>
+                <td>2026-09-11 14:40</td>
+                <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setCheckin('r3','done')">签到</button>
+                    <button class="action-link danger" onclick="cancelRegistration('r3', this)">取消报名</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title-cell">田中一郎</td>
+                <td>合作伙伴 · 外部</td>
+                <td>2026-09-12 16:00</td>
+                <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setCheckin('r4','done')">签到</button>
+                    <button class="action-link danger" onclick="cancelRegistration('r4', this)">取消报名</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Message wall (寄语墙) moderation view -->
+        <div id="wallView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">寄语墙管理</h1>
+              <p class="subtitle" style="margin:0">员工自主提交留言，行政审核决定哪些展示在活动页面</p>
+            </div>
+          </div>
+
+          <div class="field" style="max-width:340px; margin-bottom:20px">
+            <label>所属活动 · 模块</label>
+            <select style="width:100%">
+              <option>公司30周年庆典 · 寄语墙</option>
+              <option>2026年会 · 寄语墙</option>
+            </select>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">已展示</div></div>
+            <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">已隐藏</div></div>
+          </div>
+
+          <div class="upload-panel">
+            <p class="upload-panel-title">代录入寄语（用于外部合作伙伴等无系统账号的人士）</p>
+            <div class="row2">
+              <div class="field">
+                <label>作者类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn" onclick="selectScope(this)">内部员工</button>
+                  <button class="scope-btn selected" onclick="selectScope(this)">外部人士</button>
+                </div>
+              </div>
+              <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：合作伙伴 · XX公司"></div>
+            </div>
+            <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：田中一郎"></div>
+            <div class="field">
+              <label>留言图片（选填）</label>
+              <div class="upload-box">点击或拖拽上传配图，如合影、手写卡片照片</div>
+            </div>
+            <div class="field">
+              <label>留言内容</label>
+              <textarea rows="2" placeholder="代录入的祝福留言"></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end">
+              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为待审核')">提交留言</button>
+            </div>
+          </div>
+
+          <p class="section-title">全部留言</p>
+          <p class="section-hint">员工自主提交与行政代录入的留言统一在此审核</p>
+
+          <div style="display:flex; gap:16px; margin-bottom:16px">
+            <div class="field" style="max-width:280px; margin-bottom:0">
+              <label>按活动筛选</label>
+              <select id="wallActivityFilter" style="width:100%" onchange="filterWallMessages()">
+                <option value="all">全部活动</option>
+                <option value="30th">公司30周年庆典 · 寄语墙</option>
+                <option value="annual">2026年会 · 寄语墙</option>
+              </select>
+            </div>
+            <div class="field" style="max-width:200px; margin-bottom:0">
+              <label>按状态筛选</label>
+              <select id="wallStatusFilter" style="width:100%" onchange="filterWallMessages()">
+                <option value="all">全部状态</option>
+                <option value="review">待审核</option>
+                <option value="published">已展示</option>
+                <option value="hidden">已隐藏</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="wall-list" id="wallList">
+
+            <div class="wall-row" id="w1" data-activity="30th" data-status="review">
+              <div class="wall-avatar">👤</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">陈思思</span>
+                  <span class="wall-meta">产品部 · 员工提交</span>
+                </div>
+                <p class="wall-quote">见证了公司从十几个人到现在，这份归属感很难得，祝公司三十周年生日快乐！</p>
+                <div class="wall-footer">
+                  <span class="status-badge review">待审核</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setWallStatus('w1','published')">展示</button>
+                    <button class="action-link danger" onclick="setWallStatus('w1','hidden')">拒绝</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wall-row" id="w2" data-activity="30th" data-status="published">
+              <div class="wall-avatar">👤</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">王芳</span>
+                  <span class="wall-meta">行政部 · 员工提交</span>
+                </div>
+                <p class="wall-quote">谢谢团队一路的支持，祝公司三十周年快乐，越办越好！</p>
+                <div class="wall-image">📷</div>
+                <div class="wall-footer">
+                  <span class="status-badge approved">已展示</span>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setWallStatus('w2','hidden')">隐藏</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wall-row" id="w3" data-activity="30th" data-status="published">
+              <div class="wall-avatar">🤝</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">田中一郎</span>
+                  <span class="wall-meta">合作伙伴 · 行政代录入</span>
+                </div>
+                <div class="wall-image">📷</div>
+                <p class="wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</p>
+                <div class="wall-footer">
+                  <span class="status-badge approved">已展示</span>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setWallStatus('w3','hidden')">隐藏</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wall-row" id="w4" data-activity="annual" data-status="review">
+              <div class="wall-avatar">👤</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">李强</span>
+                  <span class="wall-meta">工程部 · 员工提交</span>
+                </div>
+                <p class="wall-quote">希望公司越来越好，大家一起加油！</p>
+                <div class="wall-footer">
+                  <span class="status-badge review">待审核</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setWallStatus('w4','published')">展示</button>
+                    <button class="action-link danger" onclick="setWallStatus('w4','hidden')">拒绝</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wall-row" id="w5" data-activity="30th" data-status="review">
+              <div class="wall-avatar">🙈</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">匿名员工</span>
+                  <span class="wall-meta">已开启匿名 · 员工提交</span>
+                </div>
+                <p class="wall-quote">希望明年能涨工资（doge）</p>
+                <div class="wall-footer">
+                  <span class="status-badge review">待审核</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setWallStatus('w5','published')">展示</button>
+                    <button class="action-link danger" onclick="setWallStatus('w5','hidden')">拒绝</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wall-row" id="w6" data-activity="annual" data-status="hidden">
+              <div class="wall-avatar">👤</div>
+              <div class="wall-body">
+                <div class="wall-name-row">
+                  <span class="wall-name">周敏</span>
+                  <span class="wall-meta">市场部 · 员工提交</span>
+                </div>
+                <p class="wall-quote">（该留言因含不适宜内容已被隐藏）</p>
+                <div class="wall-footer">
+                  <span class="status-badge hidden-st">已隐藏</span>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setWallStatus('w6','published')">恢复</button>
+                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">删除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Data statistics dashboard -->
+        <div id="statsView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">数据统计</h1>
+              <p class="subtitle" style="margin:0">全部活动的关键指标总览</p>
+            </div>
+            <select style="width:160px">
+              <option>近12个月</option>
+              <option>近3个月</option>
+              <option>本年度</option>
+            </select>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card"><div class="kpi-num">12</div><div class="kpi-label">累计活动数</div></div>
+            <div class="kpi-card"><div class="kpi-num accent">3</div><div class="kpi-label">进行中 / 审批中</div></div>
+            <div class="kpi-card"><div class="kpi-num">620</div><div class="kpi-label">累计报名人次</div></div>
+            <div class="kpi-card"><div class="kpi-num">68%</div><div class="kpi-label">平均签到率</div></div>
+            <div class="kpi-card"><div class="kpi-num">156</div><div class="kpi-label">寄语墙留言数</div></div>
+            <div class="kpi-card"><div class="kpi-num">892</div><div class="kpi-label">作品投票数</div></div>
+          </div>
+
+          <div class="chart-card">
+            <p class="chart-title">各活动报名人数</p>
+            <div class="bar-row"><span class="bar-label">2026年会</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-value">142</span></div>
+            <div class="bar-row"><span class="bar-label">公司30周年庆典</span><div class="bar-track"><div class="bar-fill" style="width:61%"></div></div><span class="bar-value">87</span></div>
+            <div class="bar-row"><span class="bar-label">中秋福利活动</span><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><span class="bar-value">58</span></div>
+            <div class="bar-row"><span class="bar-label">Q3部门团建</span><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><span class="bar-value">34</span></div>
+          </div>
+
+          <div class="chart-card">
+            <p class="chart-title">各活动签到率</p>
+            <div class="bar-row"><span class="bar-label">2026年会</span><div class="bar-track"><div class="bar-fill alt" style="width:74%"></div></div><span class="bar-value">74%</span></div>
+            <div class="bar-row"><span class="bar-label">公司30周年庆典</span><div class="bar-track"><div class="bar-fill alt" style="width:60%"></div></div><span class="bar-value">60%</span></div>
+            <div class="bar-row"><span class="bar-label">中秋福利活动</span><div class="bar-track"><div class="bar-fill alt" style="width:81%"></div></div><span class="bar-value">81%</span></div>
+            <div class="bar-row"><span class="bar-label">Q3部门团建</span><div class="bar-track"><div class="bar-fill alt" style="width:88%"></div></div><span class="bar-value">88%</span></div>
+          </div>
+
+          <p class="section-title">各活动明细</p>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>活动名称</th><th>类型</th><th>报名人数</th><th>签到率</th><th>寄语数</th><th>作品投票数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="title-cell">2026年会</td><td>年会</td><td>142</td><td>74%</td><td>48</td><td>310</td>
+              </tr>
+              <tr>
+                <td class="title-cell">公司30周年庆典</td><td>周年庆</td><td>87</td><td>60%</td><td>62</td><td>0</td>
+              </tr>
+              <tr>
+                <td class="title-cell">中秋福利活动</td><td>生日会</td><td>58</td><td>81%</td><td>21</td><td>0</td>
+              </tr>
+              <tr>
+                <td class="title-cell">Q3部门团建</td><td>团建</td><td>34</td><td>88%</td><td>0</td><td>582</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- User-facing preview: full activity page -->
+        <div id="userPreviewView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">活动详情页（用户端预览）</h1>
+              <p class="subtitle" style="margin:0">按活动已启用的模块和布局模板拼装，员工/外部访问者看到的实际效果</p>
+            </div>
+            <select style="width:220px">
+              <option>公司30周年庆典</option>
+              <option>2026年会</option>
+            </select>
+          </div>
+
+          <div class="uview-frame">
+            <div class="uview-chrome">
+              <span class="uview-dot"></span><span class="uview-dot"></span><span class="uview-dot"></span>
+              <span class="uview-url">activity.company.com/30th</span>
+            </div>
+            <div class="uview-body">
+
+              <div class="u-hero">
+                <h1>公司30周年庆典</h1>
+                <p>感谢三十年同行，与你共赴下一个十年</p>
+                <div class="u-hero-meta">2026年11月20日 · 总部三楼多功能厅</div>
+              </div>
+
+              <div class="u-section">
+                <p class="u-section-title">CEO 致辞</p>
+                <div class="u-ceo">
+                  <div class="u-ceo-avatar">👤</div>
+                  <div>
+                    <div class="u-ceo-quote">三十年前，几张桌子、一间办公室，是我们一切的开始。今天，感谢每一位同事的坚持与信任，让我们走到了这里。未来的路还很长，让我们继续一起走下去。</div>
+                    <div class="u-ceo-name">—— 创始人 兼 CEO</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="u-section alt">
+                <p class="u-section-title">历史时间轴</p>
+                <div class="u-timeline">
+                  <div class="u-tl-item">
+                    <div class="u-tl-year">1996</div>
+                    <div class="u-tl-body"><div class="u-tl-title">公司成立</div><div class="u-tl-desc">在一间小办公室里迈出第一步。</div></div>
+                  </div>
+                  <div class="u-tl-item">
+                    <div class="u-tl-year">2010</div>
+                    <div class="u-tl-body"><div class="u-tl-title">业务全国拓展</div><div class="u-tl-desc">团队规模突破百人，服务遍及全国。</div></div>
+                  </div>
+                  <div class="u-tl-item">
+                    <div class="u-tl-year">2026</div>
+                    <div class="u-tl-body"><div class="u-tl-title">三十周年</div><div class="u-tl-desc">感谢一路同行的每一个人。</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="u-section">
+                <div style="display:flex; align-items:center; justify-content:space-between; max-width:640px; margin:0 auto 10px">
+                  <p class="u-section-title" style="margin:0; text-align:left">寄语墙</p>
+                  <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
+                  <span id="wallClosedNote" class="hidden" style="font-size:12px; color:var(--u-text-muted)">留言征集已于 2026-11-18 24:00 截止</span>
+                </div>
+                <div style="max-width:640px; margin:0 auto 18px; text-align:right">
+                  <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：切换留言征集截止状态</button>
+                </div>
+                <div class="u-wall-grid">
+                  <div class="u-wall-card">
+                    <div class="u-wall-image">📷</div>
+                    <div class="u-wall-quote">见证了公司从十几个人到现在，这份归属感很难得。</div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">王芳</div><div class="u-wall-role">行政部</div></div></div>
+                  </div>
+                  <div class="u-wall-card">
+                    <div class="u-wall-image">📷</div>
+                    <div class="u-wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">合作伙伴</div></div></div>
+                  </div>
+                  <div class="u-wall-card">
+                    <div class="u-wall-quote">希望公司越来越好，大家一起加油！</div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">李强</div><div class="u-wall-role">工程部</div></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="u-cta">
+                <h3>期待与你相聚</h3>
+                <p>活动名额有限，报名后将收到入场提醒</p>
+                <button class="u-cta-btn" id="heroCtaBtn" onclick="openRegisterModal()">立即报名</button>
+              </div>
+
+            </div>
+
+            <div class="u-modal-overlay" id="regModalOverlay">
+              <div class="u-modal">
+                <div id="regFormBody">
+                  <h3>报名参加活动</h3>
+                  <p class="u-modal-sub">公司30周年庆典 · 2026-11-20 14:00</p>
+                  <div class="u-field">
+                    <label>姓名</label>
+                    <input type="text" value="陈思思" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label>部门</label>
+                    <input type="text" value="产品部" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label>联系电话</label>
+                    <input type="text" id="regPhone" placeholder="用于活动当天联系">
+                  </div>
+                  <div class="u-field">
+                    <label>备注（选填）</label>
+                    <textarea rows="2" placeholder="如有特殊饮食需求等可备注"></textarea>
+                  </div>
+                  <div class="u-modal-actions">
+                    <button class="u-modal-cancel" onclick="closeRegisterModal()">取消</button>
+                    <button class="u-modal-submit" onclick="submitRegistration()">确认报名</button>
+                  </div>
+                </div>
+                <div id="regSuccessBody" class="u-modal-success hidden">
+                  <div class="u-modal-success-icon">✓</div>
+                  <h3>报名成功</h3>
+                  <p>活动开始前会通过企业微信提醒你</p>
+                  <button class="u-modal-submit" onclick="closeRegisterModal()">好的</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="u-modal-overlay" id="wallModalOverlay">
+              <div class="u-modal">
+                <div id="wallFormBody">
+                  <h3>写下你的寄语</h3>
+                  <p class="u-modal-sub">行政审核通过后才会展示在寄语墙</p>
+                  <div class="u-field">
+                    <label>姓名</label>
+                    <input type="text" value="陈思思" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label>部门</label>
+                    <input type="text" value="产品部" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; margin-bottom:0">
+                      <input type="checkbox" id="wallAnonCheck" style="width:auto; margin:0">
+                      匿名提交（他人将看不到你的姓名）
+                    </label>
+                  </div>
+                  <div class="u-field">
+                    <label>配图（选填）</label>
+                    <div class="u-upload-box" id="wallImageUpload" onclick="this.textContent='已选择 celebration.jpg'; this.dataset.attached='1'">点击上传一张配图</div>
+                  </div>
+                  <div class="u-field">
+                    <label>留言内容</label>
+                    <textarea id="wallMsgInput" rows="3" placeholder="写下你想说的话"></textarea>
+                  </div>
+                  <div class="u-modal-actions">
+                    <button class="u-modal-cancel" onclick="closeWallModal()">取消</button>
+                    <button class="u-modal-submit" onclick="submitWallMessage()">提交</button>
+                  </div>
+                </div>
+                <div id="wallSuccessBody" class="u-modal-success hidden">
+                  <div class="u-modal-success-icon">✓</div>
+                  <h3>提交成功</h3>
+                  <p>行政审核通过后将展示在寄语墙</p>
+                  <button class="u-modal-submit" onclick="closeWallModal()">好的</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User-facing preview: works voting page -->
+        <div id="userWorksView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">作品展示页面（用户端预览）</h1>
+              <p class="subtitle" style="margin:0">员工查看行政上传的作品并投票，仅展示状态为「已发布」的作品</p>
+            </div>
+            <select style="width:220px">
+              <option>公司30周年庆典 · 涂鸦评选</option>
+              <option>Q3部门团建 · 涂鸦评选</option>
+            </select>
+          </div>
+
+          <div class="uview-frame">
+            <div class="uview-chrome">
+              <span class="uview-dot"></span><span class="uview-dot"></span><span class="uview-dot"></span>
+              <span class="uview-url">activity.company.com/30th/vote</span>
+            </div>
+            <div class="uview-body">
+
+              <div class="u-hero" style="padding:44px 40px">
+                <h1 style="font-size:26px">涂鸦评选</h1>
+                <p>为你喜欢的作品投上一票，投票截止 2026-11-18</p>
+              </div>
+
+              <div class="u-section">
+                <div class="u-vote-grid">
+
+                  <div class="u-vote-card" id="v1">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">王芳 · 行政部</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="24">24 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v1')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="u-vote-card" id="v2">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">李强 · 工程部</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="31">31 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v2')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="u-vote-card" id="v3">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">张伟 · 技术部</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="18">18 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v3')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="u-vote-card" id="v4">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">陈思思 · 产品部</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="9">9 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v4')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="u-vote-card" id="v5">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">田中一郎 · 合作伙伴</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="15">15 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v5')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="u-vote-card" id="v6">
+                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">周敏 · 市场部</div>
+                      <div class="u-vote-footer">
+                        <span class="u-vote-count" data-count="12">12 票</span>
+                        <button class="u-vote-btn" onclick="toggleVote('v6')">投票</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectScope(btn){
+  btn.closest('.scope-toggle').querySelectorAll('.scope-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function rteCmd(cmd){
+  document.execCommand(cmd, false, null);
+}
+function validateStep1(){
+  let valid = true;
+  const required = ['fieldTitle','fieldType','fieldTemplate','fieldStart','fieldEnd','fieldLocation','fieldBudget'];
+  required.forEach(fid=>{
+    const el = document.getElementById(fid);
+    const err = document.getElementById('err'+fid.replace('field',''));
+    const empty = !el.value || el.value.trim() === '';
+    el.classList.toggle('field-invalid', empty);
+    if(err) err.style.display = empty ? 'block' : 'none';
+    if(empty) valid = false;
+  });
+
+  const start = document.getElementById('fieldStart');
+  const end = document.getElementById('fieldEnd');
+  const errEnd = document.getElementById('errEnd');
+  if(start.value && end.value){
+    if(end.value <= start.value){
+      end.classList.add('field-invalid');
+      errEnd.textContent = '结束时间需晚于开始时间';
+      errEnd.style.display = 'block';
+      valid = false;
+    } else {
+      errEnd.textContent = '请选择结束时间';
+    }
+  }
+
+  if(!valid){
+    document.querySelector('.field-invalid').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  goStep(2);
+}
+['fieldTitle','fieldType','fieldTemplate','fieldStart','fieldEnd','fieldLocation','fieldBudget'].forEach(fid=>{
+  const el = document.getElementById(fid);
+  const err = document.getElementById('err'+fid.replace('field',''));
+  el.addEventListener('input', ()=>{
+    el.classList.remove('field-invalid');
+    if(err) err.style.display = 'none';
+  });
+  el.addEventListener('change', ()=>{
+    el.classList.remove('field-invalid');
+    if(err) err.style.display = 'none';
+  });
+});
+function goStep(n){
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('panel'+i).classList.toggle('hidden', i!==n);
+  });
+  document.querySelector('.steps').classList.toggle('hidden', n===4);
+  [1,2,3].forEach(i=>{
+    const step = document.getElementById('step'+i);
+    if(!step) return;
+    step.classList.toggle('current', i===n);
+    step.classList.toggle('done', i<n || n===4);
+  });
+  const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批',4:'审批进度'};
+  document.getElementById('crumb').textContent = labels[n];
+}
+function submitApproval(){
+  goStep(4);
+}
+function showList(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='listView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '活动管理';
+  setActiveNav('navActivities');
+}
+function showEditor(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='editorView');
+  });
+  document.getElementById('panel').classList.remove('wide');
+  setActiveNav('navActivities');
+  goStep(1);
+}
+function viewActivity(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='editorView');
+  });
+  document.getElementById('panel').classList.remove('wide');
+  setActiveNav('navActivities');
+  goStep(4);
+  setApprovalMode('initiator');
+}
+function viewApproval(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='editorView');
+  });
+  document.getElementById('panel').classList.remove('wide');
+  setActiveNav('navActivities');
+  goStep(4);
+  setApprovalMode('approver');
+  closeNotifications();
+}
+function setApprovalMode(mode){
+  document.getElementById('initiatorActions').classList.toggle('hidden', mode!=='initiator');
+  document.getElementById('approverActions').classList.toggle('hidden', mode!=='approver');
+  document.getElementById('approvalDoneMsg').classList.add('hidden');
+}
+function approveCurrentStep(){
+  document.getElementById('anum2').className = 'approval-num done';
+  document.getElementById('anum2').textContent = '✓';
+  document.getElementById('astatus2').className = 'approval-status done';
+  document.getElementById('astatus2').textContent = '已通过';
+  const comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
+  const info2 = document.getElementById('ainfo2');
+  if(!info2.querySelector('.approval-comment')){
+    const c = document.createElement('div');
+    c.className = 'approval-comment';
+    c.textContent = comment;
+    info2.appendChild(c);
+  }
+  document.getElementById('anum3').className = 'approval-num current';
+  document.getElementById('astatus3').className = 'approval-status current';
+  document.getElementById('astatus3').textContent = '进行中';
+  document.getElementById('approverActions').classList.add('hidden');
+  document.getElementById('approvalDoneMsg').textContent = '已提交处理结果，流程将流转至下一节点。';
+  document.getElementById('approvalDoneMsg').classList.remove('hidden');
+  updateTodoBadge(-1);
+}
+function rejectCurrentStep(){
+  const comment = document.getElementById('approverComment').value.trim();
+  if(!comment){ alert('驳回需要填写审批意见'); return; }
+  const num2 = document.getElementById('anum2');
+  num2.className = 'approval-num';
+  num2.style.background = 'var(--danger)';
+  num2.style.color = '#fff';
+  num2.textContent = '✕';
+  const status2 = document.getElementById('astatus2');
+  status2.className = 'approval-status';
+  status2.style.background = '#F6E4E2';
+  status2.style.color = 'var(--danger)';
+  status2.textContent = '已驳回';
+  const info2 = document.getElementById('ainfo2');
+  if(!info2.querySelector('.approval-comment')){
+    const c = document.createElement('div');
+    c.className = 'approval-comment';
+    c.textContent = comment;
+    info2.appendChild(c);
+  }
+  const headerBadge = document.getElementById('approvalHeaderBadge');
+  headerBadge.className = 'status-badge rejected';
+  headerBadge.textContent = '已驳回';
+  document.getElementById('approverActions').classList.add('hidden');
+  document.getElementById('approvalDoneMsg').textContent = '已驳回，活动将退回发起人修改。';
+  document.getElementById('approvalDoneMsg').classList.remove('hidden');
+  updateTodoBadge(-1);
+}
+function showModuleLibrary(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='moduleLibraryView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '模块库';
+  setActiveNav('navModules');
+}
+function showSubmissions(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='submissionsView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '作品管理';
+  setActiveNav('navSubmissions');
+}
+function showRegistrations(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='registrationsView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '报名管理';
+  setActiveNav('navRegistrations');
+}
+function showWall(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='wallView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '寄语墙管理';
+  setActiveNav('navWall');
+}
+function showStats(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='statsView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '数据统计';
+  setActiveNav('navStats');
+}
+function showUserPreview(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='userPreviewView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '活动详情页（用户端预览）';
+  setActiveNav('navUserPreview');
+}function showUserWorks(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='userWorksView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '作品展示页面（用户端预览）';
+  setActiveNav('navUserWorks');
+}
+function setActiveNav(activeId){
+  ['navActivities','navModules','navSubmissions','navRegistrations','navWall','navStats','navUserPreview','navUserWorks'].forEach(id=>{
+    document.getElementById(id).classList.toggle('active', id===activeId);
+  });
+}
+function toggleUsage(id){
+  document.getElementById(id).classList.toggle('open');
+}
+function setSubmissionStatus(cardId, status){
+  const card = document.getElementById(cardId);
+  const badge = card.querySelector('.status-badge');
+  const actions = card.querySelector('.table-actions');
+  card.dataset.status = status;
+  if(status === 'draft'){
+    badge.className = 'status-badge draft';
+    badge.textContent = '未发布';
+    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
+  } else if(status === 'published'){
+    badge.className = 'status-badge approved';
+    badge.textContent = '已发布';
+    actions.innerHTML = '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
+  } else if(status === 'hidden'){
+    badge.className = 'status-badge hidden-st';
+    badge.textContent = '已隐藏';
+    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
+      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+  }
+  filterSubmissions();
+}
+function filterSubmissions(){
+  const activityVal = document.getElementById('submissionActivityFilter').value;
+  const statusVal = document.getElementById('submissionStatusFilter').value;
+  document.querySelectorAll('#submissionGrid .submission-card').forEach(card=>{
+    const activityMatch = (activityVal === 'all') || (card.dataset.activity === activityVal);
+    const statusMatch = (statusVal === 'all') || (card.dataset.status === statusVal);
+    card.style.display = (activityMatch && statusMatch) ? '' : 'none';
+  });
+}
+function searchActivities(){
+  const query = document.getElementById('activitySearchInput').value.trim().toLowerCase();
+  document.querySelectorAll('#listView .activity-table tbody tr').forEach(tr=>{
+    const title = tr.querySelector('.title-cell').textContent.toLowerCase();
+    tr.style.display = (!query || title.includes(query)) ? '' : 'none';
+  });
+}
+function unpublishActivity(rowId, btn){
+  const actions = btn.parentElement;
+  actions.dataset.original = actions.innerHTML;
+  actions.innerHTML =
+    '<span style="font-size:12px;color:var(--text-secondary);margin-right:2px">确定下线？</span>'
+    + '<button class="action-link danger" onclick="event.stopPropagation(); doUnpublish(\'' + rowId + '\')">确认</button>'
+    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">取消</button>';
+}
+function doUnpublish(rowId){
+  const row = document.getElementById(rowId);
+  const badge = row.querySelector('.status-badge');
+  badge.className = 'status-badge ended';
+  badge.textContent = '已结束';
+  row.querySelector('.table-actions').innerHTML =
+    '<button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>';
+}
+function deleteActivity(rowId, name, btn){
+  const actions = btn.parentElement;
+  actions.dataset.original = actions.innerHTML;
+  actions.innerHTML =
+    '<span style="font-size:12px;color:var(--danger);margin-right:2px">删除后不可恢复</span>'
+    + '<button class="action-link danger" onclick="event.stopPropagation(); doDelete(\'' + rowId + '\')">确认删除</button>'
+    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">取消</button>';
+}
+function doDelete(rowId){
+  const row = document.getElementById(rowId);
+  if(row) row.remove();
+}
+function cancelInlineAction(btn){
+  const actions = btn.closest('.table-actions');
+  actions.innerHTML = actions.dataset.original;
+}
+function toggleManualReg(){
+  document.getElementById('manualRegPanel').classList.toggle('hidden');
+}
+function submitManualRegistration(){
+  const name = document.getElementById('manualRegName').value.trim();
+  const dept = document.getElementById('manualRegDept').value.trim();
+  if(!name){
+    alert('请填写姓名');
+    return;
+  }
+  const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  const rowId = 'manual-' + Date.now();
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td class="title-cell">' + escape(name) + '</td>'
+    + '<td>' + (dept ? escape(dept) : '—') + '</td>'
+    + '<td>' + stamp + '</td>'
+    + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
+    + '<td><div class="table-actions">'
+    +   '<button class="action-link" onclick="setCheckin(\'' + rowId + '\',\'done\')">签到</button>'
+    +   '<button class="action-link danger" onclick="cancelRegistration(\'' + rowId + '\', this)">取消报名</button>'
+    + '</div></td>';
+  document.getElementById('regTableBody').prepend(tr);
+
+  const statEl = document.getElementById('statRegistered');
+  statEl.textContent = parseInt(statEl.textContent, 10) + 1;
+
+  document.getElementById('manualRegName').value = '';
+  document.getElementById('manualRegDept').value = '';
+  document.getElementById('manualRegPanel').classList.add('hidden');
+}
+function setCheckin(rowId, status){
+  const badge = document.getElementById('regstatus-'+rowId);
+  const actions = badge.closest('tr').querySelector('.table-actions');
+  const checkedInStat = document.getElementById('statCheckedIn');
+  if(status === 'done'){
+    badge.className = 'status-badge approved';
+    badge.textContent = '已签到';
+    actions.innerHTML = '<button class="action-link muted" onclick="setCheckin(\''+rowId+'\',\'pending\')">撤销签到</button>'
+      + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
+    if(checkedInStat) checkedInStat.textContent = parseInt(checkedInStat.textContent, 10) + 1;
+  } else {
+    badge.className = 'status-badge draft';
+    badge.textContent = '未签到';
+    actions.innerHTML = '<button class="action-link" onclick="setCheckin(\''+rowId+'\',\'done\')">签到</button>'
+      + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
+    if(checkedInStat) checkedInStat.textContent = parseInt(checkedInStat.textContent, 10) - 1;
+  }
+}
+function cancelRegistration(rowId, btn){
+  const actions = btn.parentElement;
+  actions.dataset.original = actions.innerHTML;
+  actions.innerHTML =
+    '<span style="font-size:12px;color:var(--danger);margin-right:2px">确定取消报名？</span>'
+    + '<button class="action-link danger" onclick="doCancelRegistration(\'' + rowId + '\')">确认</button>'
+    + '<button class="action-link muted" onclick="cancelInlineAction(this)">取消</button>';
+}
+function doCancelRegistration(rowId){
+  const badge = document.getElementById('regstatus-'+rowId);
+  const row = badge.closest('tr');
+  const wasCheckedIn = badge.textContent === '已签到';
+  row.remove();
+  const registeredStat = document.getElementById('statRegistered');
+  if(registeredStat) registeredStat.textContent = Math.max(0, parseInt(registeredStat.textContent, 10) - 1);
+  if(wasCheckedIn){
+    const checkedInStat = document.getElementById('statCheckedIn');
+    if(checkedInStat) checkedInStat.textContent = Math.max(0, parseInt(checkedInStat.textContent, 10) - 1);
+  }
+}
+function toggleNotifications(){
+  document.getElementById('notifPanel').classList.toggle('open');
+}
+function closeNotifications(){
+  document.getElementById('notifPanel').classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  const wrap = document.querySelector('.notif-wrap');
+  if(wrap && !wrap.contains(e.target)){
+    closeNotifications();
+  }
+});
+function updateTodoBadge(delta){
+  const dot = document.getElementById('notifDot');
+  let n = parseInt(dot.textContent || '0', 10) + delta;
+  if(n < 0) n = 0;
+  dot.textContent = n;
+  dot.style.display = n === 0 ? 'none' : 'flex';
+  const items = document.querySelectorAll('#notifList .notif-item');
+  if(items[0] && items[0].textContent.indexOf('公司30周年庆典') !== -1){
+    items[0].remove();
+  }
+  if(document.querySelectorAll('#notifList .notif-item').length === 0){
+    document.getElementById('notifList').innerHTML = '<div class="notif-empty">暂无待办事项</div>';
+  }
+}
+function toggleVote(cardId){
+  const card = document.getElementById(cardId);
+  const btn = card.querySelector('.u-vote-btn');
+  const countEl = card.querySelector('.u-vote-count');
+  let count = parseInt(countEl.dataset.count, 10);
+  if(btn.classList.contains('voted')){
+    btn.classList.remove('voted');
+    btn.textContent = '投票';
+    count -= 1;
+  } else {
+    btn.classList.add('voted');
+    btn.textContent = '已投票';
+    count += 1;
+  }
+  countEl.dataset.count = count;
+  countEl.textContent = count + ' 票';
+}
+function setWallStatus(rowId, status){
+  const row = document.getElementById(rowId);
+  const badge = row.querySelector('.status-badge');
+  const actions = row.querySelector('.table-actions');
+  row.dataset.status = status;
+  if(status === 'published'){
+    badge.className = 'status-badge approved';
+    badge.textContent = '已展示';
+    actions.innerHTML = '<button class="action-link muted" onclick="setWallStatus(\''+rowId+'\',\'hidden\')">隐藏</button>';
+  } else if(status === 'hidden'){
+    badge.className = 'status-badge hidden-st';
+    badge.textContent = '已隐藏';
+    actions.innerHTML = '<button class="action-link" onclick="setWallStatus(\''+rowId+'\',\'published\')">恢复</button>'
+      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+  }
+  filterWallMessages();
+}
+function filterWallMessages(){
+  const activityVal = document.getElementById('wallActivityFilter').value;
+  const statusVal = document.getElementById('wallStatusFilter').value;
+  document.querySelectorAll('#wallList .wall-row').forEach(row=>{
+    const activityMatch = (activityVal === 'all') || (row.dataset.activity === activityVal);
+    const statusMatch = (statusVal === 'all') || (row.dataset.status === statusVal);
+    row.style.display = (activityMatch && statusMatch) ? '' : 'none';
+  });
+}
+function openRegisterModal(){
+  document.getElementById('regModalOverlay').classList.add('open');
+}
+function closeRegisterModal(){
+  document.getElementById('regModalOverlay').classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  if(e.target.id === 'regModalOverlay') closeRegisterModal();
+  if(e.target.id === 'wallModalOverlay') closeWallModal();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){ closeRegisterModal(); closeWallModal(); }
+});
+function submitRegistration(){
+  const phone = document.getElementById('regPhone').value.trim();
+  if(!phone){
+    alert('请填写联系电话');
+    return;
+  }
+  if(!/^1\d{10}$/.test(phone)){
+    alert('请输入有效的11位手机号');
+    return;
+  }
+
+  // Show success state in the modal
+  document.getElementById('regFormBody').classList.add('hidden');
+  document.getElementById('regSuccessBody').classList.remove('hidden');
+
+  // Lock the CTA so the same visitor can't register twice
+  const cta = document.getElementById('heroCtaBtn');
+  cta.textContent = '已报名 ✓';
+  cta.disabled = true;
+
+  // Write the new registration into 报名管理 (admin) so the loop closes end-to-end
+  const tbody = document.getElementById('regTableBody');
+  if(tbody && !document.getElementById('r-陈思思')){
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+    const rowId = 'r-陈思思';
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="title-cell">陈思思</td>'
+      + '<td>产品部</td>'
+      + '<td>'+stamp+'</td>'
+      + '<td><span class="status-badge draft" id="regstatus-'+rowId+'">未签到</span></td>'
+      + '<td><div class="table-actions">'
+      +   '<button class="action-link" onclick="setCheckin(\''+rowId+'\',\'done\')">签到</button>'
+      +   '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>'
+      + '</div></td>';
+    tr.id = rowId;
+    tbody.prepend(tr);
+
+    const statEl = document.getElementById('statRegistered');
+    statEl.textContent = parseInt(statEl.textContent, 10) + 1;
+  }
+}
+let wallDeadlinePassed = false;
+function toggleWallDeadlineDemo(){
+  wallDeadlinePassed = !wallDeadlinePassed;
+  document.getElementById('wallWriteBtn').classList.toggle('hidden', wallDeadlinePassed);
+  document.getElementById('wallClosedNote').classList.toggle('hidden', !wallDeadlinePassed);
+}
+function editExternalVisibility(){
+  document.getElementById('extVisibilityDisplay').classList.add('hidden');
+  document.getElementById('extVisibilityEdit').classList.remove('hidden');
+}
+function cancelExternalVisibilityEdit(){
+  document.getElementById('extVisibilityEdit').classList.add('hidden');
+  document.getElementById('extVisibilityDisplay').classList.remove('hidden');
+}
+function saveExternalVisibility(){
+  const selected = document.querySelector('#extVisibilityEdit .scope-btn.selected').textContent;
+  document.getElementById('extVisibilityDisplay').innerHTML =
+    selected + ' <button class="action-link" style="margin-left:6px; font-size:11px" onclick="editExternalVisibility()">修改</button>';
+  document.getElementById('extVisibilityEdit').classList.add('hidden');
+  document.getElementById('extVisibilityDisplay').classList.remove('hidden');
+}
+function openWallModal(){
+  document.getElementById('wallFormBody').classList.remove('hidden');
+  document.getElementById('wallSuccessBody').classList.add('hidden');
+  document.getElementById('wallMsgInput').value = '';
+  document.getElementById('wallAnonCheck').checked = false;
+  const upload = document.getElementById('wallImageUpload');
+  upload.textContent = '点击上传一张配图';
+  upload.dataset.attached = '';
+  document.getElementById('wallModalOverlay').classList.add('open');
+}
+function closeWallModal(){
+  document.getElementById('wallModalOverlay').classList.remove('open');
+}
+function submitWallMessage(){
+  const msg = document.getElementById('wallMsgInput').value.trim();
+  if(!msg){
+    alert('请填写留言内容');
+    return;
+  }
+  document.getElementById('wallFormBody').classList.add('hidden');
+  document.getElementById('wallSuccessBody').classList.remove('hidden');
+
+  // Push into 寄语墙管理 admin queue as 待审核 — closes the loop end-to-end
+  const list = document.querySelector('#wallView .wall-list');
+  if(list){
+    const anon = document.getElementById('wallAnonCheck').checked;
+    const displayName = anon ? '匿名员工' : '陈思思';
+    const meta = anon ? '已开启匿名 · 员工提交' : '产品部 · 员工提交';
+    const escaped = msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const hasImage = document.getElementById('wallImageUpload').dataset.attached === '1';
+    const imageHtml = hasImage ? '<div class="wall-image">📷</div>' : '';
+    const rowId = 'w-new-' + Date.now();
+    const row = document.createElement('div');
+    row.className = 'wall-row';
+    row.id = rowId;
+    row.dataset.activity = '30th';
+    row.dataset.status = 'review';
+    row.innerHTML =
+      '<div class="wall-avatar">' + (anon ? '🙈' : '👤') + '</div>'
+      + '<div class="wall-body">'
+      +   '<div class="wall-name-row"><span class="wall-name">' + displayName + '</span><span class="wall-meta">' + meta + '</span></div>'
+      +   imageHtml
+      +   '<p class="wall-quote">' + escaped + '</p>'
+      +   '<div class="wall-footer"><span class="status-badge review">待审核</span>'
+      +     '<div class="table-actions">'
+      +       '<button class="action-link" onclick="setWallStatus(\'' + rowId + '\',\'published\')">展示</button>'
+      +       '<button class="action-link danger" onclick="setWallStatus(\'' + rowId + '\',\'hidden\')">拒绝</button>'
+      +     '</div></div>'
+      + '</div>';
+    list.prepend(row);
+
+    const pendingStat = document.querySelector('#wallView .stat-row .stat-card:nth-child(1) .stat-num');
+    if(pendingStat) pendingStat.textContent = parseInt(pendingStat.textContent, 10) + 1;
+  }
+}
+showList();
+</script>
+</body>
+</html>
