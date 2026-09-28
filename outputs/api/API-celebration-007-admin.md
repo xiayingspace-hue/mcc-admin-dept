@@ -1,0 +1,117 @@
+---
+编号: API-celebration-007-admin
+对应需求: REQ-007
+状态: 草案
+---
+
+# 活动 Celebration 管理 接口清单（草案）
+
+> 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。
+
+## 枚举值总表
+
+| 枚举 | 取值 | 说明 |
+|---|---|---|
+| `category` | `milestone` \| `team_building` \| `appreciation` \| `festive` \| `other` | 见需求文档 §11 已知缺口，取值范围尚未最终确认 |
+| `cover_stage`（只读，由后端按当前时间与 `start_time` 计算，不接受前端传入） | `upcoming` \| `held` | 见需求文档 §5.2；决定前端展示预告封面还是实拍封面 |
+| `celebration_module_type` | `registration`（报名信息） \| `doodle_vote`（涂鸦展示） | 复用 `module-002-admin` 枚举总表 `module_type` 的子集 |
+
+## 获取 Celebration 列表
+
+`GET /mcc-api/aiis-admin/celebration`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `activity_id` | string | 否 | 不传即跨活动查看全部 |
+| `cover_stage` | string（枚举） | 否 | 按 `held`/`upcoming` 筛选，AC-003 |
+
+分页：见 `conventions.md`
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `id` | string | Celebration ID |
+| `activity_id` | string | 所属活动ID |
+| `activity_title` | string | 所属活动标题（列表展示用） |
+| `site` | string | Site / 地点名称 |
+| `title` | string | Celebration 标题 |
+| `category` | string（枚举） | 见枚举总表 |
+| `start_time` / `end_time` | string(ISO 8601) | |
+| `cover_stage` | string（枚举，只读） | 见枚举总表，AC-003 |
+| `cover_image_before_url` | string | 封面图·预告版 |
+| `cover_image_after_url` | string \| null | 封面图·实拍版，未上传为 `null` |
+| `registered_count` | number | 该 Celebration 下报名信息模块的报名人数，AC-005 |
+| `submission_count` | number | 该 Celebration 下涂鸦展示模块的作品数，AC-005 |
+
+## 创建 / 更新 Celebration
+
+`POST /mcc-api/aiis-admin/celebration`（创建）　`PUT /mcc-api/aiis-admin/celebration`（更新，请求体含 `id`）
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | string | 更新时必填 | 创建时不传 |
+| `activity_id` | string | 是 | AC-001 |
+| `site` | string | 是 | AC-001 |
+| `title` | string | 是 | AC-001 |
+| `category` | string（枚举） | 是 | AC-001 |
+| `start_time` / `end_time` | string(ISO 8601) | 是 | `end_time` 须晚于 `start_time`，AC-002 |
+| `cover_image_before_url` | string | 是 | AC-001 |
+| `cover_image_after_url` | string | 否 | 上传后按 §5.2 规则自动展示，AC-003 |
+| `description_html` | string | 否 | 富文本，前端只读展示时需做 XSS 净化 |
+| `gallery_image_urls` | string[] | 否 | 图片相册，数量上限见需求文档 §11 已知缺口 |
+| `highlights` | string[] | 否 | 每项对应一条 Highlights 文案，见需求文档 §11 是否需结构化的已知缺口 |
+
+**响应字段**：同「获取 Celebration 列表」单条结构。
+
+**权限**：见需求文档 §7
+**校验**：见需求文档 §8
+
+## 获取 Celebration 已挂载的模块
+
+`GET /mcc-api/aiis-admin/celebrationModule`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `celebration_id` | string | 是 | |
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `module_type` | string（枚举） | 见枚举总表 `celebration_module_type` |
+| `display_start_time` | string(ISO 8601) \| null | 开始展示时间，未填为 `null` |
+| `registration_deadline` | string(ISO 8601) \| null | 仅 `registration` 使用，报名截止时间，见 `registration-004-admin` §6 |
+| `capacity` | number \| null | 仅 `registration` 使用，名额上限，留空不限，见 `registration-004-admin` §6 |
+| `submission_deadline` | string(ISO 8601) \| null | 仅 `doodle_vote` 使用，提交截止时间 |
+| `vote_deadline` | string(ISO 8601) \| null | 仅 `doodle_vote` 使用，投票截止时间，须晚于 `submission_deadline`，AC-006 |
+
+未启用的 `module_type` 不出现在返回数组中。
+
+## 保存 Celebration 挂载的模块
+
+`PUT /mcc-api/aiis-admin/celebrationModule`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `celebration_id` | string | 是 | |
+| `modules` | array | 是 | 仅包含本次勾选启用的模块类型 |
+| `modules[].module_type` | string（枚举） | 是 | |
+| `modules[].display_start_time` | string(ISO 8601) | 否 | |
+| `modules[].registration_deadline` | string(ISO 8601) | 否，仅 `registration` | 见 `registration-004-admin` §8 |
+| `modules[].capacity` | number | 否，仅 `registration` | 见 `registration-004-admin` §8 |
+| `modules[].submission_deadline` | string(ISO 8601) | `doodle_vote` 必填 | |
+| `modules[].vote_deadline` | string(ISO 8601) | `doodle_vote` 必填 | 须晚于 `submission_deadline`，AC-006 |
+
+**响应字段**：同「获取 Celebration 已挂载的模块」，返回保存后的 `modules[]`。
+
+**权限**：见需求文档 §7（不受活动生命周期状态限制）
+**校验**：见需求文档 §8

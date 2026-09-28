@@ -6,7 +6,7 @@
 
 # 作品管理（涂鸦评选类模块） 接口清单（草案）
 
-> 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。
+> 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。**变更说明（自 REQ-007 起）**：作品归属对象从"活动模块"改为"Celebration 下挂载的涂鸦展示模块"，本清单的筛选与归属字段相应从 `activity_id`/`activity_module_id` 改为 `celebration_id`/`celebration_module_id`。
 
 ## 枚举值总表
 
@@ -23,7 +23,7 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `activity_id` | string | 否 | 不传即跨活动查看全部；AC-004 支持与 `status` 同时生效（交集） |
+| `celebration_id` | string | 否 | 不传即跨 Celebration 查看全部；AC-004 支持与 `status` 同时生效（交集） |
 | `status` | string（枚举） | 否 | 不传即全部状态 |
 
 分页：见 `conventions.md`
@@ -33,9 +33,11 @@
 | 字段 | 类型 | 说明 |
 |---|---|---|
 | `id` | string | 作品ID |
-| `activity_id` | string | 归属活动ID |
+| `celebration_id` | string | 归属 Celebration ID |
+| `celebration_site` | string | 归属 Celebration 的 Site 名称（列表展示用） |
+| `activity_id` | string | 归属活动ID（经由 Celebration 派生，只读） |
 | `activity_title` | string | 归属活动标题（列表展示用） |
-| `activity_module_id` | string | 归属的活动模块ID（涂鸦评选类型），见 `module-002-admin` §6 |
+| `celebration_module_id` | string | 归属的 CelebrationModule ID（涂鸦展示类型），见 `celebration-007-admin` §6 |
 | `image_url` | string | 作品图片 |
 | `description` | string \| null | 作品说明 |
 | `author_type` | string（枚举） \| null | |
@@ -52,7 +54,7 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `activity_module_id` | string | 是 | 须为 `module_type=doodle_vote` 的活动模块，见 `module-002-admin` §6 |
+| `celebration_module_id` | string | 是 | 须为 `module_type=doodle_vote` 的 CelebrationModule，见 `celebration-007-admin` §6 |
 | `image_url` | string | 是 | AC-001 |
 | `author_name` | string | 是 | AC-001 |
 | `description` | string | 否 | |
