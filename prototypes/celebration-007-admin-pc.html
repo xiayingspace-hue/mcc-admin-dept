@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Celebrations 管理 · 活动运营后台</title>
+<style>
+  :root{
+    --bg: #F6F5F2;
+    --sidebar: #22282A;
+    --sidebar-text: #B7BEC0;
+    --sidebar-text-active: #FFFFFF;
+    --sidebar-active-bg: #33393B;
+    --surface: #FFFFFF;
+    --border: #E4E1D9;
+    --border-strong: #D3CFC3;
+    --text-primary: #1E1E1C;
+    --text-secondary: #6B675E;
+    --text-muted: #9C978A;
+    --accent: #3B6E64;
+    --accent-tint: #E6EFEC;
+    --interactive: #B0642E;
+    --interactive-tint: #F7ECE1;
+    --content-tint: #EEEAF6;
+    --content-text: #574B8C;
+    --radius: 8px;
+    --danger: #B23A34;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text-primary); font-size:14px; line-height:1.6;
+  }
+  .shell{display:flex; min-height:100vh}
+  .sidebar{
+    width:216px; background:var(--sidebar); color:var(--sidebar-text);
+    flex-shrink:0; padding:20px 12px; display:flex; flex-direction:column;
+  }
+  .brand{display:flex; align-items:center; gap:8px; padding:4px 10px 20px; color:#fff; font-weight:600; font-size:15px}
+  .brand-mark{width:22px;height:22px;border-radius:6px;background:var(--accent);flex-shrink:0}
+  .nav-group-label{font-size:11px; color:#6E7476; padding:14px 10px 6px; letter-spacing:0.02em}
+  .nav-item{
+    display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
+    font-size:13.5px; cursor:pointer; color:var(--sidebar-text);
+  }
+  a.nav-item{text-decoration:none}
+  .nav-item:hover{background:#2A3032}
+  .nav-item.active{background:var(--sidebar-active-bg); color:var(--sidebar-text-active); font-weight:500}
+  .nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .main{flex:1; min-width:0; display:flex; flex-direction:column}
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
+  }
+  .breadcrumb{font-size:13px; color:var(--text-secondary)}
+  .breadcrumb b{color:var(--text-primary); font-weight:500}
+  .content{flex:1; padding:32px; display:flex; justify-content:center}
+  .panel{width:100%; max-width:640px}
+  .panel.wide{max-width:920px}
+
+  h1{font-size:19px; font-weight:600; margin:0 0 4px}
+  .subtitle{font-size:13px; color:var(--text-secondary); margin:0 0 28px}
+
+  .field{margin-bottom:20px}
+  .field label{display:block; font-size:13px; color:var(--text-secondary); margin-bottom:6px}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  input[type=text], input[type=number], input[type=datetime-local], select, textarea{
+    width:100%; height:36px; padding:0 12px; border:0.5px solid var(--border-strong); border-radius:var(--radius);
+    background:var(--surface); font-size:13.5px; color:var(--text-primary); font-family:inherit;
+  }
+  textarea{height:auto; padding:8px 12px; resize:vertical}
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-tint)}
+
+  .req-mark{color:var(--danger); margin-left:2px}
+
+  .upload-box{
+    border:1px dashed var(--border-strong); border-radius:var(--radius); padding:22px; text-align:center;
+    color:var(--text-muted); font-size:13px; cursor:pointer;
+  }
+
+  .module-list{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .module-row{border-bottom:0.5px solid var(--border)}
+  .module-row:last-child{border-bottom:none}
+  .module-head{display:flex; align-items:center; gap:10px; padding:14px 16px}
+  .module-name{font-size:14px; font-weight:500}
+  .badge{display:inline-block; flex-shrink:0; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:5px; margin-left:8px}
+  .badge.content{background:var(--content-tint); color:var(--content-text)}
+  .badge.interactive{background:var(--interactive-tint); color:var(--interactive)}
+  .toggle{position:relative; width:32px; height:18px; flex-shrink:0}
+  .toggle input{opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer; z-index:1}
+  .toggle .track{position:absolute; inset:0; border-radius:9px; background:var(--border-strong); transition:background .15s}
+  .toggle .thumb{position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition:left .15s}
+  .toggle input:checked + .track{background:var(--accent)}
+  .toggle input:checked ~ .thumb{left:16px}
+  .module-config{padding:0 16px 16px 16px; display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .module-config label{display:block; font-size:12px; color:var(--text-secondary); margin-bottom:4px}
+
+  .section-title{font-size:13px; font-weight:500; margin:0 0 4px}
+  .section-hint{font-size:12px; color:var(--text-muted); margin:0 0 14px}
+
+  .actions{display:flex; justify-content:space-between; margin-top:32px; padding-top:20px; border-top:0.5px solid var(--border)}
+  .actions.end{justify-content:flex-end; gap:12px}
+
+  .status-badge{font-size:12px; padding:4px 10px; border-radius:6px; font-weight:500; display:inline-block}
+  .status-badge.review{background:var(--interactive-tint); color:var(--interactive)}
+  .status-badge.approved{background:#E4F0E8; color:#2F6B45}
+  .status-badge.ended{background:var(--border); color:var(--text-muted)}
+
+  .list-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px}
+
+  .action-link{font-size:12.5px; color:var(--accent); cursor:pointer; background:none; border:none; padding:0; font-family:inherit; text-decoration:none}
+
+  .module-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  .module-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:18px; background:var(--surface)}
+  .module-card-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+  .module-card-title{font-size:14px; font-weight:500; margin-bottom:2px}
+  .module-desc{font-size:12.5px; color:var(--text-secondary); line-height:1.65; margin:0 0 12px}
+  .module-meta{display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text-muted); padding-top:10px; border-top:0.5px dashed var(--border)}
+
+  .upload-panel{border:0.5px solid var(--border-strong); border-radius:12px; padding:20px; margin-bottom:28px; background:var(--surface)}
+  .upload-panel-title{font-size:13px; font-weight:500; margin:0 0 16px}
+
+  .rte-wrap{border:0.5px solid var(--border-strong); border-radius:var(--radius); overflow:hidden}
+  .rte-toolbar{display:flex; gap:2px; padding:6px; background:var(--bg); border-bottom:0.5px solid var(--border)}
+  .rte-btn{
+    width:28px; height:28px; border:none; background:none; border-radius:6px; cursor:pointer;
+    font-size:13px; color:var(--text-secondary); display:flex; align-items:center; justify-content:center;
+  }
+  .rte-btn:hover{background:var(--surface); color:var(--text-primary)}
+  .rte-btn.b{font-weight:700}
+  .rte-btn.i{font-style:italic}
+  .rte-btn.u{text-decoration:underline}
+  .rte-sep{width:1px; background:var(--border-strong); margin:4px 4px}
+  .rte-editable{
+    min-height:88px; padding:10px 12px; font-size:13.5px; color:var(--text-primary); line-height:1.6;
+    outline:none;
+  }
+  .rte-editable:empty::before{content:attr(data-placeholder); color:var(--text-muted)}
+  .rte-editable ul{margin:6px 0; padding-left:20px}
+
+  button.btn{
+    height:36px; padding:0 18px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
+    background:var(--surface); font-size:13.5px; color:var(--text-primary); cursor:pointer;
+  }
+  button.btn:hover{background:var(--bg)}
+  button.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+  button.btn.primary:hover{background:#325D54}
+
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="sidebar">
+    <div class="brand"><div class="brand-mark"></div>活动运营后台</div>
+    <div class="nav-group-label">工作台</div>
+    <a class="nav-item" href="activity-001-admin-pc.html"><span class="nav-icon">&#9679;</span>活动管理</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#modules"><span class="nav-icon">&#9679;</span>模块库</a>
+    <div class="nav-item active"><span class="nav-icon">&#9679;</span>Celebrations 管理</div>
+    <a class="nav-item" href="activity-001-admin-pc.html#submissions"><span class="nav-icon">&#9679;</span>作品管理</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#registrations"><span class="nav-icon">&#9679;</span>报名管理</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#wall"><span class="nav-icon">&#9679;</span>寄语墙管理</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#stats"><span class="nav-icon">&#9679;</span>数据统计</a>
+    <div class="nav-group-label">用户端预览</div>
+    <a class="nav-item" href="activity-001-admin-pc.html#preview"><span class="nav-icon">&#9679;</span>活动详情页</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#works"><span class="nav-icon">&#9679;</span>作品展示页面</a>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb">活动管理 / <b>Celebrations 管理</b></div>
+    </div>
+
+    <div class="content">
+      <div class="panel wide">
+
+        <div class="list-header">
+          <div>
+            <h1 style="margin:0 0 4px">Celebrations 管理</h1>
+            <p class="subtitle" style="margin:0">一个活动可在多个 site 分别举办 celebration，每个 celebration 拥有独立的封面、文字描述、图片相册、报名与涂鸦展示，无需单独审批</p>
+          </div>
+          <button class="btn primary" onclick="toggleCelebrationForm()">+ 新建 Celebration</button>
+        </div>
+
+        <div class="upload-panel hidden" id="celebrationFormPanel">
+          <p class="upload-panel-title">新建 / 编辑 Celebration</p>
+          <div class="row2">
+            <div class="field">
+              <label>所属活动<span class="req-mark">*</span></label>
+              <select id="celFieldActivity">
+                <option>公司30周年庆典</option>
+                <option>Q3部门团建</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Site / 地点名称<span class="req-mark">*</span></label>
+              <input type="text" id="celFieldSite" placeholder="例如：新加坡总部站">
+            </div>
+          </div>
+          <div class="field">
+            <label>Celebration 标题<span class="req-mark">*</span></label>
+            <input type="text" id="celFieldTitle" placeholder="例如：From Foundation to Future: A Journey Through Time">
+          </div>
+          <div class="field">
+            <label>Category 类型<span class="req-mark">*</span></label>
+            <select id="celFieldCategory">
+              <option>Milestone</option>
+              <option>Team Building</option>
+              <option>Appreciation</option>
+              <option>Festive</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="row2">
+            <div class="field"><label>开始时间<span class="req-mark">*</span></label><input type="datetime-local"></div>
+            <div class="field"><label>结束时间<span class="req-mark">*</span></label><input type="datetime-local"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>封面图 · 预告版<span class="req-mark">*</span></label>
+              <div class="upload-box">开始时间之前展示，建议使用主题物料图</div>
+            </div>
+            <div class="field">
+              <label>封面图 · 实拍版（选填）</label>
+              <div class="upload-box">开始时间到达后自动切换展示；未上传前继续展示预告版</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>文字描述</label>
+            <div class="rte-wrap">
+              <div class="rte-toolbar">
+                <button type="button" class="rte-btn b" onclick="rteCmd('bold')" title="加粗">B</button>
+                <button type="button" class="rte-btn i" onclick="rteCmd('italic')" title="斜体">I</button>
+                <button type="button" class="rte-btn u" onclick="rteCmd('underline')" title="下划线">U</button>
+                <span class="rte-sep"></span>
+                <button type="button" class="rte-btn" onclick="rteCmd('insertUnorderedList')" title="无序列表">≡</button>
+                <button type="button" class="rte-btn" onclick="rteCmd('removeFormat')" title="清除格式">✕</button>
+              </div>
+              <div class="rte-editable" contenteditable="true" data-placeholder="介绍这场 celebration 的背景"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>图片相册（选填，支持多张，与封面图分开维护）</label>
+            <div class="upload-box">点击或拖拽上传现场照片</div>
+          </div>
+          <div class="field">
+            <label>Highlights 亮点（选填，每行一条，展示在用户端 Event Details 卡片）</label>
+            <textarea rows="4" id="celFieldHighlights" placeholder="创始团队致辞 · Founding member address&#10;三十周年回顾影片 · 30-year tribute video&#10;长期服务奖表彰 · Long-service awards"></textarea>
+          </div>
+
+          <p class="section-title" style="margin-top:8px">该 Celebration 启用的模块</p>
+          <p class="section-hint">报名与涂鸦展示只在这里配置，不再出现在活动本身的模块配置步骤中</p>
+          <div class="module-list">
+            <div class="module-row">
+              <div class="module-head">
+                <div style="flex:1"><span class="module-name">报名信息</span><span class="badge interactive">互动型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>报名截止时间（选填）</label><input type="datetime-local"></div>
+                <div><label>名额上限（选填）</label><input type="number" placeholder="留空不限"></div>
+              </div>
+            </div>
+            <div class="module-row">
+              <div class="module-head">
+                <div style="flex:1"><span class="module-name">涂鸦展示</span><span class="badge interactive">互动型</span></div>
+                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+              </div>
+              <div class="module-config">
+                <div><label>提交截止时间</label><input type="datetime-local"></div>
+                <div><label>投票截止时间</label><input type="datetime-local"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions end" style="margin-top:20px">
+            <button class="btn" onclick="toggleCelebrationForm()">取消</button>
+            <button class="btn primary" onclick="alert('原型演示：保存 Celebration，无需审批立即生效')">保存 Celebration</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:16px; margin-bottom:20px">
+          <div class="field" style="max-width:280px; margin-bottom:0">
+            <label>按活动筛选</label>
+            <select id="celebrationActivityFilter" style="width:100%" onchange="filterCelebrations()">
+              <option value="all">全部活动</option>
+              <option value="30th">公司30周年庆典</option>
+              <option value="q3">Q3部门团建</option>
+            </select>
+          </div>
+          <div class="field" style="max-width:200px; margin-bottom:0">
+            <label>按状态筛选</label>
+            <select id="celebrationStatusFilter" style="width:100%" onchange="filterCelebrations()">
+              <option value="all">全部状态</option>
+              <option value="held">已举办</option>
+              <option value="upcoming">即将开始</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="module-grid" id="celebrationGrid">
+
+          <div class="module-card" data-activity="30th" data-status="held" id="cel-sg30">
+            <div class="module-card-head">
+              <div class="module-card-title">新加坡总部站</div>
+              <span class="status-badge approved">已举办 · 实拍封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
+            <div class="module-meta">
+              <span>报名 62 · 涂鸦作品 18</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#sg30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="30th" data-status="held" id="cel-bj30">
+            <div class="module-card-head">
+              <div class="module-card-title">北京分公司站</div>
+              <span class="status-badge approved">已举办 · 实拍封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
+            <div class="module-meta">
+              <span>报名 41 · 涂鸦作品 9</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#bj30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="30th" data-status="upcoming" id="cel-sh30">
+            <div class="module-card-head">
+              <div class="module-card-title">上海分公司站</div>
+              <span class="status-badge review">即将开始 · 预告封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-12-05 14:00 – 17:00</p>
+            <div class="module-meta">
+              <span>报名 0 · 涂鸦作品 0</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#sh30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="q3" data-status="held" id="cel-q3camp">
+            <div class="module-card-head">
+              <div class="module-card-title">Q3团建营地站</div>
+              <span class="status-badge approved">已举办 · 实拍封面</span>
+            </div>
+            <p class="module-desc">Q3部门团建<br>2026-08-02 09:00 – 18:00</p>
+            <div class="module-meta">
+              <span>报名 34 · 涂鸦作品 6</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#q3camp" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function rteCmd(cmd){
+  document.execCommand(cmd, false, null);
+}
+function toggleCelebrationForm(){
+  document.getElementById('celebrationFormPanel').classList.toggle('hidden');
+}
+function filterCelebrations(){
+  const activityVal = document.getElementById('celebrationActivityFilter').value;
+  const statusVal = document.getElementById('celebrationStatusFilter').value;
+  document.querySelectorAll('#celebrationGrid .module-card').forEach(card=>{
+    const activityMatch = (activityVal === 'all') || (card.dataset.activity === activityVal);
+    const statusMatch = (statusVal === 'all') || (card.dataset.status === statusVal);
+    card.style.display = (activityMatch && statusMatch) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
