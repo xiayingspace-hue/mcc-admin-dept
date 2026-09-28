@@ -46,6 +46,11 @@
   .nav-item:hover{background:#2A3032}
   .nav-item.active{background:var(--sidebar-active-bg); color:var(--sidebar-text-active); font-weight:500}
   .nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .nav-badge{
+    margin-left:auto; min-width:18px; height:18px; padding:0 5px; border-radius:9px;
+    background:var(--danger); color:#fff; font-size:10px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
   .main{flex:1; min-width:0; display:flex; flex-direction:column}
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
@@ -336,7 +341,7 @@
 
   .u-modal-overlay{display:none; position:absolute; inset:0; background:rgba(22,35,42,.55); align-items:center; justify-content:center; z-index:30; padding:20px}
   .u-modal-overlay.open{display:flex}
-  .u-modal{background:#fff; border-radius:14px; width:100%; max-width:360px; padding:24px; color:var(--u-text); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+  .u-modal{background:#fff; border-radius:14px; width:100%; max-width:360px; max-height:100%; overflow-y:auto; padding:24px; color:var(--u-text); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
   .u-modal h3{font-size:16px; margin:0 0 4px}
   .u-modal .u-modal-sub{font-size:12px; color:var(--u-text-muted); margin:0 0 18px}
   .u-modal .u-field{margin-bottom:13px}
@@ -382,9 +387,11 @@
     <div class="nav-group-label">工作台</div>
     <div class="nav-item active" id="navActivities" onclick="showList()"><span class="nav-icon">&#9679;</span>活动管理</div>
     <div class="nav-item" id="navModules" onclick="showModuleLibrary()"><span class="nav-icon">&#9679;</span>模块库</div>
+    <a class="nav-item" id="navCelebrations" href="celebration-007-admin-pc.html" style="text-decoration:none"><span class="nav-icon">&#9679;</span>Celebrations 管理</a>
     <div class="nav-item" id="navSubmissions" onclick="showSubmissions()"><span class="nav-icon">&#9679;</span>作品管理</div>
     <div class="nav-item" id="navRegistrations" onclick="showRegistrations()"><span class="nav-icon">&#9679;</span>报名管理</div>
     <div class="nav-item" id="navWall" onclick="showWall()"><span class="nav-icon">&#9679;</span>寄语墙管理</div>
+    <div class="nav-item" id="navSponsors" onclick="showSponsors()"><span class="nav-icon">&#9679;</span>赞助商管理<span class="nav-badge hidden" id="navSponsorsBadge">0</span></div>
     <div class="nav-item" id="navStats" onclick="showStats()"><span class="nav-icon">&#9679;</span>数据统计</div>
     <div class="nav-group-label">用户端预览</div>
     <div class="nav-item" id="navUserPreview" onclick="showUserPreview()"><span class="nav-icon">&#9679;</span>活动详情页</div>
@@ -635,7 +642,7 @@
         <!-- Step 2 -->
         <div id="panel2" class="hidden">
           <h1>配置活动模块</h1>
-          <p class="subtitle">选择这个活动要启用的模块，拖动排序调整页面展示顺序</p>
+          <p class="subtitle">选择这个活动要启用的模块，拖动排序调整页面展示顺序；报名信息、涂鸦展示已移至 Celebration 层级单独配置，见「Celebrations 管理」</p>
 
           <div class="module-list">
 
@@ -675,19 +682,6 @@
             <div class="module-row">
               <div class="module-head">
                 <span class="grip">&#8942;&#8942;</span>
-                <div style="flex:1"><span class="module-name">涂鸦评选</span><span class="badge interactive">互动型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
-              </div>
-              <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-                <div><label>提交截止时间</label><input type="datetime-local"></div>
-                <div><label>投票截止时间</label><input type="datetime-local"></div>
-              </div>
-            </div>
-
-            <div class="module-row">
-              <div class="module-head">
-                <span class="grip">&#8942;&#8942;</span>
                 <div style="flex:1"><span class="module-name">寄语墙</span><span class="badge interactive">互动型</span></div>
                 <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
               </div>
@@ -696,17 +690,6 @@
                 <div><label>展示样式</label><select><option>网格</option><option>轮播</option></select></div>
                 <div><label>允许外部人士留言</label><select><option>是</option><option>否</option></select></div>
                 <div><label>留言截止时间</label><input type="datetime-local"></div>
-              </div>
-            </div>
-
-            <div class="module-row">
-              <div class="module-head">
-                <span class="grip">&#8942;&#8942;</span>
-                <div style="flex:1"><span class="module-name">报名信息</span><span class="badge interactive">互动型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
-              </div>
-              <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
               </div>
             </div>
 
@@ -911,6 +894,7 @@
             <div class="module-card" onclick="toggleUsage('u1')">
               <div class="module-card-head"><div class="module-card-title">CEO 致辞</div><span class="badge content">内容型</span></div>
               <p class="module-desc">活动首页展示领导致辞文案与头像，通常放在页面顶部，由行政直接编辑发布。</p>
+              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -927,6 +911,7 @@
             <div class="module-card" onclick="toggleUsage('u2')">
               <div class="module-card-head"><div class="module-card-title">历史时间轴</div><span class="badge content">内容型</span></div>
               <p class="module-desc">按时间顺序展示公司发展里程碑，每条支持配图与描述，适合周年庆类活动。</p>
+              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -942,6 +927,7 @@
             <div class="module-card" onclick="toggleUsage('u3')">
               <div class="module-card-head"><div class="module-card-title">周年博客列表</div><span class="badge content">内容型</span></div>
               <p class="module-desc">展示与活动相关的长文章，如员工专访、活动纪实，行政统一编辑发布。</p>
+              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -954,8 +940,9 @@
             </div>
 
             <div class="module-card" onclick="toggleUsage('u4')">
-              <div class="module-card-head"><div class="module-card-title">涂鸦评选</div><span class="badge interactive">互动型</span></div>
-              <p class="module-desc">行政上传员工作品，全员投票评选优胜作品，分"提交""投票"两个阶段依次开放。</p>
+              <div class="module-card-head"><div class="module-card-title">涂鸦展示（原"涂鸦评选"）</div><span class="badge interactive">互动型</span></div>
+              <p class="module-desc">行政上传员工作品，全员投票评选优胜作品，分"提交""投票"两个阶段依次开放；现按 Celebration 单独配置与统计。</p>
+              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -972,6 +959,7 @@
             <div class="module-card" onclick="toggleUsage('u5')">
               <div class="module-card-head"><div class="module-card-title">寄语墙</div><span class="badge interactive">互动型</span></div>
               <p class="module-desc">收集员工及外部合作伙伴的一句话祝福，支持行政代外部人士录入内容。</p>
+              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -989,7 +977,8 @@
 
             <div class="module-card" onclick="toggleUsage('u6')">
               <div class="module-card-head"><div class="module-card-title">报名信息</div><span class="badge interactive">互动型</span></div>
-              <p class="module-desc">员工在线报名参加活动，自动统计报名人数并支持现场扫码签到。</p>
+              <p class="module-desc">员工在线报名参加活动，自动统计报名人数并支持现场扫码签到；现按 Celebration 单独配置与统计。</p>
+              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -997,9 +986,37 @@
                 <div class="attr-row"><span class="attr-name">名额上限</span><span class="attr-type">数字（留空不限）</span></div>
                 <div class="attr-row"><span class="attr-name">需要签到</span><span class="attr-type">开关</span></div>
               </div>
-              <div class="module-meta"><span>已被 6 个活动使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-meta"><span>已被 6 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
               <div class="module-usage" id="u6">
-                <div>· 公司30周年庆典</div><div>· 2026年会</div><div>· Q3部门团建</div><div>· 新人入职欢迎会</div><div>· 中秋福利活动</div><div>· 五周年庆典</div>
+                <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div><div>· 2026年会</div><div>· Q3部门团建</div><div>· 新人入职欢迎会</div><div>· 中秋福利活动</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u7')">
+              <div class="module-card-head"><div class="module-card-title">文字描述</div><span class="badge content">内容型</span></div>
+              <p class="module-desc">富文本内容块，用于介绍某个 Celebration 的背景、亮点或流程说明。</p>
+              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">正文</span><span class="attr-type">富文本</span></div>
+              </div>
+              <div class="module-meta"><span>已被 3 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u7">
+                <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div><div>· Q3部门团建</div>
+              </div>
+            </div>
+
+            <div class="module-card" onclick="toggleUsage('u8')">
+              <div class="module-card-head"><div class="module-card-title">图片展示</div><span class="badge content">内容型</span></div>
+              <p class="module-desc">Celebration 现场照片相册，与封面图、涂鸦展示分开维护，不涉及投票。</p>
+              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
+              <div class="module-attrs">
+                <div class="module-attrs-label">可配置属性</div>
+                <div class="attr-row"><span class="attr-name">相册图片</span><span class="attr-type">图片（多张）</span></div>
+              </div>
+              <div class="module-meta"><span>已被 2 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
+              <div class="module-usage" id="u8">
+                <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div>
               </div>
             </div>
 
@@ -1011,7 +1028,7 @@
           <div class="list-header">
             <div>
               <h1 style="margin:0 0 4px">作品管理</h1>
-              <p class="subtitle" style="margin:0">行政统一上传作品，展示在活动页面供全员投票；员工端不提供自主上传入口</p>
+              <p class="subtitle" style="margin:0">行政统一上传作品，展示在 Celebration 页面供全员投票；员工端不提供自主上传入口</p>
             </div>
           </div>
 
@@ -1019,10 +1036,11 @@
             <p class="upload-panel-title">上传作品</p>
             <div class="row2">
               <div class="field">
-                <label>所属活动 · 模块</label>
+                <label>所属 Celebration</label>
                 <select style="width:100%">
-                  <option>公司30周年庆典 · 涂鸦评选</option>
-                  <option>Q3部门团建 · 涂鸦评选</option>
+                  <option>公司30周年庆典 · 新加坡总部站</option>
+                  <option>公司30周年庆典 · 北京分公司站</option>
+                  <option>Q3部门团建 · Q3团建营地站</option>
                 </select>
               </div>
               <div class="field">
@@ -1055,11 +1073,12 @@
 
           <div style="display:flex; gap:16px; margin-bottom:16px">
             <div class="field" style="max-width:280px; margin-bottom:0">
-              <label>按活动筛选</label>
+              <label>按 Celebration 筛选</label>
               <select id="submissionActivityFilter" style="width:100%" onchange="filterSubmissions()">
-                <option value="all">全部活动</option>
-                <option value="30th">公司30周年庆典 · 涂鸦评选</option>
-                <option value="q3">Q3部门团建 · 涂鸦评选</option>
+                <option value="all">全部 Celebration</option>
+                <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
+                <option value="bj30">公司30周年庆典 · 北京分公司站</option>
+                <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
               </select>
             </div>
             <div class="field" style="max-width:200px; margin-bottom:0">
@@ -1075,7 +1094,7 @@
 
           <div class="submission-grid" id="submissionGrid">
 
-            <div class="submission-card" id="sub1" data-activity="30th" data-status="draft">
+            <div class="submission-card" id="sub1" data-activity="sg30" data-status="draft">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">陈思思</div>
@@ -1090,7 +1109,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub2" data-activity="30th" data-status="published">
+            <div class="submission-card" id="sub2" data-activity="bj30" data-status="published">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">王芳</div>
@@ -1104,7 +1123,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub3" data-activity="q3" data-status="published">
+            <div class="submission-card" id="sub3" data-activity="q3camp" data-status="published">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">李强</div>
@@ -1119,7 +1138,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub4" data-activity="30th" data-status="published">
+            <div class="submission-card" id="sub4" data-activity="sg30" data-status="published">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">张伟</div>
@@ -1133,7 +1152,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub5" data-activity="q3" data-status="hidden">
+            <div class="submission-card" id="sub5" data-activity="q3camp" data-status="hidden">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">周敏</div>
@@ -1149,7 +1168,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub6" data-activity="30th" data-status="draft">
+            <div class="submission-card" id="sub6" data-activity="bj30" data-status="draft">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">田中一郎</div>
@@ -1172,13 +1191,21 @@
           <div class="list-header">
             <div>
               <h1 style="margin:0 0 4px">报名管理</h1>
-              <p class="subtitle" style="margin:0">员工在活动页面自主报名，此处查看名单并管理签到</p>
+              <p class="subtitle" style="margin:0">员工在 Celebration 页面自主报名，此处查看名单并管理签到；报名按 Celebration 独立统计</p>
             </div>
             <button class="btn" onclick="toggleManualReg()">+ 手动添加</button>
           </div>
 
           <div class="upload-panel hidden" id="manualRegPanel">
             <p class="upload-panel-title">手动添加报名</p>
+            <div class="field">
+              <label>所属 Celebration</label>
+              <select id="manualRegCelebration" style="width:100%">
+                <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
+                <option value="bj30">公司30周年庆典 · 北京分公司站</option>
+                <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
+              </select>
+            </div>
             <div class="row2">
               <div class="field">
                 <label>类型</label>
@@ -1197,10 +1224,12 @@
           </div>
 
           <div class="field" style="max-width:340px; margin-bottom:20px">
-            <label>所属活动</label>
-            <select style="width:100%">
-              <option>公司30周年庆典</option>
-              <option>2026年会</option>
+            <label>按 Celebration 筛选</label>
+            <select id="registrationCelFilter" style="width:100%" onchange="filterRegistrations()">
+              <option value="all">全部 Celebration</option>
+              <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
+              <option value="bj30">公司30周年庆典 · 北京分公司站</option>
+              <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
             </select>
           </div>
 
@@ -1213,12 +1242,13 @@
           <table class="activity-table">
             <thead>
               <tr>
-                <th>姓名</th><th>部门 / 类型</th><th>报名时间</th><th>签到状态</th><th>操作</th>
+                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>报名时间</th><th>签到状态</th><th>操作</th>
               </tr>
             </thead>
             <tbody id="regTableBody">
-              <tr>
+              <tr data-celebration="sg30">
                 <td class="title-cell">陈思思</td>
+                <td class="muted-cell">新加坡总部站</td>
                 <td>产品部</td>
                 <td>2026-09-10 09:20</td>
                 <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
@@ -1229,8 +1259,9 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr data-celebration="sg30">
                 <td class="title-cell">王芳</td>
+                <td class="muted-cell">新加坡总部站</td>
                 <td>行政部</td>
                 <td>2026-09-10 10:05</td>
                 <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
@@ -1241,8 +1272,9 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr data-celebration="bj30">
                 <td class="title-cell">李强</td>
+                <td class="muted-cell">北京分公司站</td>
                 <td>工程部</td>
                 <td>2026-09-11 14:40</td>
                 <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
@@ -1253,8 +1285,9 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr data-celebration="bj30">
                 <td class="title-cell">田中一郎</td>
+                <td class="muted-cell">北京分公司站</td>
                 <td>合作伙伴 · 外部</td>
                 <td>2026-09-12 16:00</td>
                 <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
@@ -1454,6 +1487,63 @@
           </div>
         </div>
 
+        <!-- Sponsor management view -->
+        <div id="sponsorsView" class="hidden">
+          <div class="list-header">
+            <div>
+              <h1 style="margin:0 0 4px">赞助商管理</h1>
+              <p class="subtitle" style="margin:0">用户端「Become a Sponsor」表单提交的赞助意向，需在 2 个工作日内跟进联系</p>
+            </div>
+          </div>
+
+          <div class="field" style="max-width:280px; margin-bottom:20px">
+            <label>按活动筛选</label>
+            <select id="sponsorActivityFilter" style="width:100%" onchange="filterSponsors()">
+              <option value="all">全部活动</option>
+              <option value="30th">公司30周年庆典</option>
+              <option value="annual">2026年会</option>
+            </select>
+          </div>
+
+          <table class="activity-table" id="sponsorTable">
+            <thead>
+              <tr>
+                <th>公司名称</th><th>联系人 / 职位</th><th>联系方式</th><th>意向等级</th><th>留言</th><th>提交时间</th><th>状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="sponsorTableBody">
+              <tr data-activity="30th">
+                <td class="title-cell">星辰科技有限公司</td>
+                <td>林伟 · 市场总监</td>
+                <td>lin.wei@stellar-tech.com<br>+65 9123 4567</td>
+                <td>Gold</td>
+                <td class="muted-cell">希望能在现场设立品牌展位</td>
+                <td>2026-09-20 11:15</td>
+                <td><span class="status-badge draft" id="sponsorstatus-s1">待联系</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSponsorStatus('s1','done')">标记已联系</button>
+                  </div>
+                </td>
+              </tr>
+              <tr data-activity="30th">
+                <td class="title-cell">海纳物流</td>
+                <td>陈嘉怡 · 总经理</td>
+                <td>chenjy@hainacorp.sg<br>+65 8234 1290</td>
+                <td>Silver</td>
+                <td class="muted-cell">—</td>
+                <td>2026-09-18 09:40</td>
+                <td><span class="status-badge approved" id="sponsorstatus-s2">已联系</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link muted" onclick="setSponsorStatus('s2','pending')">标记待联系</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Data statistics dashboard -->
         <div id="statsView" class="hidden">
           <div class="list-header">
@@ -1573,6 +1663,39 @@
               </div>
 
               <div class="u-section">
+                <p class="u-section-title">Celebrations</p>
+                <p style="text-align:center; margin:-14px 0 22px">
+                  <button onclick="toggleCelebrationDemo()" style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px">演示：切换「上海分公司站」封面的开始前 / 开始后状态</button>
+                </p>
+                <div class="u-vote-grid" style="grid-template-columns:repeat(3,1fr)">
+                  <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sg30'">
+                    <div class="u-vote-thumb">📷</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">2026-08-11</div>
+                      <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">新加坡总部站</div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                    </div>
+                  </div>
+                  <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#bj30'">
+                    <div class="u-vote-thumb">📷</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">2026-08-11</div>
+                      <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">北京分公司站</div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                    </div>
+                  </div>
+                  <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sh30'">
+                    <div class="u-vote-thumb" id="celCoverSH" style="font-size:12.5px; font-weight:600">⏳ Coming Soon</div>
+                    <div class="u-vote-info">
+                      <div class="u-vote-author">2026-12-05</div>
+                      <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">上海分公司站</div>
+                      <div class="u-vote-footer"><span class="u-vote-count" id="celStatusSH">即将开始</span><span class="u-vote-btn">View More ›</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="u-section alt">
                 <div style="display:flex; align-items:center; justify-content:space-between; max-width:640px; margin:0 auto 10px">
                   <p class="u-section-title" style="margin:0; text-align:left">寄语墙</p>
                   <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
@@ -1599,47 +1722,12 @@
                 </div>
               </div>
 
-              <div class="u-cta">
-                <h3>期待与你相聚</h3>
-                <p>活动名额有限，报名后将收到入场提醒</p>
-                <button class="u-cta-btn" id="heroCtaBtn" onclick="openRegisterModal()">立即报名</button>
+              <div class="u-cta" style="background:var(--u-ivory); color:var(--u-text)">
+                <h3 style="color:var(--u-text)">Become a Sponsor</h3>
+                <p style="color:var(--u-text-muted)">Together, We Build the Next 30 Years · 携手共建下一个三十年</p>
+                <button class="u-cta-btn" onclick="openSponsorModal()">Become a Sponsor</button>
               </div>
 
-            </div>
-
-            <div class="u-modal-overlay" id="regModalOverlay">
-              <div class="u-modal">
-                <div id="regFormBody">
-                  <h3>报名参加活动</h3>
-                  <p class="u-modal-sub">公司30周年庆典 · 2026-11-20 14:00</p>
-                  <div class="u-field">
-                    <label>姓名</label>
-                    <input type="text" value="陈思思" disabled>
-                  </div>
-                  <div class="u-field">
-                    <label>部门</label>
-                    <input type="text" value="产品部" disabled>
-                  </div>
-                  <div class="u-field">
-                    <label>联系电话</label>
-                    <input type="text" id="regPhone" placeholder="用于活动当天联系">
-                  </div>
-                  <div class="u-field">
-                    <label>备注（选填）</label>
-                    <textarea rows="2" placeholder="如有特殊饮食需求等可备注"></textarea>
-                  </div>
-                  <div class="u-modal-actions">
-                    <button class="u-modal-cancel" onclick="closeRegisterModal()">取消</button>
-                    <button class="u-modal-submit" onclick="submitRegistration()">确认报名</button>
-                  </div>
-                </div>
-                <div id="regSuccessBody" class="u-modal-success hidden">
-                  <div class="u-modal-success-icon">✓</div>
-                  <h3>报名成功</h3>
-                  <p>活动开始前会通过企业微信提醒你</p>
-                  <button class="u-modal-submit" onclick="closeRegisterModal()">好的</button>
-                </div>
-              </div>
             </div>
 
             <div class="u-modal-overlay" id="wallModalOverlay">
@@ -1682,6 +1770,56 @@
                 </div>
               </div>
             </div>
+
+            <div class="u-modal-overlay" id="sponsorModalOverlay">
+              <div class="u-modal" style="max-width:420px">
+                <div id="sponsorFormBody">
+                  <h3 style="margin-bottom:2px">Become a Sponsor</h3>
+                  <p class="u-modal-sub" style="margin-bottom:2px">成为赞助商 —— 携手共建下一个三十年</p>
+                  <p class="u-modal-sub" style="margin-bottom:14px">Together, We Build the Next 30 Years</p>
+                  <p style="font-size:12px; color:var(--u-text); line-height:1.7; margin:0 0 4px">Join us in celebrating 30 years of building Singapore's skyline.</p>
+                  <p style="font-size:12px; color:var(--u-text-muted); line-height:1.7; margin:0 0 14px">与我们一同庆祝三十载，共筑新加坡城市天际线。</p>
+                  <p style="font-size:12px; color:var(--u-text); line-height:1.7; margin:0 0 16px">We'd love to have you join us on this milestone journey. Fill in your details below and we'll be in touch soon.<br>诚挚邀请您加入这段里程碑之旅。请填写下方信息，我们将尽快与您联系。</p>
+
+                  <div class="u-field"><label>Company Name 公司名称 *</label><input type="text" id="sponsorCompany"></div>
+                  <div class="u-field"><label>Contact Person 联系人 *</label><input type="text" id="sponsorContact"></div>
+                  <div class="u-field"><label>Designation 职位 *</label><input type="text" id="sponsorTitle"></div>
+                  <div class="u-field"><label>Email 邮箱 *</label><input type="text" id="sponsorEmail"></div>
+                  <div class="u-field"><label>Phone 电话 *</label><input type="text" id="sponsorPhone"></div>
+                  <div class="u-field">
+                    <label>Preferred Sponsorship Tier 意向赞助等级（选填）</label>
+                    <select id="sponsorTier">
+                      <option value="">请选择</option>
+                      <option>Silver</option>
+                      <option>Gold</option>
+                      <option>Platinum</option>
+                      <option>Custom</option>
+                    </select>
+                  </div>
+                  <div class="u-field"><label>Message / Special Requests 留言 / 特殊需求（选填）</label><textarea rows="2" id="sponsorMessage"></textarea></div>
+
+                  <p style="font-size:11.5px; color:var(--u-text-muted); line-height:1.7; margin:14px 0 18px; padding-top:12px; border-top:0.5px solid var(--u-gold-tint)">
+                    For enquiries, please contact / 如有疑问，请联系：<br>
+                    📧 admincorpculture@mccsingapore.com.sg<br>
+                    📞 +65 6766 6883
+                  </p>
+
+                  <div class="u-modal-actions">
+                    <button class="u-modal-cancel" onclick="closeSponsorModal()">取消</button>
+                    <button class="u-modal-submit" onclick="submitSponsorForm()">提交</button>
+                  </div>
+                </div>
+                <div id="sponsorSuccessBody" class="u-modal-success hidden">
+                  <div class="u-modal-success-icon">✓</div>
+                  <h3>Thank you for your support!</h3>
+                  <p style="margin-bottom:4px">Our team will reach out within 2 working days.<br>感谢您的支持，我们的团队将在 2 个工作日内与您联系。</p>
+                  <p style="font-size:11.5px; color:var(--u-text-muted); margin-bottom:18px">
+                    For urgent matters, please contact / 如需紧急协助，请联系：<br>📧 admincorpculture@mccsingapore.com.sg
+                  </p>
+                  <button class="u-modal-submit" onclick="closeSponsorModal()">好的</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1690,11 +1828,12 @@
           <div class="list-header">
             <div>
               <h1 style="margin:0 0 4px">作品展示页面（用户端预览）</h1>
-              <p class="subtitle" style="margin:0">员工查看行政上传的作品并投票，仅展示状态为「已发布」的作品</p>
+              <p class="subtitle" style="margin:0">员工查看行政上传的作品并投票，仅展示状态为「已发布」的作品；按 Celebration 独立展示</p>
             </div>
-            <select style="width:220px">
-              <option>公司30周年庆典 · 涂鸦评选</option>
-              <option>Q3部门团建 · 涂鸦评选</option>
+            <select style="width:260px">
+              <option>公司30周年庆典 · 新加坡总部站</option>
+              <option>公司30周年庆典 · 北京分公司站</option>
+              <option>Q3部门团建 · Q3团建营地站</option>
             </select>
           </div>
 
@@ -1786,6 +1925,7 @@
           </div>
         </div>
 
+        <!-- User-facing preview: single celebration detail -->
       </div>
     </div>
   </div>
@@ -1861,7 +2001,7 @@ function submitApproval(){
   goStep(4);
 }
 function showList(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='listView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1869,7 +2009,7 @@ function showList(){
   setActiveNav('navActivities');
 }
 function showEditor(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='editorView');
   });
   document.getElementById('panel').classList.remove('wide');
@@ -1877,7 +2017,7 @@ function showEditor(){
   goStep(1);
 }
 function viewActivity(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='editorView');
   });
   document.getElementById('panel').classList.remove('wide');
@@ -1886,7 +2026,7 @@ function viewActivity(){
   setApprovalMode('initiator');
 }
 function viewApproval(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='editorView');
   });
   document.getElementById('panel').classList.remove('wide');
@@ -1950,7 +2090,7 @@ function rejectCurrentStep(){
   updateTodoBadge(-1);
 }
 function showModuleLibrary(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='moduleLibraryView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1958,7 +2098,7 @@ function showModuleLibrary(){
   setActiveNav('navModules');
 }
 function showSubmissions(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='submissionsView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1966,7 +2106,7 @@ function showSubmissions(){
   setActiveNav('navSubmissions');
 }
 function showRegistrations(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='registrationsView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1974,7 +2114,7 @@ function showRegistrations(){
   setActiveNav('navRegistrations');
 }
 function showWall(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='wallView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1982,7 +2122,7 @@ function showWall(){
   setActiveNav('navWall');
 }
 function showStats(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='statsView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -1990,14 +2130,14 @@ function showStats(){
   setActiveNav('navStats');
 }
 function showUserPreview(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='userPreviewView');
   });
   document.getElementById('panel').classList.add('wide');
   document.getElementById('crumb').textContent = '活动详情页（用户端预览）';
   setActiveNav('navUserPreview');
 }function showUserWorks(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='userWorksView');
   });
   document.getElementById('panel').classList.add('wide');
@@ -2005,9 +2145,61 @@ function showUserPreview(){
   setActiveNav('navUserWorks');
 }
 function setActiveNav(activeId){
-  ['navActivities','navModules','navSubmissions','navRegistrations','navWall','navStats','navUserPreview','navUserWorks'].forEach(id=>{
+  ['navActivities','navModules','navSubmissions','navRegistrations','navWall','navSponsors','navStats','navUserPreview','navUserWorks'].forEach(id=>{
     document.getElementById(id).classList.toggle('active', id===activeId);
   });
+}
+function showSponsors(){
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='sponsorsView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  document.getElementById('crumb').textContent = '赞助商管理';
+  setActiveNav('navSponsors');
+}
+function filterSponsors(){
+  const val = document.getElementById('sponsorActivityFilter').value;
+  document.querySelectorAll('#sponsorTableBody tr').forEach(row=>{
+    row.style.display = (val === 'all' || row.dataset.activity === val) ? '' : 'none';
+  });
+}
+function setSponsorStatus(rowId, status){
+  const badge = document.getElementById('sponsorstatus-'+rowId);
+  const actions = badge.closest('tr').querySelector('.table-actions');
+  if(status === 'done'){
+    badge.className = 'status-badge approved';
+    badge.textContent = '已联系';
+    actions.innerHTML = '<button class="action-link muted" onclick="setSponsorStatus(\''+rowId+'\',\'pending\')">标记待联系</button>';
+  } else {
+    badge.className = 'status-badge draft';
+    badge.textContent = '待联系';
+    actions.innerHTML = '<button class="action-link" onclick="setSponsorStatus(\''+rowId+'\',\'done\')">标记已联系</button>';
+  }
+  updateSponsorNavBadge();
+}
+function updateSponsorNavBadge(){
+  const count = document.querySelectorAll('#sponsorTableBody .status-badge.draft').length;
+  const badge = document.getElementById('navSponsorsBadge');
+  badge.textContent = count;
+  badge.classList.toggle('hidden', count === 0);
+}
+function filterRegistrations(){
+  const val = document.getElementById('registrationCelFilter').value;
+  document.querySelectorAll('#regTableBody tr').forEach(row=>{
+    row.style.display = (val === 'all' || row.dataset.celebration === val) ? '' : 'none';
+  });
+}
+function toggleCelebrationDemo(){
+  const cover = document.getElementById('celCoverSH');
+  const status = document.getElementById('celStatusSH');
+  const isComingSoon = cover.textContent.indexOf('Coming Soon') !== -1;
+  if(isComingSoon){
+    cover.textContent = '📷';
+    status.textContent = '已举办';
+  } else {
+    cover.textContent = '⏳ Coming Soon';
+    status.textContent = '即将开始';
+  }
 }
 function toggleUsage(id){
   document.getElementById(id).classList.toggle('open');
@@ -2091,14 +2283,19 @@ function submitManualRegistration(){
     alert('请填写姓名');
     return;
   }
+  const celSelect = document.getElementById('manualRegCelebration');
+  const celId = celSelect.value;
+  const celName = celSelect.options[celSelect.selectedIndex].text.split(' · ').pop();
   const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
   const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
   const rowId = 'manual-' + Date.now();
   const tr = document.createElement('tr');
+  tr.dataset.celebration = celId;
   tr.innerHTML =
     '<td class="title-cell">' + escape(name) + '</td>'
+    + '<td class="muted-cell">' + escape(celName) + '</td>'
     + '<td>' + (dept ? escape(dept) : '—') + '</td>'
     + '<td>' + stamp + '</td>'
     + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
@@ -2222,61 +2419,66 @@ function filterWallMessages(){
     row.style.display = (activityMatch && statusMatch) ? '' : 'none';
   });
 }
-function openRegisterModal(){
-  document.getElementById('regModalOverlay').classList.add('open');
-}
-function closeRegisterModal(){
-  document.getElementById('regModalOverlay').classList.remove('open');
-}
 document.addEventListener('click', function(e){
-  if(e.target.id === 'regModalOverlay') closeRegisterModal();
   if(e.target.id === 'wallModalOverlay') closeWallModal();
+  if(e.target.id === 'sponsorModalOverlay') closeSponsorModal();
 });
 document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){ closeRegisterModal(); closeWallModal(); }
+  if(e.key === 'Escape'){ closeWallModal(); closeSponsorModal(); }
 });
-function submitRegistration(){
-  const phone = document.getElementById('regPhone').value.trim();
-  if(!phone){
-    alert('请填写联系电话');
+function openSponsorModal(){
+  document.getElementById('sponsorFormBody').classList.remove('hidden');
+  document.getElementById('sponsorSuccessBody').classList.add('hidden');
+  document.getElementById('sponsorModalOverlay').classList.add('open');
+}
+function closeSponsorModal(){
+  document.getElementById('sponsorModalOverlay').classList.remove('open');
+}
+function submitSponsorForm(){
+  const required = ['sponsorCompany','sponsorContact','sponsorTitle','sponsorEmail','sponsorPhone'];
+  for(const fid of required){
+    if(!document.getElementById(fid).value.trim()){
+      alert('请完整填写带 * 的必填项');
+      return;
+    }
+  }
+  const email = document.getElementById('sponsorEmail').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert('请输入有效的邮箱地址');
     return;
   }
-  if(!/^1\d{10}$/.test(phone)){
-    alert('请输入有效的11位手机号');
-    return;
-  }
+  document.getElementById('sponsorFormBody').classList.add('hidden');
+  document.getElementById('sponsorSuccessBody').classList.remove('hidden');
 
-  // Show success state in the modal
-  document.getElementById('regFormBody').classList.add('hidden');
-  document.getElementById('regSuccessBody').classList.remove('hidden');
-
-  // Lock the CTA so the same visitor can't register twice
-  const cta = document.getElementById('heroCtaBtn');
-  cta.textContent = '已报名 ✓';
-  cta.disabled = true;
-
-  // Write the new registration into 报名管理 (admin) so the loop closes end-to-end
-  const tbody = document.getElementById('regTableBody');
-  if(tbody && !document.getElementById('r-陈思思')){
+  // Write the new sponsor lead into 赞助商管理 (admin) — closes the loop end-to-end
+  const tbody = document.getElementById('sponsorTableBody');
+  if(tbody){
+    const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const company = escape(document.getElementById('sponsorCompany').value.trim());
+    const contact = escape(document.getElementById('sponsorContact').value.trim());
+    const title = escape(document.getElementById('sponsorTitle').value.trim());
+    const phone = escape(document.getElementById('sponsorPhone').value.trim());
+    const tier = document.getElementById('sponsorTier').value || '—';
+    const message = document.getElementById('sponsorMessage').value.trim();
     const now = new Date();
     const pad = n => String(n).padStart(2,'0');
     const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
-    const rowId = 'r-陈思思';
+    const rowId = 's-' + Date.now();
     const tr = document.createElement('tr');
+    tr.dataset.activity = '30th';
     tr.innerHTML =
-      '<td class="title-cell">陈思思</td>'
-      + '<td>产品部</td>'
-      + '<td>'+stamp+'</td>'
-      + '<td><span class="status-badge draft" id="regstatus-'+rowId+'">未签到</span></td>'
+      '<td class="title-cell">' + company + '</td>'
+      + '<td>' + contact + ' · ' + title + '</td>'
+      + '<td>' + email + '<br>' + phone + '</td>'
+      + '<td>' + tier + '</td>'
+      + '<td class="muted-cell">' + (message ? escape(message) : '—') + '</td>'
+      + '<td>' + stamp + '</td>'
+      + '<td><span class="status-badge draft" id="sponsorstatus-' + rowId + '">待联系</span></td>'
       + '<td><div class="table-actions">'
-      +   '<button class="action-link" onclick="setCheckin(\''+rowId+'\',\'done\')">签到</button>'
-      +   '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>'
+      +   '<button class="action-link" onclick="setSponsorStatus(\'' + rowId + '\',\'done\')">标记已联系</button>'
       + '</div></td>';
-    tr.id = rowId;
     tbody.prepend(tr);
-
-    const statEl = document.getElementById('statRegistered');
-    statEl.textContent = parseInt(statEl.textContent, 10) + 1;
+    updateSponsorNavBadge();
   }
 }
 let wallDeadlinePassed = false;
@@ -2356,6 +2558,20 @@ function submitWallMessage(){
   }
 }
 showList();
+updateSponsorNavBadge();
+const hashRoutes = {
+  '#modules': showModuleLibrary,
+  '#submissions': showSubmissions,
+  '#registrations': showRegistrations,
+  '#wall': showWall,
+  '#sponsors': showSponsors,
+  '#stats': showStats,
+  '#preview': showUserPreview,
+  '#works': showUserWorks
+};
+if(hashRoutes[location.hash]){
+  hashRoutes[location.hash]();
+}
 </script>
 </body>
 </html>
