@@ -6,7 +6,7 @@
 
 # 报名管理 接口清单（草案）
 
-> 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。
+> 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。**变更说明（自 REQ-007 起）**：报名记录归属对象从"活动模块"改为"Celebration 下挂载的报名信息模块"，本清单绑定维度从 `activity_id` 改为 `celebration_id`，同一活动下不同 Celebration 的数据互相独立。
 
 ## 枚举值总表
 
@@ -23,7 +23,7 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `activity_id` | string | 是 | 报名管理页面绑定单个活动 |
+| `celebration_id` | string | 是 | 报名管理页面绑定单个 Celebration，AC-005 |
 
 分页：列表部分见 `conventions.md`
 
@@ -33,7 +33,10 @@
 |---|---|---|
 | `summary.registered_count` | number | 已报名总数，AC-001/AC-002/AC-003 联动的统计数字 |
 | `summary.checked_in_count` | number | 已签到人数 |
+| `summary.capacity` | number \| null | 名额上限，留空为不限，见 `celebration-007-admin` §6 |
 | `list[].id` | string | 报名记录ID |
+| `list[].celebration_id` | string | 归属 Celebration ID，AC-005 |
+| `list[].celebration_site` | string | 归属 Celebration 的 Site 名称（列表展示用），AC-005 |
 | `list[].author_type` | string（枚举） | |
 | `list[].author_name` | string | |
 | `list[].author_org` | string \| null | 部门或头衔，留空展示为"—"，见需求文档 §8 |
@@ -50,7 +53,7 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `activity_module_id` | string | 是 | 须为 `module_type=registration` 的活动模块，见 `module-002-admin` §6 |
+| `celebration_module_id` | string | 是 | 须为 `module_type=registration` 的 CelebrationModule，见 `celebration-007-admin` §6，AC-003 |
 | `author_name` | string | 是 | AC-003 |
 | `author_type` | string（枚举） | 否 | |
 | `author_org` | string | 否 | |
