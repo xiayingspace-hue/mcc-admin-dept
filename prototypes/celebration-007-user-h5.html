@@ -324,43 +324,49 @@ function applyFromHash(){
 window.addEventListener('hashchange', applyFromHash);
 applyFromHash();
 
-function voteKey(cardId){
-  return 'celebrationVote_' + currentId + '_' + cardId;
+function voteKey(){
+  return 'celebrationVote_' + currentId;
 }
-function toggleVote(cardId){
-  const card = document.getElementById(cardId);
+function setCardVoted(card, voted){
   const btn = card.querySelector('.doodle-vote-btn');
   const countEl = card.querySelector('.doodle-count');
   let count = parseInt(countEl.dataset.count, 10);
-  const key = voteKey(cardId);
-  if(btn.classList.contains('voted')){
-    btn.classList.remove('voted');
-    btn.textContent = '投票';
-    count -= 1;
-    try{ localStorage.removeItem(key); }catch(e){}
-  } else {
+  const isVoted = btn.classList.contains('voted');
+  if(voted && !isVoted){
     btn.classList.add('voted');
     btn.textContent = '已投票';
     count += 1;
-    try{ localStorage.setItem(key, '1'); }catch(e){}
+  } else if(!voted && isVoted){
+    btn.classList.remove('voted');
+    btn.textContent = '投票';
+    count -= 1;
   }
   countEl.dataset.count = count;
   countEl.textContent = count + ' 票';
 }
+function toggleVote(cardId){
+  const key = voteKey();
+  let prevVoted = null;
+  try{ prevVoted = localStorage.getItem(key); }catch(e){}
+  const card = document.getElementById(cardId);
+  if(prevVoted === cardId){
+    setCardVoted(card, false);
+    try{ localStorage.removeItem(key); }catch(e){}
+    return;
+  }
+  if(prevVoted){
+    const prevCard = document.getElementById(prevVoted);
+    if(prevCard) setCardVoted(prevCard, false);
+  }
+  setCardVoted(card, true);
+  try{ localStorage.setItem(key, cardId); }catch(e){}
+}
 function restoreVotes(){
-  document.querySelectorAll('#doodleContent .doodle-card').forEach(card=>{
-    const btn = card.querySelector('.doodle-vote-btn');
-    const countEl = card.querySelector('.doodle-count');
-    if(!btn || !countEl) return;
-    let voted = false;
-    try{ voted = !!localStorage.getItem(voteKey(card.id)); }catch(e){}
-    if(voted){
-      btn.classList.add('voted');
-      btn.textContent = '已投票';
-      countEl.dataset.count = parseInt(countEl.dataset.count, 10) + 1;
-      countEl.textContent = countEl.dataset.count + ' 票';
-    }
-  });
+  let voted = null;
+  try{ voted = localStorage.getItem(voteKey()); }catch(e){}
+  if(!voted) return;
+  const card = document.getElementById(voted);
+  if(card) setCardVoted(card, true);
 }
 function openCelRegisterModal(){
   document.getElementById('celRegModalOverlay').classList.add('open');
