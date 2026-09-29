@@ -306,6 +306,7 @@ function renderCelebration(id){
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="9">9 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv2\')">投票</button></div>'
       + '</div></div>'
       + '</div>';
+    restoreVotes();
   } else {
     gallery.innerHTML = '<p class="empty-note">活动开始前暂无现场照片 · Photos will appear once this celebration begins</p>';
     doodle.innerHTML = '<p class="empty-note">涂鸦展示尚未开放 · Doodle wall opens once this celebration begins</p>';
@@ -323,22 +324,43 @@ function applyFromHash(){
 window.addEventListener('hashchange', applyFromHash);
 applyFromHash();
 
+function voteKey(cardId){
+  return 'celebrationVote_' + currentId + '_' + cardId;
+}
 function toggleVote(cardId){
   const card = document.getElementById(cardId);
   const btn = card.querySelector('.doodle-vote-btn');
   const countEl = card.querySelector('.doodle-count');
   let count = parseInt(countEl.dataset.count, 10);
+  const key = voteKey(cardId);
   if(btn.classList.contains('voted')){
     btn.classList.remove('voted');
     btn.textContent = '投票';
     count -= 1;
+    try{ localStorage.removeItem(key); }catch(e){}
   } else {
     btn.classList.add('voted');
     btn.textContent = '已投票';
     count += 1;
+    try{ localStorage.setItem(key, '1'); }catch(e){}
   }
   countEl.dataset.count = count;
   countEl.textContent = count + ' 票';
+}
+function restoreVotes(){
+  document.querySelectorAll('#doodleContent .doodle-card').forEach(card=>{
+    const btn = card.querySelector('.doodle-vote-btn');
+    const countEl = card.querySelector('.doodle-count');
+    if(!btn || !countEl) return;
+    let voted = false;
+    try{ voted = !!localStorage.getItem(voteKey(card.id)); }catch(e){}
+    if(voted){
+      btn.classList.add('voted');
+      btn.textContent = '已投票';
+      countEl.dataset.count = parseInt(countEl.dataset.count, 10) + 1;
+      countEl.textContent = countEl.dataset.count + ' 票';
+    }
+  });
 }
 function openCelRegisterModal(){
   document.getElementById('celRegModalOverlay').classList.add('open');
