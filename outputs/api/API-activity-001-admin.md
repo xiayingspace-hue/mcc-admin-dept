@@ -38,7 +38,7 @@
 | `title` | string | 活动标题 |
 | `type` | string | 活动类型 |
 | `status` | string（枚举） | 见枚举总表 |
-| `budget` | number | 单位：元，见 conventions.md 金额精度 |
+| `budget` | number | 币种 S$，数值单位见 conventions.md 金额精度 |
 | `hold_time` | string | ISO 8601 |
 | `initiator` | string | 发起人姓名 |
 
