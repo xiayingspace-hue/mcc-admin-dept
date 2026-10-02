@@ -159,6 +159,33 @@
   .approval-status.current{background:var(--accent); color:#fff}
   .approval-comment{font-size:12px; color:var(--text-secondary); margin-top:8px; padding:9px 11px; background:var(--bg); border-radius:6px; line-height:1.5}
 
+  .approval-num.rejected{background:var(--danger); color:#fff}
+  .approval-status.rejected{background:#F6E4E2; color:var(--danger)}
+  .approval-assignees{margin-top:8px; display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto}
+  .assignee-row{display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-secondary); padding:7px 10px; background:var(--bg); border-radius:6px}
+  .assignee-main{flex:1; min-width:0; overflow-wrap:anywhere}
+  .assignee-name{color:var(--text-primary)}
+  .assignee-no{color:var(--text-muted); margin-left:4px}
+  .assignee-note{margin-top:3px; line-height:1.5}
+  .assignee-st{font-size:11px; padding:2px 8px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .assignee-st.approved{background:#E4F0E8; color:#2F6B45}
+  .assignee-st.rejected{background:#F6E4E2; color:var(--danger)}
+  .assignee-st.revoked{text-decoration:line-through}
+  .assignee-me{margin-left:6px; font-size:11px; padding:1px 6px; border-radius:4px; background:var(--accent-tint); color:var(--accent)}
+
+  .picker-chips{display:flex; flex-wrap:wrap; gap:6px; min-height:40px; max-height:96px; overflow-y:auto; padding:8px; border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); margin-bottom:8px}
+  .picker-chips-empty{font-size:12.5px; color:var(--text-muted); align-self:center}
+  .chip{display:inline-flex; align-items:center; gap:4px; padding:3px 4px 3px 10px; border-radius:14px; background:var(--accent-tint); color:var(--accent); font-size:12.5px; max-width:100%}
+  .chip-no{color:var(--text-secondary)}
+  .chip-x{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 6px}
+  .picker-list{border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); max-height:196px; overflow-y:auto; margin-top:8px}
+  .picker-item{display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:0.5px solid var(--border); font-size:13px}
+  .picker-item:last-child{border-bottom:none}
+  .picker-item .grow{flex:1}
+  .picker-state{padding:22px 12px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+  .picker-skel{height:14px; margin:14px 12px; border-radius:4px; background:var(--border)}
+  .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -409,11 +436,11 @@
           <div class="notif-panel-head">待办事项</div>
           <div id="notifList">
             <div class="notif-item" onclick="viewApproval()">
-              <div class="notif-item-title"><span>公司30周年庆典</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-title"><span>公司30周年庆典</span><span class="status-badge review">第三节点审批</span></div>
               <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
             </div>
             <div class="notif-item" onclick="alert('原型演示：跳转到「中秋福利活动」审批处理页')">
-              <div class="notif-item-title"><span>中秋福利活动</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-title"><span>中秋福利活动</span><span class="status-badge review">第三节点审批</span></div>
               <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
             </div>
           </div>
@@ -724,43 +751,20 @@
                 <ul><li>时间：2026年11月20日 14:00 – 17:00</li><li>地点：总部三楼多功能厅</li></ul>
               </div>
             </div>
-            <div class="summary-flag">预算超过 ¥50,000 阈值，将自动加入财务审批环节</div>
           </div>
 
-          <p class="section-title">将经过以下审批</p>
-          <p class="section-hint">审批人根据活动类型与预算自动匹配，无需手动指定</p>
-          <div class="approval-timeline">
-            <div class="approval-step-row">
-              <div class="approval-num">1</div>
-              <div class="approval-info">
-                <div class="approval-title">部门主管审批</div>
-                <div class="approval-sub">发起人所属部门负责人</div>
-              </div>
-              <div class="approval-status">待发起</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">2</div>
-              <div class="approval-info">
-                <div class="approval-title">行政初审</div>
-                <div class="approval-sub">核对流程与合规性</div>
-              </div>
-              <div class="approval-status">待发起</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">3</div>
-              <div class="approval-info">
-                <div class="approval-title">财务审批</div>
-                <div class="approval-sub">预算超阈值触发</div>
-              </div>
-              <div class="approval-status conditional">已触发</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">4</div>
-              <div class="approval-info">
-                <div class="approval-title">行政终审并发布</div>
-                <div class="approval-sub">通过后自动生成活动页面</div>
-              </div>
-              <div class="approval-status">待发起</div>
+          <div class="field">
+            <label>第三节点审批人（必选，全公司员工，人数不限；所选人并行处理，全部通过后活动自动发布）<span id="thirdCountBadge" style="margin-left:6px; color:var(--text-muted)"></span></label>
+            <div class="picker-chips" id="pickerChips"></div>
+            <div class="field-error" id="errThird">请至少选择 1 位第三节点审批人</div>
+            <input type="text" id="pickerSearch" placeholder="按姓名或工号搜索全公司员工" oninput="renderPicker()">
+            <div class="picker-list" id="pickerList"></div>
+            <div class="picker-demo">
+              <span>原型演示状态：</span>
+              <button class="action-link" onclick="setPickerState('normal')">正常</button>
+              <button class="action-link" onclick="setPickerState('loading')">加载中</button>
+              <button class="action-link" onclick="setPickerState('error')">加载失败</button>
+              <button class="action-link" onclick="pickAllDemo()">全选（演示人数很多）</button>
             </div>
           </div>
 
@@ -819,41 +823,7 @@
 
           <p class="section-title">审批进度</p>
           <p class="section-hint">实时反映各节点的处理状态</p>
-          <div class="approval-timeline">
-            <div class="approval-step-row">
-              <div class="approval-num done">✓</div>
-              <div class="approval-info">
-                <div class="approval-title">部门主管审批</div>
-                <div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>
-                <div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>
-              </div>
-              <div class="approval-status done">已通过</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num current" id="anum2">2</div>
-              <div class="approval-info" id="ainfo2">
-                <div class="approval-title">行政初审</div>
-                <div class="approval-sub">待行政部处理 · 预计1个工作日内</div>
-              </div>
-              <div class="approval-status current" id="astatus2">进行中</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num" id="anum3">3</div>
-              <div class="approval-info" id="ainfo3">
-                <div class="approval-title">财务审批</div>
-                <div class="approval-sub">预算超阈值触发</div>
-              </div>
-              <div class="approval-status conditional" id="astatus3">待处理</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">4</div>
-              <div class="approval-info">
-                <div class="approval-title">行政终审并发布</div>
-                <div class="approval-sub">通过后自动生成活动页面</div>
-              </div>
-              <div class="approval-status">待处理</div>
-            </div>
-          </div>
+          <div class="approval-timeline" id="approvalTimeline"></div>
 
           <!-- Initiator view actions -->
           <div class="actions" id="initiatorActions">
@@ -862,7 +832,7 @@
 
           <!-- Approver view actions (shown when opened from 待办) -->
           <div class="hidden" id="approverActions">
-            <p class="section-title">我的审批（行政初审）</p>
+            <p class="section-title">我的审批（第三节点审批）</p>
             <div class="field">
               <label>审批意见（驳回时必填）</label>
               <textarea id="approverComment" rows="2" placeholder="填写审批意见"></textarea>
@@ -873,7 +843,10 @@
             </div>
           </div>
           <div class="hidden" id="approvalDoneMsg" style="font-size:12.5px; color:var(--text-secondary); padding:10px 0">
-            已提交处理结果，流程将流转至下一节点。
+            已提交处理结果。
+          </div>
+          <div class="hidden" id="demoOthersWrap" style="font-size:11.5px; color:var(--text-muted)">
+            原型演示：<button class="action-link" onclick="demoOthersApprove()">其余审批人全部通过</button>
           </div>
         </div>
 
@@ -1997,9 +1970,160 @@ function goStep(n){
   const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批',4:'审批进度'};
   document.getElementById('crumb').textContent = labels[n];
 }
-function submitApproval(){
-  goStep(4);
+/* ---- 第三节点审批人选择（步骤三），数据形状对应 API-activity-001-admin：employee_id / name / employee_no ---- */
+const EMPLOYEES = [
+  {employee_id:'E0001', name:'XY',  employee_no:'0001'},
+  {employee_id:'E1023', name:'王芳', employee_no:'1023'},
+  {employee_id:'E2047', name:'陈静', employee_no:'2047'},
+  {employee_id:'E1188', name:'刘洋', employee_no:'1188'},
+  {employee_id:'E3012', name:'张伟', employee_no:'3012'},
+  {employee_id:'E3305', name:'张伟', employee_no:'3305'},
+  {employee_id:'E2210', name:'赵敏', employee_no:'2210'},
+  {employee_id:'E1575', name:'孙浩', employee_no:'1575'},
+  {employee_id:'E4021', name:'周婷', employee_no:'4021'},
+  {employee_id:'E0876', name:'吴磊', employee_no:'0876'},
+  {employee_id:'E2933', name:'郑凯', employee_no:'2933'},
+  {employee_id:'E1740', name:'林悦', employee_no:'1740'}
+];
+let thirdSelected = [];          // third_node_approver_ids[]
+let pickerState = 'normal';      // normal | loading | error
+function empById(id){ return EMPLOYEES.find(e=>e.employee_id===id); }
+function renderChips(){
+  const wrap = document.getElementById('pickerChips');
+  wrap.innerHTML = thirdSelected.length
+    ? thirdSelected.map(id=>{
+        const e = empById(id);
+        return '<span class="chip">'+e.name+'<span class="chip-no">'+e.employee_no+'</span><button class="chip-x" onclick="removeApprover(\''+id+'\')" title="移除">×</button></span>';
+      }).join('')
+    : '<span class="picker-chips-empty">尚未选择审批人</span>';
+  const badge = document.getElementById('thirdCountBadge');
+  badge.textContent = thirdSelected.length ? '已选 '+thirdSelected.length+' 人' : '';
 }
+function renderPicker(){
+  const list = document.getElementById('pickerList');
+  if(pickerState==='loading'){
+    list.innerHTML = '<div class="picker-skel"></div><div class="picker-skel"></div><div class="picker-skel"></div>';
+    return;
+  }
+  if(pickerState==='error'){
+    list.innerHTML = '<div class="picker-state">员工列表加载失败，请检查网络后重试<br><button class="action-link" style="margin-top:8px" onclick="setPickerState(\'normal\')">重试</button></div>';
+    return;
+  }
+  const q = document.getElementById('pickerSearch').value.trim();
+  const rows = EMPLOYEES.filter(e=>!q || e.name.includes(q) || e.employee_no.includes(q));
+  if(!rows.length){
+    list.innerHTML = '<div class="picker-state">没有找到「'+q+'」相关的员工，换个姓名或工号试试</div>';
+    return;
+  }
+  list.innerHTML = rows.map(e=>{
+    const picked = thirdSelected.includes(e.employee_id);
+    return '<div class="picker-item"><span class="grow">'+e.name+'<span class="assignee-no">工号 '+e.employee_no+'</span></span>'+
+      (picked ? '<span class="assignee-st approved">已选</span>'
+              : '<button class="action-link" onclick="addApprover(\''+e.employee_id+'\')">添加</button>')+'</div>';
+  }).join('');
+}
+function setPickerState(s){ pickerState = s; renderPicker(); }
+function addApprover(id){
+  if(thirdSelected.includes(id)) return;     // 同一人不能重复选
+  thirdSelected.push(id);
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
+}
+function removeApprover(id){
+  thirdSelected = thirdSelected.filter(x=>x!==id);
+  renderChips(); renderPicker();
+}
+function pickAllDemo(){
+  thirdSelected = EMPLOYEES.map(e=>e.employee_id);
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
+}
+function resetThirdPicker(){
+  thirdSelected = []; pickerState = 'normal';
+  document.getElementById('pickerSearch').value = '';
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
+}
+function submitApproval(){
+  if(!thirdSelected.length){
+    document.getElementById('errThird').style.display = 'block';
+    document.getElementById('pickerChips').classList.add('field-invalid');
+    document.getElementById('pickerChips').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  openApproval({
+    deptStatus:'pending',
+    meId:null,
+    assignees: thirdSelected.map(id=>({employee_id:id, status:'pending', comment:'', acted_at:''}))
+  }, 'initiator');
+}
+
+/* ---- 审批进度：固定三个节点（提交 / 部门主管审批 / 第三节点审批） ---- */
+let approvalData = null;
+const ASSIGNEE_ST = {pending:'待处理', approved:'已通过', rejected:'已驳回', revoked:'已撤销'};
+function demoApprovalData(){
+  return {
+    deptStatus:'approved',
+    meId:'E2047',
+    assignees:[
+      {employee_id:'E1023', status:'approved', comment:'同意，预算说明清楚。', acted_at:'2026-09-14 14:20'},
+      {employee_id:'E2047', status:'pending',  comment:'', acted_at:''},
+      {employee_id:'E1188', status:'pending',  comment:'', acted_at:''}
+    ]
+  };
+}
+function thirdNodeStatus(d){
+  if(d.assignees.some(a=>a.status==='rejected')) return 'rejected';
+  if(d.assignees.every(a=>a.status==='approved')) return 'approved';
+  return d.deptStatus==='approved' ? 'current' : 'waiting';
+}
+function approvalRow(numCls, numText, title, subHtml, stCls, stText, extraHtml){
+  return '<div class="approval-step-row"><div class="approval-num '+numCls+'">'+numText+'</div>'+
+    '<div class="approval-info"><div class="approval-title">'+title+'</div>'+subHtml+(extraHtml||'')+'</div>'+
+    '<div class="approval-status '+stCls+'">'+stText+'</div></div>';
+}
+function renderApproval(){
+  const d = approvalData;
+  const third = thirdNodeStatus(d);
+  let html = approvalRow('done','✓','提交','<div class="approval-sub">XY · 2026-09-14 10:32</div>','done','已提交');
+  html += d.deptStatus==='approved'
+    ? approvalRow('done','✓','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>','done','已通过',
+        '<div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>')
+    : approvalRow('current','2','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 待处理</div>','current','进行中');
+  const rows = d.assignees.map(a=>{
+    const e = empById(a.employee_id);
+    return '<div class="assignee-row"><div class="assignee-main"><span class="assignee-name">'+e.name+'</span><span class="assignee-no">工号 '+e.employee_no+'</span>'+
+      (a.employee_id===d.meId ? '<span class="assignee-me">我</span>' : '')+
+      (a.comment ? '<div class="assignee-note">'+a.comment+(a.acted_at?' · '+a.acted_at:'')+'</div>' : '')+'</div>'+
+      '<span class="assignee-st '+a.status+'">'+ASSIGNEE_ST[a.status]+'</span></div>';
+  }).join('');
+  const done = d.assignees.filter(a=>a.status==='approved').length;
+  const numCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : '';
+  const numTxt = third==='approved' ? '✓' : third==='rejected' ? '✕' : '3';
+  const stCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : 'conditional';
+  const stTxt = third==='approved' ? '已通过' : third==='rejected' ? '已驳回' : third==='current' ? '进行中 '+done+'/'+d.assignees.length : '待处理';
+  html += approvalRow(numCls, numTxt, '第三节点审批',
+    '<div class="approval-sub">共 '+d.assignees.length+' 位审批人并行处理，全部通过才算通过</div>',
+    stCls, stTxt, '<div class="approval-assignees">'+rows+'</div>');
+  document.getElementById('approvalTimeline').innerHTML = html;
+}
+function openApproval(data, mode){
+  approvalData = data;
+  const badge = document.getElementById('approvalHeaderBadge');
+  badge.className = 'status-badge review';
+  badge.textContent = '审批中';
+  document.getElementById('approverComment').value = '';
+  document.getElementById('demoOthersWrap').classList.add('hidden');
+  goStep(4);
+  renderApproval();
+  const me = data.assignees.find(a=>a.employee_id===data.meId);
+  setApprovalMode(mode==='approver' && me && me.status==='pending' ? 'approver' : 'initiator');
+}
+renderChips();
+renderPicker();
 function showList(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='listView');
@@ -2014,6 +2138,7 @@ function showEditor(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
+  resetThirdPicker();
   goStep(1);
 }
 function viewActivity(){
@@ -2022,8 +2147,7 @@ function viewActivity(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
-  goStep(4);
-  setApprovalMode('initiator');
+  openApproval(demoApprovalData(), 'initiator');
 }
 function viewApproval(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
@@ -2031,8 +2155,7 @@ function viewApproval(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
-  goStep(4);
-  setApprovalMode('approver');
+  openApproval(demoApprovalData(), 'approver');
   closeNotifications();
 }
 function setApprovalMode(mode){
@@ -2040,52 +2163,54 @@ function setApprovalMode(mode){
   document.getElementById('approverActions').classList.toggle('hidden', mode!=='approver');
   document.getElementById('approvalDoneMsg').classList.add('hidden');
 }
+function publishIfAllApproved(){
+  if(thirdNodeStatus(approvalData)!=='approved') return false;
+  const headerBadge = document.getElementById('approvalHeaderBadge');
+  headerBadge.className = 'status-badge approved';
+  headerBadge.textContent = '已发布';
+  return true;
+}
 function approveCurrentStep(){
-  document.getElementById('anum2').className = 'approval-num done';
-  document.getElementById('anum2').textContent = '✓';
-  document.getElementById('astatus2').className = 'approval-status done';
-  document.getElementById('astatus2').textContent = '已通过';
-  const comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
-  const info2 = document.getElementById('ainfo2');
-  if(!info2.querySelector('.approval-comment')){
-    const c = document.createElement('div');
-    c.className = 'approval-comment';
-    c.textContent = comment;
-    info2.appendChild(c);
-  }
-  document.getElementById('anum3').className = 'approval-num current';
-  document.getElementById('astatus3').className = 'approval-status current';
-  document.getElementById('astatus3').textContent = '进行中';
+  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
+  me.status = 'approved';
+  me.comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
+  me.acted_at = '刚刚';
+  renderApproval();
   document.getElementById('approverActions').classList.add('hidden');
-  document.getElementById('approvalDoneMsg').textContent = '已提交处理结果，流程将流转至下一节点。';
-  document.getElementById('approvalDoneMsg').classList.remove('hidden');
+  const msg = document.getElementById('approvalDoneMsg');
+  if(publishIfAllApproved()){
+    msg.textContent = '第三节点全部通过，活动已自动发布。';
+  } else {
+    const left = approvalData.assignees.filter(a=>a.status==='pending').length;
+    msg.textContent = '已通过，还有 '+left+' 位审批人未处理，全部通过后活动将自动发布。';
+    document.getElementById('demoOthersWrap').classList.remove('hidden');
+  }
+  msg.classList.remove('hidden');
   updateTodoBadge(-1);
+}
+function demoOthersApprove(){
+  approvalData.assignees.forEach(a=>{
+    if(a.status==='pending'){ a.status='approved'; a.comment='同意。'; a.acted_at='刚刚'; }
+  });
+  renderApproval();
+  publishIfAllApproved();
+  document.getElementById('approvalDoneMsg').textContent = '第三节点全部通过，活动已自动发布。';
+  document.getElementById('demoOthersWrap').classList.add('hidden');
 }
 function rejectCurrentStep(){
   const comment = document.getElementById('approverComment').value.trim();
   if(!comment){ alert('驳回需要填写审批意见'); return; }
-  const num2 = document.getElementById('anum2');
-  num2.className = 'approval-num';
-  num2.style.background = 'var(--danger)';
-  num2.style.color = '#fff';
-  num2.textContent = '✕';
-  const status2 = document.getElementById('astatus2');
-  status2.className = 'approval-status';
-  status2.style.background = '#F6E4E2';
-  status2.style.color = 'var(--danger)';
-  status2.textContent = '已驳回';
-  const info2 = document.getElementById('ainfo2');
-  if(!info2.querySelector('.approval-comment')){
-    const c = document.createElement('div');
-    c.className = 'approval-comment';
-    c.textContent = comment;
-    info2.appendChild(c);
-  }
+  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
+  me.status = 'rejected';
+  me.comment = comment;
+  me.acted_at = '刚刚';
+  approvalData.assignees.forEach(a=>{ if(a.status==='pending') a.status='revoked'; });
+  renderApproval();
   const headerBadge = document.getElementById('approvalHeaderBadge');
   headerBadge.className = 'status-badge rejected';
   headerBadge.textContent = '已驳回';
   document.getElementById('approverActions').classList.add('hidden');
-  document.getElementById('approvalDoneMsg').textContent = '已驳回，活动将退回发起人修改。';
+  document.getElementById('approvalDoneMsg').textContent = '已驳回，其余审批人的待办已同步撤销，活动退回发起人修改。';
   document.getElementById('approvalDoneMsg').classList.remove('hidden');
   updateTodoBadge(-1);
 }

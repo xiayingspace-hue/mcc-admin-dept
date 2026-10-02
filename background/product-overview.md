@@ -15,7 +15,7 @@
 
 ## 角色速览
 
-详见 [`requirements/shared/ROLES.md`](../requirements/shared/ROLES.md)：行政、部门主管、财务、员工、外部人士。
+详见 [`requirements/shared/ROLES.md`](../requirements/shared/ROLES.md)：行政、部门主管、第三节点审批人、员工、外部人士。
 
 ## 模块地图
 
