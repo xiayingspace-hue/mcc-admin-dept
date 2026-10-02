@@ -1284,11 +1284,12 @@
             <p class="upload-panel-title">手动添加报名</p>
             <div class="field">
               <label>所属 Celebration</label>
-              <select id="manualRegCelebration" style="width:100%">
+              <select id="manualRegCelebration" style="width:100%" onchange="updateRegCapacityUI()">
                 <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
                 <option value="bj30">公司30周年庆典 · 北京分公司站</option>
                 <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
               </select>
+              <div id="manualRegCapHint" style="font-size:11.5px; color:var(--text-muted); margin-top:5px"></div>
             </div>
             <div class="row2">
               <div class="field">
@@ -1301,6 +1302,10 @@
               <div class="field"><label>部门 / 头衔</label><input type="text" id="manualRegDept" placeholder="例如：产品部"></div>
             </div>
             <div class="field"><label>姓名</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+            <div class="row2">
+              <div class="field"><label>联系电话（选填）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
+              <div class="field"><label>邮箱（选填）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
+            </div>
             <div style="display:flex; justify-content:flex-end; gap:10px">
               <button class="btn" onclick="toggleManualReg()">取消</button>
               <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
@@ -1320,13 +1325,13 @@
           <div class="stat-row">
             <div class="stat-card"><div class="stat-num" id="statRegistered">86</div><div class="stat-label">已报名</div></div>
             <div class="stat-card"><div class="stat-num" id="statCheckedIn">52</div><div class="stat-label">已签到</div></div>
-            <div class="stat-card"><div class="stat-num">不限</div><div class="stat-label">名额上限</div></div>
+            <div class="stat-card"><div class="stat-num" id="statCapacity">—</div><div class="stat-label">名额上限</div></div>
           </div>
 
           <table class="activity-table">
             <thead>
               <tr>
-                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>报名时间</th><th>签到状态</th><th>操作</th>
+                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>联系电话</th><th>邮箱</th><th>报名时间</th><th>签到状态</th><th>操作</th>
               </tr>
             </thead>
             <tbody id="regTableBody">
@@ -1334,6 +1339,8 @@
                 <td class="title-cell">陈思思</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>产品部</td>
+                <td>13800138001</td>
+                <td>chen.sisi@mcc.example</td>
                 <td>2026-09-10 09:20</td>
                 <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
                 <td>
@@ -1347,6 +1354,8 @@
                 <td class="title-cell">王芳</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>行政部</td>
+                <td>13800138002</td>
+                <td>wang.fang@mcc.example</td>
                 <td>2026-09-10 10:05</td>
                 <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
                 <td>
@@ -1360,6 +1369,8 @@
                 <td class="title-cell">李强</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>工程部</td>
+                <td>13800138003</td>
+                <td>li.qiang@mcc.example</td>
                 <td>2026-09-11 14:40</td>
                 <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
                 <td>
@@ -1373,6 +1384,8 @@
                 <td class="title-cell">田中一郎</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>合作伙伴 · 外部</td>
+                <td>+81 90-1234-5678</td>
+                <td>—</td>
                 <td>2026-09-12 16:00</td>
                 <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
                 <td>
@@ -2570,11 +2583,23 @@ function updateSponsorNavBadge(){
   badge.textContent = count;
   badge.classList.toggle('hidden', count === 0);
 }
+/* 名额上限（演示数据）：人数含行政代报名、不论是否已签到；已满时代报名同样被拦截（REQ-004 AC-013） */
+const REG_CAPACITY = {sg30:null, bj30:2, q3camp:null};
+function regCount(celId){ return [...document.querySelectorAll('#regTableBody tr')].filter(r=>r.dataset.celebration===celId).length; }
+function regIsFull(celId){ const c = REG_CAPACITY[celId]; return c != null && regCount(celId) >= c; }
+function updateRegCapacityUI(){
+  const f = document.getElementById('registrationCelFilter').value;
+  document.getElementById('statCapacity').textContent = f === 'all' ? '—' : (REG_CAPACITY[f] == null ? '不限' : REG_CAPACITY[f]);
+  const cel = document.getElementById('manualRegCelebration').value, c = REG_CAPACITY[cel];
+  document.getElementById('manualRegCapHint').textContent = c == null ? '名额上限：不限'
+    : '名额上限：' + c + '，已报名 ' + regCount(cel) + (regIsFull(cel) ? '（已满，无法再添加）' : '');
+}
 function filterRegistrations(){
   const val = document.getElementById('registrationCelFilter').value;
   document.querySelectorAll('#regTableBody tr').forEach(row=>{
     row.style.display = (val === 'all' || row.dataset.celebration === val) ? '' : 'none';
   });
+  updateRegCapacityUI();
 }
 function toggleCelebrationDemo(){
   const cover = document.getElementById('celCoverSH');
@@ -2905,6 +2930,7 @@ function cancelInlineAction(btn){
 function toggleManualReg(){
   document.getElementById('manualRegPanel').classList.toggle('hidden');
 }
+function isValidEmail(v){ return v.length <= 100 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }   // REQ-004 §8：含 @ 与域名，≤100 个字符
 function submitManualRegistration(){
   const name = document.getElementById('manualRegName').value.trim();
   const dept = document.getElementById('manualRegDept').value.trim();
@@ -2912,8 +2938,12 @@ function submitManualRegistration(){
     alert('请填写姓名');
     return;
   }
+  const phone = document.getElementById('manualRegPhone').value.trim();
+  const email = document.getElementById('manualRegEmail').value.trim();
+  if(email && !isValidEmail(email)){ alert('邮箱格式不正确（须包含 @ 和域名，且不超过 100 个字符）'); return; }
   const celSelect = document.getElementById('manualRegCelebration');
   const celId = celSelect.value;
+  if(regIsFull(celId)){ alert('报名人数已达上限，无法再添加报名'); return; }
   const celName = celSelect.options[celSelect.selectedIndex].text.split(' · ').pop();
   const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const now = new Date();
@@ -2926,6 +2956,8 @@ function submitManualRegistration(){
     '<td class="title-cell">' + escape(name) + '</td>'
     + '<td class="muted-cell">' + escape(celName) + '</td>'
     + '<td>' + (dept ? escape(dept) : '—') + '</td>'
+    + '<td>' + (phone ? escape(phone) : '—') + '</td>'
+    + '<td>' + (email ? escape(email) : '—') + '</td>'
     + '<td>' + stamp + '</td>'
     + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
     + '<td><div class="table-actions">'
@@ -2939,7 +2971,10 @@ function submitManualRegistration(){
 
   document.getElementById('manualRegName').value = '';
   document.getElementById('manualRegDept').value = '';
+  document.getElementById('manualRegPhone').value = '';
+  document.getElementById('manualRegEmail').value = '';
   document.getElementById('manualRegPanel').classList.add('hidden');
+  updateRegCapacityUI();
 }
 function setCheckin(rowId, status){
   const badge = document.getElementById('regstatus-'+rowId);
@@ -2972,6 +3007,7 @@ function doCancelRegistration(rowId){
   const row = badge.closest('tr');
   const wasCheckedIn = badge.textContent === '已签到';
   row.remove();
+  updateRegCapacityUI();
   const registeredStat = document.getElementById('statRegistered');
   if(registeredStat) registeredStat.textContent = Math.max(0, parseInt(registeredStat.textContent, 10) - 1);
   if(wasCheckedIn){

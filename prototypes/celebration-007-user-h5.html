@@ -184,6 +184,7 @@
   原型演示（管理端的展示开关）：
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('registration')">报名信息：<span id="demoRegState">开</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('doodle')">涂鸦展示：<span id="demoDoodleState">开</span></button>
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleFull()">名额（点击切换）：<span id="demoFullState">未满</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleStage()">状态（点击循环）：<span id="demoStageState">即将开始</span></button>
 </div>
 
@@ -214,6 +215,7 @@
       <div class="u-field"><label>姓名</label><input type="text" value="陈思思" disabled></div>
       <div class="u-field"><label>部门</label><input type="text" value="产品部" disabled></div>
       <div class="u-field"><label>联系电话</label><input type="text" id="celRegPhone" placeholder="用于活动当天联系"></div>
+      <div class="u-field"><label>邮箱地址</label><input type="text" id="celRegEmail" placeholder="例如：name@company.com"></div>
       <div class="u-modal-actions">
         <button class="u-modal-cancel" onclick="closeCelRegisterModal()">取消</button>
         <button class="u-modal-submit" onclick="submitCelRegistration()">确认报名</button>
@@ -231,7 +233,7 @@
 <script>
 const CELEBRATIONS = {
   sg30: {
-    site:'新加坡总部站', modules:{registration:true, doodle:true}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
+    site:'新加坡总部站', modules:{registration:true, doodle:true}, reg:{capacity:null, registered:62, me:false}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
     title:'From Foundation to Future: A Journey Through Time',
     lede:'Three decades of building Singapore\'s skyline — celebrated with staff, partners, and the wider MCC family at our headquarters.',
     body:[
@@ -243,7 +245,7 @@ const CELEBRATIONS = {
     highlights:['创始团队致辞 · Founding member address','三十周年回顾影片 · 30-year tribute video','长期服务奖表彰 · Long-service awards','抽奖与现场乐队 · Lucky draw & live music','集体合影 · Group photography']
   },
   bj30: {
-    site:'北京分公司站', modules:{registration:true, doodle:false}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
+    site:'北京分公司站', modules:{registration:true, doodle:false}, reg:{capacity:41, registered:41, me:false}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
     title:'From Foundation to Future: A Journey Through Time',
     lede:'The Beijing office marked the same milestone with its own morning gathering, shaped by the site\'s own history and team.',
     body:[
@@ -255,7 +257,7 @@ const CELEBRATIONS = {
     highlights:['分公司团队致辞 · Site leadership address','历史照片展示 · Archival photo display','长期服务奖表彰 · Long-service awards','茶歇交流环节 · Tea reception & mingling','集体合影 · Group photography']
   },
   sh30: {
-    site:'上海分公司站', modules:{registration:true, doodle:true}, start_time:'2026-12-05T14:00:00+08:00', end_time:'2026-12-06T17:00:00+08:00',
+    site:'上海分公司站', modules:{registration:true, doodle:true}, reg:{capacity:100, registered:0, me:false}, start_time:'2026-12-05T14:00:00+08:00', end_time:'2026-12-06T17:00:00+08:00',
     title:'From Foundation to Future: A Journey Through Time',
     lede:'上海分公司站\'s celebration is still ahead — the gallery and doodle wall open once the countdown reaches zero.',
     body:['Full details for this site will appear here once the celebration begins. Registration is already open — check back after 2026-12-05 for photos and the doodle exhibition.'],
@@ -264,7 +266,7 @@ const CELEBRATIONS = {
     highlights:['开场致辞 · Opening address','历史回顾 · History showcase','互动游戏 · Interactive games','集体合影 · Group photography']
   },
   q3camp: {
-    site:'Q3团建营地站', modules:{registration:false, doodle:true}, start_time:'2026-08-02T09:00:00+08:00', end_time:'2026-08-02T18:00:00+08:00',
+    site:'Q3团建营地站', modules:{registration:false, doodle:true}, reg:{capacity:null, registered:34, me:false}, start_time:'2026-08-02T09:00:00+08:00', end_time:'2026-08-02T18:00:00+08:00',
     title:'Team Spirit Camp',
     lede:'A very different kind of gathering — Q3\'s team-building camp, celebrated outdoors rather than in a ballroom.',
     body:[
@@ -337,9 +339,6 @@ function renderCelebration(id){
       + '</div>';
     restoreVotes();
 
-  const registerBtn = document.getElementById('registerBtn');
-  registerBtn.disabled = false;
-  registerBtn.textContent = '立即报名 · Register';
   applyModuleSwitches();
 }
 
@@ -358,6 +357,23 @@ function statusOf(id){
    - 封面（§5.2.1）：即将开始 → 预告封面（此处用调暗表示），进行中 / 已结束 → 实拍封面
    - 左侧（§5.2.2）：即将开始 / 进行中 → 预告海报；已结束 → 文字描述 + 相册；涂鸦展示不随状态变化，只看展示开关（位置在最下方）
    - 展示开关（§5.3）：关闭时用户端不显示该模块，也没有入口；数据与配置保留 */
+/* 报名按钮（REQ-004 §8 / AC-009、AC-010）：已报名 → 「已报名 ✓」；名额已满 → 「报名人数已达上限」置灰；否则「立即报名」。不展示名额具体数字 */
+function updateRegisterButton(){
+  const r = CELEBRATIONS[currentId].reg;
+  const full = r.capacity != null && r.registered >= r.capacity;
+  const btn = document.getElementById('registerBtn');
+  if(r.me){ btn.textContent = '已报名 ✓'; btn.disabled = true; }
+  else if(full){ btn.textContent = '报名人数已达上限'; btn.disabled = true; }
+  else { btn.textContent = '立即报名 · Register'; btn.disabled = false; }
+  document.getElementById('demoFullState').textContent = r.me ? '已报名' : (full ? '已满' : '未满');
+}
+function demoToggleFull(){
+  const r = CELEBRATIONS[currentId].reg;
+  if(r.capacity == null){ r.capacity = r.registered; }              // 不限 → 设上限=当前人数，即刚好报满
+  else if(r.registered >= r.capacity){ r.registered = r.capacity - 1; r.me = false; }   // 已满 → 有人取消，释放 1 个名额
+  else { r.registered = r.capacity; }
+  updateRegisterButton();
+}
 function applyModuleSwitches(){
   const m = CELEBRATIONS[currentId].modules;
   const status = statusOf(currentId);
@@ -368,6 +384,7 @@ function applyModuleSwitches(){
   document.getElementById('gallerySection').style.display = ended ? '' : 'none';
   document.getElementById('doodleSection').style.display = m.doodle ? '' : 'none';
   document.getElementById('registerBtn').style.display = m.registration ? '' : 'none';
+  updateRegisterButton();
   document.getElementById('demoRegState').textContent = m.registration ? '开' : '关';
   document.getElementById('demoDoodleState').textContent = m.doodle ? '开' : '关';
   document.getElementById('demoStageState').textContent = STATUS_LABEL[status];
@@ -486,13 +503,18 @@ function closeCelRegisterModal(){
 }
 function submitCelRegistration(){
   const phone = document.getElementById('celRegPhone').value.trim();
-  if(!phone){ alert('请填写联系电话'); return; }
-  if(!/^1\d{10}$/.test(phone)){ alert('请输入有效的11位手机号'); return; }
+  const email = document.getElementById('celRegEmail').value.trim();
+  const errs = [];
+  if(!phone) errs.push('请填写联系电话'); else if(!/^1\d{10}$/.test(phone)) errs.push('请输入有效的11位手机号');
+  if(!email) errs.push('请填写邮箱地址');                                               // REQ-004 AC-006：邮箱必填
+  else if(email.length > 100) errs.push('邮箱地址不能超过 100 个字符');
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.push('请输入有效的邮箱地址（须包含 @ 和域名）');
+  if(errs.length){ alert(errs.join('\n')); return; }                                     // 多处错误一并提示
   document.getElementById('celRegFormBody').classList.add('hidden');
   document.getElementById('celRegSuccessBody').classList.remove('hidden');
-  const btn = document.getElementById('registerBtn');
-  btn.textContent = '已报名 ✓';
-  btn.disabled = true;
+  const r = CELEBRATIONS[currentId].reg;
+  r.me = true; r.registered++;
+  updateRegisterButton();
 }
 document.addEventListener('click', function(e){
   if(e.target.id === 'celRegModalOverlay') closeCelRegisterModal();

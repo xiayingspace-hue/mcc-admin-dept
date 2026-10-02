@@ -40,7 +40,8 @@
 | `list[].author_type` | string（枚举） | |
 | `list[].author_name` | string | |
 | `list[].author_org` | string \| null | 部门或头衔，留空展示为"—"，见需求文档 §8 |
-| `list[].contact` | string \| null | 联系方式 |
+| `list[].contact` | string \| null | 联系电话；员工自主报名必有值（11 位手机号），行政代报名未填为 `null`，名单展示为"—"，AC-012 |
+| `list[].email` | string \| null | 邮箱地址；员工自主报名必有值，行政代报名未填为 `null`，名单展示为"—"，AC-007 |
 | `list[].remark` | string \| null | 备注 |
 | `list[].check_in_status` | string（枚举） | 见枚举总表 |
 | `list[].registered_at` | string(ISO 8601) | 报名时间 |
@@ -57,8 +58,11 @@
 | `author_name` | string | 是 | AC-003 |
 | `author_type` | string（枚举） | 否 | |
 | `author_org` | string | 否 | |
-| `contact` | string | 否 | |
+| `contact` | string | 否 | 联系电话，选填，不校验格式（外部人士号码格式不一），AC-012 |
+| `email` | string | 否 | 选填；填写则须符合邮箱格式、≤100 个字符，AC-008 |
 | `remark` | string | 否 | |
+
+名额上限已设置且报名人数（含代报名，不论是否已签到）达到上限时，后端拒绝本接口并返回「报名人数已达上限」，不产生记录，AC-013。
 
 **响应字段**
 
@@ -66,6 +70,27 @@
 
 **权限**：见需求文档 §7
 **校验**：见需求文档 §8
+
+## 获取报名入口状态（用户端）
+
+`GET /mcc-api/aiis-admin/registrationEntry`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `celebration_id` | string | 是 | |
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `registered` | boolean | 当前用户是否已报名；为 `true` 时按钮显示「已报名 ✓」，优先于已满 |
+| `is_full` | boolean | 名额上限已设置且报名人数（含代报名）达到上限；`capacity` 为空时恒为 `false`，AC-009 |
+
+前端据此决定按钮文案：`registered` → 「已报名 ✓」；否则 `is_full` → 「报名人数已达上限」（置灰）；否则「立即报名」。用户端不展示名额的具体数字。
+
+用户端员工自主报名的接口尚未在本清单中；补充时 `email` 为必填（符合邮箱格式、≤100 个字符，前端拦截 + 后端二次校验），AC-006；名额已满时须拒绝并返回「报名人数已达上限」，剩余名额竞争时由后端保证不超额，AC-011。
 
 ## 签到 / 撤销签到
 
