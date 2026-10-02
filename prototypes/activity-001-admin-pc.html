@@ -186,6 +186,15 @@
   .picker-skel{height:14px; margin:14px 12px; border-radius:4px; background:var(--border)}
   .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
 
+  .attach-list-scroll{max-height:200px; overflow-y:auto}
+  .attach-row{display:flex; align-items:center; gap:10px; padding:8px 12px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--surface); font-size:13px; margin-top:6px}
+  .attach-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .attach-size{color:var(--text-muted); font-size:12px; flex-shrink:0}
+  .attach-st{font-size:11px; padding:2px 8px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .attach-st.fail{background:#F6E4E2; color:var(--danger)}
+  .attach-error{color:var(--danger); font-size:11.5px; margin-top:5px}
+  .summary-attach{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -660,6 +669,24 @@
             </div>
           </div>
 
+          <div class="field">
+            <label>附件（选填）<span id="attachCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
+            <div class="upload-box" id="attachBox" onclick="openAttachPicker()">
+              <span id="attachBoxText">点击上传附件（PDF、Word、Excel、PowerPoint、图片；单个不超过 20MB，最多 10 个）</span>
+              <input type="file" id="attachInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.gif" style="display:none" onclick="event.stopPropagation()" onchange="handleAttachFiles(this.files); this.value=''">
+            </div>
+            <div class="attach-error" id="attachError" style="display:none"></div>
+            <div class="attach-list-scroll" id="attachList"></div>
+            <div class="picker-demo">
+              <span>原型演示：</span>
+              <button class="action-link" onclick="demoAttach('ok')">添加示例文件</button>
+              <button class="action-link" onclick="demoAttach('big')">模拟超过 20MB</button>
+              <button class="action-link" onclick="demoAttach('type')">模拟类型不符</button>
+              <button class="action-link" onclick="demoAttach('fail')">模拟上传失败</button>
+              <button class="action-link" onclick="demoAttach('many')">模拟加满 10 个</button>
+            </div>
+          </div>
+
           <div class="actions end">
             <button class="btn">保存草稿</button>
             <button class="btn primary" onclick="validateStep1()">下一步：配置模块 →</button>
@@ -752,6 +779,10 @@
               </div>
             </div>
           </div>
+            <div class="summary-attach">
+              <div class="summary-desc-label">附件</div>
+              <div class="attach-list-scroll" id="confirmAttachList"></div>
+            </div>
 
           <div class="field">
             <label>第三节点审批人（必选，全公司员工，人数不限；所选人并行处理，全部通过后活动自动发布）<span id="thirdCountBadge" style="margin-left:6px; color:var(--text-muted)"></span></label>
@@ -820,6 +851,17 @@
               </div>
             </div>
           </div>
+            <div class="summary-attach">
+              <div class="summary-desc-label">附件</div>
+              <div class="attach-list-scroll" id="detailAttachList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="setDetailAttachState('normal')">正常</button>
+                <button class="action-link" onclick="setDetailAttachState('loading')">加载中</button>
+                <button class="action-link" onclick="setDetailAttachState('error')">加载失败</button>
+                <button class="action-link" onclick="setDetailAttachState('empty')">无附件</button>
+              </div>
+            </div>
 
           <p class="section-title">审批进度</p>
           <p class="section-hint">实时反映各节点的处理状态</p>
@@ -1969,7 +2011,97 @@ function goStep(n){
   });
   const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批',4:'审批进度'};
   document.getElementById('crumb').textContent = labels[n];
+  if(n===3) renderConfirmAttach();
 }
+/* ---- 附件（步骤一上传 / 步骤三确认 / 详情页展示），数据形状对应 API-activity-001-admin：file_name / file_size / uploaded_at ---- */
+const ATTACH_MAX = 10, ATTACH_MAX_BYTES = 20*1024*1024;
+const ATTACH_EXT = ['pdf','doc','docx','xls','xlsx','ppt','pptx','png','jpg','jpeg','gif'];
+let attachments = [];            // {id, name, size, status: uploading|done|fail}
+let attachSeq = 0;
+let detailAttachState = 'normal'; // normal | loading | error | empty
+let detailAttachData = [];
+function fmtSize(b){ return b>=1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
+function showAttachError(msg){
+  const e = document.getElementById('attachError');
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function addAttachment(name, size, forceFail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!ATTACH_EXT.includes(ext)) return '「'+name+'」类型不支持，仅限 PDF、Word、Excel、PowerPoint 与常见图片';
+  if(size > ATTACH_MAX_BYTES) return '「'+name+'」超过 20MB，未上传';
+  if(attachments.length >= ATTACH_MAX) return '已达 10 个附件上限，「'+name+'」未上传';
+  const a = {id:'A'+(++attachSeq), name, size, status:'uploading', forceFail:!!forceFail};
+  attachments.push(a);
+  renderAttachments();
+  setTimeout(()=>{ a.status = a.forceFail ? 'fail' : 'done'; renderAttachments(); }, 700);
+  return '';
+}
+function handleAttachFiles(files){
+  const errs = [];
+  Array.from(files).forEach(f=>{ const e = addAttachment(f.name, f.size); if(e) errs.push(e); });
+  showAttachError(errs.join('；'));
+}
+function openAttachPicker(){
+  if(attachments.length >= ATTACH_MAX){ showAttachError('已达 10 个附件上限，请先删除再上传'); return; }
+  document.getElementById('attachInput').click();
+}
+function retryAttachment(id){
+  const a = attachments.find(x=>x.id===id);
+  a.status = 'uploading'; a.forceFail = false; renderAttachments();
+  setTimeout(()=>{ a.status = 'done'; renderAttachments(); }, 700);
+}
+function removeAttachment(id){
+  attachments = attachments.filter(x=>x.id!==id);
+  showAttachError(''); renderAttachments();
+}
+function demoAttach(kind){
+  const errs = [];
+  if(kind==='ok')   errs.push(addAttachment('活动方案-30周年庆典.pdf', 3.2*1048576));
+  if(kind==='big')  errs.push(addAttachment('宣传视频素材.pdf', 35*1048576));
+  if(kind==='type') errs.push(addAttachment('安装包.exe', 2*1048576));
+  if(kind==='fail') errs.push(addAttachment('预算明细.xlsx', 860*1024, true));
+  if(kind==='many'){
+    for(let i=attachments.length; i<ATTACH_MAX; i++) addAttachment('补充材料-'+(i+1)+'-这是一个特别特别长的文件名用来演示超长文件名不会撑破布局.pdf', 500*1024);
+    errs.push(addAttachment('第11个文件.pdf', 100*1024));
+  }
+  showAttachError(errs.filter(Boolean).join('；'));
+}
+function renderAttachments(){
+  document.getElementById('attachList').innerHTML = attachments.length
+    ? attachments.map(a=>{
+        const del = '<button class="action-link danger" onclick="removeAttachment(\''+a.id+'\')">删除</button>';
+        const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
+                 : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retryAttachment(\''+a.id+'\')">重试</button>'+del
+                 : del;
+        return '<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st+'</div>';
+      }).join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">尚未上传附件</div>';
+  document.getElementById('attachCount').textContent = attachments.length ? '已添加 '+attachments.length+'/'+ATTACH_MAX : '';
+  const full = attachments.length >= ATTACH_MAX;
+  document.getElementById('attachBoxText').textContent = full ? '已达 10 个上限，请先删除再上传'
+    : '点击上传附件（PDF、Word、Excel、PowerPoint、图片；单个不超过 20MB，最多 10 个）';
+  document.getElementById('attachBox').style.cursor = full ? 'not-allowed' : 'pointer';
+}
+function resetAttachments(){ attachments = []; showAttachError(''); renderAttachments(); }
+function doneAttachments(){
+  return attachments.filter(a=>a.status==='done').map(a=>({name:a.name, size:a.size, uploaded_at:'刚刚'}));
+}
+function attachDetailRows(list){
+  return list.length
+    ? list.map(a=>'<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+(a.uploaded_at?' · '+a.uploaded_at:'')+'</span><button class="action-link" onclick="alert(\'原型演示：下载 \'+this.parentNode.firstChild.textContent)">下载</button></div>').join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">暂无附件</div>';
+}
+function renderConfirmAttach(){
+  document.getElementById('confirmAttachList').innerHTML = attachDetailRows(doneAttachments());
+}
+function renderDetailAttachments(){
+  const el = document.getElementById('detailAttachList');
+  if(detailAttachState==='loading') el.innerHTML = '<div class="picker-skel"></div><div class="picker-skel"></div>';
+  else if(detailAttachState==='error') el.innerHTML = '<div class="picker-state" style="padding:12px">附件列表加载失败 <button class="action-link" onclick="setDetailAttachState(\'normal\')">重试</button></div>';
+  else el.innerHTML = attachDetailRows(detailAttachState==='empty' ? [] : detailAttachData);
+}
+function setDetailAttachState(s){ detailAttachState = s; renderDetailAttachments(); }
+
 /* ---- 第三节点审批人选择（步骤三），数据形状对应 API-activity-001-admin：employee_id / name / employee_no ---- */
 const EMPLOYEES = [
   {employee_id:'E0001', name:'XY',  employee_no:'0001'},
@@ -2057,6 +2189,7 @@ function submitApproval(){
   openApproval({
     deptStatus:'pending',
     meId:null,
+    attachments: doneAttachments(),
     assignees: thirdSelected.map(id=>({employee_id:id, status:'pending', comment:'', acted_at:''}))
   }, 'initiator');
 }
@@ -2068,6 +2201,11 @@ function demoApprovalData(){
   return {
     deptStatus:'approved',
     meId:'E2047',
+    attachments:[
+      {name:'活动方案-30周年庆典.pdf', size:3.2*1048576, uploaded_at:'2026-09-14 10:20'},
+      {name:'预算明细.xlsx', size:860*1024, uploaded_at:'2026-09-14 10:24'},
+      {name:'场地平面图-总部三楼多功能厅-含消防通道标注与设备摆放位置说明-终版-v3.pptx', size:12.4*1048576, uploaded_at:'2026-09-14 10:30'}
+    ],
     assignees:[
       {employee_id:'E1023', status:'approved', comment:'同意，预算说明清楚。', acted_at:'2026-09-14 14:20'},
       {employee_id:'E2047', status:'pending',  comment:'', acted_at:''},
@@ -2118,12 +2256,16 @@ function openApproval(data, mode){
   document.getElementById('approverComment').value = '';
   document.getElementById('demoOthersWrap').classList.add('hidden');
   goStep(4);
+  detailAttachState = 'normal';
+  detailAttachData = data.attachments || [];
+  renderDetailAttachments();
   renderApproval();
   const me = data.assignees.find(a=>a.employee_id===data.meId);
   setApprovalMode(mode==='approver' && me && me.status==='pending' ? 'approver' : 'initiator');
 }
 renderChips();
 renderPicker();
+renderAttachments();
 function showList(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='listView');
@@ -2139,6 +2281,7 @@ function showEditor(){
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
   resetThirdPicker();
+  resetAttachments();
   goStep(1);
 }
 function viewActivity(){

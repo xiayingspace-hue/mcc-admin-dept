@@ -61,6 +61,64 @@
 | `external_visible` | string（枚举） | 是 | 默认 `internal_only` |
 | `cover_image_url` | string | 否 | |
 | `description_html` | string | 否 | 富文本，前端只读展示时需做 XSS 净化 |
+| `attachment_ids[]` | string[] | 否 | 该活动的附件完整名单（取自「上传附件」的返回值），最多 10 个，AC-017；仅 `draft` / `rejected` 状态可变更，AC-020 |
+
+## 上传附件
+
+`POST /mcc-api/aiis-admin/activityAttachment`　multipart/form-data，一次上传一个文件；创建活动时活动尚无 `id`，上传结果通过创建/更新活动的 `attachment_ids[]` 绑定到活动
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `file` | file | 是 | 类型、大小、数量限制见需求文档 §8，AC-018 |
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `attachment_id` | string | 附件ID |
+| `file_name` | string | 文件名 |
+| `file_size` | number | 单位：字节 |
+| `uploaded_at` | string | ISO 8601 |
+
+**权限**：见需求文档 §7（仅发起人，且仅 `draft` / `rejected` 状态，AC-020）
+**校验**：见需求文档 §8（前端拦截 + 后端二次校验）
+
+## 获取附件列表（活动详情页）
+
+`GET /mcc-api/aiis-admin/activityAttachment`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `activity_id` | string | 是 | 活动ID |
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `list[]` | array | 无附件时为空数组，对应详情页 empty 态，AC-021 |
+| `list[].attachment_id` | string | 附件ID |
+| `list[].file_name` | string | 文件名 |
+| `list[].file_size` | number | 单位：字节 |
+| `list[].uploaded_at` | string | ISO 8601 |
+| `list[].download_url` | string | 下载地址 |
+
+**权限**：见需求文档 §7（发起人与各审批节点审批人可查看下载）
+
+## 删除附件
+
+`DELETE /mcc-api/aiis-admin/activityAttachment`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `attachment_id` | string | 是 | 附件ID；硬删除，AC-019 |
+
+**权限**：见需求文档 §7（仅发起人，且仅 `draft` / `rejected` 状态，AC-020）
 
 ## 提交审批
 
