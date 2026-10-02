@@ -231,6 +231,11 @@
   .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--text-primary)}
   .qr-hint{font-size:12px; color:var(--text-muted); text-align:center; margin-top:6px}
 
+  .u-img-row{display:flex; align-items:center; gap:8px; padding:8px 10px; border:0.5px solid var(--u-gold-tint); border-radius:8px; font-size:12.5px; margin-top:6px}
+  .u-img-err{color:var(--danger); font-size:11.5px; margin-top:5px}
+
+  .wall-edited{font-size:11px; color:var(--text-muted); border:0.5px solid var(--border-strong); border-radius:4px; padding:0 6px; cursor:help}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -1016,7 +1021,6 @@
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
                 <div class="attr-row"><span class="attr-name">展示样式</span><span class="attr-type">网格 / 轮播</span></div>
                 <div class="attr-row"><span class="attr-name">允许外部人士留言</span><span class="attr-type">开关</span></div>
-                <div class="attr-row"><span class="attr-name">支持配图</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">允许匿名留言</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">留言截止时间</span><span class="attr-type">日期时间</span></div>
               </div>
@@ -1444,17 +1448,28 @@
               </div>
               <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：合作伙伴 · XX公司"></div>
             </div>
-            <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：田中一郎"></div>
+            <div class="field"><label>作者姓名</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
             <div class="field">
-              <label>留言图片（选填）</label>
-              <div class="upload-box">点击或拖拽上传配图，如合影、手写卡片照片</div>
+              <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+              <div class="upload-box" id="adminWallImgBox" onclick="wallPickImage('admin')">点击上传一张配图，如合影、手写卡片照片</div>
+              <input type="file" id="adminWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('admin', this.files); this.value=''">
+              <div class="attach-error" id="adminWallImgError" style="display:none"></div>
+              <div id="adminWallImgList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="wallDemo('admin','ok')">添加示例图片</button>
+                <button class="action-link" onclick="wallDemo('admin','type')">类型不符</button>
+                <button class="action-link" onclick="wallDemo('admin','big')">超过 5MB</button>
+                <button class="action-link" onclick="wallDemo('admin','multi')">一次选多张</button>
+                <button class="action-link" onclick="wallDemo('admin','fail')">上传失败</button>
+              </div>
             </div>
             <div class="field">
               <label>留言内容</label>
-              <textarea rows="2" placeholder="代录入的祝福留言"></textarea>
+              <textarea rows="2" id="adminWallContent" placeholder="代录入的祝福留言"></textarea>
             </div>
             <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为待审核')">提交留言</button>
+              <button class="btn primary" onclick="submitWallAdmin()">提交留言</button>
             </div>
           </div>
 
@@ -1857,8 +1872,18 @@
                     </label>
                   </div>
                   <div class="u-field">
-                    <label>配图（选填）</label>
-                    <div class="u-upload-box" id="wallImageUpload" onclick="this.textContent='已选择 celebration.jpg'; this.dataset.attached='1'">点击上传一张配图</div>
+                    <label>配图（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+                    <div class="u-upload-box" id="userWallImgBox" onclick="wallPickImage('user')">点击上传一张配图</div>
+                    <input type="file" id="userWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('user', this.files); this.value=''">
+                    <div class="u-img-err" id="userWallImgError" style="display:none"></div>
+                    <div id="userWallImgList"></div>
+                    <div style="font-size:11px; color:var(--u-text-muted); margin-top:6px">原型演示：
+                      <button class="u-work-link" onclick="wallDemo('user','ok')">添加示例图片</button>
+                      <button class="u-work-link" onclick="wallDemo('user','type')">类型不符</button>
+                      <button class="u-work-link" onclick="wallDemo('user','big')">超过 5MB</button>
+                      <button class="u-work-link" onclick="wallDemo('user','multi')">一次选多张</button>
+                      <button class="u-work-link" onclick="wallDemo('user','fail')">上传失败</button>
+                    </div>
                   </div>
                   <div class="u-field">
                     <label>留言内容</label>
@@ -2033,6 +2058,45 @@
         </div>
 
         <!-- User-facing preview: single celebration detail -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="wallEditOverlay" onclick="if(event.target===this)closeWallEdit()">
+  <div class="adm-box" style="max-width:520px">
+    <div class="adm-head"><strong id="wallEditTitle">编辑留言</strong><button class="action-link" onclick="closeWallEdit()">关闭</button></div>
+    <div style="padding:16px 20px">
+      <div id="wallEditAuthorFixed" style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px"></div>
+      <div id="wallEditAuthorFields">
+        <div class="row2">
+          <div class="field"><label>作者类型</label>
+            <select id="editWallType" style="width:100%"><option value="internal">内部员工</option><option value="external">外部人士</option></select></div>
+          <div class="field"><label>部门 / 头衔</label><input type="text" id="editWallOrg"></div>
+        </div>
+        <div class="field"><label>作者姓名</label><input type="text" id="editWallName"></div>
+      </div>
+      <div class="field">
+        <label>留言内容</label>
+        <textarea rows="3" id="editWallContent"></textarea>
+      </div>
+      <div class="field">
+        <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+        <div class="upload-box" id="editWallImgBox" onclick="wallPickImage('edit')">点击上传一张配图（重新选择会替换原图）</div>
+        <input type="file" id="editWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('edit', this.files); this.value=''">
+        <div class="attach-error" id="editWallImgError" style="display:none"></div>
+        <div id="editWallImgList"></div>
+        <div class="picker-demo">
+          <span>原型演示：</span>
+          <button class="action-link" onclick="wallDemo('edit','ok')">换一张示例图片</button>
+          <button class="action-link" onclick="wallDemo('edit','type')">类型不符</button>
+          <button class="action-link" onclick="wallDemo('edit','big')">超过 5MB</button>
+          <button class="action-link" onclick="wallDemo('edit','multi')">一次选多张</button>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px">
+        <button class="btn" onclick="closeWallEdit()">取消</button>
+        <button class="btn primary" onclick="saveWallEdit()">保存修改</button>
       </div>
     </div>
   </div>
@@ -2836,6 +2900,8 @@ function renderWork(){
 renderSubImages();
 renderSubVideo();
 updateAuthorHint();
+document.querySelectorAll('#wallList .wall-row').forEach(r=>{ r.querySelector('.table-actions').innerHTML = wallActionsHtml(r.id, r.dataset.status); });
+{ const w3 = document.querySelector('#w3 .wall-name-row'); if(w3){ const t = document.createElement('span'); t.className = 'wall-edited'; t.textContent = '已编辑'; t.title = '修改人：行政小李 · 修改时间：2026-09-16 09:40'; w3.appendChild(t); } }
 document.querySelectorAll('#submissionGrid .submission-card').forEach(c=>setSubmissionStatus(c.id, c.dataset.status));
 
 /* ---- 管理端作品详情（只读，REQ-003 AC-017）：图片可切换、视频最后一项、完整说明、作者信息、状态与票数 ---- */
@@ -3122,6 +3188,61 @@ function toggleVote(cardId){
   countEl.dataset.count = count;
   countEl.textContent = count + ' 票';
 }
+/* ---- 行政编辑留言（REQ-005 AC-010 ～ AC-014）：待审核 / 已隐藏可编辑，已展示需先隐藏；员工提交的作者与匿名只读 ---- */
+let wallEditingId = null;
+function wallActionsHtml(id, status){
+  const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">编辑</button>';
+  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">展示</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">拒绝</button>';
+  if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">隐藏</button>';
+  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">恢复</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+}
+function wallAdminEntered(row){ return row.querySelector('.wall-meta').textContent.includes('行政代录入'); }
+function openWallEdit(id){
+  const row = document.getElementById(id);
+  if(row.dataset.status === 'published') return;                        // 已展示没有编辑入口
+  wallEditingId = id;
+  const fixed = !wallAdminEntered(row);
+  const name = row.querySelector('.wall-name').textContent;
+  document.getElementById('wallEditTitle').textContent = '编辑留言 · ' + name + (row.dataset.status === 'hidden' ? '（已隐藏）' : '（待审核）');
+  document.getElementById('wallEditAuthorFixed').style.display = fixed ? 'block' : 'none';
+  document.getElementById('wallEditAuthorFixed').textContent = '作者：' + name + ' · ' + row.querySelector('.wall-meta').textContent + '（员工自主提交，作者身份和匿名选项不可修改）';
+  document.getElementById('wallEditAuthorFields').style.display = fixed ? 'none' : 'block';
+  if(!fixed){
+    document.getElementById('editWallName').value = name;
+    document.getElementById('editWallOrg').value = row.querySelector('.wall-meta').textContent.split(' · ')[0];
+    document.getElementById('editWallType').value = row.dataset.authorType || 'external';
+  }
+  document.getElementById('editWallContent').value = row.querySelector('.wall-quote').textContent;
+  WALL_IMG.edit = row.querySelector('.wall-image') ? {name:'已上传的配图.jpg', size:1.2*1048576, status:'done'} : null;   // 历史留言可能没有配图
+  wallMsg('edit',''); renderWallImg('edit');
+  document.getElementById('wallEditOverlay').classList.add('open');
+}
+function closeWallEdit(){ document.getElementById('wallEditOverlay').classList.remove('open'); }
+function saveWallEdit(){
+  const row = document.getElementById(wallEditingId);
+  const content = document.getElementById('editWallContent').value.trim();
+  if(!content){ alert('请填写留言内容'); return; }
+  if(!wallImageReady('edit')) return;                                   // AC-012：配图必填，原本没有配图的也要补
+  row.querySelector('.wall-quote').textContent = content;
+  if(!row.querySelector('.wall-image')){
+    const img = document.createElement('div'); img.className = 'wall-image'; img.textContent = '📷';
+    row.querySelector('.wall-quote').before(img);
+  }
+  if(wallAdminEntered(row)){
+    const name = document.getElementById('editWallName').value.trim();
+    if(!name){ alert('请填写作者姓名'); return; }
+    row.querySelector('.wall-name').textContent = name;
+    const org = document.getElementById('editWallOrg').value.trim();
+    row.querySelector('.wall-meta').textContent = (org ? org + ' · ' : '') + '行政代录入';
+    row.dataset.authorType = document.getElementById('editWallType').value;
+  }
+  const now = new Date(), pad = n => String(n).padStart(2,'0');
+  const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  let tag = row.querySelector('.wall-edited');
+  if(!tag){ tag = document.createElement('span'); tag.className = 'wall-edited'; tag.textContent = '已编辑'; row.querySelector('.wall-name-row').appendChild(tag); }
+  tag.title = '修改人：行政小李 · 修改时间：' + stamp;                        // 只记录最后一次，不保存历史版本
+  closeWallEdit();
+}
 function setWallStatus(rowId, status){
   const row = document.getElementById(rowId);
   const badge = row.querySelector('.status-badge');
@@ -3130,13 +3251,11 @@ function setWallStatus(rowId, status){
   if(status === 'published'){
     badge.className = 'status-badge approved';
     badge.textContent = '已展示';
-    actions.innerHTML = '<button class="action-link muted" onclick="setWallStatus(\''+rowId+'\',\'hidden\')">隐藏</button>';
   } else if(status === 'hidden'){
     badge.className = 'status-badge hidden-st';
     badge.textContent = '已隐藏';
-    actions.innerHTML = '<button class="action-link" onclick="setWallStatus(\''+rowId+'\',\'published\')">恢复</button>'
-      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
   }
+  actions.innerHTML = wallActionsHtml(rowId, status);
   filterWallMessages();
 }
 function filterWallMessages(){
@@ -3231,14 +3350,76 @@ function saveExternalVisibility(){
   document.getElementById('extVisibilityEdit').classList.add('hidden');
   document.getElementById('extVisibilityDisplay').classList.remove('hidden');
 }
+/* ---- 寄语配图：必填、仅 1 张、JPG/PNG、≤5MB；已选后再选 = 替换（REQ-005 AC-006 ～ AC-009）。which = 'user'（用户端弹窗）| 'admin'（行政代录入） ---- */
+const WALL_IMG = {user:null, admin:null, edit:null};
+const WALL_IMG_BYTES = 5*1048576;
+function wallMsg(which, msg){
+  const e = document.getElementById(which+'WallImgError'); e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function wallPickImage(which){ document.getElementById(which+'WallImgInput').click(); }
+function wallSetImage(which, name, size, fail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!['jpg','jpeg','png'].includes(ext)) return '「'+name+'」类型不支持，配图仅限 JPG 或 PNG';
+  if(size > WALL_IMG_BYTES) return '「'+name+'」超过 5MB，未上传';
+  const img = {name, size, status:'uploading', fail:!!fail};
+  WALL_IMG[which] = img;                                   // 已有图片则直接替换
+  renderWallImg(which);
+  setTimeout(()=>{ if(WALL_IMG[which] === img){ img.status = img.fail ? 'fail' : 'done'; renderWallImg(which); } }, 700);
+  return '';
+}
+function wallHandleFiles(which, files){
+  if(files.length > 1){ wallMsg(which, '只能上传 1 张配图，未保存'); return; }
+  if(files.length) wallMsg(which, wallSetImage(which, files[0].name, files[0].size));
+}
+function wallRetry(which){
+  const img = WALL_IMG[which]; img.status = 'uploading'; img.fail = false; renderWallImg(which);
+  setTimeout(()=>{ if(WALL_IMG[which] === img){ img.status = 'done'; renderWallImg(which); } }, 700);
+}
+function wallRemove(which){ WALL_IMG[which] = null; wallMsg(which, ''); renderWallImg(which); }
+function renderWallImg(which){
+  const img = WALL_IMG[which], el = document.getElementById(which+'WallImgList');
+  const rowCls = which === 'user' ? 'u-img-row' : 'attach-row';
+  if(!img){ el.innerHTML = ''; }
+  else {
+    const st = img.status==='uploading' ? '<span style="color:var(--text-muted)">上传中…</span>'
+      : img.status==='fail' ? '<span style="color:var(--danger)">上传失败</span> <button class="action-link" onclick="wallRetry(\''+which+'\')">重试</button>' : '';
+    el.innerHTML = '<div class="'+rowCls+'"><span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="'+img.name+'">'+img.name+'</span>'
+      + '<span style="color:var(--text-muted)">'+fmtSize(img.size)+'</span>'+st
+      + '<button class="action-link muted" onclick="wallPickImage(\''+which+'\')">重新选择</button>'
+      + '<button class="action-link danger" onclick="wallRemove(\''+which+'\')">删除</button></div>';
+  }
+}
+function wallDemo(which, kind){
+  if(kind==='ok')   wallMsg(which, wallSetImage(which, '合影-'+(Math.floor(Math.random()*90)+10)+'.jpg', 1.6*1048576));
+  if(kind==='type') wallMsg(which, wallSetImage(which, '动图.gif', 2*1048576));
+  if(kind==='big')  wallMsg(which, wallSetImage(which, '高清原图.png', 7*1048576));
+  if(kind==='multi')wallHandleFiles(which, [{name:'图1.jpg',size:1000},{name:'图2.jpg',size:1000}]);
+  if(kind==='fail') wallMsg(which, wallSetImage(which, '上传失败演示.jpg', 2*1048576, true));
+}
+function wallImageReady(which){
+  const img = WALL_IMG[which];
+  if(!img){ wallMsg(which, '请上传配图'); return false; }
+  if(img.status === 'uploading'){ wallMsg(which, '配图上传中，请稍候'); return false; }
+  if(img.status === 'fail'){ wallMsg(which, '配图上传失败，请重试或重新选择'); return false; }
+  return true;
+}
+function submitWallAdmin(){
+  const name = document.getElementById('adminWallName').value.trim();
+  const content = document.getElementById('adminWallContent').value.trim();
+  if(!name){ alert('请填写作者姓名'); return; }
+  if(!content){ alert('请填写留言内容'); return; }
+  if(!wallImageReady('admin')) return;                     // AC-008：配图必填
+  alert('原型演示：将新建一条留言记录，状态为待审核');
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallContent').value = '';
+  wallRemove('admin');
+}
+
 function openWallModal(){
   document.getElementById('wallFormBody').classList.remove('hidden');
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';
   document.getElementById('wallAnonCheck').checked = false;
-  const upload = document.getElementById('wallImageUpload');
-  upload.textContent = '点击上传一张配图';
-  upload.dataset.attached = '';
+  wallRemove('user');
   document.getElementById('wallModalOverlay').classList.add('open');
 }
 function closeWallModal(){
@@ -3250,6 +3431,7 @@ function submitWallMessage(){
     alert('请填写留言内容');
     return;
   }
+  if(!wallImageReady('user')) return;                     // AC-006：配图必填，匿名也一样
   document.getElementById('wallFormBody').classList.add('hidden');
   document.getElementById('wallSuccessBody').classList.remove('hidden');
 
@@ -3260,8 +3442,7 @@ function submitWallMessage(){
     const displayName = anon ? '匿名员工' : '陈思思';
     const meta = anon ? '已开启匿名 · 员工提交' : '产品部 · 员工提交';
     const escaped = msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const hasImage = document.getElementById('wallImageUpload').dataset.attached === '1';
-    const imageHtml = hasImage ? '<div class="wall-image">📷</div>' : '';
+    const imageHtml = '<div class="wall-image">📷</div>';
     const rowId = 'w-new-' + Date.now();
     const row = document.createElement('div');
     row.className = 'wall-row';
@@ -3275,10 +3456,7 @@ function submitWallMessage(){
       +   imageHtml
       +   '<p class="wall-quote">' + escaped + '</p>'
       +   '<div class="wall-footer"><span class="status-badge review">待审核</span>'
-      +     '<div class="table-actions">'
-      +       '<button class="action-link" onclick="setWallStatus(\'' + rowId + '\',\'published\')">展示</button>'
-      +       '<button class="action-link danger" onclick="setWallStatus(\'' + rowId + '\',\'hidden\')">拒绝</button>'
-      +     '</div></div>'
+      +     '<div class="table-actions">' + wallActionsHtml(rowId, 'review') + '</div></div>'
       + '</div>';
     list.prepend(row);
 
