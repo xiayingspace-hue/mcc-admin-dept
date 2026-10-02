@@ -78,7 +78,7 @@
 | `modules[].module_type` | string（枚举） | 是 | |
 | `modules[].display_start_time` | string(ISO 8601) | 否 | 不得晚于该模块自身任何截止时间字段，AC-003 |
 | `modules[].sort_order` | number | 是 | |
-| `modules[].message_deadline` | string(ISO 8601) | 否，仅 `wall` | 须晚于活动开始时间 |
+| `modules[].message_deadline` | string(ISO 8601) | 否，仅 `wall` | 须晚于活动计划开始时间 |
 | `modules[].allow_external_message` | boolean | `wall` 必填 | 与活动 `external_visible=internal_only` 冲突时的处理方式见需求文档 §11 已知缺口 |
 
 **响应字段**

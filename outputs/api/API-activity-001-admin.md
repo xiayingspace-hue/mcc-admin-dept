@@ -39,7 +39,7 @@
 | `type` | string | 活动类型 |
 | `status` | string（枚举） | 见枚举总表 |
 | `budget` | number | 币种 S$，数值单位见 conventions.md 金额精度 |
-| `hold_time` | string | ISO 8601 |
+| `hold_time` | string | 计划举办时间，ISO 8601 |
 | `initiator` | string | 发起人姓名 |
 
 ## 创建 / 更新活动基础信息
@@ -54,7 +54,7 @@
 | `title` | string | 是 | AC-001 |
 | `type` | string | 是 | |
 | `layout_template` | string（枚举，取值见 `module-002` 关联的模板受控表） | 是 | |
-| `start_time` / `end_time` | string(ISO 8601) | 是 | `end_time` 须晚于 `start_time`，AC-002 |
+| `start_time` / `end_time` | string(ISO 8601) | 是 | 计划开始时间 / 计划结束时间；`end_time` 须晚于 `start_time`，AC-002 |
 | `location` | string | 是 | |
 | `budget` | number | 是 | |
 | `scope` | string（`all` \| `departments`） | 是 | 参与范围 |

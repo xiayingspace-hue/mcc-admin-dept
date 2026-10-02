@@ -474,7 +474,7 @@
           <table class="activity-table">
             <thead>
               <tr>
-                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>举办时间</th><th>发起人</th><th>操作</th>
+                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>计划举办时间</th><th>发起人</th><th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -600,14 +600,14 @@
 
           <div class="row2">
             <div class="field">
-              <label>开始时间<span class="req-mark">*</span></label>
+              <label>计划开始时间<span class="req-mark">*</span></label>
               <input type="datetime-local" id="fieldStart">
-              <div class="field-error" id="errStart">请选择开始时间</div>
+              <div class="field-error" id="errStart">请选择计划开始时间</div>
             </div>
             <div class="field">
-              <label>结束时间<span class="req-mark">*</span></label>
+              <label>计划结束时间<span class="req-mark">*</span></label>
               <input type="datetime-local" id="fieldEnd">
-              <div class="field-error" id="errEnd">请选择结束时间</div>
+              <div class="field-error" id="errEnd">请选择计划结束时间</div>
             </div>
           </div>
 
@@ -739,7 +739,7 @@
             <div class="summary-grid">
               <div class="summary-item"><label>活动标题</label><div class="val">公司30周年庆典</div></div>
               <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
-              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>计划举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
               <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
               <div class="summary-item"><label>预算</label><div class="val">S$68,000</div></div>
               <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
@@ -792,7 +792,7 @@
             <div class="summary-cover">封面图预览</div>
             <div class="summary-grid">
               <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
-              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>计划举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
               <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
               <div class="summary-item"><label>预算</label><div class="val">S$68,000</div></div>
               <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
@@ -1930,11 +1930,11 @@ function validateStep1(){
   if(start.value && end.value){
     if(end.value <= start.value){
       end.classList.add('field-invalid');
-      errEnd.textContent = '结束时间需晚于开始时间';
+      errEnd.textContent = '计划结束时间需晚于计划开始时间';
       errEnd.style.display = 'block';
       valid = false;
     } else {
-      errEnd.textContent = '请选择结束时间';
+      errEnd.textContent = '请选择计划结束时间';
     }
   }
 
