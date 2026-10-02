@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>现场扫码签到 · 活动运营后台</title>
+<link rel="stylesheet" href="_shared/tokens.css">
+<link rel="stylesheet" href="_shared/proto.css">
+</head>
+<body>
+
+<!--
+  registration-004-admin-h5：现场扫码签到页（企业微信内嵌 H5）
+  对应需求：requirements/admin/shared/registration-004-admin.md（AC-015～AC-022）
+            requirements/admin/h5/registration-004-admin-h5.md（AC-H01～AC-H06）
+  对应接口：outputs/api/API-registration-004-admin.md 「扫码签到」（check_in_result：success / already_checked_in / invalid_code / out_of_window / no_permission）
+  说明：empty 状态不适用（本页没有列表），右下角控制台选「空」时显示"不适用"。
+-->
+
+<div class="p-phones">
+  <div>
+    <div class="p-phone-label">现场扫码签到页（点右下角控制台切换页面状态）</div>
+    <div class="p-phone">
+      <div class="p-phone-screen">
+
+        <!-- 扫码主页：状态由控制台切换 -->
+        <section class="p-screen p-active" id="scan" data-title="扫码签到" data-state-group="scan">
+
+          <div data-when="normal">
+            <div class="p-card">
+              <h3>扫码签到 <span class="anno" data-note="AC-H01：持签到权限的账号看到取景框和提示；扫到码后先显示验证中，再进入结果页">1</span></h3>
+              <p>将参与者出示的签到码对准取景框</p>
+              <div class="p-empty">📷 取景框（原型示意）</div>
+            </div>
+            <div class="p-actions end">
+              <button class="p-btn" data-goto="camera">摄像头不可用？</button>
+            </div>
+            <div class="p-card">
+              <p>原型演示：模拟扫到一个码 <span class="anno" data-note="AC-016：窗口内扫描未签到记录的码 → 签到成功；AC-017：重复扫 → 已签到；AC-018：窗口外 → 不在签到时间内；AC-019：无效的码">2</span></p>
+              <div class="p-actions">
+                <button class="p-btn primary" data-goto="res-success">签到成功</button>
+                <button class="p-btn" data-goto="res-already">已签到</button>
+              </div>
+              <div class="p-actions">
+                <button class="p-btn danger-text" data-goto="res-invalid">无效的码</button>
+                <button class="p-btn" data-goto="res-window">不在时间内</button>
+              </div>
+            </div>
+          </div>
+
+          <div data-when="loading">
+            <div class="p-card">
+              <h3>验证中…</h3>
+              <div class="p-skeleton"></div>
+              <div class="p-skeleton"></div>
+              <div class="p-skeleton"></div>
+            </div>
+          </div>
+
+          <div data-when="empty">
+            <div class="p-empty">本页没有列表，「从未有过」状态不适用</div>
+          </div>
+
+          <div data-when="empty2">
+            <div class="p-empty">本页没有筛选，「筛选无果」状态不适用</div>
+          </div>
+
+          <div data-when="error">
+            <div class="p-error">
+              网络失败，没有拿到签到结果，请重试
+              <div class="p-actions end">
+                <button class="p-btn primary" data-toast="已重新请求同一个签到码">重试 <span class="anno" data-note="AC-H05：网络失败显示错误与重试，不显示任何结果；重试后重新请求同一个签到码">3</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div data-when="noperm">
+            <div class="p-noperm">
+              无签到权限
+              <p>你的账号没有现场签到权限，请联系行政开通 <span class="anno" data-note="AC-020：无签到权限的账号整页拦截并提示无签到权限；后端同样拒绝">4</span></p>
+            </div>
+          </div>
+
+          <div data-when="overflow">
+            <div class="p-card">
+              <span class="p-badge approved">签到成功</span>
+              <h3>Alexandria Montgomery-Featherstonehaugh Wellington</h3>
+              <p>Global Business Development &amp; Strategic Partnerships Department, Asia Pacific Regional Headquarters</p>
+              <p>公司30周年庆典 · 新加坡总部站 <span class="anno" data-note="AC-H06：姓名或机构很长时换行或截断，不撑破布局，继续扫码按钮始终可见">5</span></p>
+            </div>
+            <div class="p-actions end">
+              <button class="p-btn primary" data-goto="scan">继续扫码</button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- 结果页：签到成功 -->
+        <section class="p-screen" id="res-success" data-title="签到成功">
+          <div class="p-card">
+            <span class="p-badge approved">签到成功</span>
+            <h3>陈思思</h3>
+            <p>产品部</p>
+            <p>公司30周年庆典 · 新加坡总部站</p>
+            <p>请核对本人后放行 <span class="anno" data-note="AC-016：成功后显示姓名、部门、所属 Celebration，不显示电话和邮箱（AC-H02）">6</span></p>
+          </div>
+          <div class="p-actions end">
+            <button class="p-btn primary" data-goto="scan">继续扫码 <span class="anno" data-note="AC-H03：点继续扫码回到待扫描，可立即扫下一个">7</span></button>
+          </div>
+        </section>
+
+        <!-- 结果页：已签到 -->
+        <section class="p-screen" id="res-already" data-title="该参与者已签到">
+          <div class="p-card">
+            <span class="p-badge review">该参与者已签到</span>
+            <h3>王芳</h3>
+            <p>行政部</p>
+            <p>公司30周年庆典 · 新加坡总部站</p>
+            <p>状态和统计均未变化 <span class="anno" data-note="AC-017：重复扫描已签到记录，提示已签到，状态与统计不变">8</span></p>
+          </div>
+          <div class="p-actions end">
+            <button class="p-btn primary" data-goto="scan">继续扫码</button>
+          </div>
+        </section>
+
+        <!-- 结果页：无效的签到码 -->
+        <section class="p-screen" id="res-invalid" data-title="无效的签到码">
+          <div class="p-card">
+            <span class="p-badge rejected">无效的签到码</span>
+            <p>该码不存在，或对应的报名已取消 <span class="anno" data-note="AC-019：伪造、不存在或报名已取消的码，提示无效的签到码，不改变任何记录">9</span></p>
+          </div>
+          <div class="p-actions end">
+            <button class="p-btn primary" data-goto="scan">继续扫码</button>
+          </div>
+        </section>
+
+        <!-- 结果页：不在签到时间内 -->
+        <section class="p-screen" id="res-window" data-title="不在签到时间内">
+          <div class="p-card">
+            <span class="p-badge ended">不在签到时间内</span>
+            <p>签到时间为活动开始前 6 小时至结束日期当天结束 <span class="anno" data-note="AC-018：窗口外扫码提示不在签到时间内，状态不变；窗口只限制扫码，不限制管理端手动签到">10</span></p>
+          </div>
+          <div class="p-actions end">
+            <button class="p-btn primary" data-goto="scan">继续扫码</button>
+          </div>
+        </section>
+
+        <!-- 摄像头不可用：手动输入签到码 -->
+        <section class="p-screen" id="camera" data-title="摄像头不可用">
+          <div class="p-card">
+            <h3>摄像头不可用</h3>
+            <p>请在系统设置中允许企业微信使用摄像头，或手动输入参与者出示的签到码 <span class="anno" data-note="AC-H04：摄像头未授权或设备不支持时，提示并提供手动输入签到码，输入后与扫码得到相同的结果页">11</span></p>
+            <div class="p-field">
+              <label>签到码</label>
+              <input type="text" placeholder="例如：PJH4-T6MQ-XSRC">
+            </div>
+          </div>
+          <div class="p-actions">
+            <button class="p-btn" data-goto="scan">返回扫码</button>
+            <button class="p-btn primary" data-goto="res-success">确认</button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="_shared/proto.js"></script>
+</body>
+</html>

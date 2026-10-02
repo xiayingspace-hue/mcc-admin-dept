@@ -225,6 +225,12 @@
   .adm-info .wide{grid-column:1/-1}
   .adm-desc{font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
 
+  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--border); border-radius:8px}
+  .qr-c{display:block; background:transparent}
+  .qr-c.on{background:var(--text-primary)}
+  .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--text-primary)}
+  .qr-hint{font-size:12px; color:var(--text-muted); text-align:center; margin-top:6px}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -1345,6 +1351,7 @@
                 <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link muted" onclick="setCheckin('r1','pending')">撤销签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r1', this)">取消报名</button>
                   </div>
@@ -1360,6 +1367,7 @@
                 <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r2','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r2', this)">取消报名</button>
                   </div>
@@ -1375,6 +1383,7 @@
                 <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r3','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r3', this)">取消报名</button>
                   </div>
@@ -1390,6 +1399,7 @@
                 <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r4','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r4', this)">取消报名</button>
                   </div>
@@ -2023,6 +2033,22 @@
         </div>
 
         <!-- User-facing preview: single celebration detail -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="regCodeOverlay" onclick="if(event.target===this)closeRegCode()">
+  <div class="adm-box" style="max-width:380px">
+    <div class="adm-head"><strong style="font-size:14px">签到码</strong><button class="action-link" onclick="closeRegCode()">关闭</button></div>
+    <div style="padding:20px; text-align:center">
+      <div id="regCodeWho" style="font-size:13px; margin-bottom:12px"></div>
+      <div class="qr-grid" id="regCodeQr"></div>
+      <div class="qr-code-text" id="regCodeText"></div>
+      <div class="qr-hint">二维码内容只有签到码，不含个人信息。外部人士没有系统账号，可把码发给对方，活动当天出示。</div>
+      <div style="display:flex; justify-content:center; gap:14px; margin-top:14px">
+        <button class="action-link" onclick="copyRegCode()">复制签到码</button>
+        <button class="action-link" onclick="alert('原型演示：下载二维码图片')">下载二维码图片</button>
       </div>
     </div>
   </div>
@@ -2930,6 +2956,43 @@ function cancelInlineAction(btn){
 function toggleManualReg(){
   document.getElementById('manualRegPanel').classList.toggle('hidden');
 }
+/* 签到码二维码（原型示意：按签到码文字生成固定的方块图案，非真实二维码；真实实现由后端生成 / 前端二维码库渲染） */
+function checkInCodeFor(seed){
+  let h = 2166136261;
+  for(const ch of seed){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = [];
+  for(let i=0; i<12; i++){ h = (Math.imul(h, 1664525) + 1013904223) >>> 0; out.push(chars[h % chars.length]); }
+  return out.slice(0,4).join('')+'-'+out.slice(4,8).join('')+'-'+out.slice(8,12).join('');
+}
+function renderQr(el, code){
+  const N = 21, cells = [];
+  let h = 5381; for(const ch of code){ h = (Math.imul(h,33) + ch.charCodeAt(0)) >>> 0; }
+  const finder = (r,c) => (r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);
+  for(let r=0; r<N; r++){ for(let c=0; c<N; c++){
+    let on;
+    if(finder(r,c)){
+      const lr = r<7 ? r : r-(N-7), lc = c<7 ? c : c-(N-7);
+      on = (lr===0||lr===6||lc===0||lc===6) || (lr>=2&&lr<=4&&lc>=2&&lc<=4);
+    } else { h = (Math.imul(h,1103515245) + 12345) >>> 0; on = ((h >>> 16) & 3) !== 0; }
+    cells.push('<i class="qr-c'+(on?' on':'')+'"></i>');
+  } }
+  el.innerHTML = cells.join('');
+}
+function viewRegCode(btn){
+  const tr = btn.closest('tr');
+  const who = tr.children[0].textContent + ' · ' + tr.children[1].textContent;
+  const code = checkInCodeFor(tr.dataset.celebration + '|' + tr.children[0].textContent);
+  document.getElementById('regCodeWho').textContent = who;
+  document.getElementById('regCodeText').textContent = code;
+  renderQr(document.getElementById('regCodeQr'), code);
+  document.getElementById('regCodeOverlay').classList.add('open');
+}
+function closeRegCode(){ document.getElementById('regCodeOverlay').classList.remove('open'); }
+function copyRegCode(){
+  const t = document.getElementById('regCodeText').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(t).catch(()=>{});
+  alert('已复制签到码：' + t);
+}
 function isValidEmail(v){ return v.length <= 100 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }   // REQ-004 §8：含 @ 与域名，≤100 个字符
 function submitManualRegistration(){
   const name = document.getElementById('manualRegName').value.trim();
@@ -2961,6 +3024,7 @@ function submitManualRegistration(){
     + '<td>' + stamp + '</td>'
     + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
     + '<td><div class="table-actions">'
+    +   '<button class="action-link" onclick="viewRegCode(this)">查看签到码</button>'
     +   '<button class="action-link" onclick="setCheckin(\'' + rowId + '\',\'done\')">签到</button>'
     +   '<button class="action-link danger" onclick="cancelRegistration(\'' + rowId + '\', this)">取消报名</button>'
     + '</div></td>';
