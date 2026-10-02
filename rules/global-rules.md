@@ -28,7 +28,7 @@
 ## 端侧 × 载体
 
 - 端侧取值：`admin`（管理端）、`user`（用户端），两端接口路径前缀相同，均为 `/mcc-api/aiis-admin`。
-- 载体取值：`pc`、`h5`、`native`。本产品当前登记：`admin` 仅 `pc`；`user` 仅 `h5`（企业微信内嵌网页）。
+- 载体取值：`pc`、`h5`、`native`。本产品当前登记：`admin` 为 `pc`，另有 `h5`（仅现场扫码签到这一页，企业微信内嵌网页）；`user` 仅 `h5`（企业微信内嵌网页）。
 - 新增端侧或载体前先改 `background/product-overview.md` 的受控表。
 
 ## 目录归属
