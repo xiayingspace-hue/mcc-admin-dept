@@ -236,6 +236,8 @@
 
   .wall-edited{font-size:11px; color:var(--text-muted); border:0.5px solid var(--border-strong); border-radius:4px; padding:0 6px; cursor:help}
 
+  .tier-cell{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; max-width:200px}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -1616,6 +1618,7 @@
               <h1 style="margin:0 0 4px">赞助商管理</h1>
               <p class="subtitle" style="margin:0">用户端「Become a Sponsor」表单提交的赞助意向，需在 2 个工作日内跟进联系</p>
             </div>
+            <button class="btn" id="sponsorExportBtn" onclick="exportSponsors()">导出</button>
           </div>
 
           <div class="field" style="max-width:280px; margin-bottom:20px">
@@ -1645,6 +1648,20 @@
                 <td>
                   <div class="table-actions">
                     <button class="action-link" onclick="setSponsorStatus('s1','done')">标记已联系</button>
+                  </div>
+                </td>
+              </tr>
+              <tr data-activity="30th">
+                <td class="title-cell">远景建设集团</td>
+                <td>周启明 · 副总裁</td>
+                <td>zhou.qm@vista-build.com<br>+65 9345 6781</td>
+                <td><div class="tier-cell" title="希望以主赞助商身份赞助 S$20,000，并在活动现场提供独立展位、在活动物料和官方公众号上露出品牌，同时愿意为员工团建提供一场免费的参观活动。">Custom：希望以主赞助商身份赞助 S$20,000，并在活动现场提供独立展位、在活动物料和官方公众号上露出品牌，同时愿意为员工团建提供一场免费的参观活动。</div></td>
+                <td class="muted-cell">—</td>
+                <td>2026-09-21 15:30</td>
+                <td><span class="status-badge draft" id="sponsorstatus-s3">待联系</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSponsorStatus('s3','done')">标记已联系</button>
                   </div>
                 </td>
               </tr>
@@ -1920,13 +1937,18 @@
                   <div class="u-field"><label>Phone 电话 *</label><input type="text" id="sponsorPhone"></div>
                   <div class="u-field">
                     <label>Preferred Sponsorship Tier 意向赞助等级（选填）</label>
-                    <select id="sponsorTier">
+                    <select id="sponsorTier" onchange="onSponsorTierChange()">
                       <option value="">请选择</option>
                       <option>Silver</option>
                       <option>Gold</option>
                       <option>Platinum</option>
                       <option>Custom</option>
                     </select>
+                  </div>
+                  <div class="u-field hidden" id="sponsorCustomWrap">
+                    <label>Custom Details 自定义赞助说明 * <span id="sponsorCustomCount" style="color:var(--u-text-muted); font-weight:400">0 / 200</span></label>
+                    <textarea rows="2" id="sponsorCustom" placeholder="请描述您希望的赞助方式或金额 / Describe your preferred sponsorship" oninput="updateSponsorCustomCount()"></textarea>
+                    <div class="u-img-err" id="sponsorCustomError" style="display:none"></div>
                   </div>
                   <div class="u-field"><label>Message / Special Requests 留言 / 特殊需求（选填）</label><textarea rows="2" id="sponsorMessage"></textarea></div>
 
@@ -2059,6 +2081,21 @@
 
         <!-- User-facing preview: single celebration detail -->
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="sponsorExportOverlay" onclick="if(event.target===this)closeSponsorExport()">
+  <div class="adm-box" style="max-width:920px">
+    <div class="adm-head"><strong>导出预览（原型示意：真实导出为 Excel 文件，由后端按最新数据生成）</strong><button class="action-link" onclick="closeSponsorExport()">关闭</button></div>
+    <div style="padding:14px 20px">
+      <div style="font-size:12.5px; color:var(--text-secondary)">文件名：<span id="sponsorExportName"></span>　共 <span id="sponsorExportCount"></span> 条（当前筛选下的全部线索，不只当前页）</div>
+      <div style="overflow-x:auto; margin-top:12px"><table class="activity-table" id="sponsorExportTable"></table></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px">
+        <button class="btn" onclick="setSponsorExportState('fail')">演示：导出失败</button>
+        <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">下载 Excel</button>
+      </div>
+      <div class="attach-error" id="sponsorExportError" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -2647,11 +2684,52 @@ function showSponsors(){
   document.getElementById('crumb').textContent = '赞助商管理';
   setActiveNav('navSponsors');
 }
+/* ---- 赞助线索导出（REQ-008 AC-012 ～ AC-016）：范围 = 当前「按活动筛选」下的全部线索；列、格式见需求 §8。原型用预览表示导出内容 ---- */
+const SPONSOR_ACTIVITY_NAMES = {'30th':'公司30周年庆典', 'annual':'2026年会'};
+function sponsorExportRows(){
+  const f = document.getElementById('sponsorActivityFilter').value;
+  return [...document.querySelectorAll('#sponsorTableBody tr')].filter(r=>f==='all' || r.dataset.activity===f).map(r=>{
+    const c = r.children, cp = c[1].textContent.split(' · '), contact = c[2].innerHTML.split('<br>');
+    const tierEl = c[3].querySelector('.tier-cell'), tierText = tierEl ? 'Custom' : c[3].textContent.trim();
+    const dash = v => (v === '—' ? '' : v);                         // 空值导出为空，不写「—」
+    return [SPONSOR_ACTIVITY_NAMES[r.dataset.activity] || r.dataset.activity, c[0].textContent.trim(), cp[0].trim(), (cp[1]||'').trim(),
+            contact[0].trim(), (contact[1]||'').trim(), dash(tierText), tierEl ? tierEl.title : '', dash(c[4].textContent.trim()),
+            c[5].textContent.trim(), c[6].textContent.trim()];       // 完整全文取 title，不截断
+  });
+}
+const SPONSOR_EXPORT_HEAD = ['所属活动','公司名称','联系人','职位','邮箱','电话','意向赞助等级','自定义赞助说明','留言 / 特殊需求','提交时间','跟进状态'];
+function updateSponsorExportBtn(){ document.getElementById('sponsorExportBtn').disabled = sponsorExportRows().length === 0; }   // 没有数据时置灰
+function exportSponsors(){
+  const rows = sponsorExportRows();
+  if(!rows.length) return;
+  const f = document.getElementById('sponsorActivityFilter').value;
+  const d = new Date(), pad = n => String(n).padStart(2,'0');
+  const name = '赞助商线索_' + (f==='all' ? '全部活动' : SPONSOR_ACTIVITY_NAMES[f]) + '_' + d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()) + '.xlsx';
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.getElementById('sponsorExportName').textContent = name;
+  document.getElementById('sponsorExportCount').textContent = rows.length;
+  document.getElementById('sponsorExportTable').innerHTML = '<thead><tr>' + SPONSOR_EXPORT_HEAD.map(h=>'<th>'+h+'</th>').join('') + '</tr></thead><tbody>'
+    + rows.map(r=>'<tr>' + r.map(v=>'<td style="white-space:normal; min-width:90px">'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
+  document.getElementById('sponsorExportError').style.display = 'none';
+  document.getElementById('sponsorExportDownload').disabled = false; document.getElementById('sponsorExportDownload').textContent = '下载 Excel';
+  document.getElementById('sponsorExportOverlay').classList.add('open');
+}
+function closeSponsorExport(){ document.getElementById('sponsorExportOverlay').classList.remove('open'); }
+function setSponsorExportState(st){
+  const e = document.getElementById('sponsorExportError');
+  if(st === 'fail'){ e.textContent = '导出失败：服务暂时不可用，请稍后重试'; e.style.display = 'block'; }
+}
+function downloadSponsorExport(){
+  const b = document.getElementById('sponsorExportDownload');
+  b.disabled = true; b.textContent = '导出中…';                       // 导出中不可重复点击
+  setTimeout(()=>{ b.disabled = false; b.textContent = '下载 Excel'; alert('原型演示：已下载 ' + document.getElementById('sponsorExportName').textContent); }, 600);
+}
 function filterSponsors(){
   const val = document.getElementById('sponsorActivityFilter').value;
   document.querySelectorAll('#sponsorTableBody tr').forEach(row=>{
     row.style.display = (val === 'all' || row.dataset.activity === val) ? '' : 'none';
   });
+  updateSponsorExportBtn();
 }
 function setSponsorStatus(rowId, status){
   const badge = document.getElementById('sponsorstatus-'+rowId);
@@ -2900,6 +2978,7 @@ function renderWork(){
 renderSubImages();
 renderSubVideo();
 updateAuthorHint();
+updateSponsorExportBtn();
 document.querySelectorAll('#wallList .wall-row').forEach(r=>{ r.querySelector('.table-actions').innerHTML = wallActionsHtml(r.id, r.dataset.status); });
 { const w3 = document.querySelector('#w3 .wall-name-row'); if(w3){ const t = document.createElement('span'); t.className = 'wall-edited'; t.textContent = '已编辑'; t.title = '修改人：行政小李 · 修改时间：2026-09-16 09:40'; w3.appendChild(t); } }
 document.querySelectorAll('#submissionGrid .submission-card').forEach(c=>setSubmissionStatus(c.id, c.dataset.status));
@@ -3274,7 +3353,24 @@ document.addEventListener('click', function(e){
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape'){ closeWallModal(); closeSponsorModal(); }
 });
+const SPONSOR_CUSTOM_MAX = 200;
+function sponsorCustomLen(){ return Array.from(document.getElementById('sponsorCustom').value).length; }   // 汉字 / 字母 / 标点 / 空格 / 换行各按 1 个计
+function updateSponsorCustomCount(){
+  const n = sponsorCustomLen(), over = n > SPONSOR_CUSTOM_MAX;
+  const c = document.getElementById('sponsorCustomCount');
+  c.textContent = n + ' / ' + SPONSOR_CUSTOM_MAX;
+  c.style.color = over ? 'var(--danger)' : 'var(--u-text-muted)';
+  const e = document.getElementById('sponsorCustomError');
+  e.textContent = over ? '自定义赞助说明超出 ' + SPONSOR_CUSTOM_MAX + ' 个字符上限，请精简后再提交（已输入内容不会被截断）' : '';
+  e.style.display = over ? 'block' : 'none';
+}
+function onSponsorTierChange(){                      // REQ-008 AC-007 / AC-009
+  const isCustom = document.getElementById('sponsorTier').value === 'Custom';
+  document.getElementById('sponsorCustomWrap').classList.toggle('hidden', !isCustom);
+  if(!isCustom){ document.getElementById('sponsorCustom').value = ''; updateSponsorCustomCount(); }   // 离开 Custom：隐藏并清除，不提交
+}
 function openSponsorModal(){
+  document.getElementById('sponsorTier').value = ''; onSponsorTierChange();
   document.getElementById('sponsorFormBody').classList.remove('hidden');
   document.getElementById('sponsorSuccessBody').classList.add('hidden');
   document.getElementById('sponsorModalOverlay').classList.add('open');
@@ -3295,6 +3391,12 @@ function submitSponsorForm(){
     alert('请输入有效的邮箱地址');
     return;
   }
+  const isCustom = document.getElementById('sponsorTier').value === 'Custom';
+  const customNote = document.getElementById('sponsorCustom').value.trim();
+  if(isCustom){                                      // AC-008：选了 Custom 必填，≤200 个字符
+    if(!customNote){ alert('选择 Custom 时，请填写自定义赞助说明'); return; }
+    if(sponsorCustomLen() > SPONSOR_CUSTOM_MAX){ updateSponsorCustomCount(); return; }
+  }
   document.getElementById('sponsorFormBody').classList.add('hidden');
   document.getElementById('sponsorSuccessBody').classList.remove('hidden');
 
@@ -3306,7 +3408,8 @@ function submitSponsorForm(){
     const contact = escape(document.getElementById('sponsorContact').value.trim());
     const title = escape(document.getElementById('sponsorTitle').value.trim());
     const phone = escape(document.getElementById('sponsorPhone').value.trim());
-    const tier = document.getElementById('sponsorTier').value || '—';
+    const tierVal = document.getElementById('sponsorTier').value;
+    const tier = tierVal === 'Custom' ? '<div class="tier-cell" title="' + escape(customNote) + '">Custom：' + escape(customNote) + '</div>' : (tierVal || '—');
     const message = document.getElementById('sponsorMessage').value.trim();
     const now = new Date();
     const pad = n => String(n).padStart(2,'0');
@@ -3327,6 +3430,7 @@ function submitSponsorForm(){
       + '</div></td>';
     tbody.prepend(tr);
     updateSponsorNavBadge();
+    updateSponsorExportBtn();
   }
 }
 let wallDeadlinePassed = false;
