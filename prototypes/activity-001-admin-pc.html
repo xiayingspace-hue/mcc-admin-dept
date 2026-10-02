@@ -317,7 +317,7 @@
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
   .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .u-vote-info{padding:10px 12px}
-  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text)}
+  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere}
   .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
@@ -1686,23 +1686,23 @@
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sg30'">
                     <div class="u-vote-thumb">📷</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-08-11</div>
+                      <div class="u-vote-author" data-start="2026-08-11T09:00:00+08:00" data-end="2026-08-11T12:00:00+08:00">2026-08-11</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">新加坡总部站</div>
-                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已结束</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
                   </div>
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#bj30'">
                     <div class="u-vote-thumb">📷</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-08-11</div>
+                      <div class="u-vote-author" data-start="2026-08-11T09:00:00+08:00" data-end="2026-08-11T12:00:00+08:00">2026-08-11</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">北京分公司站</div>
-                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已结束</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
                   </div>
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sh30'">
                     <div class="u-vote-thumb" id="celCoverSH" style="font-size:12.5px; font-weight:600">⏳ Coming Soon</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-12-05</div>
+                      <div class="u-vote-author" data-start="2026-12-05T14:00:00+08:00" data-end="2026-12-06T17:00:00+08:00">2026-12-05</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">上海分公司站</div>
                       <div class="u-vote-footer"><span class="u-vote-count" id="celStatusSH">即将开始</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
@@ -2266,6 +2266,18 @@ function openApproval(data, mode){
 renderChips();
 renderPicker();
 renderAttachments();
+
+/* Celebrations 卡片列表的时间合并显示，规则见 REQ-007 §5.4（同 celebration-007-user-h5.html 的 fmtCelebrationTime） */
+const CEL_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtCelebrationTime(startIso, endIso){
+  const p = iso => { const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); return {y:m[1], mo:+m[2]-1, d:+m[3], hm:m[4]+':'+m[5], day:m[1]+m[2]+m[3]}; };
+  const a = p(startIso), b = p(endIso);
+  const dm = x => x.d+' '+CEL_MONTHS[x.mo]+' '+x.y;
+  return a.day===b.day ? dm(a)+' '+a.hm+' - '+b.hm : dm(a)+' '+a.hm+' - '+dm(b)+' '+b.hm;
+}
+document.querySelectorAll('.u-vote-author[data-start]').forEach(el=>{
+  el.textContent = fmtCelebrationTime(el.dataset.start, el.dataset.end);
+});
 function showList(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='listView');
@@ -2463,7 +2475,7 @@ function toggleCelebrationDemo(){
   const isComingSoon = cover.textContent.indexOf('Coming Soon') !== -1;
   if(isComingSoon){
     cover.textContent = '📷';
-    status.textContent = '已举办';
+    status.textContent = '进行中';
   } else {
     cover.textContent = '⏳ Coming Soon';
     status.textContent = '即将开始';
