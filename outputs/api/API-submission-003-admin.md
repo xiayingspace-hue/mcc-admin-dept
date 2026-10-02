@@ -40,13 +40,16 @@
 | `activity_id` | string | 归属活动ID（经由 Celebration 派生，只读） |
 | `activity_title` | string | 归属活动标题（列表展示用） |
 | `celebration_module_id` | string | 归属的 CelebrationModule ID（涂鸦展示类型），见 `celebration-007-admin` §6 |
-| `image_url` | string | 作品图片 |
+| `image_urls[]` | string[] | 作品图片，有序，1 到 9 张，第一张为封面，AC-009 |
+| `video_url` | string \| null | 作品视频，最多 1 个，无视频为 `null`，AC-010 |
 | `description` | string \| null | 作品说明 |
-| `author_type` | string（枚举） \| null | |
-| `author_name` | string | |
+| `author_type` | string（枚举） \| null | 一件作品一个类型；仅管理端使用，用户端不展示，AC-019 |
+| `author_names[]` | string[] | 作者姓名，1 到 10 位，团队作品填多位，AC-018；用户端展示时不带作者类型，AC-019 |
 | `author_org` | string \| null | 部门或所属机构，自由文本 |
 | `status` | string（枚举） | 见枚举总表 |
 | `vote_count` | number | 票数，即当前对该作品有效投票的用户数（同一用户重复投票按开关计，不累加；换票时原作品-1、新作品+1），见需求文档 §6「投票」、AC-006/AC-007/AC-008 |
+
+管理端"查看详情"（AC-017）直接使用本接口返回的同一条记录（含 `image_urls[]`、`video_url`、完整 `description`、作者信息、`status`、`vote_count`），不另设详情接口。
 
 ## 上传作品
 
@@ -57,15 +60,55 @@
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
 | `celebration_module_id` | string | 是 | 须为 `module_type=doodle_vote` 的 CelebrationModule，见 `celebration-007-admin` §6 |
-| `image_url` | string | 是 | AC-001 |
-| `author_name` | string | 是 | AC-001 |
-| `description` | string | 否 | |
+| `image_urls[]` | string[] | 是 | 1 到 9 张，按数组顺序展示，第一张为封面，AC-001、AC-009 |
+| `video_url` | string | 否 | 最多 1 个 MP4，AC-010 |
+| `author_names[]` | string[] | 是 | 至少 1 位、最多 10 位，每位 ≤30 个字符，同一作品内不重复，AC-001、AC-018；管理端由单个输入框按逗号拆分后提交 |
+| `description` | string | 否 | 作品说明，不超过 200 个字符（汉字、字母、标点、空格、换行都按 1 个计），AC-014 |
 | `author_type` | string（枚举） | 否 | |
 | `author_org` | string | 否 | |
 
 **响应字段**
 
 同「获取作品列表」单条结构，新建后 `status` 固定为 `draft`，`vote_count` 固定为 `0`。
+
+**权限**：见需求文档 §7
+**校验**：见需求文档 §8
+
+## 上传作品的图片 / 视频文件
+
+`POST /mcc-api/aiis-admin/submissionMedia`　multipart/form-data，一次上传一个文件；返回的地址放进上传 / 编辑作品的 `image_urls[]` 或 `video_url`
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `file` | file | 是 | 图片：JPG / PNG、≤5MB；视频：MP4、≤100MB，AC-009、AC-010 |
+| `media_type` | string（`image` \| `video`） | 是 | |
+
+**响应字段**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `url` | string | 文件地址 |
+| `file_name` | string | 文件名 |
+| `file_size` | number | 单位：字节 |
+
+**校验**：见需求文档 §8（前端拦截 + 后端二次校验）
+
+## 编辑作品
+
+`PUT /mcc-api/aiis-admin/submission`　请求体含 `id`；仅 `draft` / `hidden` 状态允许，`published` 状态后端拒绝，AC-013
+
+**请求参数**
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | string | 是 | 作品ID |
+| `image_urls[]` | string[] | 是 | 编辑后的完整图片名单与顺序，1 到 9 张 |
+| `video_url` | string \| null | 否 | 传 `null` 表示删除视频 |
+| `author_names[]` / `author_type` / `author_org` / `description` | 同上传作品 | | 同上传作品 |
+
+**响应字段**：同「获取作品列表」单条结构；`status`、`vote_count` 不变。
 
 **权限**：见需求文档 §7
 **校验**：见需求文档 §8

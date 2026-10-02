@@ -195,6 +195,36 @@
   .attach-error{color:var(--danger); font-size:11.5px; margin-top:5px}
   .summary-attach{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
 
+  .submission-media{font-size:11px; color:var(--text-muted); margin-top:2px}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
+  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .u-work-overlay.open{display:flex}
+  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
+  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-nav:disabled{opacity:.35; cursor:default}
+  .u-work-nav.prev{left:10px}
+  .u-work-nav.next{right:10px}
+  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
+  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
+  .u-vote-thumb{position:relative; cursor:pointer}
+
+  .adm-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--sidebar) 70%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:24px}
+  .adm-overlay.open{display:flex}
+  .adm-box{background:var(--surface); border-radius:12px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto}
+  .adm-head{display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:0.5px solid var(--border)}
+  .adm-stage{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-secondary); font-size:13.5px; text-align:center; padding:16px}
+  .adm-nav{position:absolute; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; border:0.5px solid var(--border-strong); background:var(--surface); color:var(--text-primary); cursor:pointer}
+  .adm-nav:disabled{opacity:.35; cursor:default}
+  .adm-nav.prev{left:10px}
+  .adm-nav.next{right:10px}
+  .adm-info{padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px 20px}
+  .adm-info label{display:block; font-size:11px; color:var(--text-muted); margin-bottom:2px}
+  .adm-info .val{font-size:13.5px}
+  .adm-info .wide{grid-column:1/-1}
+  .adm-desc{font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -249,9 +279,9 @@
     color:var(--text-muted); font-size:24px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint));
   }
   .submission-body{padding:11px 13px}
-  .submission-author{font-size:13px; font-weight:500}
+  .submission-author{font-size:13px; font-weight:500; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere}
   .submission-sub{font-size:11.5px; color:var(--text-muted); margin-top:1px}
-  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0}
+  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .submission-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
   .status-badge.hidden-st{background:var(--border); color:var(--text-muted)}
 
@@ -317,7 +347,7 @@
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
   .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .u-vote-info{padding:10px 12px}
-  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere}
+  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
@@ -1048,7 +1078,7 @@
           </div>
 
           <div class="upload-panel">
-            <p class="upload-panel-title">上传作品</p>
+            <p class="upload-panel-title" id="subPanelTitle">上传作品</p>
             <div class="row2">
               <div class="field">
                 <label>所属 Celebration</label>
@@ -1066,20 +1096,52 @@
                 </div>
               </div>
             </div>
-            <div class="row2">
-              <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：陈思思"></div>
-              <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：产品部"></div>
+            <div class="field">
+              <label>作者姓名（必填）</label>
+              <input type="text" id="subAuthorName" placeholder="例如：陈思思, 王芳, 李强" oninput="updateAuthorHint()">
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:5px">一次输入所有人；团队作品只用逗号“,”分隔，最多 10 位，每位 ≤30 字符</div>
+              <div id="subNameHint" style="font-size:11.5px; color:var(--text-secondary); margin-top:3px"></div>
+              <div class="attach-error" id="subNameError" style="display:none"></div>
             </div>
             <div class="field">
-              <label>作品图片</label>
-              <div class="upload-box">点击或拖拽上传作品图片</div>
+              <label>部门 / 头衔（选填）</label>
+              <input type="text" placeholder="例如：产品部">
             </div>
             <div class="field">
-              <label>作品说明（选填）</label>
-              <textarea rows="2" placeholder="作者想表达的创作说明"></textarea>
+              <label>作品图片（必填，1–9 张，JPG / PNG，单张 ≤5MB；第一张为封面，可调整顺序）<span id="subImgCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
+              <div class="upload-box" id="subImgBox" onclick="openSubImgPicker()">
+                <span id="subImgBoxText">点击上传作品图片，可一次选多张</span>
+                <input type="file" id="subImgInput" multiple accept=".jpg,.jpeg,.png" style="display:none" onclick="event.stopPropagation()" onchange="handleSubImages(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subImgError" style="display:none"></div>
+              <div class="attach-list-scroll" id="subImgList"></div>
+            </div>
+            <div class="field">
+              <label>作品视频（选填，最多 1 个，MP4，≤100MB）</label>
+              <div class="upload-box" id="subVideoBox" onclick="openSubVideoPicker()">
+                <span id="subVideoBoxText">点击上传作品视频</span>
+                <input type="file" id="subVideoInput" accept=".mp4" style="display:none" onclick="event.stopPropagation()" onchange="handleSubVideo(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subVideoError" style="display:none"></div>
+              <div id="subVideoList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="demoSub('img')">添加示例图片</button>
+                <button class="action-link" onclick="demoSub('bigimg')">模拟图片超过 5MB</button>
+                <button class="action-link" onclick="demoSub('type')">模拟类型不符</button>
+                <button class="action-link" onclick="demoSub('fail')">模拟图片上传失败</button>
+                <button class="action-link" onclick="demoSub('many')">模拟加满 9 张</button>
+                <button class="action-link" onclick="demoSub('video')">添加示例视频</button>
+                <button class="action-link" onclick="demoSub('bigvideo')">模拟视频超过 100MB</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>作品说明（选填，不超过 200 个字符）<span id="subDescCount" style="margin-left:6px; color:var(--text-muted)">0 / 200</span></label>
+              <textarea rows="2" id="subDesc" placeholder="作者想表达的创作说明" oninput="updateSubDescCount()"></textarea>
+              <div class="attach-error" id="subDescError" style="display:none"></div>
             </div>
             <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为未发布')">上传作品</button>
+              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">上传作品</button>
             </div>
           </div>
 
@@ -1109,12 +1171,13 @@
 
           <div class="submission-grid" id="submissionGrid">
 
-            <div class="submission-card" id="sub1" data-activity="sg30" data-status="draft">
+            <div class="submission-card" id="sub1" data-votes="0" data-activity="sg30" data-status="draft" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">陈思思</div>
                 <div class="submission-sub">产品部 · 内部员工</div>
-                <p class="submission-desc">灵感来源于公司logo的演变过程</p>
+                <div class="submission-media">3 张图 + 视频</div>
+                <p class="submission-desc" title="灵感来源于公司logo的演变过程">灵感来源于公司logo的演变过程</p>
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
@@ -1124,11 +1187,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub2" data-activity="bj30" data-status="published">
+            <div class="submission-card" id="sub2" data-votes="24" data-activity="bj30" data-status="published" data-images="2" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">王芳</div>
                 <div class="submission-sub">行政部 · 内部员工</div>
+                <div class="submission-media">2 张图</div>
+                <p class="submission-desc" title="以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。">以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。</p>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1138,12 +1203,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub3" data-activity="q3camp" data-status="published">
+            <div class="submission-card" id="sub3" data-votes="31" data-activity="q3camp" data-status="published" data-images="5" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">李强</div>
                 <div class="submission-sub">工程部 · 内部员工</div>
-                <p class="submission-desc">手绘工地场景，致敬三十年建设历程</p>
+                <div class="submission-media">5 张图</div>
+                <p class="submission-desc" title="手绘工地场景，致敬三十年建设历程">手绘工地场景，致敬三十年建设历程</p>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1153,11 +1219,12 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub4" data-activity="sg30" data-status="published">
+            <div class="submission-card" id="sub4" data-votes="18" data-activity="sg30" data-status="published" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
-                <div class="submission-author">张伟</div>
+                <div class="submission-author" title="张伟, 赵敏, 周杰">张伟, 赵敏, 周杰</div>
                 <div class="submission-sub">技术部 · 内部员工</div>
+                <div class="submission-media">3 张图 + 视频</div>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1167,12 +1234,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub5" data-activity="q3camp" data-status="hidden">
+            <div class="submission-card" id="sub5" data-votes="9" data-activity="q3camp" data-status="hidden" data-images="4" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">周敏</div>
                 <div class="submission-sub">市场部 · 内部员工</div>
-                <p class="submission-desc">抽象色彩表达团队活力</p>
+                <div class="submission-media">4 张图</div>
+                <p class="submission-desc" title="抽象色彩表达团队活力">抽象色彩表达团队活力</p>
                 <div class="submission-footer">
                   <span class="status-badge hidden-st">已隐藏</span>
                   <div class="table-actions">
@@ -1183,12 +1251,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub6" data-activity="bj30" data-status="draft">
+            <div class="submission-card" id="sub6" data-votes="0" data-activity="bj30" data-status="draft" data-images="1" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">田中一郎</div>
                 <div class="submission-sub">合作伙伴 · 外部人士</div>
-                <p class="submission-desc">感谢合作多年，祝福公司蒸蒸日上</p>
+                <div class="submission-media">1 张图</div>
+                <p class="submission-desc" title="感谢合作多年，祝福公司蒸蒸日上">感谢合作多年，祝福公司蒸蒸日上</p>
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
@@ -1868,7 +1937,7 @@
                 <div class="u-vote-grid">
 
                   <div class="u-vote-card" id="v1">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v1')">🎨<span class="u-media-tag">2 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">王芳 · 行政部</div>
                       <div class="u-vote-footer">
@@ -1879,7 +1948,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v2">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v2')">🎨<span class="u-media-tag">5 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">李强 · 工程部</div>
                       <div class="u-vote-footer">
@@ -1890,7 +1959,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v3">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v3')">🎨</div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">张伟 · 技术部</div>
                       <div class="u-vote-footer">
@@ -1901,9 +1970,9 @@
                   </div>
 
                   <div class="u-vote-card" id="v4">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v4')">🎨<span class="u-media-tag">3 张 · ▶</span></div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">陈思思 · 产品部</div>
+                      <div class="u-vote-author">陈思思, 王芳, 李强 · 产品部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="9">9 票</span>
                         <button class="u-vote-btn" onclick="toggleVote('v4')">投票</button>
@@ -1912,7 +1981,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v5">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v5')">🎨</div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">田中一郎 · 合作伙伴</div>
                       <div class="u-vote-footer">
@@ -1923,7 +1992,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v6">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v6')">🎨<span class="u-media-tag">4 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">周敏 · 市场部</div>
                       <div class="u-vote-footer">
@@ -1942,6 +2011,44 @@
 
         <!-- User-facing preview: single celebration detail -->
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="admWorkOverlay" onclick="if(event.target===this)closeAdmWork()">
+  <div class="adm-box">
+    <div class="adm-head">
+      <strong style="font-size:14px">作品详情</strong>
+      <button class="action-link" onclick="closeAdmWork()">关闭</button>
+    </div>
+    <div class="adm-stage" id="admStage"></div>
+    <div style="padding:8px 20px 0; font-size:11.5px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px">
+      <span id="admCount"></span>
+      <span>原型演示（当前项加载状态）：
+        <button class="action-link" onclick="setAdmMedia('normal')">正常</button>
+        <button class="action-link" onclick="setAdmMedia('loading')">加载中</button>
+        <button class="action-link" onclick="setAdmMedia('error')">加载失败</button>
+      </span>
+    </div>
+    <div class="adm-info" id="admInfo"></div>
+  </div>
+</div>
+
+<div class="u-work-overlay" id="workOverlay" onclick="if(event.target===this)closeWork()">
+  <div class="u-work-box">
+    <div class="u-work-stage" id="workStage"></div>
+    <div class="u-work-meta">
+      <div id="workTitle" style="font-weight:600"></div>
+      <div id="workDesc" style="margin-top:4px; color:var(--u-text-muted); font-size:12.5px"></div>
+      <div id="workCount" style="margin-top:6px; color:var(--u-text-muted); font-size:11.5px"></div>
+    </div>
+    <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+      <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
+        <button class="u-work-link" onclick="setWorkMedia('normal')">正常</button>
+        <button class="u-work-link" onclick="setWorkMedia('loading')">加载中</button>
+        <button class="u-work-link" onclick="setWorkMedia('error')">加载失败</button>
+      </span>
+      <button class="u-work-link" onclick="closeWork()">关闭</button>
     </div>
   </div>
 </div>
@@ -2484,6 +2591,246 @@ function toggleCelebrationDemo(){
 function toggleUsage(id){
   document.getElementById(id).classList.toggle('open');
 }
+/* ---- 管理端作品上传 / 编辑：多张图片（可调序）+ 可选视频（REQ-003 AC-009 / AC-010 / AC-013） ---- */
+const SUB_IMG_EXT = ['jpg','jpeg','png'], SUB_IMG_MAX = 9, SUB_IMG_BYTES = 5*1048576, SUB_VID_BYTES = 100*1048576;
+let subImages = [], subVideo = null, subSeq = 0, subEditingId = null;
+function subShow(id, msg){ const e = document.getElementById(id); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+function addSubImage(name, size, forceFail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!SUB_IMG_EXT.includes(ext)) return '「'+name+'」类型不支持，图片仅限 JPG 或 PNG';
+  if(size > SUB_IMG_BYTES) return '「'+name+'」超过 5MB，未上传';
+  if(subImages.length >= SUB_IMG_MAX) return '已达 9 张上限，「'+name+'」未上传';
+  const a = {id:'M'+(++subSeq), name, size, status:'uploading', forceFail:!!forceFail};
+  subImages.push(a); renderSubImages();
+  setTimeout(()=>{ a.status = a.forceFail ? 'fail' : 'done'; renderSubImages(); }, 700);
+  return '';
+}
+function handleSubImages(files){
+  const errs = []; Array.from(files).forEach(f=>{ const e = addSubImage(f.name, f.size); if(e) errs.push(e); });
+  subShow('subImgError', errs.join('；'));
+}
+function openSubImgPicker(){
+  if(subImages.length >= SUB_IMG_MAX){ subShow('subImgError', '已达 9 张上限，请先删除再上传'); return; }
+  document.getElementById('subImgInput').click();
+}
+function retrySubImage(id){
+  const a = subImages.find(x=>x.id===id); a.status = 'uploading'; a.forceFail = false; renderSubImages();
+  setTimeout(()=>{ a.status = 'done'; renderSubImages(); }, 700);
+}
+function removeSubImage(id){ subImages = subImages.filter(x=>x.id!==id); subShow('subImgError',''); renderSubImages(); }
+function moveSubImage(id, d){
+  const i = subImages.findIndex(x=>x.id===id), j = i + d;
+  if(j < 0 || j >= subImages.length) return;
+  const t = subImages[i]; subImages[i] = subImages[j]; subImages[j] = t; renderSubImages();
+}
+function renderSubImages(){
+  document.getElementById('subImgList').innerHTML = subImages.length
+    ? subImages.map((a,i)=>{
+        const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
+          : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retrySubImage(\''+a.id+'\')">重试</button>' : '';
+        return '<div class="attach-row">'
+          + '<span class="attach-st"'+(i===0?' style="background:var(--accent-tint); color:var(--accent)"':'')+'>'+(i===0?'封面':(i+1))+'</span>'
+          + '<span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st
+          + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',-1)"'+(i===0?' disabled':'')+'>↑</button>'
+          + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',1)"'+(i===subImages.length-1?' disabled':'')+'>↓</button>'
+          + '<button class="action-link danger" onclick="removeSubImage(\''+a.id+'\')">删除</button></div>';
+      }).join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">尚未上传图片</div>';
+  document.getElementById('subImgCount').textContent = subImages.length ? '已添加 '+subImages.length+'/'+SUB_IMG_MAX : '';
+  const full = subImages.length >= SUB_IMG_MAX;
+  document.getElementById('subImgBoxText').textContent = full ? '已达 9 张上限，请先删除再上传' : '点击上传作品图片，可一次选多张';
+  document.getElementById('subImgBox').style.cursor = full ? 'not-allowed' : 'pointer';
+}
+function addSubVideo(name, size){
+  if(subVideo) return '已有视频，请先删除再上传「'+name+'」';
+  if(name.split('.').pop().toLowerCase() !== 'mp4') return '「'+name+'」类型不支持，视频仅限 MP4';
+  if(size > SUB_VID_BYTES) return '「'+name+'」超过 100MB，未上传';
+  subVideo = {name, size, status:'uploading'}; renderSubVideo();
+  setTimeout(()=>{ if(subVideo){ subVideo.status = 'done'; renderSubVideo(); } }, 900);
+  return '';
+}
+function handleSubVideo(files){ if(files.length) subShow('subVideoError', addSubVideo(files[0].name, files[0].size)); }
+function openSubVideoPicker(){
+  if(subVideo){ subShow('subVideoError', '已有视频，请先删除再上传'); return; }
+  document.getElementById('subVideoInput').click();
+}
+function removeSubVideo(){ subVideo = null; subShow('subVideoError',''); renderSubVideo(); }
+function renderSubVideo(){
+  document.getElementById('subVideoList').innerHTML = subVideo
+    ? '<div class="attach-row"><span class="attach-name" title="'+subVideo.name+'">▶ '+subVideo.name+'</span><span class="attach-size">'+fmtSize(subVideo.size)+'</span>'
+      + (subVideo.status==='uploading' ? '<span class="attach-st">上传中…</span>' : '<button class="action-link danger" onclick="removeSubVideo()">删除</button>') + '</div>'
+    : '';
+  document.getElementById('subVideoBoxText').textContent = subVideo ? '已有视频，如需更换请先删除' : '点击上传作品视频';
+}
+function demoSub(kind){
+  const errs = [];
+  if(kind==='img')      errs.push(addSubImage('涂鸦作品-'+(subImages.length+1)+'.jpg', 1.8*1048576));
+  if(kind==='bigimg')   errs.push(addSubImage('高清原图.png', 7*1048576));
+  if(kind==='type')     errs.push(addSubImage('动图.gif', 2*1048576));
+  if(kind==='fail')     errs.push(addSubImage('作品图-上传失败演示.jpg', 2*1048576, true));
+  if(kind==='many'){ for(let i=subImages.length; i<SUB_IMG_MAX; i++) addSubImage('作品图-'+(i+1)+'-这是一个特别特别长的文件名用来演示超长文件名不会撑破布局.jpg', 900*1024); errs.push(addSubImage('第10张.jpg', 500*1024)); }
+  subShow('subImgError', errs.filter(Boolean).join('；'));
+  if(kind==='video')    subShow('subVideoError', addSubVideo('创作过程.mp4', 48*1048576));
+  if(kind==='bigvideo') subShow('subVideoError', addSubVideo('原始素材.mp4', 130*1048576));
+}
+/* ---- 作者姓名：一个输入框一次输入所有人，只按逗号（, 或 ，）拆分，REQ-003 AC-018（顿号 / 分号提示后阻止，空格不作分隔符、保留英文姓名中的空格） ---- */
+const SUB_NAME_MAX = 10, SUB_NAME_LEN = 30;
+function parseAuthors(raw){
+  const names = [], errors = [];
+  if(/[、;；]/.test(raw)) errors.push('请只用逗号“,”分隔姓名，不要使用顿号或分号');
+  raw.split(/[,，]/).map(x=>x.trim()).forEach(p=>{
+    if(!p) return;
+    if(Array.from(p).length > SUB_NAME_LEN){ errors.push('「'+p.slice(0,8)+'…」超过 '+SUB_NAME_LEN+' 个字符'); return; }
+    if(names.includes(p)){ errors.push('「'+p+'」重复，同一作品内姓名不能重复'); return; }
+    names.push(p);
+  });
+  if(names.length > SUB_NAME_MAX) errors.push('最多 '+SUB_NAME_MAX+' 位作者，当前识别到 '+names.length+' 位');
+  return {names, errors};
+}
+function updateAuthorHint(){
+  const r = parseAuthors(document.getElementById('subAuthorName').value);
+  document.getElementById('subNameHint').textContent = r.names.length ? '已识别 '+r.names.length+' 位作者：'+r.names.join(', ') : '';
+  subShow('subNameError', r.errors.join('；'));
+}
+
+const SUB_DESC_MAX = 200;
+function subDescLen(){ return Array.from(document.getElementById('subDesc').value).length; }   // 汉字 / 字母 / 标点 / 空格 / 换行都按 1 个计
+function updateSubDescCount(){
+  const n = subDescLen(), over = n > SUB_DESC_MAX;
+  const c = document.getElementById('subDescCount');
+  c.textContent = n + ' / ' + SUB_DESC_MAX;
+  c.style.color = over ? 'var(--danger)' : 'var(--text-muted)';
+  subShow('subDescError', over ? '作品说明超出 ' + SUB_DESC_MAX + ' 个字符上限，请精简后再上传（已输入内容不会被截断）' : '');
+}
+function resetSubForm(){
+  document.getElementById('subDesc').value = ''; updateSubDescCount();
+  subImages = []; subVideo = null; subEditingId = null;
+  subShow('subImgError',''); subShow('subVideoError','');
+  document.getElementById('subAuthorName').value = ''; updateAuthorHint();
+  document.getElementById('subPanelTitle').textContent = '上传作品';
+  document.getElementById('subSubmitBtn').textContent = '上传作品';
+  renderSubImages(); renderSubVideo();
+}
+function submitSubmission(){
+  if(!subImages.length){ subShow('subImgError', subVideo ? '只有视频不能上传作品，请至少添加 1 张作品图片' : '请至少上传 1 张作品图片'); document.getElementById('subImgList').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  const authors = parseAuthors(document.getElementById('subAuthorName').value);
+  if(!authors.names.length || authors.errors.length){
+    subShow('subNameError', authors.errors.length ? authors.errors.join('；') : '请至少输入 1 位作者姓名');
+    document.getElementById('subAuthorName').scrollIntoView({behavior:'smooth', block:'center'}); return;
+  }
+  if(subDescLen() > SUB_DESC_MAX){ updateSubDescCount(); document.getElementById('subDesc').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  alert(subEditingId ? '原型演示：保存修改，状态与票数不变' : '原型演示：将新建一条 Submission 记录，状态为未发布');
+  resetSubForm();
+}
+function editSubmission(cardId){
+  const card = document.getElementById(cardId);
+  if(card.dataset.status === 'published') return;      // 已发布没有编辑入口（AC-013）
+  resetSubForm();
+  subEditingId = cardId;
+  const n = +card.dataset.images;
+  for(let i=1; i<=n; i++) subImages.push({id:'M'+(++subSeq), name:'作品图-'+i+'.jpg', size:1.2*1048576, status:'done'});
+  if(card.dataset.video === '1') subVideo = {name:'创作过程.mp4', size:48*1048576, status:'done'};
+  document.getElementById('subAuthorName').value = card.querySelector('.submission-author').textContent; updateAuthorHint();
+  document.getElementById('subDesc').value = (card.querySelector('.submission-desc')||{}).textContent || ''; updateSubDescCount();
+  document.getElementById('subPanelTitle').textContent = '编辑作品 · ' + card.querySelector('.submission-author').textContent + '（状态与票数不变）';
+  document.getElementById('subSubmitBtn').textContent = '保存修改';
+  renderSubImages(); renderSubVideo();
+  document.querySelector('.upload-panel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
+const WORKS = {"v1": {"images": 2, "video": false, "author": "王芳", "org": "行政部", "desc": "以三十周年主题色致敬公司历程"}, "v2": {"images": 5, "video": false, "author": "李强", "org": "工程部", "desc": "工地上的三十年"}, "v3": {"images": 1, "video": false, "author": "张伟", "org": "技术部", "desc": "代码里的涂鸦"}, "v4": {"images": 3, "video": true, "author": "陈思思, 王芳, 李强", "org": "产品部", "desc": "灵感来源于公司logo的演变过程"}, "v5": {"images": 1, "video": false, "author": "田中一郎", "org": "合作伙伴", "desc": "感谢合作多年，祝福公司蒸蒸日上"}, "v6": {"images": 4, "video": false, "author": "周敏", "org": "市场部", "desc": "抽象色彩表达团队活力"}};
+let workCur = null, workIdx = 0, workMediaState = 'normal';
+function workItems(w){
+  const a = [];
+  for(let i=1; i<=w.images; i++) a.push({t:'img', n:i});
+  if(w.video) a.push({t:'video'});
+  return a;
+}
+function openWork(id){
+  workCur = id; workIdx = 0; workMediaState = 'normal';
+  document.getElementById('workOverlay').classList.add('open');
+  renderWork();
+}
+function closeWork(){ document.getElementById('workOverlay').classList.remove('open'); }
+function stepWork(d){
+  const n = workItems(WORKS[workCur]).length;
+  workIdx = Math.max(0, Math.min(n-1, workIdx+d));
+  workMediaState = 'normal';
+  renderWork();
+}
+function setWorkMedia(s){ workMediaState = s; renderWork(); }
+function renderWork(){
+  const w = WORKS[workCur], items = workItems(w), it = items[workIdx];
+  document.getElementById('workTitle').textContent = w.author + ' · ' + w.org;
+  document.getElementById('workDesc').textContent = w.desc;
+  document.getElementById('workCount').textContent = items.length > 1 ? (workIdx+1) + ' / ' + items.length : '';
+  let html;
+  if(workMediaState === 'loading'){
+    html = '<div class="u-work-skel"></div><div class="u-work-skel" style="width:45%"></div>';
+  } else if(workMediaState === 'error' && it.t === 'video'){
+    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
+  } else if(it.t === 'video'){
+    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  } else {
+    html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
+  }
+  if(items.length > 1){
+    html += '<button class="u-work-nav prev" onclick="stepWork(-1)"' + (workIdx===0?' disabled':'') + '>‹</button>'
+          + '<button class="u-work-nav next" onclick="stepWork(1)"' + (workIdx===items.length-1?' disabled':'') + '>›</button>';
+  }
+  document.getElementById('workStage').innerHTML = html;
+}
+
+renderSubImages();
+renderSubVideo();
+updateAuthorHint();
+document.querySelectorAll('#submissionGrid .submission-card').forEach(c=>setSubmissionStatus(c.id, c.dataset.status));
+
+/* ---- 管理端作品详情（只读，REQ-003 AC-017）：图片可切换、视频最后一项、完整说明、作者信息、状态与票数 ---- */
+const ADM_CELEBRATIONS = {"sg30": "公司30周年庆典 · 新加坡总部站", "bj30": "公司30周年庆典 · 北京分公司站", "q3camp": "Q3部门团建 · Q3团建营地站"};
+let admCur = null, admIdx = 0, admMediaState = 'normal';
+function admItems(card){
+  const a = [], n = +card.dataset.images;
+  for(let i=1; i<=n; i++) a.push({t:'img', n:i, total:n});
+  if(card.dataset.video === '1') a.push({t:'video'});
+  return a;
+}
+function viewSubmission(cardId){
+  admCur = cardId; admIdx = 0; admMediaState = 'normal';
+  document.getElementById('admWorkOverlay').classList.add('open');
+  renderAdmWork();
+}
+function closeAdmWork(){ document.getElementById('admWorkOverlay').classList.remove('open'); }
+function stepAdmWork(d){
+  const n = admItems(document.getElementById(admCur)).length;
+  admIdx = Math.max(0, Math.min(n-1, admIdx+d)); admMediaState = 'normal'; renderAdmWork();
+}
+function setAdmMedia(st){ admMediaState = st; renderAdmWork(); }
+function renderAdmWork(){
+  const card = document.getElementById(admCur), items = admItems(card), it = items[admIdx];
+  let html;
+  if(admMediaState === 'loading') html = '<div class="picker-skel" style="width:70%"></div><div class="picker-skel" style="width:45%"></div>';
+  else if(admMediaState === 'error' && it.t === 'video') html = '<div>视频加载失败</div><button class="action-link" onclick="setAdmMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--text-muted)">图片仍可左右切换查看</div>';
+  else if(it.t === 'video') html = '<div style="font-size:40px">▶</div><div>作品视频 · MP4</div><button class="action-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  else html = '<div style="font-size:40px">🖼</div><div>作品图片 '+it.n+' / '+it.total+(it.n===1?'（封面）':'')+'</div>';
+  if(items.length > 1) html += '<button class="adm-nav prev" onclick="stepAdmWork(-1)"'+(admIdx===0?' disabled':'')+'>‹</button><button class="adm-nav next" onclick="stepAdmWork(1)"'+(admIdx===items.length-1?' disabled':'')+'>›</button>';
+  document.getElementById('admStage').innerHTML = html;
+  document.getElementById('admCount').textContent = items.length > 1 ? (admIdx+1)+' / '+items.length : '';
+  const sub = card.querySelector('.submission-sub').textContent.split('·').map(x=>x.trim());
+  const descEl = card.querySelector('.submission-desc');
+  const desc = descEl ? descEl.textContent : '';
+  document.getElementById('admInfo').innerHTML =
+      '<div><label>作者姓名'+(card.querySelector('.submission-author').textContent.split(/,\s*/).length>1?'（'+card.querySelector('.submission-author').textContent.split(/,\s*/).length+' 人）':'')+'</label><div class="val">'+card.querySelector('.submission-author').textContent+'</div></div>'
+    + '<div><label>作者类型</label><div class="val">'+(sub[1]||'')+'</div></div>'
+    + '<div><label>部门 / 所属机构</label><div class="val">'+(sub[0]||'')+'</div></div>'
+    + '<div><label>所属 Celebration</label><div class="val">'+(ADM_CELEBRATIONS[card.dataset.activity]||'')+'</div></div>'
+    + '<div><label>状态</label><div class="val">'+card.querySelector('.status-badge').textContent+'</div></div>'
+    + '<div><label>票数</label><div class="val">'+card.dataset.votes+' 票</div></div>'
+    + '<div class="wide"><label>作品说明</label><div class="adm-desc">'+(desc || '<span style="color:var(--text-muted)">无说明</span>')+'</div></div>';
+}
+
+function VIEW(cardId){ return '<button class="action-link" onclick="viewSubmission(\''+cardId+'\')">查看详情</button>'; }
 function setSubmissionStatus(cardId, status){
   const card = document.getElementById(cardId);
   const badge = card.querySelector('.status-badge');
@@ -2492,15 +2839,17 @@ function setSubmissionStatus(cardId, status){
   if(status === 'draft'){
     badge.className = 'status-badge draft';
     badge.textContent = '未发布';
-    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
+      + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
   } else if(status === 'published'){
     badge.className = 'status-badge approved';
     badge.textContent = '已发布';
-    actions.innerHTML = '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
   } else if(status === 'hidden'){
     badge.className = 'status-badge hidden-st';
     badge.textContent = '已隐藏';
-    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
+      + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
       + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
   }
   filterSubmissions();

@@ -42,6 +42,18 @@
   .poster-img .poster-title{font-family:Georgia,"Songti SC",serif; font-size:22px; font-weight:600; line-height:1.3; margin-bottom:10px}
   .poster-img .poster-meta{font-size:13px; color:var(--u-text-muted)}
   .poster-img .poster-tag{margin-top:18px; font-size:11px; color:var(--u-text-muted); border:1px dashed var(--u-gold); border-radius:999px; padding:4px 12px}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
+  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .u-work-overlay.open{display:flex}
+  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
+  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-nav:disabled{opacity:.35; cursor:default}
+  .u-work-nav.prev{left:10px}
+  .u-work-nav.next{right:10px}
+  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
+  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
   .section-title{font-family:Georgia,"Songti SC",serif; font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 20px}
 
   .lede{font-style:italic; color:#8A6A3D; font-size:15px; line-height:1.7; margin:0 0 18px}
@@ -66,11 +78,11 @@
 
   .doodle-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
   .doodle-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
-  .doodle-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
+  .doodle-thumb{position:relative; cursor:pointer; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .doodle-info{padding:10px 12px}
-  .doodle-author{font-size:13px; font-weight:600; color:var(--u-text)}
+  .doodle-author{font-size:13px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .doodle-org{font-size:11.5px; color:var(--u-text-muted); margin-top:2px}
-  .doodle-desc{font-size:12px; color:var(--u-text); line-height:1.6; margin-top:8px}
+  .doodle-desc{font-size:12px; color:var(--u-text); line-height:1.6; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .doodle-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
   .doodle-count{font-size:11.5px; color:var(--u-text-muted)}
   .doodle-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
@@ -173,6 +185,25 @@
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('registration')">报名信息：<span id="demoRegState">开</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('doodle')">涂鸦展示：<span id="demoDoodleState">开</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleStage()">状态（点击循环）：<span id="demoStageState">即将开始</span></button>
+</div>
+
+<div class="u-work-overlay" id="workOverlay" onclick="if(event.target===this)closeWork()">
+  <div class="u-work-box">
+    <div class="u-work-stage" id="workStage"></div>
+    <div class="u-work-meta">
+      <div id="workTitle" style="font-weight:600"></div>
+      <div id="workDesc" style="margin-top:4px; color:var(--u-text-muted); font-size:12.5px"></div>
+      <div id="workCount" style="margin-top:6px; color:var(--u-text-muted); font-size:11.5px"></div>
+    </div>
+    <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+      <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
+        <button class="u-work-link" onclick="setWorkMedia('normal')">正常</button>
+        <button class="u-work-link" onclick="setWorkMedia('loading')">加载中</button>
+        <button class="u-work-link" onclick="setWorkMedia('error')">加载失败</button>
+      </span>
+      <button class="u-work-link" onclick="closeWork()">关闭</button>
+    </div>
+  </div>
 </div>
 
 <div class="u-modal-overlay" id="celRegModalOverlay">
@@ -291,16 +322,16 @@ function renderCelebration(id){
       + '<div class="gallery-item" style="grid-area:g; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
       + '</div>';
     doodle.innerHTML = '<div class="doodle-grid">'
-      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb">🎨</div><div class="doodle-info">'
-      +   '<div class="doodle-author">陈思思</div>'
-      +   '<div class="doodle-org">产品部 · 内部员工</div>'
+      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb" onclick="openWork(\'cv1\')">🎨<span class="u-media-tag">3 张 · ▶</span></div><div class="doodle-info">'
+      +   '<div class="doodle-author">陈思思, 王芳, 李强</div>'
+      +   '<div class="doodle-org">产品部</div>'
       +   '<div class="doodle-desc">灵感来源于公司logo的演变过程</div>'
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="14">14 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv1\')">投票</button></div>'
       + '</div></div>'
-      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb">🎨</div><div class="doodle-info">'
+      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb" onclick="openWork(\'cv2\')">🎨<span class="u-media-tag">2 张</span></div><div class="doodle-info">'
       +   '<div class="doodle-author">王芳</div>'
-      +   '<div class="doodle-org">行政部 · 内部员工</div>'
-      +   '<div class="doodle-desc">以三十周年主题色致敬公司历程</div>'
+      +   '<div class="doodle-org">行政部</div>'
+      +   '<div class="doodle-desc">以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。</div>'
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="9">9 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv2\')">投票</button></div>'
       + '</div></div>'
       + '</div>';
@@ -350,6 +381,50 @@ function demoToggleModule(key){
   const m = CELEBRATIONS[currentId].modules;
   m[key] = !m[key];
   applyModuleSwitches();
+}
+
+/* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
+const WORKS = {"cv1": {"images": 3, "video": true, "author": "陈思思, 王芳, 李强", "org": "产品部", "desc": "灵感来源于公司logo的演变过程"}, "cv2": {"images": 2, "video": false, "author": "王芳", "org": "行政部", "desc": "以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。"}};
+let workCur = null, workIdx = 0, workMediaState = 'normal';
+function workItems(w){
+  const a = [];
+  for(let i=1; i<=w.images; i++) a.push({t:'img', n:i});
+  if(w.video) a.push({t:'video'});
+  return a;
+}
+function openWork(id){
+  workCur = id; workIdx = 0; workMediaState = 'normal';
+  document.getElementById('workOverlay').classList.add('open');
+  renderWork();
+}
+function closeWork(){ document.getElementById('workOverlay').classList.remove('open'); }
+function stepWork(d){
+  const n = workItems(WORKS[workCur]).length;
+  workIdx = Math.max(0, Math.min(n-1, workIdx+d));
+  workMediaState = 'normal';
+  renderWork();
+}
+function setWorkMedia(s){ workMediaState = s; renderWork(); }
+function renderWork(){
+  const w = WORKS[workCur], items = workItems(w), it = items[workIdx];
+  document.getElementById('workTitle').textContent = w.author + ' · ' + w.org;
+  document.getElementById('workDesc').textContent = w.desc;
+  document.getElementById('workCount').textContent = items.length > 1 ? (workIdx+1) + ' / ' + items.length : '';
+  let html;
+  if(workMediaState === 'loading'){
+    html = '<div class="u-work-skel"></div><div class="u-work-skel" style="width:45%"></div>';
+  } else if(workMediaState === 'error' && it.t === 'video'){
+    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
+  } else if(it.t === 'video'){
+    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  } else {
+    html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
+  }
+  if(items.length > 1){
+    html += '<button class="u-work-nav prev" onclick="stepWork(-1)"' + (workIdx===0?' disabled':'') + '>‹</button>'
+          + '<button class="u-work-nav next" onclick="stepWork(1)"' + (workIdx===items.length-1?' disabled':'') + '>›</button>';
+  }
+  document.getElementById('workStage').innerHTML = html;
 }
 
 function applyFromHash(){
