@@ -202,16 +202,6 @@
             <label>Celebration 标题<span class="req-mark">*</span></label>
             <input type="text" id="celFieldTitle" placeholder="例如：From Foundation to Future: A Journey Through Time">
           </div>
-          <div class="field">
-            <label>Category 类型<span class="req-mark">*</span></label>
-            <select id="celFieldCategory">
-              <option>Milestone</option>
-              <option>Team Building</option>
-              <option>Appreciation</option>
-              <option>Festive</option>
-              <option>Other</option>
-            </select>
-          </div>
           <div class="row2">
             <div class="field"><label>开始时间<span class="req-mark">*</span></label><input type="datetime-local"></div>
             <div class="field"><label>结束时间<span class="req-mark">*</span></label><input type="datetime-local"></div>
@@ -227,7 +217,11 @@
             </div>
           </div>
           <div class="field">
-            <label>文字描述</label>
+            <label>预告海报<span class="req-mark">*</span></label>
+            <div class="upload-box">点击上传预告海报（JPG 或 PNG，单张不超过 5MB）。即将开始、进行中状态下在用户端左侧完整展示，宽度自适应、不裁切；已结束后不再展示，但这里保留</div>
+          </div>
+          <div class="field">
+            <label>文字描述<span class="req-mark">*</span>（Celebration 已结束后在用户端显示）</label>
             <div class="rte-wrap">
               <div class="rte-toolbar">
                 <button type="button" class="rte-btn b" onclick="rteCmd('bold')" title="加粗">B</button>
@@ -241,7 +235,7 @@
             </div>
           </div>
           <div class="field">
-            <label>图片相册（选填，支持多张，与封面图分开维护）</label>
+            <label>图片相册（选填，支持多张，与封面图分开维护；Celebration 结束后在用户端显示）</label>
             <div class="upload-box">点击或拖拽上传现场照片</div>
           </div>
           <div class="field">
@@ -250,15 +244,15 @@
           </div>
 
           <p class="section-title" style="margin-top:8px">该 Celebration 启用的模块</p>
-          <p class="section-hint">报名与涂鸦展示只在这里配置，不再出现在活动本身的模块配置步骤中</p>
+          <p class="section-hint">报名与涂鸦展示只在这里配置。「在用户端展示」开关默认关闭，由你决定何时打开；关闭时用户端不显示该模块也没有入口，已填的配置和已有的报名 / 作品 / 投票数据都会保留</p>
           <div class="module-list">
             <div class="module-row">
               <div class="module-head">
                 <div style="flex:1"><span class="module-name">报名信息</span><span class="badge interactive">互动型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+                <span style="font-size:12px; color:var(--text-muted)">在用户端展示</span>
+                <label class="toggle"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
               </div>
               <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
                 <div><label>报名截止时间（选填）</label><input type="datetime-local"></div>
                 <div><label>名额上限（选填）</label><input type="number" placeholder="留空不限"></div>
               </div>
@@ -266,12 +260,12 @@
             <div class="module-row">
               <div class="module-head">
                 <div style="flex:1"><span class="module-name">涂鸦展示</span><span class="badge interactive">互动型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+                <span style="font-size:12px; color:var(--text-muted)">在用户端展示</span>
+                <label class="toggle"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
               </div>
               <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-                <div><label>提交截止时间</label><input type="datetime-local"></div>
-                <div><label>投票截止时间</label><input type="datetime-local"></div>
+                <div><label>提交截止时间（展示开关打开时必填；须晚于 Celebration 结束时间）</label><input type="datetime-local"></div>
+                <div><label>投票截止时间（展示开关打开时必填；须晚于提交截止时间）</label><input type="datetime-local"></div>
               </div>
             </div>
           </div>
@@ -295,18 +289,19 @@
             <label>按状态筛选</label>
             <select id="celebrationStatusFilter" style="width:100%" onchange="filterCelebrations()">
               <option value="all">全部状态</option>
-              <option value="held">已举办</option>
               <option value="upcoming">即将开始</option>
+              <option value="ongoing">进行中</option>
+              <option value="ended">已结束</option>
             </select>
           </div>
         </div>
 
         <div class="module-grid" id="celebrationGrid">
 
-          <div class="module-card" data-activity="30th" data-status="held" id="cel-sg30">
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-sg30">
             <div class="module-card-head">
               <div class="module-card-title">新加坡总部站</div>
-              <span class="status-badge approved">已举办 · 实拍封面</span>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
             </div>
             <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
             <div class="module-meta">
@@ -318,10 +313,10 @@
             </div>
           </div>
 
-          <div class="module-card" data-activity="30th" data-status="held" id="cel-bj30">
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-bj30">
             <div class="module-card-head">
               <div class="module-card-title">北京分公司站</div>
-              <span class="status-badge approved">已举办 · 实拍封面</span>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
             </div>
             <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
             <div class="module-meta">
@@ -348,10 +343,10 @@
             </div>
           </div>
 
-          <div class="module-card" data-activity="q3" data-status="held" id="cel-q3camp">
+          <div class="module-card" data-activity="q3" data-status="ended" id="cel-q3camp">
             <div class="module-card-head">
               <div class="module-card-title">Q3团建营地站</div>
-              <span class="status-badge approved">已举办 · 实拍封面</span>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
             </div>
             <p class="module-desc">Q3部门团建<br>2026-08-02 09:00 – 18:00</p>
             <div class="module-meta">

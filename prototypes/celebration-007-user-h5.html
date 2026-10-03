@@ -33,16 +33,27 @@
   .hero-photo-bg.dimmed{filter:grayscale(.5) brightness(.65)}
   .page-hero::before{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,26,38,.25), rgba(15,20,30,.9)); z-index:1}
   .hero-inner{position:relative; z-index:2; max-width:1080px; margin:0 auto; padding:44px 44px 0}
-  .hero-meta-row{display:flex; align-items:center; gap:10px; margin-bottom:14px}
-  .badge-category{background:var(--u-gold); color:#241d14; font-size:11px; font-weight:700; letter-spacing:.03em; padding:5px 12px; border-radius:999px; text-transform:uppercase}
-  .badge-category.upcoming{background:transparent; border:1px solid rgba(255,255,255,.55); color:#fff}
-  .hero-year{font-size:13px; color:#C9C0AE}
-  .hero-title{font-family:Georgia,"Songti SC",serif; font-size:34px; font-weight:600; margin:0 0 6px; line-height:1.2}
-  .hero-subtitle{font-size:13px; color:#C9C0AE; margin:0 0 40px}
+  .hero-title{font-family:Georgia,"Songti SC",serif; font-size:34px; font-weight:600; margin:0 0 40px; line-height:1.2}
 
   /* ---- Body ---- */
   .page-body{display:grid; grid-template-columns:1fr 320px; gap:36px; max-width:1080px; margin:0 auto; padding:44px 44px 64px}
   .content-section{margin-bottom:40px}
+  .poster-img{width:100%; aspect-ratio:3/4; border-radius:12px; background:linear-gradient(160deg,var(--u-gold-tint),#fff); border:0.5px solid var(--u-gold-tint); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--u-text)}
+  .poster-img .poster-title{font-family:Georgia,"Songti SC",serif; font-size:22px; font-weight:600; line-height:1.3; margin-bottom:10px}
+  .poster-img .poster-meta{font-size:13px; color:var(--u-text-muted)}
+  .poster-img .poster-tag{margin-top:18px; font-size:11px; color:var(--u-text-muted); border:1px dashed var(--u-gold); border-radius:999px; padding:4px 12px}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
+  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .u-work-overlay.open{display:flex}
+  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
+  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-nav:disabled{opacity:.35; cursor:default}
+  .u-work-nav.prev{left:10px}
+  .u-work-nav.next{right:10px}
+  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
+  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
   .section-title{font-family:Georgia,"Songti SC",serif; font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 20px}
 
   .lede{font-style:italic; color:#8A6A3D; font-size:15px; line-height:1.7; margin:0 0 18px}
@@ -67,11 +78,11 @@
 
   .doodle-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
   .doodle-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
-  .doodle-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
+  .doodle-thumb{position:relative; cursor:pointer; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .doodle-info{padding:10px 12px}
-  .doodle-author{font-size:13px; font-weight:600; color:var(--u-text)}
+  .doodle-author{font-size:13px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .doodle-org{font-size:11.5px; color:var(--u-text-muted); margin-top:2px}
-  .doodle-desc{font-size:12px; color:var(--u-text); line-height:1.6; margin-top:8px}
+  .doodle-desc{font-size:12px; color:var(--u-text); line-height:1.6; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .doodle-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
   .doodle-count{font-size:11.5px; color:var(--u-text-muted)}
   .doodle-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
@@ -87,6 +98,12 @@
   .highlights-list{list-style:none; margin:0 0 22px; padding:0}
   .highlights-list li{font-size:13px; color:var(--u-text); padding:5px 0 5px 16px; position:relative}
   .highlights-list li::before{content:''; position:absolute; left:0; top:12px; width:5px; height:5px; border-radius:50%; background:var(--u-gold)}
+  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--u-gold-tint); border-radius:8px}
+  .qr-c{display:block; background:transparent}
+  .qr-c.on{background:var(--u-navy)}
+  .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--u-text)}
+  .qr-hint{font-size:12px; color:var(--u-text-muted); text-align:center; margin-top:6px}
+  .my-code-link{display:none; width:100%; margin-top:8px; background:none; border:none; color:var(--u-gold); font-size:12.5px; text-decoration:underline; cursor:pointer}
   .register-btn{width:100%; background:var(--u-navy); color:#fff; border:none; padding:13px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer}
   .register-btn:hover{background:#223046}
   .register-btn:disabled{opacity:.55; cursor:default}
@@ -127,30 +144,29 @@
 <div class="page-hero">
   <div class="hero-photo-bg" id="heroPhoto"></div>
   <div class="hero-inner">
-    <div class="hero-meta-row">
-      <span class="badge-category" id="heroBadge">Milestone</span>
-      <span class="hero-year" id="heroYear">2026</span>
-    </div>
     <h1 class="hero-title" id="heroTitle">30th Anniversary Gala</h1>
-    <p class="hero-subtitle" id="heroSubtitle">新加坡总部站 · 2026-08-11 09:00</p>
   </div>
 </div>
 
 <div class="page-body">
   <div class="main-col">
 
-    <div class="content-section">
+    <div class="content-section" id="posterSection">
+      <div class="poster-img" id="posterBox"></div>
+    </div>
+
+    <div class="content-section" id="descSection">
       <p class="lede" id="ledeText">Three decades of building trust — celebrated together with staff, partners and the wider MCC family.</p>
       <hr class="divider">
       <div id="bodyText"></div>
     </div>
 
-    <div class="content-section">
+    <div class="content-section" id="gallerySection">
       <h2 class="section-title">Activity Gallery</h2>
       <div id="galleryContent"></div>
     </div>
 
-    <div class="content-section">
+    <div class="content-section" id="doodleSection">
       <h2 class="section-title">Doodle Wall</h2>
       <div id="doodleContent"></div>
     </div>
@@ -161,26 +177,65 @@
     <div class="details-card">
       <h3>Event Details</h3>
       <div class="detail-row"><label>Site</label><div id="detailSite">新加坡总部站</div></div>
-      <div class="detail-row"><label>Date</label><div id="detailDate">2026-08-11 · 09:00–12:00</div></div>
-      <div class="detail-row"><label>Category</label><span class="badge-category" id="detailCategory">Milestone</span></div>
-      <div class="detail-row"><label>Registered</label><div id="detailRegistered">62 guests</div></div>
-      <div class="detail-row"><label>Theme</label><div id="detailTheme">From Foundation to Future: A Journey Through Time</div></div>
+      <div class="detail-row"><label>Date</label><div id="detailDate">11 Aug 2026 09:00 - 12:00</div></div>
       <hr class="details-divider">
       <p class="highlights-label">Highlights</p>
       <ul class="highlights-list" id="highlightsList"></ul>
       <button class="register-btn" id="registerBtn" onclick="openCelRegisterModal()">立即报名 · Register</button>
+      <button class="my-code-link" id="myCodeLink" onclick="openMyCode()">查看我的签到码</button>
     </div>
   </aside>
+</div>
+
+<div style="max-width:1080px; margin:0 auto; padding:0 44px 28px; font-size:11.5px; color:var(--u-text-muted)">
+  原型演示（管理端的展示开关）：
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('registration')">报名信息：<span id="demoRegState">开</span></button>
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('doodle')">涂鸦展示：<span id="demoDoodleState">开</span></button>
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleFull()">名额（点击切换）：<span id="demoFullState">未满</span></button>
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleStage()">状态（点击循环）：<span id="demoStageState">即将开始</span></button>
+</div>
+
+<div class="u-work-overlay" id="workOverlay" onclick="if(event.target===this)closeWork()">
+  <div class="u-work-box">
+    <div class="u-work-stage" id="workStage"></div>
+    <div class="u-work-meta">
+      <div id="workTitle" style="font-weight:600"></div>
+      <div id="workDesc" style="margin-top:4px; color:var(--u-text-muted); font-size:12.5px"></div>
+      <div id="workCount" style="margin-top:6px; color:var(--u-text-muted); font-size:11.5px"></div>
+    </div>
+    <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+      <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
+        <button class="u-work-link" onclick="setWorkMedia('normal')">正常</button>
+        <button class="u-work-link" onclick="setWorkMedia('loading')">加载中</button>
+        <button class="u-work-link" onclick="setWorkMedia('error')">加载失败</button>
+      </span>
+      <button class="u-work-link" onclick="closeWork()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="u-modal-overlay" id="myCodeOverlay">
+  <div class="u-modal" style="text-align:center">
+    <h3>我的签到码</h3>
+    <p class="u-modal-sub" id="myCodeSub"></p>
+    <div class="qr-grid" id="myCodeQr"></div>
+    <div class="qr-code-text" id="myCodeText"></div>
+    <div class="qr-hint">活动当天出示给现场工作人员扫描<br>请勿转发给他人</div>
+    <div class="u-modal-actions" style="justify-content:center">
+      <button class="u-modal-submit" onclick="closeMyCode()">关闭</button>
+    </div>
+  </div>
 </div>
 
 <div class="u-modal-overlay" id="celRegModalOverlay">
   <div class="u-modal">
     <div id="celRegFormBody">
       <h3>报名参加</h3>
-      <p class="u-modal-sub" id="celRegModalSub">新加坡总部站 · 2026-08-11 09:00</p>
+      <p class="u-modal-sub" id="celRegModalSub">新加坡总部站 · 11 Aug 2026 09:00 - 12:00</p>
       <div class="u-field"><label>姓名</label><input type="text" value="陈思思" disabled></div>
       <div class="u-field"><label>部门</label><input type="text" value="产品部" disabled></div>
-      <div class="u-field"><label>联系电话</label><input type="text" id="celRegPhone" placeholder="用于活动当天联系"></div>
+      <div class="u-field"><label>联系电话</label><input type="text" id="celRegPhone" placeholder="中国 11 位 / 新加坡 8 位手机号"></div>
+      <div class="u-field"><label>邮箱地址</label><input type="text" id="celRegEmail" placeholder="例如：name@company.com"></div>
       <div class="u-modal-actions">
         <button class="u-modal-cancel" onclick="closeCelRegisterModal()">取消</button>
         <button class="u-modal-submit" onclick="submitCelRegistration()">确认报名</button>
@@ -190,7 +245,10 @@
       <div class="u-modal-success-icon">✓</div>
       <h3>报名成功</h3>
       <p>该报名记录仅计入本 Celebration，不影响其他站点</p>
-      <button class="u-modal-submit" onclick="closeCelRegisterModal()">好的</button>
+      <div class="qr-grid" id="successQr"></div>
+      <div class="qr-code-text" id="successCode"></div>
+      <div class="qr-hint">这是你的签到码，活动当天出示给现场工作人员扫描<br>之后可在本页点「查看我的签到码」再次打开</div>
+      <button class="u-modal-submit" style="margin-top:16px" onclick="closeCelRegisterModal()">好的</button>
     </div>
   </div>
 </div>
@@ -198,9 +256,8 @@
 <script>
 const CELEBRATIONS = {
   sg30: {
-    site:'新加坡总部站', date:'2026-08-11 · 09:00–12:00', year:'2026', held:true,
-    title:'From Foundation to Future: A Journey Through Time', theme:'From Foundation to Future: A Journey Through Time',
-    category:'Milestone', registered:'62 guests',
+    site:'新加坡总部站', modules:{registration:true, doodle:true}, reg:{capacity:null, registered:62, me:false}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
+    title:'From Foundation to Future: A Journey Through Time',
     lede:'Three decades of building Singapore\'s skyline — celebrated with staff, partners, and the wider MCC family at our headquarters.',
     body:[
       'On 11 August 2026, MCC Singapore\'s headquarters gathered over 60 registered colleagues to mark 30 years since the company\'s founding, held alongside a doodle exhibition and a relaxed, festival-style morning for staff and their families.',
@@ -211,9 +268,8 @@ const CELEBRATIONS = {
     highlights:['创始团队致辞 · Founding member address','三十周年回顾影片 · 30-year tribute video','长期服务奖表彰 · Long-service awards','抽奖与现场乐队 · Lucky draw & live music','集体合影 · Group photography']
   },
   bj30: {
-    site:'北京分公司站', date:'2026-08-11 · 09:00–12:00', year:'2026', held:true,
-    title:'From Foundation to Future: A Journey Through Time', theme:'From Foundation to Future: A Journey Through Time',
-    category:'Milestone', registered:'41 guests',
+    site:'北京分公司站', modules:{registration:true, doodle:false}, reg:{capacity:41, registered:41, me:false}, start_time:'2026-08-11T09:00:00+08:00', end_time:'2026-08-11T12:00:00+08:00',
+    title:'From Foundation to Future: A Journey Through Time',
     lede:'The Beijing office marked the same milestone with its own morning gathering, shaped by the site\'s own history and team.',
     body:[
       '北京分公司站 welcomed 41 registered colleagues to its own celebration on the same day as the Singapore headquarters, run under the shared "From Foundation to Future" theme but with its own programme and guests.',
@@ -224,9 +280,8 @@ const CELEBRATIONS = {
     highlights:['分公司团队致辞 · Site leadership address','历史照片展示 · Archival photo display','长期服务奖表彰 · Long-service awards','茶歇交流环节 · Tea reception & mingling','集体合影 · Group photography']
   },
   sh30: {
-    site:'上海分公司站', date:'2026-12-05 · 14:00–17:00', year:'2026', held:false,
-    title:'From Foundation to Future: A Journey Through Time', theme:'From Foundation to Future: A Journey Through Time',
-    category:'Upcoming', registered:'0 · registration open',
+    site:'上海分公司站', modules:{registration:true, doodle:true}, reg:{capacity:100, registered:0, me:false}, start_time:'2026-12-05T14:00:00+08:00', end_time:'2026-12-06T17:00:00+08:00',
+    title:'From Foundation to Future: A Journey Through Time',
     lede:'上海分公司站\'s celebration is still ahead — the gallery and doodle wall open once the countdown reaches zero.',
     body:['Full details for this site will appear here once the celebration begins. Registration is already open — check back after 2026-12-05 for photos and the doodle exhibition.'],
     quote:null,
@@ -234,9 +289,8 @@ const CELEBRATIONS = {
     highlights:['开场致辞 · Opening address','历史回顾 · History showcase','互动游戏 · Interactive games','集体合影 · Group photography']
   },
   q3camp: {
-    site:'Q3团建营地站', date:'2026-08-02 · 09:00–18:00', year:'2026', held:true,
-    title:'Team Spirit Camp', theme:'Team Spirit Camp — Q3 Department Outing',
-    category:'Team Building', registered:'34 guests',
+    site:'Q3团建营地站', modules:{registration:false, doodle:true}, reg:{capacity:null, registered:34, me:false}, start_time:'2026-08-02T09:00:00+08:00', end_time:'2026-08-02T18:00:00+08:00',
+    title:'Team Spirit Camp',
     lede:'A very different kind of gathering — Q3\'s team-building camp, celebrated outdoors rather than in a ballroom.',
     body:[
       '34 colleagues spent the day at an outdoor camp for the Q3 department outing, split across team challenges, a doodle exhibition, and an evening BBQ.',
@@ -250,27 +304,28 @@ const CELEBRATIONS = {
 
 let currentId = 'sg30';
 
+/* 用户端时间合并显示，规则见 REQ-007 §5.4：同一天 → "30 Sep 2026 10:00 - 14:00"；跨天 → "30 Sep 2026 10:00 - 2 Oct 2026 18:00"。
+   数据为 ISO 8601（+08:00，Asia/Singapore），原型直接按字符串取日期与钟点；真实实现需先转换到新加坡时区再判断是否同一天。 */
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtCelebrationTime(startIso, endIso){
+  const p = iso => { const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); return {y:m[1], mo:+m[2]-1, d:+m[3], hm:m[4]+':'+m[5], day:m[1]+m[2]+m[3]}; };
+  const a = p(startIso), b = p(endIso);
+  const dm = x => x.d+' '+MONTHS[x.mo]+' '+x.y;
+  return a.day===b.day ? dm(a)+' '+a.hm+' - '+b.hm : dm(a)+' '+a.hm+' - '+dm(b)+' '+b.hm;
+}
+
 function renderCelebration(id){
   const data = CELEBRATIONS[id] || CELEBRATIONS.sg30;
   currentId = CELEBRATIONS[id] ? id : 'sg30';
+  const when = fmtCelebrationTime(data.start_time, data.end_time);
 
   document.title = 'Celebration 详情 · ' + data.site;
   document.getElementById('heroTitle').textContent = data.title;
-  document.getElementById('heroSubtitle').textContent = data.site + ' · ' + data.date;
-  document.getElementById('heroYear').textContent = data.year;
   document.getElementById('detailSite').textContent = data.site;
-  document.getElementById('detailDate').textContent = data.date;
-  document.getElementById('detailTheme').textContent = data.theme;
-  document.getElementById('detailRegistered').textContent = data.registered;
-  document.getElementById('celRegModalSub').textContent = data.site + ' · ' + data.date;
+  document.getElementById('detailDate').textContent = when;
+  document.getElementById('posterBox').innerHTML = '<div class="poster-title">'+data.title+'</div><div class="poster-meta">'+data.site+'<br>'+when+'</div><div class="poster-tag">预告海报 · JPG / PNG，宽度自适应完整显示</div>';
+  document.getElementById('celRegModalSub').textContent = data.site + ' · ' + when;
 
-  const heroBadge = document.getElementById('heroBadge');
-  const detailCategory = document.getElementById('detailCategory');
-  heroBadge.textContent = data.category;
-  detailCategory.textContent = data.category;
-  heroBadge.classList.toggle('upcoming', !data.held);
-  detailCategory.classList.toggle('upcoming', !data.held);
-  document.getElementById('heroPhoto').classList.toggle('dimmed', !data.held);
 
   document.getElementById('ledeText').textContent = data.lede;
   let bodyHtml = data.body.map(p => '<p>' + p + '</p>').join('');
@@ -282,7 +337,6 @@ function renderCelebration(id){
 
   const gallery = document.getElementById('galleryContent');
   const doodle = document.getElementById('doodleContent');
-  if(data.held){
     gallery.innerHTML = '<div class="gallery-grid">'
       + '<div class="gallery-item" style="grid-area:a; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
       + '<div class="gallery-item" style="grid-area:b; background:linear-gradient(150deg,#2b2420,#4a3b2c); color:#fff">📷</div>'
@@ -293,28 +347,125 @@ function renderCelebration(id){
       + '<div class="gallery-item" style="grid-area:g; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
       + '</div>';
     doodle.innerHTML = '<div class="doodle-grid">'
-      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb">🎨</div><div class="doodle-info">'
-      +   '<div class="doodle-author">陈思思</div>'
-      +   '<div class="doodle-org">产品部 · 内部员工</div>'
+      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb" onclick="openWork(\'cv1\')">🎨<span class="u-media-tag">3 张 · ▶</span></div><div class="doodle-info">'
+      +   '<div class="doodle-author">陈思思, 王芳, 李强</div>'
+      +   '<div class="doodle-org">产品部</div>'
       +   '<div class="doodle-desc">灵感来源于公司logo的演变过程</div>'
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="14">14 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv1\')">投票</button></div>'
       + '</div></div>'
-      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb">🎨</div><div class="doodle-info">'
+      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb" onclick="openWork(\'cv2\')">🎨<span class="u-media-tag">2 张</span></div><div class="doodle-info">'
       +   '<div class="doodle-author">王芳</div>'
-      +   '<div class="doodle-org">行政部 · 内部员工</div>'
-      +   '<div class="doodle-desc">以三十周年主题色致敬公司历程</div>'
+      +   '<div class="doodle-org">行政部</div>'
+      +   '<div class="doodle-desc">以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。</div>'
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="9">9 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv2\')">投票</button></div>'
       + '</div></div>'
       + '</div>';
     restoreVotes();
-  } else {
-    gallery.innerHTML = '<p class="empty-note">活动开始前暂无现场照片 · Photos will appear once this celebration begins</p>';
-    doodle.innerHTML = '<p class="empty-note">涂鸦展示尚未开放 · Doodle wall opens once this celebration begins</p>';
-  }
 
-  const registerBtn = document.getElementById('registerBtn');
-  registerBtn.disabled = false;
-  registerBtn.textContent = '立即报名 · Register';
+  applyModuleSwitches();
+}
+
+/* Celebration 状态（REQ-007 §5.2）：当前时间 < 开始时间 → 即将开始；已开始且当前日期 ≤ 结束日期 → 进行中；当前日期 > 结束日期 → 已结束。
+   原型用固定的演示"现在"（新加坡时间）；真实实现由后端计算 status。 */
+const DEMO_NOW = '2026-10-02T10:00';
+const statusOverride = {};
+const STATUS_LABEL = {upcoming:'即将开始', ongoing:'进行中', ended:'已结束'};
+function statusOf(id){
+  if(statusOverride[id]) return statusOverride[id];
+  const c = CELEBRATIONS[id];
+  if(DEMO_NOW < c.start_time.slice(0,16)) return 'upcoming';
+  return DEMO_NOW.slice(0,10) <= c.end_time.slice(0,10) ? 'ongoing' : 'ended';
+}
+/* 按状态与展示开关控制页面：
+   - 封面（§5.2.1）：即将开始 → 预告封面（此处用调暗表示），进行中 / 已结束 → 实拍封面
+   - 左侧（§5.2.2）：即将开始 / 进行中 → 预告海报；已结束 → 文字描述 + 相册；涂鸦展示不随状态变化，只看展示开关（位置在最下方）
+   - 展示开关（§5.3）：关闭时用户端不显示该模块，也没有入口；数据与配置保留 */
+/* 报名按钮（REQ-004 §8 / AC-009、AC-010）：已报名 → 「已报名 ✓」；名额已满 → 「报名人数已达上限」置灰；否则「立即报名」。不展示名额具体数字 */
+function updateRegisterButton(){
+  const r = CELEBRATIONS[currentId].reg;
+  const full = r.capacity != null && r.registered >= r.capacity;
+  const btn = document.getElementById('registerBtn');
+  document.getElementById('myCodeLink').style.display = r.me ? 'block' : 'none';
+  if(r.me){ btn.textContent = '已报名 ✓'; btn.disabled = true; }
+  else if(full){ btn.textContent = '报名人数已达上限'; btn.disabled = true; }
+  else { btn.textContent = '立即报名 · Register'; btn.disabled = false; }
+  document.getElementById('demoFullState').textContent = r.me ? '已报名' : (full ? '已满' : '未满');
+}
+function demoToggleFull(){
+  const r = CELEBRATIONS[currentId].reg;
+  if(r.capacity == null){ r.capacity = r.registered; }              // 不限 → 设上限=当前人数，即刚好报满
+  else if(r.registered >= r.capacity){ r.registered = r.capacity - 1; r.me = false; }   // 已满 → 有人取消，释放 1 个名额
+  else { r.registered = r.capacity; }
+  updateRegisterButton();
+}
+function applyModuleSwitches(){
+  const m = CELEBRATIONS[currentId].modules;
+  const status = statusOf(currentId);
+  const ended = status === 'ended';
+  document.getElementById('heroPhoto').classList.toggle('dimmed', status === 'upcoming');
+  document.getElementById('posterSection').style.display = ended ? 'none' : '';
+  document.getElementById('descSection').style.display = ended ? '' : 'none';
+  document.getElementById('gallerySection').style.display = ended ? '' : 'none';
+  document.getElementById('doodleSection').style.display = m.doodle ? '' : 'none';
+  document.getElementById('registerBtn').style.display = m.registration ? '' : 'none';
+  updateRegisterButton();
+  document.getElementById('demoRegState').textContent = m.registration ? '开' : '关';
+  document.getElementById('demoDoodleState').textContent = m.doodle ? '开' : '关';
+  document.getElementById('demoStageState').textContent = STATUS_LABEL[status];
+}
+function demoToggleStage(){
+  const order = ['upcoming','ongoing','ended'];
+  statusOverride[currentId] = order[(order.indexOf(statusOf(currentId)) + 1) % 3];
+  applyModuleSwitches();
+}
+function demoToggleModule(key){
+  const m = CELEBRATIONS[currentId].modules;
+  m[key] = !m[key];
+  applyModuleSwitches();
+}
+
+/* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
+const WORKS = {"cv1": {"images": 3, "video": true, "author": "陈思思, 王芳, 李强", "org": "产品部", "desc": "灵感来源于公司logo的演变过程"}, "cv2": {"images": 2, "video": false, "author": "王芳", "org": "行政部", "desc": "以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。"}};
+let workCur = null, workIdx = 0, workMediaState = 'normal';
+function workItems(w){
+  const a = [];
+  for(let i=1; i<=w.images; i++) a.push({t:'img', n:i});
+  if(w.video) a.push({t:'video'});
+  return a;
+}
+function openWork(id){
+  workCur = id; workIdx = 0; workMediaState = 'normal';
+  document.getElementById('workOverlay').classList.add('open');
+  renderWork();
+}
+function closeWork(){ document.getElementById('workOverlay').classList.remove('open'); }
+function stepWork(d){
+  const n = workItems(WORKS[workCur]).length;
+  workIdx = Math.max(0, Math.min(n-1, workIdx+d));
+  workMediaState = 'normal';
+  renderWork();
+}
+function setWorkMedia(s){ workMediaState = s; renderWork(); }
+function renderWork(){
+  const w = WORKS[workCur], items = workItems(w), it = items[workIdx];
+  document.getElementById('workTitle').textContent = w.author + ' · ' + w.org;
+  document.getElementById('workDesc').textContent = w.desc;
+  document.getElementById('workCount').textContent = items.length > 1 ? (workIdx+1) + ' / ' + items.length : '';
+  let html;
+  if(workMediaState === 'loading'){
+    html = '<div class="u-work-skel"></div><div class="u-work-skel" style="width:45%"></div>';
+  } else if(workMediaState === 'error' && it.t === 'video'){
+    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
+  } else if(it.t === 'video'){
+    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  } else {
+    html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
+  }
+  if(items.length > 1){
+    html += '<button class="u-work-nav prev" onclick="stepWork(-1)"' + (workIdx===0?' disabled':'') + '>‹</button>'
+          + '<button class="u-work-nav next" onclick="stepWork(1)"' + (workIdx===items.length-1?' disabled':'') + '>›</button>';
+  }
+  document.getElementById('workStage').innerHTML = html;
 }
 
 function applyFromHash(){
@@ -368,6 +519,37 @@ function restoreVotes(){
   const card = document.getElementById(voted);
   if(card) setCardVoted(card, true);
 }
+/* 签到码二维码（原型示意：按签到码文字生成固定的方块图案，非真实二维码；真实实现由后端生成 / 前端二维码库渲染） */
+function checkInCodeFor(seed){
+  let h = 2166136261;
+  for(const ch of seed){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = [];
+  for(let i=0; i<12; i++){ h = (Math.imul(h, 1664525) + 1013904223) >>> 0; out.push(chars[h % chars.length]); }
+  return out.slice(0,4).join('')+'-'+out.slice(4,8).join('')+'-'+out.slice(8,12).join('');
+}
+function renderQr(el, code){
+  const N = 21, cells = [];
+  let h = 5381; for(const ch of code){ h = (Math.imul(h,33) + ch.charCodeAt(0)) >>> 0; }
+  const finder = (r,c) => (r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);
+  for(let r=0; r<N; r++){ for(let c=0; c<N; c++){
+    let on;
+    if(finder(r,c)){
+      const lr = r<7 ? r : r-(N-7), lc = c<7 ? c : c-(N-7);
+      on = (lr===0||lr===6||lc===0||lc===6) || (lr>=2&&lr<=4&&lc>=2&&lc<=4);
+    } else { h = (Math.imul(h,1103515245) + 12345) >>> 0; on = ((h >>> 16) & 3) !== 0; }
+    cells.push('<i class="qr-c'+(on?' on':'')+'"></i>');
+  } }
+  el.innerHTML = cells.join('');
+}
+function myCodeNow(){ return checkInCodeFor(currentId + '|陈思思'); }   // 每条报名记录一个码；原型里以「Celebration + 当前用户」生成
+function openMyCode(){
+  const code = myCodeNow();
+  document.getElementById('myCodeSub').textContent = CELEBRATIONS[currentId].site + ' · ' + fmtCelebrationTime(CELEBRATIONS[currentId].start_time, CELEBRATIONS[currentId].end_time);
+  document.getElementById('myCodeText').textContent = code;
+  renderQr(document.getElementById('myCodeQr'), code);
+  document.getElementById('myCodeOverlay').classList.add('open');
+}
+function closeMyCode(){ document.getElementById('myCodeOverlay').classList.remove('open'); }
 function openCelRegisterModal(){
   document.getElementById('celRegModalOverlay').classList.add('open');
 }
@@ -376,13 +558,21 @@ function closeCelRegisterModal(){
 }
 function submitCelRegistration(){
   const phone = document.getElementById('celRegPhone').value.trim();
-  if(!phone){ alert('请填写联系电话'); return; }
-  if(!/^1\d{10}$/.test(phone)){ alert('请输入有效的11位手机号'); return; }
+  const email = document.getElementById('celRegEmail').value.trim();
+  const errs = [];
+  if(!phone) errs.push('请填写联系电话'); else if(!/^(1\d{10}|[89]\d{7})$/.test(phone)) errs.push('请输入有效的手机号（中国 11 位或新加坡 8 位）');   // REQ-004 AC-014
+  if(!email) errs.push('请填写邮箱地址');                                               // REQ-004 AC-006：邮箱必填
+  else if(email.length > 100) errs.push('邮箱地址不能超过 100 个字符');
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.push('请输入有效的邮箱地址（须包含 @ 和域名）');
+  if(errs.length){ alert(errs.join('\n')); return; }                                     // 多处错误一并提示
   document.getElementById('celRegFormBody').classList.add('hidden');
   document.getElementById('celRegSuccessBody').classList.remove('hidden');
-  const btn = document.getElementById('registerBtn');
-  btn.textContent = '已报名 ✓';
-  btn.disabled = true;
+  const r = CELEBRATIONS[currentId].reg;
+  r.me = true; r.registered++;
+  const code = myCodeNow();
+  document.getElementById('successCode').textContent = code;
+  renderQr(document.getElementById('successQr'), code);
+  updateRegisterButton();
 }
 document.addEventListener('click', function(e){
   if(e.target.id === 'celRegModalOverlay') closeCelRegisterModal();

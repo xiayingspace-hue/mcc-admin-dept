@@ -12,7 +12,7 @@
 
 ## 金额精度
 
-人民币元，页面展示精确到元（不显示小数），传输与存储以「分」为单位的整数，避免浮点误差。
+新加坡元（S$），页面金额统一带 `S$` 前缀、精确到元（不显示小数），传输与存储以 cent（分）为单位的整数，避免浮点误差。全仓所有金额均为 S$，不出现人民币符号。
 
 ## 时间格式
 
@@ -20,9 +20,9 @@
 
 ## 接口路径与请求方式
 
-管理端真实后端为 `aiis-admin` 系统，`outputs/api/` 里的路径一律按此规则写，不再逐份清单各写一套：
+真实后端为 `aiis-admin` 系统，管理端与用户端的接口路径都按此规则写，`outputs/api/` 里的路径一律遵循，不再逐份清单各写一套：
 
-- **前缀**：`/mcc-api/aiis-admin/`，只写相对路径，不写域名（域名为 `https://aiis-prod.mcc.sg` 等按环境区分，不进本仓）。
+- **前缀**：`/mcc-api/aiis-admin/`，其中 `mcc-api` 是网关层，`aiis-admin` 是服务层；只写相对路径，不写域名（域名为 `https://aiis-prod.mcc.sg` 等按环境区分，不进本仓）。
 - **资源段**：单数、camelCase，对应需求文档「数据对象」的实体名，例如 `activity`、`activityModule`、`moduleType`、`submission`、`registration`、`wallMessage`；不加复数 `s`。
 - **HTTP 方法**：保留标准 RESTful 语义——`GET` 查询、`POST` 创建/触发业务动作、`PUT` 整体更新、`PATCH` 局部更新、`DELETE` 删除。方法已经表达了"查/增/改/删"，资源段本身不再叠加 `queryAll`/`save` 这类动作后缀。
 - **业务专属动作**：没有对应标准动词的操作（提交审批、发布、隐藏、签到、审批通过/驳回等状态流转），在资源段后追加语义化动词段，如 `/activity/submit`、`/submission/publish`、`/registration/check-in`。
