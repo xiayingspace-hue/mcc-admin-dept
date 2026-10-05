@@ -28,6 +28,8 @@
 
 分页：见 `conventions.md`
 
+**排序**：默认按创建时间倒序，没有排序参数；先应用筛选、再排序、最后分页，AC-029，规则见 `conventions.md`「列表默认排序」。
+
 **响应字段**
 
 | 字段 | 类型 | 说明 |
@@ -44,6 +46,7 @@
 | `cover_image_after_url` | string \| null | 封面图·实拍版，未上传为 `null` |
 | `registered_count` | number | 该 Celebration 下报名信息模块的报名人数，AC-005 |
 | `submission_count` | number | 该 Celebration 下涂鸦展示模块的作品数，AC-005 |
+| `created_at` | string(ISO 8601) | 创建时间；列表按它倒序，AC-029 |
 
 ## 创建 / 更新 Celebration
 

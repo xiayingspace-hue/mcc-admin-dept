@@ -30,6 +30,8 @@
 | `type` | string | 否 | 活动类型筛选 |
 | `keyword` | string | 否 | 标题模糊搜索 |
 
+**排序**：默认按创建时间倒序，没有排序参数；先应用筛选、再排序、最后分页，AC-022，规则见 `conventions.md`「列表默认排序」。
+
 **响应字段**
 
 | 字段 | 类型 | 说明 |
@@ -41,6 +43,7 @@
 | `budget` | number | 币种 S$，数值单位见 conventions.md 金额精度 |
 | `hold_time` | string | 计划举办时间，ISO 8601 |
 | `initiator` | string | 发起人姓名 |
+| `created_at` | string | 创建时间，ISO 8601；列表按它倒序，AC-022 |
 
 ## 创建 / 更新活动基础信息
 
