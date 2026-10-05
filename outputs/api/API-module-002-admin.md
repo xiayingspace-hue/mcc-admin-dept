@@ -61,7 +61,6 @@
 | `display_start_time` | string(ISO 8601) \| null | 开始展示时间，未填为 `null` |
 | `sort_order` | number | 排序 |
 | `message_deadline` | string(ISO 8601) \| null | 仅 `wall` 使用，留言截止时间；不填视为与活动同时结束 |
-| `allow_external_message` | boolean \| null | 仅 `wall` 使用，是否允许外部人士留言 |
 
 未启用的 `module_type` 不出现在返回数组中。
 
@@ -79,7 +78,6 @@
 | `modules[].display_start_time` | string(ISO 8601) | 否 | 不得晚于该模块自身任何截止时间字段，AC-003 |
 | `modules[].sort_order` | number | 是 | |
 | `modules[].message_deadline` | string(ISO 8601) | 否，仅 `wall` | 须晚于活动计划开始时间 |
-| `modules[].allow_external_message` | boolean | `wall` 必填 | 与活动 `external_visible=internal_only` 冲突时的处理方式见需求文档 §11 已知缺口 |
 
 **响应字段**
 

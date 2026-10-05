@@ -365,6 +365,13 @@
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
   .u-vote-btn.voted{background:var(--u-gold); color:#fff}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
+  .u-viewer-hint{font-size:12px; color:var(--u-text-muted); line-height:1.5}
+  .u-viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
+  .u-viewer-banner{max-width:640px; margin:0 auto 14px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
+  .u-viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:400; text-align:center}
+  .u-toast.show{opacity:1}
   .u-wall-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:640px; margin:0 auto}
   .u-wall-card{background:#fff; border-radius:12px; padding:15px; border:0.5px solid var(--u-gold-tint)}
   .u-wall-quote{font-size:12.5px; color:var(--u-text); line-height:1.7; margin-bottom:12px}
@@ -530,7 +537,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr onclick="viewActivity()">
+              <tr data-created="2026-09-28 10:05" onclick="viewActivity()">
                 <td class="title-cell">公司30周年庆典</td>
                 <td>周年庆</td>
                 <td><span class="status-badge review">审批中</span></td>
@@ -543,7 +550,7 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="viewActivity()" id="row-annual">
+              <tr data-created="2026-09-25 16:40" onclick="viewActivity()" id="row-annual">
                 <td class="title-cell">2026年会</td>
                 <td>年会</td>
                 <td><span class="status-badge approved">已发布</span></td>
@@ -557,7 +564,7 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="viewActivity()">
+              <tr data-created="2026-09-18 09:30" onclick="viewActivity()">
                 <td class="title-cell">Q3部门团建</td>
                 <td>团建</td>
                 <td><span class="status-badge ended">已结束</span></td>
@@ -570,7 +577,7 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="showEditor()" id="row-onboarding">
+              <tr data-created="2026-09-10 14:20" onclick="showEditor()" id="row-onboarding">
                 <td class="title-cell">新人入职欢迎会</td>
                 <td>培训分享会</td>
                 <td><span class="status-badge draft">草稿</span></td>
@@ -584,7 +591,7 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="showEditor()">
+              <tr data-created="2026-09-02 11:00" onclick="showEditor()">
                 <td class="title-cell">中秋福利活动</td>
                 <td>生日会</td>
                 <td><span class="status-badge rejected">已驳回</span></td>
@@ -784,8 +791,6 @@
               </div>
               <div class="module-config">
                 <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-                <div><label>展示样式</label><select><option>网格</option><option>轮播</option></select></div>
-                <div><label>允许外部人士留言</label><select><option>是</option><option>否</option></select></div>
                 <div><label>留言截止时间</label><input type="datetime-local"></div>
               </div>
             </div>
@@ -1021,8 +1026,6 @@
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">展示样式</span><span class="attr-type">网格 / 轮播</span></div>
-                <div class="attr-row"><span class="attr-name">允许外部人士留言</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">允许匿名留言</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">留言截止时间</span><span class="attr-type">日期时间</span></div>
               </div>
@@ -1183,7 +1186,7 @@
 
           <div class="submission-grid" id="submissionGrid">
 
-            <div class="submission-card" id="sub1" data-votes="0" data-activity="sg30" data-status="draft" data-images="3" data-video="1">
+            <div class="submission-card" id="sub1" data-created="2026-09-30 09:10" data-votes="0" data-activity="sg30" data-status="draft" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">陈思思</div>
@@ -1199,7 +1202,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub2" data-votes="24" data-activity="bj30" data-status="published" data-images="2" data-video="0">
+            <div class="submission-card" id="sub2" data-created="2026-09-28 15:00" data-votes="24" data-activity="bj30" data-status="published" data-images="2" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">王芳</div>
@@ -1215,7 +1218,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub3" data-votes="31" data-activity="q3camp" data-status="published" data-images="5" data-video="0">
+            <div class="submission-card" id="sub3" data-created="2026-09-25 11:30" data-votes="31" data-activity="q3camp" data-status="published" data-images="5" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">李强</div>
@@ -1231,7 +1234,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub4" data-votes="18" data-activity="sg30" data-status="published" data-images="3" data-video="1">
+            <div class="submission-card" id="sub4" data-created="2026-09-22 10:00" data-votes="18" data-activity="sg30" data-status="published" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author" title="张伟, 赵敏, 周杰">张伟, 赵敏, 周杰</div>
@@ -1246,7 +1249,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub5" data-votes="9" data-activity="q3camp" data-status="hidden" data-images="4" data-video="0">
+            <div class="submission-card" id="sub5" data-created="2026-09-19 17:20" data-votes="9" data-activity="q3camp" data-status="hidden" data-images="4" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">周敏</div>
@@ -1263,7 +1266,7 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub6" data-votes="0" data-activity="bj30" data-status="draft" data-images="1" data-video="0">
+            <div class="submission-card" id="sub6" data-created="2026-09-15 13:45" data-votes="0" data-activity="bj30" data-status="draft" data-images="1" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">田中一郎</div>
@@ -1347,7 +1350,7 @@
               </tr>
             </thead>
             <tbody id="regTableBody">
-              <tr data-celebration="sg30">
+              <tr data-created="2026-09-10 09:20" data-celebration="sg30">
                 <td class="title-cell">陈思思</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>产品部</td>
@@ -1363,7 +1366,7 @@
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="sg30">
+              <tr data-created="2026-09-10 10:05" data-celebration="sg30">
                 <td class="title-cell">王芳</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>行政部</td>
@@ -1379,7 +1382,7 @@
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="bj30">
+              <tr data-created="2026-09-11 14:40" data-celebration="bj30">
                 <td class="title-cell">李强</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>工程部</td>
@@ -1395,7 +1398,7 @@
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="bj30">
+              <tr data-created="2026-09-12 16:00" data-celebration="bj30">
                 <td class="title-cell">田中一郎</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>合作伙伴 · 外部</td>
@@ -1500,7 +1503,7 @@
 
           <div class="wall-list" id="wallList">
 
-            <div class="wall-row" id="w1" data-activity="30th" data-status="review">
+            <div class="wall-row" id="w1" data-created="2026-09-30 18:20" data-activity="30th" data-status="review">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1518,7 +1521,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w2" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w2" data-created="2026-09-29 12:05" data-activity="30th" data-status="published">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1536,7 +1539,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w3" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published">
               <div class="wall-avatar">🤝</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1554,7 +1557,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w4" data-activity="annual" data-status="review">
+            <div class="wall-row" id="w4" data-created="2026-09-24 16:30" data-activity="annual" data-status="review">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1572,7 +1575,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w5" data-activity="30th" data-status="review">
+            <div class="wall-row" id="w5" data-created="2026-09-21 10:15" data-activity="30th" data-status="review">
               <div class="wall-avatar">🙈</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1590,7 +1593,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w6" data-activity="annual" data-status="hidden">
+            <div class="wall-row" id="w6" data-created="2026-09-18 08:50" data-activity="annual" data-status="hidden">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1637,7 +1640,7 @@
               </tr>
             </thead>
             <tbody id="sponsorTableBody">
-              <tr data-activity="30th">
+              <tr data-created="2026-09-20 11:15" data-activity="30th">
                 <td class="title-cell">星辰科技有限公司</td>
                 <td>林伟 · 市场总监</td>
                 <td>lin.wei@stellar-tech.com<br>+65 9123 4567</td>
@@ -1651,7 +1654,7 @@
                   </div>
                 </td>
               </tr>
-              <tr data-activity="30th">
+              <tr data-created="2026-09-21 15:30" data-activity="30th">
                 <td class="title-cell">远景建设集团</td>
                 <td>周启明 · 副总裁</td>
                 <td>zhou.qm@vista-build.com<br>+65 9345 6781</td>
@@ -1665,7 +1668,7 @@
                   </div>
                 </td>
               </tr>
-              <tr data-activity="30th">
+              <tr data-created="2026-09-18 09:40" data-activity="30th">
                 <td class="title-cell">海纳物流</td>
                 <td>陈嘉怡 · 总经理</td>
                 <td>chenjy@hainacorp.sg<br>+65 8234 1290</td>
@@ -1840,8 +1843,10 @@
                   <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
                   <span id="wallClosedNote" class="hidden" style="font-size:12px; color:var(--u-text-muted)">留言征集已于 2026-11-18 24:00 截止</span>
                 </div>
+                <div id="wallViewerHint" class="u-viewer-hint hidden" style="max-width:640px; margin:0 auto 10px; text-align:right"></div>
                 <div style="max-width:640px; margin:0 auto 18px; text-align:right">
                   <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：切换留言征集截止状态</button>
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
                 </div>
                 <div class="u-wall-grid">
                   <div class="u-wall-card">
@@ -2004,6 +2009,10 @@
               </div>
 
               <div class="u-section">
+                <div id="worksViewerBanner" class="u-viewer-banner hidden"></div>
+                <div style="max-width:640px; margin:0 auto 10px; text-align:right">
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
+                </div>
                 <div class="u-vote-grid">
 
                   <div class="u-vote-card" id="v1">
@@ -2981,6 +2990,18 @@ updateAuthorHint();
 updateSponsorExportBtn();
 document.querySelectorAll('#wallList .wall-row').forEach(r=>{ r.querySelector('.table-actions').innerHTML = wallActionsHtml(r.id, r.dataset.status); });
 { const w3 = document.querySelector('#w3 .wall-name-row'); if(w3){ const t = document.createElement('span'); t.className = 'wall-edited'; t.textContent = '已编辑'; t.title = '修改人：行政小李 · 修改时间：2026-09-16 09:40'; w3.appendChild(t); } }
+/* 所有管理端列表默认按创建时间倒序（最新创建的在最前），见 conventions.md「列表默认排序」；与筛选共同生效，状态变化、编辑不改变位置。
+   原型用 data-created 表示记录创建时间，页面加载时排一次；新增记录（代报名、赞助线索、留言）直接插到最前。 */
+function sortByCreatedDesc(container, itemSelector){
+  const items = Array.from(container.children).filter(el=>el.matches(itemSelector));
+  items.sort((x,y)=>(y.dataset.created||'').localeCompare(x.dataset.created||''));   // 同一时间保持原有先后
+  items.forEach(el=>container.appendChild(el));
+}
+sortByCreatedDesc(document.querySelector('#listView .activity-table tbody'), 'tr');
+sortByCreatedDesc(document.getElementById('submissionGrid'), '.submission-card');
+sortByCreatedDesc(document.getElementById('regTableBody'), 'tr');
+sortByCreatedDesc(document.getElementById('wallList'), '.wall-row');
+sortByCreatedDesc(document.getElementById('sponsorTableBody'), 'tr');
 document.querySelectorAll('#submissionGrid .submission-card').forEach(c=>setSubmissionStatus(c.id, c.dataset.status));
 
 /* ---- 管理端作品详情（只读，REQ-003 AC-017）：图片可切换、视频最后一项、完整说明、作者信息、状态与票数 ---- */
@@ -3250,7 +3271,52 @@ function updateTodoBadge(delta){
     document.getElementById('notifList').innerHTML = '<div class="notif-empty">暂无待办事项</div>';
   }
 }
+/* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
+const VIEWER_ORDER = ['employee','external','expired','loading','error'];
+const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
+const MSG_EXPIRED = '登录已过期，请重新登录';
+let viewerState = 'employee';
+function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：三个参与入口都不显示（AC-002、AC-009）
+  return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
+}
+function viewerHint(){   // 只有确认失败才在原入口位置显示提示；外部人员没有任何提示文字（AC-002）；登录已过期在点击后才提示
+  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">重试</button>' : '';
+}
+function showToast(msg){
+  let t = document.getElementById('uToast');
+  if(!t){ t = document.createElement('div'); t.id = 'uToast'; t.className = 'u-toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
+  if(viewerState === 'employee') return true;
+  if(viewerState === 'expired') showToast(MSG_EXPIRED);
+  return false;
+}
+function applyViewer(){
+  const vh = viewerHint();
+  // 涂鸦投票：提示只在区域顶部出现一次，卡片上不重复
+  const banner = document.getElementById('worksViewerBanner');
+  banner.innerHTML = vh; banner.classList.toggle('hidden', !vh);
+  document.querySelectorAll('#userWorksView .u-vote-btn').forEach(b=>b.style.display = viewerEntriesHidden() ? 'none' : '');   // 作品与票数照常显示
+  // 寄语：身份先于留言截止判断（外部人员没有提交入口，也看不到"已截止"文案）
+  const wb = document.getElementById('wallWriteBtn'), wh = document.getElementById('wallViewerHint');
+  const hide = viewerEntriesHidden();
+  wb.classList.toggle('hidden', hide || wallDeadlinePassed);
+  document.getElementById('wallClosedNote').classList.toggle('hidden', hide || !wallDeadlinePassed);
+  wh.innerHTML = vh; wh.classList.toggle('hidden', !vh);
+  document.querySelectorAll('.demoViewerState').forEach(e=>e.textContent = VIEWER_LABEL[viewerState]);
+}
+function retryViewer(){
+  viewerState = 'loading'; applyViewer();
+  setTimeout(()=>{ viewerState = 'employee'; applyViewer(); }, 700);
+}
+function demoToggleViewer(){
+  viewerState = VIEWER_ORDER[(VIEWER_ORDER.indexOf(viewerState) + 1) % VIEWER_ORDER.length];
+  applyViewer();
+}
 function toggleVote(cardId){
+  if(!viewerAllows()) return;
   const card = document.getElementById(cardId);
   const btn = card.querySelector('.u-vote-btn');
   const countEl = card.querySelector('.u-vote-count');
@@ -3436,8 +3502,7 @@ function submitSponsorForm(){
 let wallDeadlinePassed = false;
 function toggleWallDeadlineDemo(){
   wallDeadlinePassed = !wallDeadlinePassed;
-  document.getElementById('wallWriteBtn').classList.toggle('hidden', wallDeadlinePassed);
-  document.getElementById('wallClosedNote').classList.toggle('hidden', !wallDeadlinePassed);
+  applyViewer();
 }
 function editExternalVisibility(){
   document.getElementById('extVisibilityDisplay').classList.add('hidden');
@@ -3519,6 +3584,7 @@ function submitWallAdmin(){
 }
 
 function openWallModal(){
+  if(!viewerAllows()) return;
   document.getElementById('wallFormBody').classList.remove('hidden');
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';

@@ -75,3 +75,11 @@
 | QA-registration-004-admin-065 | AC-H04 | 摄像头未授权 | 打开扫码页 | 显示"摄像头不可用"提示和手动输入签到码的入口；输入有效码得到与扫码相同的结果 |
 | QA-registration-004-admin-066 | AC-H05 / §9 五态-error | 模拟网络失败 | 扫码 | 显示错误与"重试"，不显示任何签到结果；重试后重新请求 |
 | QA-registration-004-admin-067 | AC-H06 / §9 五态-overflow | 报名人姓名 30 个字符、机构名很长 | 扫码得到成功结果 | 文字换行或截断，不撑破布局，"继续扫码"按钮始终可见 |
+| QA-registration-004-admin-068 | AC-023 | 外部人员状态（从官网打开），报名开关打开 | 查看右侧「Event Details」卡片 | 没有「立即报名」按钮，也没有提示文字；卡片其余内容照常显示 |
+| QA-registration-004-admin-069 | AC-023（后端） | 无员工令牌 | 直接调用用户端报名接口 | 被后端拒绝并返回 `not_employee`，名单不新增记录；详细用例见 QA-identity-009-admin-010 |
+| QA-registration-004-admin-070 | AC-023 | 外部人员状态，名额已满 | 查看报名入口 | 没有报名入口，也看不到"报名人数已达上限" |
+| QA-registration-004-admin-071 | AC-023 | 行政在管理端为外部人士代报名 | 提交代报名 | 成功，不受身份限制影响 |
+| QA-registration-004-admin-072 | AC-024 | 某 Celebration 下依次有报名记录 A、B、C（C 最晚报名） | 打开报名管理名单 | 顺序为 C、B、A（最新的在最前）；没有排序入口 |
+| QA-registration-004-admin-073 | AC-024 | 同上 | 行政添加一条代报名记录 D | D 出现在名单最前 |
+| QA-registration-004-admin-074 | AC-024 | 同上，A 是最早报名的 | 为 A 签到、撤销签到 | A 的位置不变（最后） |
+| QA-registration-004-admin-075 | AC-024 | 名单超过 20 条（跨两页） | 翻到第二页 | 两页顺序连续（第一页最后一条不早于第二页第一条），没有重复或遗漏 |
