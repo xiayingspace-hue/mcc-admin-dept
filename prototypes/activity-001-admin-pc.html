@@ -3266,7 +3266,7 @@ function updateTodoBadge(delta){
 /* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
 const VIEWER_ORDER = ['employee','external','expired','loading','error'];
 const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
-const MSG_EXPIRED = '登录已过期，请从公司内部系统重新进入';
+const MSG_EXPIRED = '登录已过期，请重新登录';
 let viewerState = 'employee';
 function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：三个参与入口都不显示（AC-002、AC-009）
   return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
