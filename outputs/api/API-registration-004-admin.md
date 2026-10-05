@@ -69,8 +69,8 @@
 | `author_org` | string | 否 | 仅外部人士：部门 / 头衔，自由文本 |
 | `author_org_type` | string（枚举） | 否 | 仅内部员工：`department` / `project`，与 `author_org_id` 同传，二选一 |
 | `author_org_id` | string | 否 | 仅内部员工：HR 的部门 / 项目 ID，默认带出所选员工的 HR 部门，可改，可不传 |
-| `contact` | string | 否 | 联系电话，选填，不校验格式（外部人士号码格式不一），AC-012 |
-| `email` | string | 否 | 选填；填写则须符合邮箱格式、≤100 个字符，AC-008 |
+| `contact` | string | 否 | 联系电话，选填，不校验格式（外部人士号码格式不一），AC-012；内部员工由页面从 `GET /hrEmployee` 的 `phone` 带出到输入框，可修改，传的是输入框里的值，AC-026 |
+| `email` | string | 否 | 选填；填写则须符合邮箱格式、≤100 个字符，AC-008；内部员工由页面从 `hrEmployee.email` 带出，可修改，AC-026 |
 | `remark` | string | 否 | |
 
 名额上限已设置且报名人数（含代报名，不论是否已签到）达到上限时，后端拒绝本接口并返回「报名人数已达上限」，不产生记录，AC-013。

@@ -1338,8 +1338,8 @@
               <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="manualRegDept" placeholder="例如：合作伙伴 · XX公司"></div>
             </div>
             <div class="row2">
-              <div class="field"><label>联系电话（选填）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
-              <div class="field"><label>邮箱（选填）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
+              <div class="field"><label>联系电话（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
+              <div class="field"><label>邮箱（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
             </div>
             <div style="display:flex; justify-content:flex-end; gap:10px">
               <button class="btn" onclick="toggleManualReg()">取消</button>
@@ -2908,18 +2908,24 @@ const SUB_NAME_MAX = 10, SUB_NAME_LEN = 30;
 /* ---- 作者 / 报名人 / 留言作者的录入（REQ-010）：内部员工从 HR 选择，外部人士手填 ----
    原型用 HR_DATA 模拟 HR 系统（真实数据来自 HR：GET /hrEmployee、/hrDepartment、/hrProject）。
    key：sub = 作品上传 / 编辑（多位员工，最多 10 位）；reg = 行政代报名；wall = 留言代录入；wedit = 留言编辑。 */
-const HR_DATA = {
+const HR_DATA = {                               // 模拟后端已过滤后的结果：只含在职员工、末级部门、有效项目（AC-002、AC-003、AC-011）；离职员工、非末级部门、已关闭项目不会返回
   employees: [
-    {id:'E1001', name:'陈思思', no:'E1001', dept:'产品部'}, {id:'E1002', name:'王芳', no:'E1002', dept:'行政部'},
-    {id:'E1003', name:'李强', no:'E1003', dept:'工程部'},   {id:'E1004', name:'张伟', no:'E1004', dept:'技术部'},
-    {id:'E1005', name:'赵敏', no:'E1005', dept:'技术部'},   {id:'E1006', name:'周杰', no:'E1006', dept:'技术部'},
-    {id:'E1007', name:'周敏', no:'E1007', dept:'市场部'},   {id:'E1008', name:'刘洋', no:'E1008', dept:'财务部'},
-    {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部'}, {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室'}
+    {id:'E1001', name:'陈思思', no:'E1001', dept:'产品部', phone:'13800138001', email:'chen.sisi@mcc.example'},
+    {id:'E1002', name:'王芳', no:'E1002', dept:'行政部', phone:'91234567', email:'wang.fang@mcc.example'},
+    {id:'E1003', name:'李强', no:'E1003', dept:'工程部', phone:'13800138003', email:''},
+    {id:'E1004', name:'张伟', no:'E1004', dept:'技术部', phone:'', email:'zhang.wei@mcc.example'},
+    {id:'E1005', name:'赵敏', no:'E1005', dept:'技术部', phone:'81234567', email:'zhao.min@mcc.example'},
+    {id:'E1006', name:'周杰', no:'E1006', dept:'技术部', phone:'', email:''},
+    {id:'E1007', name:'周敏', no:'E1007', dept:'市场部', phone:'91234568', email:'zhou.min@mcc.example'},
+    {id:'E1008', name:'刘洋', no:'E1008', dept:'财务部', phone:'13800138008', email:'liu.yang@mcc.example'},
+    {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部', phone:'', email:'lin.xiaowei@mcc.example'},
+    {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室', phone:'98765432', email:'alexandra.montgomery-richardson@mcc.example'}
   ],
-  department: ['产品部','行政部','工程部','技术部','市场部','财务部','集团战略与跨区域业务发展协调办公室'],
+  department: ['产品部','行政部','工程部','技术部','市场部','财务部','集团战略与跨区域业务发展协调办公室'],   // 末级部门自己的名称，不带上级路径
   project: ['三十周年专项','Q3 团建筹备组','星火计划']
 };
-let hrState = 'normal';                       // 原型演示：正常 / 加载中 / 查询失败
+let hrState = 'normal';
+let regAuto = {phone:'', email:''};          // 代报名：从 HR 带出的电话 / 邮箱（行政改过的不再算「带出的」，REQ-004 AC-026）                       // 原型演示：正常 / 加载中 / 查询失败
 const PP = {};
 const PP_CFG = {sub:{multi:true, max:10}, reg:{multi:false}, wall:{multi:false}, wedit:{multi:false}};
 function ppInit(){
@@ -2935,10 +2941,10 @@ function ppRenderBlock(k){
     + '<div class="pp-box"><input type="text" id="pp-'+k+'-emp" placeholder="按姓名或工号搜索 HR 里的员工" oninput="ppSearch(\''+k+'\',\'emp\')" onfocus="ppSearch(\''+k+'\',\'emp\')">'
     + '<div class="pp-results hidden" id="pp-'+k+'-emp-res"></div></div>'
     + '<div class="pp-chips" id="pp-'+k+'-emp-chips"></div><div class="attach-error" id="pp-'+k+'-emp-err" style="display:none"></div>'
-    + '<div class="pp-sub">'+(multi?'同一作品内不能重复选同一位；团队作品所属请在下方自行选择。':'选中后所属默认带出该员工在 HR 里的部门，可改选。')+'姓名不能手填，HR 里找不到需先让 HR 补数据。</div></div>'
+    + '<div class="pp-sub">'+(multi?'同一作品内不能重复选同一位；团队作品所属请在下方自行选择。':'选中后所属默认带出该员工在 HR 里的部门，可改选。')+'姓名不能手填；只列在职员工，HR 里找不到需先让 HR 补数据。</div></div>'
     + '<div class="field"><label>所属（选填，部门或项目二选一，来自 HR）</label>'
     + '<div class="scope-toggle" style="margin-bottom:6px"><button class="scope-btn selected" id="pp-'+k+'-kd" onclick="ppOrgKind(\''+k+'\',\'department\')">部门</button><button class="scope-btn" id="pp-'+k+'-kp" onclick="ppOrgKind(\''+k+'\',\'project\')">项目</button></div>'
-    + '<div class="pp-box"><input type="text" id="pp-'+k+'-org" placeholder="搜索 HR 里的部门" oninput="ppSearch(\''+k+'\',\'org\')" onfocus="ppSearch(\''+k+'\',\'org\')">'
+    + '<div class="pp-box"><input type="text" id="pp-'+k+'-org" placeholder="搜索 HR 里的部门（只能选末级部门）" oninput="ppSearch(\''+k+'\',\'org\')" onfocus="ppSearch(\''+k+'\',\'org\')">'
     + '<div class="pp-results hidden" id="pp-'+k+'-org-res"></div></div>'
     + '<div class="pp-chips" id="pp-'+k+'-org-chips"></div></div>'
     + '<div class="picker-demo"><span>原型演示（HR 系统状态）：</span>'
@@ -2981,19 +2987,33 @@ function ppPickEmp(k, id){
     st.employees.push(emp);                                         // 多位作者不自动带出所属（AC-004）
   } else {
     st.employees = [emp];
+    if(k === 'reg') ppFillContact(emp);
     st.org = {kind:'department', name:emp.dept};                    // 单个人：所属默认带出 HR 部门，可改选、可清空（AC-004）
     st.orgKind = 'department'; ppSyncKind(k);
   }
   ppErr(k, '');
   document.getElementById('pp-'+k+'-emp').value = ''; ppCloseResults(k,'emp'); ppRenderChips(k);
 }
-function ppRemoveEmp(k, id){ PP[k].employees = PP[k].employees.filter(e=>e.id!==id); ppErr(k,''); ppRenderChips(k); }
+function ppRemoveEmp(k, id){ PP[k].employees = PP[k].employees.filter(e=>e.id!==id); if(k==='reg') ppClearAutoContact(); ppErr(k,''); ppRenderChips(k); }
+/* 代报名：选中员工后，HR 里的联系电话、邮箱自动带出，行政可直接修改；换人 / 移除 / 切换类型时，只清掉仍是带出且没改过的值 */
+function ppClearAutoContact(){
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  if(regAuto.phone && ph.value === regAuto.phone) ph.value = '';
+  if(regAuto.email && em.value === regAuto.email) em.value = '';
+  regAuto = {phone:'', email:''};
+}
+function ppFillContact(emp){
+  ppClearAutoContact();
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  if(!ph.value && emp.phone){ ph.value = emp.phone; regAuto.phone = emp.phone; }
+  if(!em.value && emp.email){ em.value = emp.email; regAuto.email = emp.email; }
+}
 function ppOrgKind(k, kind){ PP[k].orgKind = kind; ppSyncKind(k); document.getElementById('pp-'+k+'-org').value=''; ppSearch(k,'org'); }
 function ppSyncKind(k){
   const kind = PP[k].orgKind;
   document.getElementById('pp-'+k+'-kd').classList.toggle('selected', kind==='department');
   document.getElementById('pp-'+k+'-kp').classList.toggle('selected', kind==='project');
-  document.getElementById('pp-'+k+'-org').placeholder = '搜索 HR 里的'+(kind==='department'?'部门':'项目');
+  document.getElementById('pp-'+k+'-org').placeholder = kind==='department' ? '搜索 HR 里的部门（只能选末级部门）' : '搜索 HR 里的项目（只含有效项目）';
 }
 function ppPickOrg(k, name){ PP[k].org = {kind:PP[k].orgKind, name}; document.getElementById('pp-'+k+'-org').value=''; ppCloseResults(k,'org'); ppRenderChips(k); }   // 部门和项目只能有一个（AC-003）
 function ppClearOrg(k){ PP[k].org = null; ppRenderChips(k); }
@@ -3011,6 +3031,7 @@ function ppSetType(k, type, keepValues){
   const st = PP[k];
   if(!keepValues && st.type !== type){
     st.employees = []; st.org = null; ppErr(k,''); ppRenderChips(k);
+    if(k==='reg') ppClearAutoContact();
     const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept'], wall:['adminWallName','adminWallOrg'], wedit:['editWallName','editWallOrg']}[k];
     ext.forEach(id=>document.getElementById(id).value = '');
     if(k==='sub') updateAuthorHint();
@@ -3035,6 +3056,7 @@ function ppValue(k){
 }
 function ppReset(k){
   const st = PP[k]; st.employees = []; st.org = null; st.orgKind = 'department'; ppSyncKind(k); ppErr(k,''); ppRenderChips(k);
+  if(k==='reg') regAuto = {phone:'', email:''};
   const def = (k==='wall'||k==='wedit') ? 'external' : 'internal';
   ppSetType(k, def, true); ppSelectToggle(k, def);
 }
