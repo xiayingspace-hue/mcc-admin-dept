@@ -107,6 +107,15 @@
   .register-btn{width:100%; background:var(--u-navy); color:#fff; border:none; padding:13px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer}
   .register-btn:hover{background:#223046}
   .register-btn:disabled{opacity:.55; cursor:default}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：置灰但仍可点击，点击弹短提示；不用原生 disabled，否则手机上点了没反应 */
+  .register-btn.is-blocked, .doodle-vote-btn.is-blocked{opacity:.55; cursor:default}
+  .register-btn.is-blocked:hover{background:var(--u-navy)}
+  .viewer-hint{margin:8px 0 0; font-size:12px; color:var(--u-text-muted); text-align:center; line-height:1.5}
+  .viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
+  .viewer-banner{margin:0 0 16px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
+  .viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; text-align:center}
+  .u-toast.show{opacity:1}
 
   @media (max-width:720px){
     .page-body{grid-template-columns:1fr; padding:28px 20px 48px}
@@ -168,6 +177,7 @@
 
     <div class="content-section" id="doodleSection">
       <h2 class="section-title">Doodle Wall</h2>
+      <div class="viewer-banner" id="doodleBanner" style="display:none"></div>
       <div id="doodleContent"></div>
     </div>
 
@@ -182,6 +192,7 @@
       <p class="highlights-label">Highlights</p>
       <ul class="highlights-list" id="highlightsList"></ul>
       <button class="register-btn" id="registerBtn" onclick="openCelRegisterModal()">立即报名 · Register</button>
+      <p class="viewer-hint" id="registerHint" style="display:none"></p>
       <button class="my-code-link" id="myCodeLink" onclick="openMyCode()">查看我的签到码</button>
     </div>
   </aside>
@@ -193,7 +204,10 @@
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('doodle')">涂鸦展示：<span id="demoDoodleState">开</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleFull()">名额（点击切换）：<span id="demoFullState">未满</span></button>
   <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleStage()">状态（点击循环）：<span id="demoStageState">即将开始</span></button>
+  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleViewer()">访问者身份（点击循环）：<span id="demoViewerState">员工</span></button>
 </div>
+
+<div class="u-toast" id="uToast"></div>
 
 <div class="u-work-overlay" id="workOverlay" onclick="if(event.target===this)closeWork()">
   <div class="u-work-box">
@@ -386,7 +400,14 @@ function updateRegisterButton(){
   const full = r.capacity != null && r.registered >= r.capacity;
   const btn = document.getElementById('registerBtn');
   document.getElementById('myCodeLink').style.display = r.me ? 'block' : 'none';
-  if(r.me){ btn.textContent = '已报名 ✓'; btn.disabled = true; }
+  const hint = document.getElementById('registerHint');
+  btn.classList.remove('is-blocked'); hint.style.display = 'none';
+  const vh = viewerHint();
+  if(vh){   // REQ-009：非员工 / 确认中 / 确认失败，先于已满等状态判断（AC-002、AC-009、AC-010）
+    btn.textContent = '立即报名 · Register'; btn.disabled = false; btn.classList.add('is-blocked');
+    hint.innerHTML = vh; hint.style.display = '';
+  }
+  else if(r.me){ btn.textContent = '已报名 ✓'; btn.disabled = true; }
   else if(full){ btn.textContent = '报名人数已达上限'; btn.disabled = true; }
   else { btn.textContent = '立即报名 · Register'; btn.disabled = false; }
   document.getElementById('demoFullState').textContent = r.me ? '已报名' : (full ? '已满' : '未满');
@@ -397,6 +418,44 @@ function demoToggleFull(){
   else if(r.registered >= r.capacity){ r.registered = r.capacity - 1; r.me = false; }   // 已满 → 有人取消，释放 1 个名额
   else { r.registered = r.capacity; }
   updateRegisterButton();
+}
+/* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
+const VIEWER_ORDER = ['employee','external','expired','loading','error'];
+const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
+const MSG_EXTERNAL = '仅限员工参与，请从公司内部系统进入';
+const MSG_EXPIRED = '登录已过期，请从公司内部系统重新进入';
+let viewerState = 'employee';
+function viewerHint(){   // 外部人员 / 确认中 / 确认失败时，按钮下方的提示；员工与登录已过期（点击后才提示）返回空
+  if(viewerState === 'external') return MSG_EXTERNAL;
+  if(viewerState === 'loading') return '正在确认身份…';
+  if(viewerState === 'error') return '身份确认失败<button onclick="retryViewer()">重试</button>';
+  return '';
+}
+function showToast(msg){
+  const t = document.getElementById('uToast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
+  if(viewerState === 'employee') return true;
+  if(viewerState === 'external') showToast(MSG_EXTERNAL);
+  else if(viewerState === 'expired') showToast(MSG_EXPIRED);
+  else if(viewerState === 'error') showToast('身份确认失败，请点击重试');
+  return false;
+}
+function retryViewer(){
+  viewerState = 'loading'; applyModuleSwitches();
+  setTimeout(()=>{ viewerState = 'employee'; applyModuleSwitches(); }, 700);
+}
+function demoToggleViewer(){
+  viewerState = VIEWER_ORDER[(VIEWER_ORDER.indexOf(viewerState) + 1) % VIEWER_ORDER.length];
+  applyModuleSwitches();
+}
+function applyViewerDoodle(){
+  const banner = document.getElementById('doodleBanner');
+  const vh = viewerHint();
+  banner.innerHTML = vh; banner.style.display = vh ? '' : 'none';   // 提示只在区域标题下出现一次，卡片上不重复
+  document.querySelectorAll('.doodle-vote-btn').forEach(b=>b.classList.toggle('is-blocked', !!vh));
 }
 function applyModuleSwitches(){
   const m = CELEBRATIONS[currentId].modules;
@@ -409,6 +468,8 @@ function applyModuleSwitches(){
   document.getElementById('doodleSection').style.display = m.doodle ? '' : 'none';
   document.getElementById('registerBtn').style.display = m.registration ? '' : 'none';
   updateRegisterButton();
+  applyViewerDoodle();
+  document.getElementById('demoViewerState').textContent = VIEWER_LABEL[viewerState];
   document.getElementById('demoRegState').textContent = m.registration ? '开' : '关';
   document.getElementById('demoDoodleState').textContent = m.doodle ? '开' : '关';
   document.getElementById('demoStageState').textContent = STATUS_LABEL[status];
@@ -496,6 +557,7 @@ function setCardVoted(card, voted){
   countEl.textContent = count + ' 票';
 }
 function toggleVote(cardId){
+  if(!viewerAllows()) return;
   const key = voteKey();
   let prevVoted = null;
   try{ prevVoted = localStorage.getItem(key); }catch(e){}
@@ -551,6 +613,7 @@ function openMyCode(){
 }
 function closeMyCode(){ document.getElementById('myCodeOverlay').classList.remove('open'); }
 function openCelRegisterModal(){
+  if(!viewerAllows()) return;
   document.getElementById('celRegModalOverlay').classList.add('open');
 }
 function closeCelRegisterModal(){

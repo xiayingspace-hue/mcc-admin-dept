@@ -90,6 +90,8 @@
 | `registered` | boolean | 当前用户是否已报名；为 `true` 时按钮显示「已报名 ✓」，优先于已满 |
 | `is_full` | boolean | 名额上限已设置且报名人数（含代报名）达到上限；`capacity` 为空时恒为 `false`，AC-009 |
 
+身份维度：该接口外部人员仍可调用；页面先按 `GET /viewer`（见 `API-identity-009-admin.md`）判定，`viewer_type=external` 时无论 `registered`、`is_full` 取值，「立即报名」都置灰并提示，不显示「报名人数已达上限」，AC-023。`GET /registrationCode` 只允许员工调用，外部人员被拒绝（`identity_error=not_employee`）。
+
 前端据此决定按钮文案：`registered` → 「已报名 ✓」；否则 `is_full` → 「报名人数已达上限」（置灰）；否则「立即报名」。用户端不展示名额的具体数字。
 
 用户端员工自主报名的接口尚未在本清单中；补充时 `email` 为必填（符合邮箱格式、≤100 个字符，前端拦截 + 后端二次校验），AC-006；名额已满时须拒绝并返回「报名人数已达上限」，剩余名额竞争时由后端保证不超额，AC-011。

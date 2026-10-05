@@ -8,7 +8,7 @@
 
 > 字段名、类型、枚举由后端最终确认；实现后有出入，回来改成实际的样子。分页规则、接口路径与请求方式见 `background/conventions.md`，不在此重复。**变更说明（自 REQ-007 起）**：作品归属对象从"活动模块"改为"Celebration 下挂载的涂鸦展示模块"，本清单的筛选与归属字段相应从 `activity_id`/`activity_module_id` 改为 `celebration_id`/`celebration_module_id`。
 >
-> 本清单只覆盖 `aiis-admin` 管理端接口；用户投票（投/取消投）本身是用户端动作，接口不在本清单内，待补充到 `activity` 用户端需求与接口文档时一并生成，见需求文档 §11。管理端这里只读取 `vote_count` 汇总结果。
+> 本清单只覆盖 `aiis-admin` 管理端接口；用户投票（投/取消投）本身是用户端动作，接口不在本清单内，待补充到 `activity` 用户端需求与接口文档时一并生成，见需求文档 §11。管理端这里只读取 `vote_count` 汇总结果。补充用户端投票接口时，必须只允许员工调用，外部人员被拒绝并返回 `identity_error`（见 `API-identity-009-admin.md`，AC-021）。
 
 ## 枚举值总表
 

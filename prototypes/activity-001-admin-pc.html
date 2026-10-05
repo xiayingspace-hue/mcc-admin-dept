@@ -365,6 +365,14 @@
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
   .u-vote-btn.voted{background:var(--u-gold); color:#fff}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：置灰但仍可点击，点击弹短提示；不用原生 disabled，否则手机上点了没反应 */
+  .u-vote-btn.is-blocked{opacity:.55; cursor:default}
+  .u-viewer-hint{font-size:12px; color:var(--u-text-muted); line-height:1.5}
+  .u-viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
+  .u-viewer-banner{max-width:640px; margin:0 auto 14px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
+  .u-viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:400; text-align:center}
+  .u-toast.show{opacity:1}
   .u-wall-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:640px; margin:0 auto}
   .u-wall-card{background:#fff; border-radius:12px; padding:15px; border:0.5px solid var(--u-gold-tint)}
   .u-wall-quote{font-size:12.5px; color:var(--u-text); line-height:1.7; margin-bottom:12px}
@@ -1840,8 +1848,10 @@
                   <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
                   <span id="wallClosedNote" class="hidden" style="font-size:12px; color:var(--u-text-muted)">留言征集已于 2026-11-18 24:00 截止</span>
                 </div>
+                <div id="wallViewerHint" class="u-viewer-hint hidden" style="max-width:640px; margin:0 auto 10px; text-align:right"></div>
                 <div style="max-width:640px; margin:0 auto 18px; text-align:right">
                   <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：切换留言征集截止状态</button>
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
                 </div>
                 <div class="u-wall-grid">
                   <div class="u-wall-card">
@@ -2004,6 +2014,10 @@
               </div>
 
               <div class="u-section">
+                <div id="worksViewerBanner" class="u-viewer-banner hidden"></div>
+                <div style="max-width:640px; margin:0 auto 10px; text-align:right">
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
+                </div>
                 <div class="u-vote-grid">
 
                   <div class="u-vote-card" id="v1">
@@ -3250,7 +3264,55 @@ function updateTodoBadge(delta){
     document.getElementById('notifList').innerHTML = '<div class="notif-empty">暂无待办事项</div>';
   }
 }
+/* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
+const VIEWER_ORDER = ['employee','external','expired','loading','error'];
+const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
+const MSG_EXTERNAL = '仅限员工参与，请从公司内部系统进入';
+const MSG_EXPIRED = '登录已过期，请从公司内部系统重新进入';
+let viewerState = 'employee';
+function viewerHint(){   // 外部人员 / 确认中 / 确认失败时的提示；员工与登录已过期（点击后才提示）返回空
+  if(viewerState === 'external') return MSG_EXTERNAL;
+  if(viewerState === 'loading') return '正在确认身份…';
+  if(viewerState === 'error') return '身份确认失败<button onclick="retryViewer()">重试</button>';
+  return '';
+}
+function showToast(msg){
+  let t = document.getElementById('uToast');
+  if(!t){ t = document.createElement('div'); t.id = 'uToast'; t.className = 'u-toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
+  if(viewerState === 'employee') return true;
+  if(viewerState === 'external') showToast(MSG_EXTERNAL);
+  else if(viewerState === 'expired') showToast(MSG_EXPIRED);
+  else if(viewerState === 'error') showToast('身份确认失败，请点击重试');
+  return false;
+}
+function applyViewer(){
+  const vh = viewerHint();
+  // 涂鸦投票：提示只在区域顶部出现一次，卡片上不重复
+  const banner = document.getElementById('worksViewerBanner');
+  banner.innerHTML = vh; banner.classList.toggle('hidden', !vh);
+  document.querySelectorAll('#userWorksView .u-vote-btn').forEach(b=>b.classList.toggle('is-blocked', !!vh));
+  // 寄语：身份先于留言截止判断（外部人员始终看到置灰的按钮和提示）
+  const wb = document.getElementById('wallWriteBtn'), wh = document.getElementById('wallViewerHint');
+  wb.classList.toggle('is-blocked', !!vh);
+  wb.classList.toggle('hidden', wallDeadlinePassed && !vh);
+  document.getElementById('wallClosedNote').classList.toggle('hidden', !(wallDeadlinePassed && !vh));
+  wh.innerHTML = vh; wh.classList.toggle('hidden', !vh);
+  document.querySelectorAll('.demoViewerState').forEach(e=>e.textContent = VIEWER_LABEL[viewerState]);
+}
+function retryViewer(){
+  viewerState = 'loading'; applyViewer();
+  setTimeout(()=>{ viewerState = 'employee'; applyViewer(); }, 700);
+}
+function demoToggleViewer(){
+  viewerState = VIEWER_ORDER[(VIEWER_ORDER.indexOf(viewerState) + 1) % VIEWER_ORDER.length];
+  applyViewer();
+}
 function toggleVote(cardId){
+  if(!viewerAllows()) return;
   const card = document.getElementById(cardId);
   const btn = card.querySelector('.u-vote-btn');
   const countEl = card.querySelector('.u-vote-count');
@@ -3436,8 +3498,7 @@ function submitSponsorForm(){
 let wallDeadlinePassed = false;
 function toggleWallDeadlineDemo(){
   wallDeadlinePassed = !wallDeadlinePassed;
-  document.getElementById('wallWriteBtn').classList.toggle('hidden', wallDeadlinePassed);
-  document.getElementById('wallClosedNote').classList.toggle('hidden', !wallDeadlinePassed);
+  applyViewer();
 }
 function editExternalVisibility(){
   document.getElementById('extVisibilityDisplay').classList.add('hidden');
@@ -3519,6 +3580,7 @@ function submitWallAdmin(){
 }
 
 function openWallModal(){
+  if(!viewerAllows()) return;
   document.getElementById('wallFormBody').classList.remove('hidden');
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';
