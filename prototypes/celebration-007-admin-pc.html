@@ -298,7 +298,7 @@
 
         <div class="module-grid" id="celebrationGrid">
 
-          <div class="module-card" data-activity="30th" data-status="ended" id="cel-sg30">
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-sg30" data-created="2026-09-05 10:00">
             <div class="module-card-head">
               <div class="module-card-title">新加坡总部站</div>
               <span class="status-badge approved">已结束 · 实拍封面</span>
@@ -313,7 +313,7 @@
             </div>
           </div>
 
-          <div class="module-card" data-activity="30th" data-status="ended" id="cel-bj30">
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-bj30" data-created="2026-09-04 14:30">
             <div class="module-card-head">
               <div class="module-card-title">北京分公司站</div>
               <span class="status-badge approved">已结束 · 实拍封面</span>
@@ -328,7 +328,7 @@
             </div>
           </div>
 
-          <div class="module-card" data-activity="30th" data-status="upcoming" id="cel-sh30">
+          <div class="module-card" data-activity="30th" data-status="upcoming" id="cel-sh30" data-created="2026-09-03 09:15">
             <div class="module-card-head">
               <div class="module-card-title">上海分公司站</div>
               <span class="status-badge review">即将开始 · 预告封面</span>
@@ -343,7 +343,7 @@
             </div>
           </div>
 
-          <div class="module-card" data-activity="q3" data-status="ended" id="cel-q3camp">
+          <div class="module-card" data-activity="q3" data-status="ended" id="cel-q3camp" data-created="2026-08-20 16:00">
             <div class="module-card-head">
               <div class="module-card-title">Q3团建营地站</div>
               <span class="status-badge approved">已结束 · 实拍封面</span>
@@ -372,6 +372,14 @@ function rteCmd(cmd){
 function toggleCelebrationForm(){
   document.getElementById('celebrationFormPanel').classList.toggle('hidden');
 }
+/* 列表默认按创建时间倒序（最新创建的在最前），见 conventions.md「列表默认排序」；与筛选共同生效，状态自动变化、编辑不改变位置。
+   原型用 data-created 表示创建时间，页面加载时排一次。 */
+(function(){
+  const grid = document.getElementById('celebrationGrid');
+  Array.from(grid.children).filter(el=>el.matches('.module-card'))
+    .sort((x,y)=>(y.dataset.created||'').localeCompare(x.dataset.created||''))
+    .forEach(el=>grid.appendChild(el));
+})();
 function filterCelebrations(){
   const activityVal = document.getElementById('celebrationActivityFilter').value;
   const statusVal = document.getElementById('celebrationStatusFilter').value;
