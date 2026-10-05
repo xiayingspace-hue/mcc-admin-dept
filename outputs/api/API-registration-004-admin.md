@@ -13,6 +13,7 @@
 | 枚举 | 取值 | 说明 |
 |---|---|---|
 | `author_type` | `internal`（内部员工） \| `external`（外部人士） | 见需求文档 §6 |
+| `author_org_type` | `department`（HR 部门） \| `project`（HR 项目） \| `free_text`（手填的部门 / 机构，仅外部人士） | 见 `directory-010-admin` §6，AC-003、AC-005 |
 | `check_in_status` | `pending`（未签到） \| `checked_in`（已签到） | 见需求文档 §5 状态机 |
 | `check_in_result` | `success`（签到成功） \| `already_checked_in`（已签到） \| `invalid_code`（无效的签到码） \| `out_of_window`（不在签到时间内） \| `no_permission`（无签到权限） | 扫码签到的五种结果，见需求文档 §8、AC-016～AC-020 |
 
@@ -42,7 +43,10 @@
 | `list[].celebration_site` | string | 归属 Celebration 的 Site 名称（列表展示用），AC-005 |
 | `list[].author_type` | string（枚举） | |
 | `list[].author_name` | string | |
-| `list[].author_org` | string \| null | 部门或头衔，留空展示为"—"，见需求文档 §8 |
+| `list[].author_employee_id` | string \| null | 仅 `author_type=internal`：HR 员工 ID |
+| `list[].author_org` | string \| null | 所属名称：内部员工为所选部门 / 项目名称，外部人士为手填的部门或头衔；留空展示为"—"，见需求文档 §8 |
+| `list[].author_org_type` | string（枚举）\| null | 见枚举总表；未填为 `null` |
+| `list[].author_org_id` | string \| null | 仅 `department` / `project`：HR ID |
 | `list[].contact` | string \| null | 联系电话；员工自主报名必有值（中国 11 位或新加坡 8 位手机号，AC-014），行政代报名未填为 `null`，名单展示为"—"，AC-012 |
 | `list[].email` | string \| null | 邮箱地址；员工自主报名必有值，行政代报名未填为 `null`，名单展示为"—"，AC-007 |
 | `list[].remark` | string \| null | 备注 |
@@ -59,9 +63,12 @@
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
 | `celebration_module_id` | string | 是 | 须为 `module_type=registration` 的 CelebrationModule，见 `celebration-007-admin` §6，AC-003 |
-| `author_name` | string | 是 | AC-003 |
+| `author_name` | string | 外部人士必填 | AC-003。**内部员工不传**，姓名由后端按员工 ID 从 HR 取 |
 | `author_type` | string（枚举） | 否 | |
-| `author_org` | string | 否 | |
+| `author_employee_id` | string | 内部员工必填 | HR 员工 ID，AC-025；外部人士传了被拒绝，`directory-010-admin` AC-007 |
+| `author_org` | string | 否 | 仅外部人士：部门 / 头衔，自由文本 |
+| `author_org_type` | string（枚举） | 否 | 仅内部员工：`department` / `project`，与 `author_org_id` 同传，二选一 |
+| `author_org_id` | string | 否 | 仅内部员工：HR 的部门 / 项目 ID，默认带出所选员工的 HR 部门，可改，可不传 |
 | `contact` | string | 否 | 联系电话，选填，不校验格式（外部人士号码格式不一），AC-012 |
 | `email` | string | 否 | 选填；填写则须符合邮箱格式、≤100 个字符，AC-008 |
 | `remark` | string | 否 | |
