@@ -23,7 +23,7 @@
 - 小写 kebab-case，≤10 字符。
 - 命名业务域，不命名功能动作：`activity` 不是 `create-activity`，`wall` 不是 `submit-message`。
 - 全仓 slug 总数 ≤10 个，新增前必须先在 `requirements/shared/GLOSSARY.md` 登记，登记后才能在文件名里使用。
-- 本产品当前受控 slug：`activity`、`module`、`submission`、`registration`、`wall`、`stats`、`celebration`、`sponsor`、`identity`（共 9 个，以 GLOSSARY.md 为准）。
+- 本产品当前受控 slug：`activity`、`module`、`submission`、`registration`、`wall`、`stats`、`celebration`、`sponsor`、`identity`、`directory`（共 10 个，已达上限，以 GLOSSARY.md 为准）。
 
 ## 端侧 × 载体
 
