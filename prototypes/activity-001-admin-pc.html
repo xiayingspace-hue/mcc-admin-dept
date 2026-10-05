@@ -365,8 +365,7 @@
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
   .u-vote-btn.voted{background:var(--u-gold); color:#fff}
-  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：置灰但仍可点击，点击弹短提示；不用原生 disabled，否则手机上点了没反应 */
-  .u-vote-btn.is-blocked{opacity:.55; cursor:default}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
   .u-viewer-hint{font-size:12px; color:var(--u-text-muted); line-height:1.5}
   .u-viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
   .u-viewer-banner{max-width:640px; margin:0 auto 14px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
@@ -3267,14 +3266,13 @@ function updateTodoBadge(delta){
 /* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
 const VIEWER_ORDER = ['employee','external','expired','loading','error'];
 const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
-const MSG_EXTERNAL = '仅限员工参与，请从公司内部系统进入';
 const MSG_EXPIRED = '登录已过期，请从公司内部系统重新进入';
 let viewerState = 'employee';
-function viewerHint(){   // 外部人员 / 确认中 / 确认失败时的提示；员工与登录已过期（点击后才提示）返回空
-  if(viewerState === 'external') return MSG_EXTERNAL;
-  if(viewerState === 'loading') return '正在确认身份…';
-  if(viewerState === 'error') return '身份确认失败<button onclick="retryViewer()">重试</button>';
-  return '';
+function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：三个参与入口都不显示（AC-002、AC-009）
+  return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
+}
+function viewerHint(){   // 只有确认失败才在原入口位置显示提示；外部人员没有任何提示文字（AC-002）；登录已过期在点击后才提示
+  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">重试</button>' : '';
 }
 function showToast(msg){
   let t = document.getElementById('uToast');
@@ -3284,9 +3282,7 @@ function showToast(msg){
 }
 function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
   if(viewerState === 'employee') return true;
-  if(viewerState === 'external') showToast(MSG_EXTERNAL);
-  else if(viewerState === 'expired') showToast(MSG_EXPIRED);
-  else if(viewerState === 'error') showToast('身份确认失败，请点击重试');
+  if(viewerState === 'expired') showToast(MSG_EXPIRED);
   return false;
 }
 function applyViewer(){
@@ -3294,12 +3290,12 @@ function applyViewer(){
   // 涂鸦投票：提示只在区域顶部出现一次，卡片上不重复
   const banner = document.getElementById('worksViewerBanner');
   banner.innerHTML = vh; banner.classList.toggle('hidden', !vh);
-  document.querySelectorAll('#userWorksView .u-vote-btn').forEach(b=>b.classList.toggle('is-blocked', !!vh));
-  // 寄语：身份先于留言截止判断（外部人员始终看到置灰的按钮和提示）
+  document.querySelectorAll('#userWorksView .u-vote-btn').forEach(b=>b.style.display = viewerEntriesHidden() ? 'none' : '');   // 作品与票数照常显示
+  // 寄语：身份先于留言截止判断（外部人员没有提交入口，也看不到"已截止"文案）
   const wb = document.getElementById('wallWriteBtn'), wh = document.getElementById('wallViewerHint');
-  wb.classList.toggle('is-blocked', !!vh);
-  wb.classList.toggle('hidden', wallDeadlinePassed && !vh);
-  document.getElementById('wallClosedNote').classList.toggle('hidden', !(wallDeadlinePassed && !vh));
+  const hide = viewerEntriesHidden();
+  wb.classList.toggle('hidden', hide || wallDeadlinePassed);
+  document.getElementById('wallClosedNote').classList.toggle('hidden', hide || !wallDeadlinePassed);
   wh.innerHTML = vh; wh.classList.toggle('hidden', !vh);
   document.querySelectorAll('.demoViewerState').forEach(e=>e.textContent = VIEWER_LABEL[viewerState]);
 }

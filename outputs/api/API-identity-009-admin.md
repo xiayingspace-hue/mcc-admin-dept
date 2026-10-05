@@ -25,10 +25,10 @@
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `viewer_type` | `viewer_type` | `employee` 时三个参与入口按原有规则显示；`external` 时置灰并提示，AC-001、AC-002 |
+| `viewer_type` | `viewer_type` | `employee` 时三个参与入口按原有规则显示；`external` 时三个入口不显示，AC-001、AC-002 |
 | `name` | string | 仅 `employee` 返回，员工姓名 |
 
-页面打开时调用一次；请求失败时页面按「确认失败」处理，入口保持不可用并提供重试，不得默认放开，AC-009。官网访问（无令牌）返回 `viewer_type=external`，不返回错误。
+页面打开时调用一次；请求失败时页面按「确认失败」处理，入口不显示、在原位置提供重试，不得默认放开，AC-009。官网访问（无令牌）返回 `viewer_type=external`，不返回错误。
 
 用令牌换取登录状态的方式（一次性 / 有效期 / 校验方式）尚未确定，见需求文档 §11；确定后在此补充对应接口。换取完成后令牌不应继续留在地址栏，AC-008。
 
@@ -39,7 +39,7 @@
 | 动作 | 所在清单 | 说明 |
 |---|---|---|
 | 员工自主报名 / 取消报名 | `API-registration-004-admin.md`（提交接口待补充） | 另有邮箱、电话、名额校验 |
-| 查看我的签到码 `GET /registrationCode`、报名入口状态 `GET /registrationEntry` | `API-registration-004-admin.md` | 外部人员调用 `registrationCode` 被拒绝（`not_employee`）；`registrationEntry` 对外部人员仍可调用，页面据 `viewer` 的结果置灰入口 |
+| 查看我的签到码 `GET /registrationCode`、报名入口状态 `GET /registrationEntry` | `API-registration-004-admin.md` | 外部人员调用 `registrationCode` 被拒绝（`not_employee`）；`registrationEntry` 对外部人员仍可调用，页面据 `viewer` 的结果决定是否显示入口 |
 | 涂鸦投票 / 取消投票 / 换票 | `API-submission-003-admin.md`（用户端投票接口待补充） | |
 | 提交寄语 | `API-wall-005-admin.md`（用户端提交接口待补充） | |
 

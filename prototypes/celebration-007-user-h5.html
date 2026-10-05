@@ -107,9 +107,7 @@
   .register-btn{width:100%; background:var(--u-navy); color:#fff; border:none; padding:13px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer}
   .register-btn:hover{background:#223046}
   .register-btn:disabled{opacity:.55; cursor:default}
-  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：置灰但仍可点击，点击弹短提示；不用原生 disabled，否则手机上点了没反应 */
-  .register-btn.is-blocked, .doodle-vote-btn.is-blocked{opacity:.55; cursor:default}
-  .register-btn.is-blocked:hover{background:var(--u-navy)}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
   .viewer-hint{margin:8px 0 0; font-size:12px; color:var(--u-text-muted); text-align:center; line-height:1.5}
   .viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
   .viewer-banner{margin:0 0 16px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
@@ -401,11 +399,10 @@ function updateRegisterButton(){
   const btn = document.getElementById('registerBtn');
   document.getElementById('myCodeLink').style.display = r.me ? 'block' : 'none';
   const hint = document.getElementById('registerHint');
-  btn.classList.remove('is-blocked'); hint.style.display = 'none';
-  const vh = viewerHint();
-  if(vh){   // REQ-009：非员工 / 确认中 / 确认失败，先于已满等状态判断（AC-002、AC-009、AC-010）
-    btn.textContent = '立即报名 · Register'; btn.disabled = false; btn.classList.add('is-blocked');
-    hint.innerHTML = vh; hint.style.display = '';
+  hint.style.display = 'none';
+  if(viewerEntriesHidden()){   // REQ-009：非员工 / 确认中 / 确认失败，先于已满等状态判断（AC-002、AC-009、AC-010）
+    btn.style.display = 'none';
+    if(CELEBRATIONS[currentId].modules.registration && viewerHint()){ hint.innerHTML = viewerHint(); hint.style.display = ''; }
   }
   else if(r.me){ btn.textContent = '已报名 ✓'; btn.disabled = true; }
   else if(full){ btn.textContent = '报名人数已达上限'; btn.disabled = true; }
@@ -422,14 +419,13 @@ function demoToggleFull(){
 /* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
 const VIEWER_ORDER = ['employee','external','expired','loading','error'];
 const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
-const MSG_EXTERNAL = '仅限员工参与，请从公司内部系统进入';
 const MSG_EXPIRED = '登录已过期，请从公司内部系统重新进入';
 let viewerState = 'employee';
-function viewerHint(){   // 外部人员 / 确认中 / 确认失败时，按钮下方的提示；员工与登录已过期（点击后才提示）返回空
-  if(viewerState === 'external') return MSG_EXTERNAL;
-  if(viewerState === 'loading') return '正在确认身份…';
-  if(viewerState === 'error') return '身份确认失败<button onclick="retryViewer()">重试</button>';
-  return '';
+function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：三个参与入口都不显示（AC-002、AC-009）
+  return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
+}
+function viewerHint(){   // 只有确认失败才在原入口位置显示提示；外部人员没有任何提示文字（AC-002）；登录已过期在点击后才提示
+  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">重试</button>' : '';
 }
 function showToast(msg){
   const t = document.getElementById('uToast');
@@ -438,9 +434,7 @@ function showToast(msg){
 }
 function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
   if(viewerState === 'employee') return true;
-  if(viewerState === 'external') showToast(MSG_EXTERNAL);
-  else if(viewerState === 'expired') showToast(MSG_EXPIRED);
-  else if(viewerState === 'error') showToast('身份确认失败，请点击重试');
+  if(viewerState === 'expired') showToast(MSG_EXPIRED);
   return false;
 }
 function retryViewer(){
@@ -454,8 +448,8 @@ function demoToggleViewer(){
 function applyViewerDoodle(){
   const banner = document.getElementById('doodleBanner');
   const vh = viewerHint();
-  banner.innerHTML = vh; banner.style.display = vh ? '' : 'none';   // 提示只在区域标题下出现一次，卡片上不重复
-  document.querySelectorAll('.doodle-vote-btn').forEach(b=>b.classList.toggle('is-blocked', !!vh));
+  banner.innerHTML = vh; banner.style.display = vh ? '' : 'none';   // 确认失败的提示只在区域标题下出现一次，卡片上不重复
+  document.querySelectorAll('.doodle-vote-btn').forEach(b=>b.style.display = viewerEntriesHidden() ? 'none' : '');   // 外部人员看不到投票按钮，作品与票数照常显示
 }
 function applyModuleSwitches(){
   const m = CELEBRATIONS[currentId].modules;
