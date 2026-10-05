@@ -197,6 +197,13 @@
   .pp-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
   .pp-chip{display:inline-flex; align-items:center; gap:6px; max-width:100%; padding:3px 6px 3px 10px; border-radius:999px; background:var(--accent-tint); color:var(--accent); font-size:12px; overflow-wrap:anywhere}
   .pp-chip button{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 2px}
+  .pp-tree-row{display:flex; align-items:center; gap:6px; padding:6px 10px; border-bottom:0.5px solid var(--border); cursor:pointer}
+  .pp-tree-row:last-child{border-bottom:none}
+  .pp-tree-row:hover{background:var(--accent-tint)}
+  .pp-tree-row.branch{color:var(--text-secondary)}
+  .pp-tree-row .pp-arrow{width:14px; flex-shrink:0; text-align:center; color:var(--text-muted); font-size:11px}
+  .pp-tree-row span.pp-tname{overflow-wrap:anywhere}
+  .pp-path{margin-left:auto; padding-left:12px; color:var(--text-muted); font-size:11.5px; text-align:right; overflow-wrap:anywhere}
   .pp-sub{font-size:11.5px; color:var(--text-muted); margin-top:4px}
   .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
 
@@ -2921,16 +2928,32 @@ const HR_DATA = {                               // 模拟后端已过滤后的�
     {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部', phone:'', email:'lin.xiaowei@mcc.example'},
     {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室', phone:'98765432', email:'alexandra.montgomery-richardson@mcc.example'}
   ],
-  department: ['产品部','行政部','工程部','技术部','市场部','财务部','集团战略与跨区域业务发展协调办公室'],   // 末级部门自己的名称，不带上级路径
+  departmentTree: [                          // 后端返回的部门树：children 为空的是末级部门，只有末级部门可选（AC-003、AC-014）
+    {id:'D1', name:'总部', children:[
+      {id:'D11', name:'产品与设计中心', children:[{id:'D111', name:'产品部', children:[]}, {id:'D112', name:'设计部', children:[]}]},
+      {id:'D12', name:'技术中心', children:[{id:'D121', name:'工程部', children:[]}, {id:'D122', name:'技术部', children:[]}, {id:'D123', name:'数据平台部', children:[]}]},
+      {id:'D13', name:'运营支持中心', children:[{id:'D131', name:'行政部', children:[]}, {id:'D132', name:'财务部', children:[]}, {id:'D133', name:'市场部', children:[]}]},
+      {id:'D14', name:'集团战略与跨区域业务发展协调办公室', children:[]}
+    ]},
+    {id:'D2', name:'区域业务', children:[
+      {id:'D21', name:'新加坡分公司', children:[{id:'D211', name:'销售部', children:[]}, {id:'D212', name:'市场部', children:[]}]},
+      {id:'D22', name:'东南亚事业部', children:[{id:'D221', name:'印尼运营组', children:[{id:'D2211', name:'雅加达仓配小组', children:[]}]}]}
+    ]}
+  ],
   project: ['三十周年专项','Q3 团建筹备组','星火计划']
 };
+function ppLeaves(nodes, path, out){                 // 末级部门 + 上级路径（路径只用于区分重名，不保存、不展示）
+  nodes.forEach(n=>{ if(n.children.length) ppLeaves(n.children, path.concat(n.name), out); else out.push({id:n.id, name:n.name, path:path.join(' › ')}); });
+  return out;
+}
+HR_DATA.department = ppLeaves(HR_DATA.departmentTree, [], []).map(x=>x.name);   // 末级部门名称，供编辑回填时识别
 let hrState = 'normal';
 let regAuto = {phone:'', email:''};          // 代报名：从 HR 带出的电话 / 邮箱（行政改过的不再算「带出的」，REQ-004 AC-026）                       // 原型演示：正常 / 加载中 / 查询失败
 const PP = {};
 const PP_CFG = {sub:{multi:true, max:10}, reg:{multi:false}, wall:{multi:false}, wedit:{multi:false}};
 function ppInit(){
   Object.keys(PP_CFG).forEach(k=>{
-    PP[k] = {type:(k==='wall'||k==='wedit')?'external':'internal', employees:[], org:null, orgKind:'department'};
+    PP[k] = {type:(k==='wall'||k==='wedit')?'external':'internal', employees:[], org:null, orgKind:'department', open:{}};
     ppRenderBlock(k);
   });
 }
@@ -2966,6 +2989,9 @@ function ppSearch(k, what){
   let html = '';
   if(hrState === 'loading'){ html = '<div class="pp-note">搜索中…</div>'; }
   else if(hrState === 'error'){ html = '<div class="pp-note">HR 系统查询失败，无法选择'+kind+'<button onclick="ppDemo(\'normal\')">重试</button></div>'; }   // AC-008：不提供手动输入兜底，已选内容不丢失
+  else if(what==='org' && PP[k].orgKind==='department'){
+    html = ppDeptHtml(k, q);
+  }
   else {
     const list = what==='emp'
       ? HR_DATA.employees.filter(e=>!q || e.name.toLowerCase().includes(q) || e.no.toLowerCase().includes(q))
@@ -2977,6 +3003,27 @@ function ppSearch(k, what){
   }
   box.innerHTML = html; box.classList.remove('hidden');
 }
+/* 部门多层级选择（REQ-010 AC-014）：无关键字时按树逐级展开，上级部门点击只展开 / 收起，末级部门点击选中；有关键字时只列匹配的末级部门，并用淡色文字显示上级路径 */
+function ppDeptHtml(k, q){
+  const open = PP[k].open;
+  if(q){
+    const hits = ppLeaves(HR_DATA.departmentTree, [], []).filter(x=>x.name.toLowerCase().includes(q));
+    if(!hits.length) return '<div class="pp-note">HR 系统中没有匹配的部门</div>';
+    return hits.map(x=>'<div class="pp-tree-row" onclick="ppPickOrg(\''+k+'\',\''+ppEsc(x.name)+'\')"><span class="pp-tname">'+ppEsc(x.name)+'</span>'+(x.path?'<span class="pp-path">'+ppEsc(x.path)+'</span>':'')+'</div>').join('');
+  }
+  if(!HR_DATA.departmentTree.length) return '<div class="pp-note">HR 系统中暂无部门</div>';
+  const walk = (nodes, depth)=>nodes.map(n=>{
+    const pad = 'style="padding-left:'+(10 + depth*16)+'px"';
+    if(n.children.length){
+      const isOpen = !!open[n.id];
+      return '<div class="pp-tree-row branch" '+pad+' onclick="ppToggleDept(\''+k+'\',\''+n.id+'\')"><span class="pp-arrow">'+(isOpen?'▾':'▸')+'</span><span class="pp-tname">'+ppEsc(n.name)+'</span></div>'
+        + (isOpen ? walk(n.children, depth+1) : '');
+    }
+    return '<div class="pp-tree-row" '+pad+' onclick="ppPickOrg(\''+k+'\',\''+ppEsc(n.name)+'\')"><span class="pp-arrow"></span><span class="pp-tname">'+ppEsc(n.name)+'</span></div>';
+  }).join('');
+  return walk(HR_DATA.departmentTree, 0);
+}
+function ppToggleDept(k, id){ PP[k].open[id] = !PP[k].open[id]; ppSearch(k,'org'); }
 function ppCloseResults(k, what){ document.getElementById('pp-'+k+'-'+what+'-res').classList.add('hidden'); }
 function ppErr(k, msg){ const e = document.getElementById('pp-'+k+'-emp-err'); e.textContent = msg||''; e.style.display = msg ? 'block' : 'none'; }
 function ppPickEmp(k, id){
@@ -3022,7 +3069,8 @@ function ppDemo(state){
   Object.keys(PP).forEach(k=>['emp','org'].forEach(w=>{ const r = document.getElementById('pp-'+k+'-'+w+'-res'); if(r && !r.classList.contains('hidden')) ppSearch(k,w); }));
   if(state !== 'normal') Object.keys(PP).forEach(k=>{ const i = document.getElementById('pp-'+k+'-emp'); if(i && i.offsetParent) ppSearch(k,'emp'); });
 }
-document.addEventListener('click', e=>{ if(!e.target.closest('.pp-box')) document.querySelectorAll('.pp-results').forEach(r=>r.classList.add('hidden')); });
+document.addEventListener('click', e=>{ if(!document.body.contains(e.target)) return;   // 点的是刚重新渲染掉的树节点，不算点在外面
+  if(!e.target.closest('.pp-box')) document.querySelectorAll('.pp-results').forEach(r=>r.classList.add('hidden')); });
 function ppSwitch(k, type, btn){      // 切换类型：清空另一种类型已填的内容（AC-006）
   selectScope(btn);
   ppSetType(k, type);
