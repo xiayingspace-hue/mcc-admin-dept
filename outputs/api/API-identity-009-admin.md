@@ -12,7 +12,7 @@
 
 | 枚举 | 取值 | 说明 |
 |---|---|---|
-| `viewer_type` | `employee`（员工） \| `external`（外部人员） | 见需求文档 §6；没有令牌或令牌无效一律为 `external` |
+| `viewer_type` | `employee`（员工） \| `external`（外部人员） | 见需求文档 §6；没有令牌、令牌无效、或令牌对应的员工已离职，一律为 `external` |
 | `identity_error` | `not_employee`（不是员工） \| `session_expired`（登录已过期） | 参与类接口被拒绝时的错误原因，见下方「受身份限制的接口」；两者页面提示不同，AC-005、AC-007 |
 
 ## 获取当前访问者（用户端）
@@ -47,7 +47,7 @@
 
 | 情形 | `identity_error` |
 |---|---|
-| 无令牌 / 令牌无效，或请求里只有工号等参数 | `not_employee` |
+| 无令牌 / 令牌无效 / 员工已离职，或请求里只有工号等参数 | `not_employee` |
 | 令牌过期或失效 | `session_expired` |
 
 **权限**：见需求文档 §7
