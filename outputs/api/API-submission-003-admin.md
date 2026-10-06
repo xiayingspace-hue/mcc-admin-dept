@@ -16,6 +16,7 @@
 |---|---|---|
 | `status` | `draft`（未发布） \| `published`（已发布） \| `hidden`（已隐藏） | 见需求文档 §5 状态机；术语沿用 `conventions.md` 状态命名统一术语 |
 | `author_type` | `internal`（内部员工） \| `external`（外部人士） | 见需求文档 §6 |
+| `author_org_type` | `department`（HR 部门） \| `project`（HR 项目） \| `free_text`（手填的部门 / 机构，仅外部人士） | 见 `directory-010-admin` §6，AC-003、AC-005 |
 
 ## 获取作品列表
 
@@ -46,8 +47,11 @@
 | `video_url` | string \| null | 作品视频，最多 1 个，无视频为 `null`，AC-010 |
 | `description` | string \| null | 作品说明 |
 | `author_type` | string（枚举） \| null | 一件作品一个类型；仅管理端使用，用户端不展示，AC-019 |
-| `author_names[]` | string[] | 作者姓名，1 到 10 位，团队作品填多位，AC-018；用户端展示时不带作者类型，AC-019 |
-| `author_org` | string \| null | 部门或所属机构，自由文本 |
+| `author_names[]` | string[] | 作者姓名，1 到 10 位，团队作品多位，AC-018、AC-023；用户端展示时不带作者类型，AC-019 |
+| `author_employee_ids[]` | string[] | 仅 `author_type=internal`：作者的 HR 员工 ID，与 `author_names[]` 一一对应；外部人士为空数组 |
+| `author_org` | string \| null | 所属名称：内部员工为所选部门 / 项目的名称，外部人士为手填的部门 / 机构（自由文本） |
+| `author_org_type` | string（枚举）\| null | 见枚举总表；未填所属为 `null` |
+| `author_org_id` | string \| null | 仅 `author_org_type` 为 `department` / `project`：HR 的部门 / 项目 ID |
 | `status` | string（枚举） | 见枚举总表 |
 | `vote_count` | number | 票数，即当前对该作品有效投票的用户数（同一用户重复投票按开关计，不累加；换票时原作品-1、新作品+1），见需求文档 §6「投票」、AC-006/AC-007/AC-008 |
 | `created_at` | string(ISO 8601) | 创建时间（行政上传的时间）；列表按它倒序，AC-022 |
@@ -65,10 +69,13 @@
 | `celebration_module_id` | string | 是 | 须为 `module_type=doodle_vote` 的 CelebrationModule，见 `celebration-007-admin` §6 |
 | `image_urls[]` | string[] | 是 | 1 到 9 张，按数组顺序展示，第一张为封面，AC-001、AC-009 |
 | `video_url` | string | 否 | 最多 1 个 MP4，AC-010 |
-| `author_names[]` | string[] | 是 | 至少 1 位、最多 10 位，每位 ≤30 个字符，同一作品内不重复，AC-001、AC-018；管理端由单个输入框按逗号拆分后提交 |
+| `author_names[]` | string[] | 外部人士必填 | 至少 1 位、最多 10 位，每位 ≤30 个字符，同一作品内不重复，AC-001、AC-018；管理端由单个输入框按逗号拆分后提交。**内部员工不传**，姓名由后端按员工 ID 从 HR 取 |
+| `author_employee_ids[]` | string[] | 内部员工必填 | 1 到 10 个 HR 员工 ID，不重复，AC-023；外部人士传了被拒绝，AC-007 |
 | `description` | string | 否 | 作品说明，不超过 200 个字符（汉字、字母、标点、空格、换行都按 1 个计），AC-014 |
 | `author_type` | string（枚举） | 否 | |
-| `author_org` | string | 否 | |
+| `author_org` | string | 否 | 仅外部人士：部门 / 机构，自由文本。内部员工（`author_type=internal`）：员工与所属都只能引用 HR（`GET /hrEmployee` 等，见 `API-directory-010-admin.md`），后端校验存在性，AC-007 |
+| `author_org_type` | string（枚举） | 否 | 仅内部员工：`department` / `project`，与 `author_org_id` 同传，二选一，AC-003 |
+| `author_org_id` | string | 否 | 仅内部员工：HR 的部门 / 项目 ID |
 
 **响应字段**
 
@@ -109,7 +116,7 @@
 | `id` | string | 是 | 作品ID |
 | `image_urls[]` | string[] | 是 | 编辑后的完整图片名单与顺序，1 到 9 张 |
 | `video_url` | string \| null | 否 | 传 `null` 表示删除视频 |
-| `author_names[]` / `author_type` / `author_org` / `description` | 同上传作品 | | 同上传作品 |
+| `author_names[]` / `author_employee_ids[]` / `author_type` / `author_org` / `author_org_type` / `author_org_id` / `description` | 同上传作品 | | 同上传作品 |
 
 **响应字段**：同「获取作品列表」单条结构；`status`、`vote_count` 不变。
 

@@ -184,6 +184,27 @@
   .picker-item .grow{flex:1}
   .picker-state{padding:22px 12px; text-align:center; font-size:12.5px; color:var(--text-muted)}
   .picker-skel{height:14px; margin:14px 12px; border-radius:4px; background:var(--border)}
+  /* HR 人员 / 部门 / 项目选择器（REQ-010）*/
+  .pp-box{position:relative}
+  .pp-results{border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); margin-top:4px; max-height:168px; overflow-y:auto; font-size:12.5px}
+  .pp-item{padding:7px 10px; cursor:pointer; display:flex; justify-content:space-between; gap:12px; border-bottom:0.5px solid var(--border)}
+  .pp-item:last-child{border-bottom:none}
+  .pp-item:hover{background:var(--accent-tint)}
+  .pp-item .pp-meta{color:var(--text-muted); font-size:11.5px; white-space:nowrap}
+  .pp-item span:first-child{overflow-wrap:anywhere}
+  .pp-note{padding:8px 10px; color:var(--text-muted)}
+  .pp-note button{background:none; border:none; padding:0; margin-left:6px; color:var(--accent); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .pp-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+  .pp-chip{display:inline-flex; align-items:center; gap:6px; max-width:100%; padding:3px 6px 3px 10px; border-radius:999px; background:var(--accent-tint); color:var(--accent); font-size:12px; overflow-wrap:anywhere}
+  .pp-chip button{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 2px}
+  .pp-tree-row{display:flex; align-items:center; gap:6px; padding:6px 10px; border-bottom:0.5px solid var(--border); cursor:pointer}
+  .pp-tree-row:last-child{border-bottom:none}
+  .pp-tree-row:hover{background:var(--accent-tint)}
+  .pp-tree-row.branch{color:var(--text-secondary)}
+  .pp-tree-row .pp-arrow{width:14px; flex-shrink:0; text-align:center; color:var(--text-muted); font-size:11px}
+  .pp-tree-row span.pp-tname{overflow-wrap:anywhere}
+  .pp-path{margin-left:auto; padding-left:12px; color:var(--text-muted); font-size:11.5px; text-align:right; overflow-wrap:anywhere}
+  .pp-sub{font-size:11.5px; color:var(--text-muted); margin-top:4px}
   .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
 
   .attach-list-scroll{max-height:200px; overflow-y:auto}
@@ -1106,11 +1127,13 @@
               <div class="field">
                 <label>作者类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="selectScope(this)">内部员工</button>
-                  <button class="scope-btn" onclick="selectScope(this)">外部人士</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('sub','internal',this)">内部员工</button>
+                  <button class="scope-btn" onclick="ppSwitch('sub','external',this)">外部人士</button>
                 </div>
               </div>
             </div>
+            <div id="sub-int"></div>
+            <div id="sub-ext" class="hidden">
             <div class="field">
               <label>作者姓名（必填）</label>
               <input type="text" id="subAuthorName" placeholder="例如：陈思思, 王芳, 李强" oninput="updateAuthorHint()">
@@ -1119,8 +1142,9 @@
               <div class="attach-error" id="subNameError" style="display:none"></div>
             </div>
             <div class="field">
-              <label>部门 / 头衔（选填）</label>
-              <input type="text" placeholder="例如：产品部">
+              <label>部门 / 所属机构（选填，自由文本）</label>
+              <input type="text" id="subExtOrg" placeholder="例如：合作伙伴 · XX公司">
+            </div>
             </div>
             <div class="field">
               <label>作品图片（必填，1–9 张，JPG / PNG，单张 ≤5MB；第一张为封面，可调整顺序）<span id="subImgCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
@@ -1310,16 +1334,19 @@
               <div class="field">
                 <label>类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="selectScope(this)">内部员工</button>
-                  <button class="scope-btn" onclick="selectScope(this)">外部人士</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('reg','internal',this)">内部员工</button>
+                  <button class="scope-btn" onclick="ppSwitch('reg','external',this)">外部人士</button>
                 </div>
               </div>
-              <div class="field"><label>部门 / 头衔</label><input type="text" id="manualRegDept" placeholder="例如：产品部"></div>
             </div>
-            <div class="field"><label>姓名</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+            <div id="reg-int"></div>
+            <div id="reg-ext" class="hidden">
+              <div class="field"><label>姓名（必填）</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="manualRegDept" placeholder="例如：合作伙伴 · XX公司"></div>
+            </div>
             <div class="row2">
-              <div class="field"><label>联系电话（选填）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
-              <div class="field"><label>邮箱（选填）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
+              <div class="field"><label>联系电话（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
+              <div class="field"><label>邮箱（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
             </div>
             <div style="display:flex; justify-content:flex-end; gap:10px">
               <button class="btn" onclick="toggleManualReg()">取消</button>
@@ -1442,18 +1469,21 @@
           </div>
 
           <div class="upload-panel">
-            <p class="upload-panel-title">代录入寄语（用于外部合作伙伴等无系统账号的人士）</p>
+            <p class="upload-panel-title">代录入寄语（外部合作伙伴等无系统账号的人士，或由行政代员工录入）</p>
             <div class="row2">
               <div class="field">
                 <label>作者类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn" onclick="selectScope(this)">内部员工</button>
-                  <button class="scope-btn selected" onclick="selectScope(this)">外部人士</button>
+                  <button class="scope-btn" onclick="ppSwitch('wall','internal',this)">内部员工</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('wall','external',this)">外部人士</button>
                 </div>
               </div>
-              <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：合作伙伴 · XX公司"></div>
             </div>
-            <div class="field"><label>作者姓名</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
+            <div id="wall-int" class="hidden"></div>
+            <div id="wall-ext">
+              <div class="field"><label>作者姓名（必填）</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
+              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="adminWallOrg" placeholder="例如：合作伙伴 · XX公司"></div>
+            </div>
             <div class="field">
               <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
               <div class="upload-box" id="adminWallImgBox" onclick="wallPickImage('admin')">点击上传一张配图，如合影、手写卡片照片</div>
@@ -2115,12 +2145,17 @@
     <div style="padding:16px 20px">
       <div id="wallEditAuthorFixed" style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px"></div>
       <div id="wallEditAuthorFields">
-        <div class="row2">
-          <div class="field"><label>作者类型</label>
-            <select id="editWallType" style="width:100%"><option value="internal">内部员工</option><option value="external">外部人士</option></select></div>
-          <div class="field"><label>部门 / 头衔</label><input type="text" id="editWallOrg"></div>
+        <div class="field"><label>作者类型</label>
+          <div class="scope-toggle" id="editWallTypeToggle">
+            <button class="scope-btn" onclick="ppSwitch('wedit','internal',this)">内部员工</button>
+            <button class="scope-btn selected" onclick="ppSwitch('wedit','external',this)">外部人士</button>
+          </div>
         </div>
-        <div class="field"><label>作者姓名</label><input type="text" id="editWallName"></div>
+        <div id="wedit-int" class="hidden"></div>
+        <div id="wedit-ext">
+          <div class="field"><label>作者姓名（必填）</label><input type="text" id="editWallName"></div>
+          <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="editWallOrg"></div>
+        </div>
       </div>
       <div class="field">
         <label>留言内容</label>
@@ -2877,6 +2912,202 @@ function demoSub(kind){
 }
 /* ---- 作者姓名：一个输入框一次输入所有人，只按逗号（, 或 ，）拆分，REQ-003 AC-018（顿号 / 分号提示后阻止，空格不作分隔符、保留英文姓名中的空格） ---- */
 const SUB_NAME_MAX = 10, SUB_NAME_LEN = 30;
+/* ---- 作者 / 报名人 / 留言作者的录入（REQ-010）：内部员工从 HR 选择，外部人士手填 ----
+   原型用 HR_DATA 模拟 HR 系统（真实数据来自 HR：GET /hrEmployee、/hrDepartment、/hrProject）。
+   key：sub = 作品上传 / 编辑（多位员工，最多 10 位）；reg = 行政代报名；wall = 留言代录入；wedit = 留言编辑。 */
+const HR_DATA = {                               // 模拟后端已过滤后的结果：只含在职员工、末级部门、有效项目（AC-002、AC-003、AC-011）；离职员工、非末级部门、已关闭项目不会返回
+  employees: [
+    {id:'E1001', name:'陈思思', no:'E1001', dept:'产品部', phone:'13800138001', email:'chen.sisi@mcc.example'},
+    {id:'E1002', name:'王芳', no:'E1002', dept:'行政部', phone:'91234567', email:'wang.fang@mcc.example'},
+    {id:'E1003', name:'李强', no:'E1003', dept:'工程部', phone:'13800138003', email:''},
+    {id:'E1004', name:'张伟', no:'E1004', dept:'技术部', phone:'', email:'zhang.wei@mcc.example'},
+    {id:'E1005', name:'赵敏', no:'E1005', dept:'技术部', phone:'81234567', email:'zhao.min@mcc.example'},
+    {id:'E1006', name:'周杰', no:'E1006', dept:'技术部', phone:'', email:''},
+    {id:'E1007', name:'周敏', no:'E1007', dept:'市场部', phone:'91234568', email:'zhou.min@mcc.example'},
+    {id:'E1008', name:'刘洋', no:'E1008', dept:'财务部', phone:'13800138008', email:'liu.yang@mcc.example'},
+    {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部', phone:'', email:'lin.xiaowei@mcc.example'},
+    {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室', phone:'98765432', email:'alexandra.montgomery-richardson@mcc.example'}
+  ],
+  departmentTree: [                          // 后端返回的部门树：children 为空的是末级部门，只有末级部门可选（AC-003、AC-014）
+    {id:'D1', name:'总部', children:[
+      {id:'D11', name:'产品与设计中心', children:[{id:'D111', name:'产品部', children:[]}, {id:'D112', name:'设计部', children:[]}]},
+      {id:'D12', name:'技术中心', children:[{id:'D121', name:'工程部', children:[]}, {id:'D122', name:'技术部', children:[]}, {id:'D123', name:'数据平台部', children:[]}]},
+      {id:'D13', name:'运营支持中心', children:[{id:'D131', name:'行政部', children:[]}, {id:'D132', name:'财务部', children:[]}, {id:'D133', name:'市场部', children:[]}]},
+      {id:'D14', name:'集团战略与跨区域业务发展协调办公室', children:[]}
+    ]},
+    {id:'D2', name:'区域业务', children:[
+      {id:'D21', name:'新加坡分公司', children:[{id:'D211', name:'销售部', children:[]}, {id:'D212', name:'市场部', children:[]}]},
+      {id:'D22', name:'东南亚事业部', children:[{id:'D221', name:'印尼运营组', children:[{id:'D2211', name:'雅加达仓配小组', children:[]}]}]}
+    ]}
+  ],
+  project: ['三十周年专项','Q3 团建筹备组','星火计划']
+};
+function ppLeaves(nodes, path, out){                 // 末级部门 + 上级路径（路径只用于区分重名，不保存、不展示）
+  nodes.forEach(n=>{ if(n.children.length) ppLeaves(n.children, path.concat(n.name), out); else out.push({id:n.id, name:n.name, path:path.join(' › ')}); });
+  return out;
+}
+HR_DATA.department = ppLeaves(HR_DATA.departmentTree, [], []).map(x=>x.name);   // 末级部门名称，供编辑回填时识别
+let hrState = 'normal';
+let regAuto = {phone:'', email:''};          // 代报名：从 HR 带出的电话 / 邮箱（行政改过的不再算「带出的」，REQ-004 AC-026）                       // 原型演示：正常 / 加载中 / 查询失败
+const PP = {};
+const PP_CFG = {sub:{multi:true, max:10}, reg:{multi:false}, wall:{multi:false}, wedit:{multi:false}};
+function ppInit(){
+  Object.keys(PP_CFG).forEach(k=>{
+    PP[k] = {type:(k==='wall'||k==='wedit')?'external':'internal', employees:[], org:null, orgKind:'department', open:{}};
+    ppRenderBlock(k);
+  });
+}
+function ppRenderBlock(k){
+  const multi = PP_CFG[k].multi;
+  document.getElementById(k+'-int').innerHTML =
+    '<div class="field"><label>'+(multi?'作者（必选，从 HR 选择，1–10 位）':'员工（必选，从 HR 选择）')+'</label>'
+    + '<div class="pp-box"><input type="text" id="pp-'+k+'-emp" placeholder="按姓名或工号搜索 HR 里的员工" oninput="ppSearch(\''+k+'\',\'emp\')" onfocus="ppSearch(\''+k+'\',\'emp\')">'
+    + '<div class="pp-results hidden" id="pp-'+k+'-emp-res"></div></div>'
+    + '<div class="pp-chips" id="pp-'+k+'-emp-chips"></div><div class="attach-error" id="pp-'+k+'-emp-err" style="display:none"></div>'
+    + '<div class="pp-sub">'+(multi?'同一作品内不能重复选同一位；团队作品所属请在下方自行选择。':'选中后所属默认带出该员工在 HR 里的部门，可改选。')+'姓名不能手填；只列在职员工，HR 里找不到需先让 HR 补数据。</div></div>'
+    + '<div class="field"><label>所属（选填，部门或项目二选一，来自 HR）</label>'
+    + '<div class="scope-toggle" style="margin-bottom:6px"><button class="scope-btn selected" id="pp-'+k+'-kd" onclick="ppOrgKind(\''+k+'\',\'department\')">部门</button><button class="scope-btn" id="pp-'+k+'-kp" onclick="ppOrgKind(\''+k+'\',\'project\')">项目</button></div>'
+    + '<div class="pp-box"><input type="text" id="pp-'+k+'-org" placeholder="搜索 HR 里的部门（只能选末级部门）" oninput="ppSearch(\''+k+'\',\'org\')" onfocus="ppSearch(\''+k+'\',\'org\')">'
+    + '<div class="pp-results hidden" id="pp-'+k+'-org-res"></div></div>'
+    + '<div class="pp-chips" id="pp-'+k+'-org-chips"></div></div>'
+    + '<div class="picker-demo"><span>原型演示（HR 系统状态）：</span>'
+    + '<button class="action-link" onclick="ppDemo(\'normal\')">正常</button><button class="action-link" onclick="ppDemo(\'loading\')">搜索中</button><button class="action-link" onclick="ppDemo(\'error\')">查询失败</button></div>';
+  ppRenderChips(k);
+}
+function ppEsc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ppRenderChips(k){
+  const st = PP[k];
+  document.getElementById('pp-'+k+'-emp-chips').innerHTML = st.employees.map(e=>
+    '<span class="pp-chip">'+ppEsc(e.name)+' · '+ppEsc(e.no)+' · '+ppEsc(e.dept)+'<button onclick="ppRemoveEmp(\''+k+'\',\''+e.id+'\')" title="移除">×</button></span>').join('');
+  document.getElementById('pp-'+k+'-org-chips').innerHTML = st.org
+    ? '<span class="pp-chip">'+(st.org.kind==='department'?'部门':'项目')+'：'+ppEsc(st.org.name)+'<button onclick="ppClearOrg(\''+k+'\')" title="清空所属">×</button></span>' : '';
+}
+function ppSearch(k, what){
+  const box = document.getElementById('pp-'+k+'-'+what+'-res');
+  const q = document.getElementById('pp-'+k+'-'+what).value.trim().toLowerCase();
+  const kind = what==='emp' ? '员工' : (PP[k].orgKind==='department' ? '部门' : '项目');
+  let html = '';
+  if(hrState === 'loading'){ html = '<div class="pp-note">搜索中…</div>'; }
+  else if(hrState === 'error'){ html = '<div class="pp-note">HR 系统查询失败，无法选择'+kind+'<button onclick="ppDemo(\'normal\')">重试</button></div>'; }   // AC-008：不提供手动输入兜底，已选内容不丢失
+  else if(what==='org' && PP[k].orgKind==='department'){
+    html = ppDeptHtml(k, q);
+  }
+  else {
+    const list = what==='emp'
+      ? HR_DATA.employees.filter(e=>!q || e.name.toLowerCase().includes(q) || e.no.toLowerCase().includes(q))
+      : HR_DATA[PP[k].orgKind].filter(n=>!q || n.toLowerCase().includes(q));
+    if(!list.length) html = '<div class="pp-note">HR 系统中没有匹配的'+kind+'</div>';
+    else html = list.map(it=> what==='emp'
+      ? '<div class="pp-item" onclick="ppPickEmp(\''+k+'\',\''+it.id+'\')"><span>'+ppEsc(it.name)+'</span><span class="pp-meta">'+ppEsc(it.no)+' · '+ppEsc(it.dept)+'</span></div>'
+      : '<div class="pp-item" onclick="ppPickOrg(\''+k+'\',\''+ppEsc(it)+'\')"><span>'+ppEsc(it)+'</span></div>').join('');
+  }
+  box.innerHTML = html; box.classList.remove('hidden');
+}
+/* 部门多层级选择（REQ-010 AC-014）：无关键字时按树逐级展开，上级部门点击只展开 / 收起，末级部门点击选中；有关键字时只列匹配的末级部门，并用淡色文字显示上级路径 */
+function ppDeptHtml(k, q){
+  const open = PP[k].open;
+  if(q){
+    const hits = ppLeaves(HR_DATA.departmentTree, [], []).filter(x=>x.name.toLowerCase().includes(q));
+    if(!hits.length) return '<div class="pp-note">HR 系统中没有匹配的部门</div>';
+    return hits.map(x=>'<div class="pp-tree-row" onclick="ppPickOrg(\''+k+'\',\''+ppEsc(x.name)+'\')"><span class="pp-tname">'+ppEsc(x.name)+'</span>'+(x.path?'<span class="pp-path">'+ppEsc(x.path)+'</span>':'')+'</div>').join('');
+  }
+  if(!HR_DATA.departmentTree.length) return '<div class="pp-note">HR 系统中暂无部门</div>';
+  const walk = (nodes, depth)=>nodes.map(n=>{
+    const pad = 'style="padding-left:'+(10 + depth*16)+'px"';
+    if(n.children.length){
+      const isOpen = !!open[n.id];
+      return '<div class="pp-tree-row branch" '+pad+' onclick="ppToggleDept(\''+k+'\',\''+n.id+'\')"><span class="pp-arrow">'+(isOpen?'▾':'▸')+'</span><span class="pp-tname">'+ppEsc(n.name)+'</span></div>'
+        + (isOpen ? walk(n.children, depth+1) : '');
+    }
+    return '<div class="pp-tree-row" '+pad+' onclick="ppPickOrg(\''+k+'\',\''+ppEsc(n.name)+'\')"><span class="pp-arrow"></span><span class="pp-tname">'+ppEsc(n.name)+'</span></div>';
+  }).join('');
+  return walk(HR_DATA.departmentTree, 0);
+}
+function ppToggleDept(k, id){ PP[k].open[id] = !PP[k].open[id]; ppSearch(k,'org'); }
+function ppCloseResults(k, what){ document.getElementById('pp-'+k+'-'+what+'-res').classList.add('hidden'); }
+function ppErr(k, msg){ const e = document.getElementById('pp-'+k+'-emp-err'); e.textContent = msg||''; e.style.display = msg ? 'block' : 'none'; }
+function ppPickEmp(k, id){
+  const st = PP[k], emp = HR_DATA.employees.find(e=>e.id===id);
+  if(st.employees.some(e=>e.id===id)){ ppErr(k, '「'+emp.name+'」已选过，同一作品内不能重复选同一位'); return; }
+  if(PP_CFG[k].multi){
+    if(st.employees.length >= PP_CFG[k].max){ ppErr(k, '最多 '+PP_CFG[k].max+' 位作者'); return; }
+    st.employees.push(emp);                                         // 多位作者不自动带出所属（AC-004）
+  } else {
+    st.employees = [emp];
+    if(k === 'reg') ppFillContact(emp);
+    st.org = {kind:'department', name:emp.dept};                    // 单个人：所属默认带出 HR 部门，可改选、可清空（AC-004）
+    st.orgKind = 'department'; ppSyncKind(k);
+  }
+  ppErr(k, '');
+  document.getElementById('pp-'+k+'-emp').value = ''; ppCloseResults(k,'emp'); ppRenderChips(k);
+}
+function ppRemoveEmp(k, id){ PP[k].employees = PP[k].employees.filter(e=>e.id!==id); if(k==='reg') ppClearAutoContact(); ppErr(k,''); ppRenderChips(k); }
+/* 代报名：选中员工后，HR 里的联系电话、邮箱自动带出，行政可直接修改；换人 / 移除 / 切换类型时，只清掉仍是带出且没改过的值 */
+function ppClearAutoContact(){
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  if(regAuto.phone && ph.value === regAuto.phone) ph.value = '';
+  if(regAuto.email && em.value === regAuto.email) em.value = '';
+  regAuto = {phone:'', email:''};
+}
+function ppFillContact(emp){
+  ppClearAutoContact();
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  if(!ph.value && emp.phone){ ph.value = emp.phone; regAuto.phone = emp.phone; }
+  if(!em.value && emp.email){ em.value = emp.email; regAuto.email = emp.email; }
+}
+function ppOrgKind(k, kind){ PP[k].orgKind = kind; ppSyncKind(k); document.getElementById('pp-'+k+'-org').value=''; ppSearch(k,'org'); }
+function ppSyncKind(k){
+  const kind = PP[k].orgKind;
+  document.getElementById('pp-'+k+'-kd').classList.toggle('selected', kind==='department');
+  document.getElementById('pp-'+k+'-kp').classList.toggle('selected', kind==='project');
+  document.getElementById('pp-'+k+'-org').placeholder = kind==='department' ? '搜索 HR 里的部门（只能选末级部门）' : '搜索 HR 里的项目（只含有效项目）';
+}
+function ppPickOrg(k, name){ PP[k].org = {kind:PP[k].orgKind, name}; document.getElementById('pp-'+k+'-org').value=''; ppCloseResults(k,'org'); ppRenderChips(k); }   // 部门和项目只能有一个（AC-003）
+function ppClearOrg(k){ PP[k].org = null; ppRenderChips(k); }
+function ppDemo(state){
+  hrState = state;
+  Object.keys(PP).forEach(k=>['emp','org'].forEach(w=>{ const r = document.getElementById('pp-'+k+'-'+w+'-res'); if(r && !r.classList.contains('hidden')) ppSearch(k,w); }));
+  if(state !== 'normal') Object.keys(PP).forEach(k=>{ const i = document.getElementById('pp-'+k+'-emp'); if(i && i.offsetParent) ppSearch(k,'emp'); });
+}
+document.addEventListener('click', e=>{ if(!document.body.contains(e.target)) return;   // 点的是刚重新渲染掉的树节点，不算点在外面
+  if(!e.target.closest('.pp-box')) document.querySelectorAll('.pp-results').forEach(r=>r.classList.add('hidden')); });
+function ppSwitch(k, type, btn){      // 切换类型：清空另一种类型已填的内容（AC-006）
+  selectScope(btn);
+  ppSetType(k, type);
+}
+function ppSetType(k, type, keepValues){
+  const st = PP[k];
+  if(!keepValues && st.type !== type){
+    st.employees = []; st.org = null; ppErr(k,''); ppRenderChips(k);
+    if(k==='reg') ppClearAutoContact();
+    const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept'], wall:['adminWallName','adminWallOrg'], wedit:['editWallName','editWallOrg']}[k];
+    ext.forEach(id=>document.getElementById(id).value = '');
+    if(k==='sub') updateAuthorHint();
+  }
+  st.type = type;
+  document.getElementById(k+'-int').classList.toggle('hidden', type!=='internal');
+  document.getElementById(k+'-ext').classList.toggle('hidden', type!=='external');
+}
+function ppSelectToggle(k, type){        // 按类型把对应的"内部员工 / 外部人士"按钮置为选中
+  const holder = {sub:'#sub-int', reg:'#reg-int', wall:'#wall-int', wedit:'#wedit-int'}[k];
+  const toggle = document.querySelector(holder).previousElementSibling.querySelector('.scope-toggle') || document.getElementById('editWallTypeToggle');
+  const btns = toggle.querySelectorAll('.scope-btn');
+  btns.forEach((b,i)=>b.classList.toggle('selected', (i===0) === (type==='internal')));
+}
+/* 取值：内部员工 → HR 员工姓名 + 所选部门 / 项目名称；外部人士 → 手填 */
+function ppValue(k){
+  const st = PP[k];
+  if(st.type === 'internal') return {type:'internal', names:st.employees.map(e=>e.name), org: st.org ? st.org.name : ''};
+  const nameId = {sub:'subAuthorName', reg:'manualRegName', wall:'adminWallName', wedit:'editWallName'}[k];
+  const orgId = {sub:'subExtOrg', reg:'manualRegDept', wall:'adminWallOrg', wedit:'editWallOrg'}[k];
+  return {type:'external', names:[document.getElementById(nameId).value.trim()], org:document.getElementById(orgId).value.trim()};
+}
+function ppReset(k){
+  const st = PP[k]; st.employees = []; st.org = null; st.orgKind = 'department'; ppSyncKind(k); ppErr(k,''); ppRenderChips(k);
+  if(k==='reg') regAuto = {phone:'', email:''};
+  const def = (k==='wall'||k==='wedit') ? 'external' : 'internal';
+  ppSetType(k, def, true); ppSelectToggle(k, def);
+}
 function parseAuthors(raw){
   const names = [], errors = [];
   if(/[、;；]/.test(raw)) errors.push('请只用逗号“,”分隔姓名，不要使用顿号或分号');
@@ -2908,17 +3139,22 @@ function resetSubForm(){
   document.getElementById('subDesc').value = ''; updateSubDescCount();
   subImages = []; subVideo = null; subEditingId = null;
   subShow('subImgError',''); subShow('subVideoError','');
-  document.getElementById('subAuthorName').value = ''; updateAuthorHint();
+  document.getElementById('subAuthorName').value = ''; document.getElementById('subExtOrg').value = ''; updateAuthorHint();
+  ppReset('sub');
   document.getElementById('subPanelTitle').textContent = '上传作品';
   document.getElementById('subSubmitBtn').textContent = '上传作品';
   renderSubImages(); renderSubVideo();
 }
 function submitSubmission(){
   if(!subImages.length){ subShow('subImgError', subVideo ? '只有视频不能上传作品，请至少添加 1 张作品图片' : '请至少上传 1 张作品图片'); document.getElementById('subImgList').scrollIntoView({behavior:'smooth', block:'center'}); return; }
-  const authors = parseAuthors(document.getElementById('subAuthorName').value);
-  if(!authors.names.length || authors.errors.length){
-    subShow('subNameError', authors.errors.length ? authors.errors.join('；') : '请至少输入 1 位作者姓名');
-    document.getElementById('subAuthorName').scrollIntoView({behavior:'smooth', block:'center'}); return;
+  if(PP.sub.type === 'internal'){               // 内部员工：必须从 HR 选择 1–10 位（REQ-010 AC-002、REQ-003 AC-023）
+    if(!PP.sub.employees.length){ ppErr('sub','请从 HR 里至少选择 1 位作者'); document.getElementById('pp-sub-emp').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  } else {
+    const authors = parseAuthors(document.getElementById('subAuthorName').value);
+    if(!authors.names.length || authors.errors.length){
+      subShow('subNameError', authors.errors.length ? authors.errors.join('；') : '请至少输入 1 位作者姓名');
+      document.getElementById('subAuthorName').scrollIntoView({behavior:'smooth', block:'center'}); return;
+    }
   }
   if(subDescLen() > SUB_DESC_MAX){ updateSubDescCount(); document.getElementById('subDesc').scrollIntoView({behavior:'smooth', block:'center'}); return; }
   alert(subEditingId ? '原型演示：保存修改，状态与票数不变' : '原型演示：将新建一条 Submission 记录，状态为未发布');
@@ -2932,7 +3168,17 @@ function editSubmission(cardId){
   const n = +card.dataset.images;
   for(let i=1; i<=n; i++) subImages.push({id:'M'+(++subSeq), name:'作品图-'+i+'.jpg', size:1.2*1048576, status:'done'});
   if(card.dataset.video === '1') subVideo = {name:'创作过程.mp4', size:48*1048576, status:'done'};
-  document.getElementById('subAuthorName').value = card.querySelector('.submission-author').textContent; updateAuthorHint();
+  const subLine = card.querySelector('.submission-sub').textContent.split(' · ');       // "所属 · 类型"
+  const isInternal = subLine[1] === '内部员工';
+  if(isInternal){
+    PP.sub.employees = card.querySelector('.submission-author').textContent.split(/,\s*/).map(n=>HR_DATA.employees.find(e=>e.name===n)).filter(Boolean);
+    PP.sub.org = HR_DATA.department.includes(subLine[0]) ? {kind:'department', name:subLine[0]} : (HR_DATA.project.includes(subLine[0]) ? {kind:'project', name:subLine[0]} : null);
+    ppSetType('sub','internal',true); ppSelectToggle('sub','internal'); ppRenderChips('sub');
+  } else {
+    ppSetType('sub','external',true); ppSelectToggle('sub','external');
+    document.getElementById('subAuthorName').value = card.querySelector('.submission-author').textContent; updateAuthorHint();
+    document.getElementById('subExtOrg').value = subLine[0];
+  }
   document.getElementById('subDesc').value = (card.querySelector('.submission-desc')||{}).textContent || ''; updateSubDescCount();
   document.getElementById('subPanelTitle').textContent = '编辑作品 · ' + card.querySelector('.submission-author').textContent + '（状态与票数不变）';
   document.getElementById('subSubmitBtn').textContent = '保存修改';
@@ -2997,6 +3243,7 @@ function sortByCreatedDesc(container, itemSelector){
   items.sort((x,y)=>(y.dataset.created||'').localeCompare(x.dataset.created||''));   // 同一时间保持原有先后
   items.forEach(el=>container.appendChild(el));
 }
+ppInit();
 sortByCreatedDesc(document.querySelector('#listView .activity-table tbody'), 'tr');
 sortByCreatedDesc(document.getElementById('submissionGrid'), '.submission-card');
 sortByCreatedDesc(document.getElementById('regTableBody'), 'tr');
@@ -3161,10 +3408,11 @@ function copyRegCode(){
 }
 function isValidEmail(v){ return v.length <= 100 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }   // REQ-004 §8：含 @ 与域名，≤100 个字符
 function submitManualRegistration(){
-  const name = document.getElementById('manualRegName').value.trim();
-  const dept = document.getElementById('manualRegDept').value.trim();
+  const who = ppValue('reg');                     // 内部员工：HR 员工 + 所属（部门或项目）；外部人士：手填（REQ-010、REQ-004 AC-025）
+  const name = who.names[0] || '';
+  const dept = who.org;
   if(!name){
-    alert('请填写姓名');
+    alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写姓名');
     return;
   }
   const phone = document.getElementById('manualRegPhone').value.trim();
@@ -3203,6 +3451,7 @@ function submitManualRegistration(){
   document.getElementById('manualRegDept').value = '';
   document.getElementById('manualRegPhone').value = '';
   document.getElementById('manualRegEmail').value = '';
+  ppReset('reg');
   document.getElementById('manualRegPanel').classList.add('hidden');
   updateRegCapacityUI();
 }
@@ -3353,9 +3602,19 @@ function openWallEdit(id){
   document.getElementById('wallEditAuthorFixed').textContent = '作者：' + name + ' · ' + row.querySelector('.wall-meta').textContent + '（员工自主提交，作者身份和匿名选项不可修改）';
   document.getElementById('wallEditAuthorFields').style.display = fixed ? 'none' : 'block';
   if(!fixed){
-    document.getElementById('editWallName').value = name;
-    document.getElementById('editWallOrg').value = row.querySelector('.wall-meta').textContent.split(' · ')[0];
-    document.getElementById('editWallType').value = row.dataset.authorType || 'external';
+    const orgText = row.querySelector('.wall-meta').textContent.split(' · ')[0];
+    const type = row.dataset.authorType || 'external';
+    ppReset('wedit');
+    if(type === 'internal'){
+      const emp = HR_DATA.employees.find(e=>e.name===name);
+      PP.wedit.employees = emp ? [emp] : [];
+      PP.wedit.org = HR_DATA.department.includes(orgText) ? {kind:'department', name:orgText} : (HR_DATA.project.includes(orgText) ? {kind:'project', name:orgText} : null);
+      ppSetType('wedit','internal',true); ppSelectToggle('wedit','internal'); ppRenderChips('wedit');
+    } else {
+      ppSetType('wedit','external',true); ppSelectToggle('wedit','external');
+      document.getElementById('editWallName').value = name;
+      document.getElementById('editWallOrg').value = orgText;
+    }
   }
   document.getElementById('editWallContent').value = row.querySelector('.wall-quote').textContent;
   WALL_IMG.edit = row.querySelector('.wall-image') ? {name:'已上传的配图.jpg', size:1.2*1048576, status:'done'} : null;   // 历史留言可能没有配图
@@ -3374,12 +3633,11 @@ function saveWallEdit(){
     row.querySelector('.wall-quote').before(img);
   }
   if(wallAdminEntered(row)){
-    const name = document.getElementById('editWallName').value.trim();
-    if(!name){ alert('请填写作者姓名'); return; }
-    row.querySelector('.wall-name').textContent = name;
-    const org = document.getElementById('editWallOrg').value.trim();
-    row.querySelector('.wall-meta').textContent = (org ? org + ' · ' : '') + '行政代录入';
-    row.dataset.authorType = document.getElementById('editWallType').value;
+    const who = ppValue('wedit');
+    if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
+    row.querySelector('.wall-name').textContent = who.names[0];
+    row.querySelector('.wall-meta').textContent = (who.org ? who.org + ' · ' : '') + '行政代录入';
+    row.dataset.authorType = who.type;
   }
   const now = new Date(), pad = n => String(n).padStart(2,'0');
   const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
@@ -3573,13 +3831,14 @@ function wallImageReady(which){
   return true;
 }
 function submitWallAdmin(){
-  const name = document.getElementById('adminWallName').value.trim();
+  const who = ppValue('wall');                   // REQ-010、REQ-005 AC-017
   const content = document.getElementById('adminWallContent').value.trim();
-  if(!name){ alert('请填写作者姓名'); return; }
+  if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('admin')) return;                     // AC-008：配图必填
   alert('原型演示：将新建一条留言记录，状态为待审核');
-  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallContent').value = '';
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallContent').value = '';
+  ppReset('wall');
   wallRemove('admin');
 }
 
