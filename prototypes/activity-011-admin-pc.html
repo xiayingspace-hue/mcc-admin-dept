@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>活动详情页 · REQ-001 / REQ-011 原型</title>
+<!--
+  活动详情页（admin · pc）—— 活动详情的唯一原型：基础信息、附件、审批进度、审批 / 撤回操作（REQ-001），
+  以及已发布后的模块配置、修改记录、编辑模块配置（REQ-011）都在这里，活动列表的「查看详情」全部跳到本页。
+  入口：activity-001-admin-pc.html 的列表 / 待办通知 / 创建流程提交审批后，带 ?case=…&viewer=… 跳转过来（参数见 activity-011-admin-pc.js）。
+
+  文件拆分：
+    本文件                                页面结构（只填内容）
+    _shared/tokens.css、proto.css         样式（本页用到的新组件已补进 proto.css，这里不写样式）
+    _shared/proto.js                      页面跳转 / 状态切换 / 标注 / 弹窗 / Toast
+    activity-011-admin-pc.data.js         演示数据与常量（字段名、枚举取自 API-activity-001 / 011 / module-002）
+    activity-011-admin-pc.approval.js     基础信息、附件、审批进度、审批与撤回
+    activity-011-admin-pc.modules.js      模块配置、修改记录、编辑模块配置
+    activity-011-admin-pc.js              入口：读 URL 参数、载入数据、演示条
+  右下角控制台可切换各区块的状态；页面里的演示条可切换活动状态 / 账号 / 查看者视角、模拟保存失败。
+-->
+<link rel="stylesheet" href="_shared/tokens.css">
+<link rel="stylesheet" href="_shared/proto.css">
+</head>
+<body>
+<div class="p-shell">
+
+  <aside class="p-sidebar">
+    <div class="p-brand"><span class="p-brand-mark"></span>活动运营后台</div>
+    <div class="p-nav-label">工作台</div>
+    <a class="p-nav-item active" href="activity-001-admin-pc.html">活动管理</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">模块库</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">Celebrations 管理</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">作品管理</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">报名管理</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">寄语墙管理</a>
+    <a class="p-nav-item" href="activity-001-admin-pc.html">数据统计</a>
+  </aside>
+
+  <div class="p-main">
+    <header class="p-topbar">
+      <div>活动管理 / <b id="p-crumb">活动详情</b></div>
+    </header>
+
+    <main class="p-content">
+      <div class="p-panel wide">
+
+        <!-- ============ 页面 1：活动详情（审批中 / 已驳回 / 已发布 / 已结束） ============ -->
+        <section class="p-screen p-active" id="detail" data-title="活动详情">
+          <a class="p-btn p-back" href="activity-001-admin-pc.html">‹ 返回活动列表</a>
+
+          <div class="p-header-row">
+            <h1 class="p-title" id="detailTitle"></h1>
+            <span class="p-badge" id="detailBadge"></span>
+          </div>
+          <p class="p-meta" id="detailMeta"></p>
+
+          <div class="p-demo-bar">
+            <span>原型演示：</span>
+            <span>活动状态</span>
+            <button class="p-link" onclick="Detail.load('review')">审批中</button>
+            <button class="p-link" onclick="Detail.load('rejected')">已驳回</button>
+            <button class="p-link" onclick="Detail.load('published')">已发布</button>
+            <button class="p-link" onclick="Detail.load('ended')">已结束（含已下线）</button>
+            <span>账号</span>
+            <button class="p-link" onclick="Detail.set('account','admin')">行政</button>
+            <button class="p-link" onclick="Detail.set('account','other')">非行政</button>
+            <span>查看者视角</span>
+            <button class="p-link" onclick="Detail.set('viewer','initiator')">发起人</button>
+            <button class="p-link" onclick="Detail.set('viewer','viewer')">只读访客</button>
+            <button class="p-link" onclick="Detail.set('viewer','approver')">审批人（统一待办进入）</button>
+          </div>
+
+          <!-- 基础信息 -->
+          <div class="p-card">
+            <div class="p-section-hint">活动信息（审批中、已发布及之后只读）
+              <span class="anno" data-note="REQ-011 AC-002：已发布后，标题、时间、地点、预算、简介、封面图、附件、布局模板、审批人都不可编辑，只有模块配置可以改">1</span>
+            </div>
+            <div class="p-cover">封面图预览</div>
+            <div class="p-kv" id="infoKv"></div>
+            <div class="p-hidden" id="visEdit">
+              <div class="p-scope" id="visOptions"></div>
+              <div class="p-demo-bar">
+                <button class="p-link" onclick="Approval011.saveVisibility()">保存</button>
+                <button class="p-link muted" onclick="Approval011.cancelVisibility()">取消</button>
+                <span class="anno" data-note="REQ-001 AC-007：仅已发布 / 已结束显示「修改」；保存后字段立即更新，不产生审批记录、不改变活动状态。REQ-011 AC-013：与模块配置各自保存，互不影响">2</span>
+              </div>
+            </div>
+            <div class="p-desc">感谢<b>三十年</b>的陪伴与支持，本次活动将回顾公司发展历程并表彰优秀员工。</div>
+          </div>
+
+          <!-- 附件：五态 -->
+          <p class="p-section-title">附件
+            <span class="anno" data-note="REQ-001 AC-021：发起人与各节点审批人可查看、下载；没有附件显示「暂无附件」；员工 / 外部访客的活动页面不展示附件">3</span>
+          </p>
+          <div data-state-group="attach">
+            <div data-when="normal" id="attNormal"></div>
+            <div data-when="loading"><div class="p-skeleton"></div><div class="p-skeleton"></div></div>
+            <div data-when="empty" class="p-empty">暂无附件</div>
+            <div data-when="error" class="p-error">附件列表加载失败 <button class="p-link" onclick="ProtoConsole.setState('attach','normal')">重试</button></div>
+            <div data-when="noperm" class="p-noperm">无权限查看附件（仅发起人与审批人可见）</div>
+            <div data-when="overflow" id="attOverflow"></div>
+          </div>
+
+          <!-- 审批进度：normal / loading / empty / error / noperm / overflow 齐全；其中 empty、noperm 在需求里不适用，仅为占位 -->
+          <p class="p-section-title">审批进度
+            <span class="anno" data-note="REQ-001 AC-012：固定显示三个节点：提交、部门主管审批、第三节点审批；第三节点展示全部所选审批人及各自状态">4</span>
+          </p>
+          <p class="p-section-hint">实时反映各节点的处理状态</p>
+          <div data-state-group="approval">
+            <div data-when="normal" id="apvNormal"></div>
+            <div data-when="loading"><div class="p-skeleton"></div><div class="p-skeleton"></div><div class="p-skeleton"></div></div>
+            <div data-when="empty" class="p-empty">暂无审批进度（活动尚未提交审批）<br>占位：需求里固定三个节点，该状态不适用</div>
+            <div data-when="error" class="p-error">审批进度加载失败 <button class="p-link" onclick="ProtoConsole.setState('approval','normal')">重试</button></div>
+            <div data-when="noperm" class="p-noperm">无权限查看审批进度<br>占位：非发起人非审批人按只读访客展示，该状态不适用（REQ-001 AC-008）</div>
+            <div data-when="overflow" id="apvOverflow"></div>
+          </div>
+
+          <!-- 发起人视角：审批中可撤回 -->
+          <div class="p-actions p-hidden" id="initiatorActions">
+            <button class="p-btn danger-text" data-open="withdrawModal">撤回申请</button>
+            <span class="anno" data-note="REQ-001 AC-009：撤回需二次确认；确认后活动回到草稿，已通过节点的记录不保留，重新提交从第一个节点重走">5</span>
+          </div>
+          <div class="p-note p-hidden" id="rejectedActions">活动已被驳回，请修改后重新提交（重新提交时可重新选择第三节点审批人）。
+            <button class="p-link" data-toast="原型演示：回到创建流程，修改后重新提交">修改后重新提交</button></div>
+
+          <!-- 审批人视角：从统一待办进入，处理自己的那一条 -->
+          <div class="p-hidden" id="approverActions">
+            <p class="p-section-title">我的审批（第三节点审批）
+              <span class="anno" data-note="REQ-001 AC-008：由统一待办进入且当前用户是待处理节点审批人时，展示通过 / 驳回 + 意见；驳回必须填意见（AC-004）">6</span>
+            </p>
+            <div class="p-field">
+              <label>审批意见（驳回时必填）</label>
+              <textarea id="approverComment" rows="2" placeholder="填写审批意见"></textarea>
+              <div class="p-field-error p-hidden" id="approverCommentErr">驳回需要填写审批意见</div>
+            </div>
+            <div class="p-actions end">
+              <button class="p-btn danger-text" onclick="Approval011.reject()">驳回</button>
+              <button class="p-btn primary" onclick="Approval011.approve()">通过</button>
+            </div>
+          </div>
+          <p class="p-note p-hidden" id="actionDoneMsg"></p>
+          <div class="p-demo-bar p-hidden" id="demoOthers">
+            <span>原型演示：</span><button class="p-link" onclick="Approval011.othersApprove()">其余审批人全部通过</button>
+          </div>
+
+          <!-- 模块配置摘要 + 编辑入口（REQ-011） -->
+          <p class="p-section-title">模块配置
+            <span class="anno" data-note="REQ-011 AC-001：仅「已发布」且当前账号是行政时显示「编辑模块配置」入口；草稿 / 已驳回 / 审批中 / 已结束不显示；列表操作列不新增入口（activity-001 AC-005）。AC-015：任一行政都可以，不限发起人">7</span>
+          </p>
+          <p class="p-section-hint">用户页面上各板块的显示配置。活动发布后，只有这一部分可以修改，保存即生效，不需要审批</p>
+          <div class="p-module-list" id="cfgList"></div>
+          <div id="editEntry">
+            <button class="p-btn primary" onclick="Proto011.openAdjust()">编辑模块配置</button>
+          </div>
+          <p class="p-note" id="apiHint"></p>
+
+          <!-- 修改记录：五态（REQ-011） -->
+          <div id="logSection">
+            <p class="p-section-title">修改记录
+              <span class="anno" data-note="REQ-011 AC-016：只读，倒序，分页；发起人视角与只读访客视角显示，审批人视角不显示（AC-021）；活动下线后仍可查看（AC-018）">8</span>
+            </p>
+            <p class="p-section-hint">活动发布后每次模块配置修改的记录，最新的在最前，只读</p>
+            <div data-state-group="log">
+              <div data-when="normal" id="logNormal"></div>
+              <div data-when="loading">
+                <div class="p-skeleton"></div><div class="p-skeleton"></div><div class="p-skeleton"></div>
+              </div>
+              <div data-when="empty" class="p-empty">暂无修改记录</div>
+              <div data-when="error" class="p-error">修改记录加载失败 <button class="p-link" onclick="ProtoConsole.setState('log','normal')">重试</button></div>
+              <div data-when="noperm" class="p-noperm">审批人视角：整个「修改记录」区块不渲染，接口返回 error=forbidden_viewer
+                <span class="anno" data-note="REQ-011 AC-021：审批人从统一待办进入详情页时，不显示修改记录区块，后端也不返回记录">9</span></div>
+              <div data-when="overflow" id="logOverflow"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 页面 2：编辑模块配置（仅已发布） ============ -->
+        <section class="p-screen" id="adjust" data-title="编辑模块配置">
+          <h1 class="p-title">编辑模块配置</h1>
+          <p class="p-subtitle">活动已发布，保存后立即对用户页面生效，不需要审批；标题、时间、简介等其他信息不能在这里修改
+            <span class="anno" data-note="REQ-011 AC-003：保存成功后活动仍是已发布，不产生审批记录，不触发统一待办。AC-022：不通知正在浏览的用户或已报名的员工">1</span>
+          </p>
+
+          <div data-state-group="adjust">
+            <div data-when="normal">
+              <div id="adjBanner"></div>
+              <div class="p-module-list" id="adjList"></div>
+              <div class="p-diff" id="adjDiff"></div>
+              <div class="p-actions end">
+                <button class="p-btn" data-goto="detail">取消</button>
+                <button class="p-btn primary" onclick="Proto011.save()">保存</button>
+              </div>
+            </div>
+            <div data-when="loading">
+              <div class="p-skeleton"></div><div class="p-skeleton"></div><div class="p-skeleton"></div><div class="p-skeleton"></div>
+            </div>
+            <div data-when="empty" class="p-empty">没有可配置的模块<br>占位：四类活动模块是固定枚举，全部停用也只是开关关闭，该状态不适用</div>
+            <div data-when="noperm" class="p-noperm"><span id="adjNopermMsg">你没有权限修改这个活动的模块配置（仅行政可以，且活动需处于已发布状态）</span><br>
+              <button class="p-btn" data-goto="detail">返回活动详情</button>
+              <span class="anno" data-note="REQ-011 AC-006：非行政看不到入口，直接访问或调用保存接口被拒绝（no_permission）">2</span></div>
+            <div data-when="error" class="p-error">活动已结束，无法修改（activity_not_published）<br>
+              <button class="p-btn" data-goto="detail">返回活动详情</button>
+              <span class="anno" data-note="REQ-011 AC-005：活动不是已发布（含编辑期间被下线）时，保存被后端拒绝">3</span></div>
+            <div data-when="overflow" id="adjOverflow"></div>
+          </div>
+
+          <div class="p-demo-bar">
+            <span>原型演示：点「保存」时模拟</span>
+            <button class="p-link" onclick="Proto011.setFail('')">成功</button>
+            <button class="p-link" onclick="Proto011.setFail('conflict')">版本冲突</button>
+            <button class="p-link" onclick="Proto011.setFail('ended')">活动已被下线</button>
+            <button class="p-link" onclick="Proto011.setFail('fail')">保存失败</button>
+            <button class="p-link" onclick="Proto011.setFail('log_write_failed')">记录写入失败</button>
+            <span id="failHint"></span>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- 撤回申请二次确认 -->
+<div class="p-modal-overlay" id="withdrawModal">
+  <div class="p-modal">
+    <p class="p-section-title">撤回申请？</p>
+    <p class="p-section-hint">撤回后活动回到草稿，已通过节点的审批记录不会保留，重新提交需从第一个节点重新审批。这个操作不可逆。</p>
+    <div class="p-actions end">
+      <button class="p-btn" data-close>再想想</button>
+      <button class="p-btn danger-text" data-close onclick="Approval011.withdraw()">确认撤回</button>
+    </div>
+  </div>
+</div>
+
+<script src="_shared/proto.js"></script>
+<script src="activity-011-admin-pc.data.js"></script>
+<script src="activity-011-admin-pc.approval.js"></script>
+<script src="activity-011-admin-pc.modules.js"></script>
+<script src="activity-011-admin-pc.js"></script>
+</body>
+</html>

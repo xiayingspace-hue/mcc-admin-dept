@@ -133,15 +133,6 @@
   .section-title{font-size:13px; font-weight:500; margin:0 0 4px}
   .section-hint{font-size:12px; color:var(--text-muted); margin:0 0 14px}
 
-  .approval-timeline{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; margin-bottom:24px; background:var(--surface)}
-  .approval-step-row{display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:0.5px solid var(--border)}
-  .approval-step-row:last-child{border-bottom:none}
-  .approval-num{width:26px;height:26px;border-radius:50%;background:var(--border); color:var(--text-secondary); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0}
-  .approval-info{flex:1}
-  .approval-title{font-size:13.5px; font-weight:500}
-  .approval-sub{font-size:12px; color:var(--text-secondary); margin-top:2px}
-  .approval-status{font-size:11px; padding:3px 9px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
-  .approval-status.conditional{background:var(--interactive-tint); color:var(--interactive)}
 
   .actions{display:flex; justify-content:space-between; margin-top:32px; padding-top:20px; border-top:0.5px solid var(--border)}
 
@@ -150,18 +141,8 @@
   .status-badge.approved{background:#E4F0E8; color:#2F6B45}
   .status-badge.rejected{background:#F6E4E2; color:var(--danger)}
 
-  .detail-header{display:flex; align-items:center; gap:10px; margin-bottom:6px}
-  .detail-meta{font-size:12px; color:var(--text-muted); margin:0 0 28px}
 
-  .approval-num.done{background:var(--accent); color:#fff}
-  .approval-num.current{background:#fff; border:2px solid var(--accent); color:var(--accent)}
-  .approval-status.done{background:#E4F0E8; color:#2F6B45}
-  .approval-status.current{background:var(--accent); color:#fff}
-  .approval-comment{font-size:12px; color:var(--text-secondary); margin-top:8px; padding:9px 11px; background:var(--bg); border-radius:6px; line-height:1.5}
 
-  .approval-num.rejected{background:var(--danger); color:#fff}
-  .approval-status.rejected{background:#F6E4E2; color:var(--danger)}
-  .approval-assignees{margin-top:8px; display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto}
   .assignee-row{display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-secondary); padding:7px 10px; background:var(--bg); border-radius:6px}
   .assignee-main{flex:1; min-width:0; overflow-wrap:anywhere}
   .assignee-name{color:var(--text-primary)}
@@ -366,17 +347,6 @@
   .u-section{padding:44px 40px; background:var(--u-ivory)}
   .u-section.alt{background:#fff}
   .u-section-title{font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 22px; text-align:center}
-  .u-ceo{display:flex; gap:20px; align-items:flex-start; max-width:560px; margin:0 auto}
-  .u-ceo-avatar{width:60px;height:60px;border-radius:50%; background:var(--u-gold-tint); flex-shrink:0; display:flex;align-items:center;justify-content:center; font-size:22px; color:var(--u-gold)}
-  .u-ceo-quote{font-size:14px; line-height:1.9; color:var(--u-text)}
-  .u-ceo-name{margin-top:14px; font-size:12.5px; color:var(--u-text-muted)}
-  .u-timeline{max-width:560px; margin:0 auto}
-  .u-tl-item{display:flex; gap:18px; padding-bottom:26px; position:relative}
-  .u-tl-item:not(:last-child)::before{content:'';position:absolute; left:22px; top:46px; bottom:0; width:1px; background:var(--u-gold-tint)}
-  .u-tl-year{width:46px;height:46px;border-radius:50%; background:var(--u-navy); color:#fff; font-size:11.5px; font-weight:600; display:flex;align-items:center;justify-content:center; flex-shrink:0}
-  .u-tl-body{padding-top:6px}
-  .u-tl-title{font-size:13.5px; font-weight:600; color:var(--u-text); margin-bottom:4px}
-  .u-tl-desc{font-size:12.5px; color:var(--u-text-muted); line-height:1.7}
   .u-vote-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:640px; margin:0 auto}
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
   .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
@@ -558,7 +528,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-created="2026-09-28 10:05" onclick="viewActivity()">
+              <tr data-created="2026-09-28 10:05" onclick="viewActivity('review')">
                 <td class="title-cell">公司30周年庆典</td>
                 <td>周年庆</td>
                 <td><span class="status-badge review">审批中</span></td>
@@ -567,11 +537,11 @@
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('review')">查看详情</button>
                   </div>
                 </td>
               </tr>
-              <tr data-created="2026-09-25 16:40" onclick="viewActivity()" id="row-annual">
+              <tr data-created="2026-09-25 16:40" onclick="viewActivity('published')" id="row-annual">
                 <td class="title-cell">2026年会</td>
                 <td>年会</td>
                 <td><span class="status-badge approved">已发布</span></td>
@@ -580,12 +550,12 @@
                 <td>王芳</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('published')">查看详情</button>
                     <button class="action-link muted" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)">下线</button>
                   </div>
                 </td>
               </tr>
-              <tr data-created="2026-09-18 09:30" onclick="viewActivity()">
+              <tr data-created="2026-09-18 09:30" onclick="viewActivity('ended')">
                 <td class="title-cell">Q3部门团建</td>
                 <td>团建</td>
                 <td><span class="status-badge ended">已结束</span></td>
@@ -594,7 +564,7 @@
                 <td>李强</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('ended')">查看详情</button>
                   </div>
                 </td>
               </tr>
@@ -621,7 +591,7 @@
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('rejected')">查看详情</button>
                     <button class="action-link muted" onclick="event.stopPropagation(); showEditor()">编辑</button>
                   </div>
                 </td>
@@ -774,29 +744,7 @@
             <div class="module-row">
               <div class="module-head">
                 <span class="grip">&#8942;&#8942;</span>
-                <div style="flex:1"><span class="module-name">CEO 致辞</span><span class="badge content">内容型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
-              </div>
-              <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-              </div>
-            </div>
-
-            <div class="module-row">
-              <div class="module-head">
-                <span class="grip">&#8942;&#8942;</span>
-                <div style="flex:1"><span class="module-name">历史时间轴</span><span class="badge content">内容型</span></div>
-                <label class="toggle"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
-              </div>
-              <div class="module-config">
-                <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-              </div>
-            </div>
-
-            <div class="module-row">
-              <div class="module-head">
-                <span class="grip">&#8942;&#8942;</span>
-                <div style="flex:1"><span class="module-name off">周年博客列表</span><span class="badge content">内容型</span></div>
+                <div style="flex:1"><span class="module-name off">Celebrations</span><span class="badge content">内容型</span></div>
                 <label class="toggle"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
               </div>
               <div class="module-config">
@@ -879,88 +827,7 @@
           </div>
         </div>
 
-        <!-- Step 4: post-submission status -->
-        <div id="panel4" class="hidden">
-          <div class="detail-header">
-            <h1 style="margin:0">公司30周年庆典</h1>
-            <span class="status-badge review" id="approvalHeaderBadge">审批中</span>
-          </div>
-          <p class="detail-meta">由 XY 提交于 2026-09-14 10:32</p>
-
-          <div class="summary-card">
-            <div class="summary-card-title">活动信息</div>
-            <div class="summary-cover">封面图预览</div>
-            <div class="summary-grid">
-              <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
-              <div class="summary-item"><label>计划举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
-              <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
-              <div class="summary-item"><label>预算</label><div class="val">S$68,000</div></div>
-              <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
-              <div class="summary-item">
-                <label>外部可见性</label>
-                <div class="val" id="extVisibilityDisplay">对外部人员开放
-                  <button class="action-link" style="margin-left:6px; font-size:11px" onclick="editExternalVisibility()">修改</button>
-                </div>
-                <div class="hidden" id="extVisibilityEdit" style="margin-top:6px">
-                  <div class="scope-toggle">
-                    <button class="scope-btn" onclick="selectScope(this)">仅内部可见</button>
-                    <button class="scope-btn selected" onclick="selectScope(this)">对外部人员开放</button>
-                  </div>
-                  <div style="margin-top:8px; display:flex; gap:10px">
-                    <button class="action-link" onclick="saveExternalVisibility()">保存</button>
-                    <button class="action-link muted" onclick="cancelExternalVisibilityEdit()">取消</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="summary-desc">
-              <div class="summary-desc-label">活动简介</div>
-              <div class="summary-desc-content">感谢<strong>三十年</strong>的陪伴与支持，本次活动将回顾公司发展历程并表彰优秀员工。
-                <ul><li>时间：2026年11月20日 14:00 – 17:00</li><li>地点：总部三楼多功能厅</li></ul>
-              </div>
-            </div>
-          </div>
-            <div class="summary-attach">
-              <div class="summary-desc-label">附件</div>
-              <div class="attach-list-scroll" id="detailAttachList"></div>
-              <div class="picker-demo">
-                <span>原型演示：</span>
-                <button class="action-link" onclick="setDetailAttachState('normal')">正常</button>
-                <button class="action-link" onclick="setDetailAttachState('loading')">加载中</button>
-                <button class="action-link" onclick="setDetailAttachState('error')">加载失败</button>
-                <button class="action-link" onclick="setDetailAttachState('empty')">无附件</button>
-              </div>
-            </div>
-
-          <p class="section-title">审批进度</p>
-          <p class="section-hint">实时反映各节点的处理状态</p>
-          <div class="approval-timeline" id="approvalTimeline"></div>
-
-          <!-- Initiator view actions -->
-          <div class="actions" id="initiatorActions">
-            <button class="btn danger-text" onclick="alert('原型演示：撤回后活动将退回草稿状态')">撤回申请</button>
-          </div>
-
-          <!-- Approver view actions (shown when opened from 待办) -->
-          <div class="hidden" id="approverActions">
-            <p class="section-title">我的审批（第三节点审批）</p>
-            <div class="field">
-              <label>审批意见（驳回时必填）</label>
-              <textarea id="approverComment" rows="2" placeholder="填写审批意见"></textarea>
-            </div>
-            <div class="actions" style="border-top:none; margin-top:8px; padding-top:0">
-              <button class="btn danger-text" onclick="rejectCurrentStep()">驳回</button>
-              <button class="btn primary" onclick="approveCurrentStep()">通过</button>
-            </div>
-          </div>
-          <div class="hidden" id="approvalDoneMsg" style="font-size:12.5px; color:var(--text-secondary); padding:10px 0">
-            已提交处理结果。
-          </div>
-          <div class="hidden" id="demoOthersWrap" style="font-size:11.5px; color:var(--text-muted)">
-            原型演示：<button class="action-link" onclick="demoOthersApprove()">其余审批人全部通过</button>
-          </div>
-        </div>
-
+        <!-- 活动详情（审批进度 / 附件 / 模块配置 / 修改记录）已迁移到 activity-011-admin-pc.html，本文件不再保留 -->
         </div>
         <!-- /Editor view -->
 
@@ -975,47 +842,13 @@
 
           <div class="module-grid">
 
-            <div class="module-card" onclick="toggleUsage('u1')">
-              <div class="module-card-head"><div class="module-card-title">CEO 致辞</div><span class="badge content">内容型</span></div>
-              <p class="module-desc">活动首页展示领导致辞文案与头像，通常放在页面顶部，由行政直接编辑发布。</p>
-              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
-              <div class="module-attrs">
-                <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">致辞正文</span><span class="attr-type">富文本</span></div>
-                <div class="attr-row"><span class="attr-name">致辞人头像</span><span class="attr-type">图片</span></div>
-                <div class="attr-row"><span class="attr-name">致辞人署名</span><span class="attr-type">文本</span></div>
-              </div>
-              <div class="module-meta"><span>已被 3 个活动使用</span><span>查看使用记录 ›</span></div>
-              <div class="module-usage" id="u1">
-                <div>· 公司30周年庆典</div><div>· 2026年会</div><div>· 五周年庆典</div>
-              </div>
-            </div>
-
-            <div class="module-card" onclick="toggleUsage('u2')">
-              <div class="module-card-head"><div class="module-card-title">历史时间轴</div><span class="badge content">内容型</span></div>
-              <p class="module-desc">按时间顺序展示公司发展里程碑，每条支持配图与描述，适合周年庆类活动。</p>
-              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
-              <div class="module-attrs">
-                <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">时间轴条目（年份/标题/描述/配图）</span><span class="attr-type">列表</span></div>
-                <div class="attr-row"><span class="attr-name">条目排序</span><span class="attr-type">可拖拽</span></div>
-              </div>
-              <div class="module-meta"><span>已被 1 个活动使用</span><span>查看使用记录 ›</span></div>
-              <div class="module-usage" id="u2">
-                <div>· 公司30周年庆典</div>
-              </div>
-            </div>
-
             <div class="module-card" onclick="toggleUsage('u3')">
-              <div class="module-card-head"><div class="module-card-title">周年博客列表</div><span class="badge content">内容型</span></div>
+              <div class="module-card-head"><div class="module-card-title">Celebrations</div><span class="badge content">内容型</span></div>
               <p class="module-desc">展示与活动相关的长文章，如员工专访、活动纪实，行政统一编辑发布。</p>
               <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">关联文章（标题/封面/摘要/链接）</span><span class="attr-type">列表</span></div>
               </div>
               <div class="module-meta"><span>暂未被使用</span><span>查看使用记录 ›</span></div>
               <div class="module-usage" id="u3">
@@ -1032,7 +865,6 @@
                 <div class="attr-row"><span class="attr-name">在用户端展示（展示开关）</span><span class="attr-type">开关，默认关闭</span></div>
                 <div class="attr-row"><span class="attr-name">提交截止时间</span><span class="attr-type">日期时间（须晚于 Celebration 结束时间）</span></div>
                 <div class="attr-row"><span class="attr-name">投票截止时间</span><span class="attr-type">日期时间（须晚于提交截止时间）</span></div>
-                <div class="attr-row"><span class="attr-name">作品来源</span><span class="attr-type">行政上传</span></div>
               </div>
               <div class="module-meta"><span>已被 2 个活动使用</span><span>查看使用记录 ›</span></div>
               <div class="module-usage" id="u4">
@@ -1070,34 +902,6 @@
               <div class="module-meta"><span>已被 6 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
               <div class="module-usage" id="u6">
                 <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div><div>· 2026年会</div><div>· Q3部门团建</div><div>· 新人入职欢迎会</div><div>· 中秋福利活动</div>
-              </div>
-            </div>
-
-            <div class="module-card" onclick="toggleUsage('u7')">
-              <div class="module-card-head"><div class="module-card-title">文字描述</div><span class="badge content">内容型</span></div>
-              <p class="module-desc">富文本内容块，用于介绍某个 Celebration 的背景、亮点或流程说明。</p>
-              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
-              <div class="module-attrs">
-                <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">正文</span><span class="attr-type">富文本</span></div>
-              </div>
-              <div class="module-meta"><span>已被 3 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
-              <div class="module-usage" id="u7">
-                <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div><div>· Q3部门团建</div>
-              </div>
-            </div>
-
-            <div class="module-card" onclick="toggleUsage('u8')">
-              <div class="module-card-head"><div class="module-card-title">图片展示</div><span class="badge content">内容型</span></div>
-              <p class="module-desc">Celebration 现场照片相册，与封面图、涂鸦展示分开维护，不涉及投票。</p>
-              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
-              <div class="module-attrs">
-                <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">相册图片</span><span class="attr-type">图片（多张）</span></div>
-              </div>
-              <div class="module-meta"><span>已被 2 个 Celebration 使用</span><span>查看使用记录 ›</span></div>
-              <div class="module-usage" id="u8">
-                <div>· 公司30周年庆典 · 新加坡总部站</div><div>· 公司30周年庆典 · 北京分公司站</div>
               </div>
             </div>
 
@@ -1806,35 +1610,6 @@
               </div>
 
               <div class="u-section">
-                <p class="u-section-title">CEO 致辞</p>
-                <div class="u-ceo">
-                  <div class="u-ceo-avatar">👤</div>
-                  <div>
-                    <div class="u-ceo-quote">三十年前，几张桌子、一间办公室，是我们一切的开始。今天，感谢每一位同事的坚持与信任，让我们走到了这里。未来的路还很长，让我们继续一起走下去。</div>
-                    <div class="u-ceo-name">—— 创始人 兼 CEO</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="u-section alt">
-                <p class="u-section-title">历史时间轴</p>
-                <div class="u-timeline">
-                  <div class="u-tl-item">
-                    <div class="u-tl-year">1996</div>
-                    <div class="u-tl-body"><div class="u-tl-title">公司成立</div><div class="u-tl-desc">在一间小办公室里迈出第一步。</div></div>
-                  </div>
-                  <div class="u-tl-item">
-                    <div class="u-tl-year">2010</div>
-                    <div class="u-tl-body"><div class="u-tl-title">业务全国拓展</div><div class="u-tl-desc">团队规模突破百人，服务遍及全国。</div></div>
-                  </div>
-                  <div class="u-tl-item">
-                    <div class="u-tl-year">2026</div>
-                    <div class="u-tl-body"><div class="u-tl-title">三十周年</div><div class="u-tl-desc">感谢一路同行的每一个人。</div></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="u-section">
                 <p class="u-section-title">Celebrations</p>
                 <p style="text-align:center; margin:-14px 0 22px">
                   <button onclick="toggleCelebrationDemo()" style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px">演示：切换「上海分公司站」封面的开始前 / 开始后状态</button>
@@ -2290,17 +2065,16 @@ function validateStep1(){
   });
 });
 function goStep(n){
-  [1,2,3,4].forEach(i=>{
+  [1,2,3].forEach(i=>{
     document.getElementById('panel'+i).classList.toggle('hidden', i!==n);
   });
-  document.querySelector('.steps').classList.toggle('hidden', n===4);
   [1,2,3].forEach(i=>{
     const step = document.getElementById('step'+i);
     if(!step) return;
     step.classList.toggle('current', i===n);
-    step.classList.toggle('done', i<n || n===4);
+    step.classList.toggle('done', i<n);
   });
-  const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批',4:'审批进度'};
+  const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批'};
   document.getElementById('crumb').textContent = labels[n];
   if(n===3) renderConfirmAttach();
 }
@@ -2309,8 +2083,6 @@ const ATTACH_MAX = 10, ATTACH_MAX_BYTES = 20*1024*1024;
 const ATTACH_EXT = ['pdf','doc','docx','xls','xlsx','ppt','pptx','png','jpg','jpeg','gif'];
 let attachments = [];            // {id, name, size, status: uploading|done|fail}
 let attachSeq = 0;
-let detailAttachState = 'normal'; // normal | loading | error | empty
-let detailAttachData = [];
 function fmtSize(b){ return b>=1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
 function showAttachError(msg){
   const e = document.getElementById('attachError');
@@ -2385,13 +2157,6 @@ function attachDetailRows(list){
 function renderConfirmAttach(){
   document.getElementById('confirmAttachList').innerHTML = attachDetailRows(doneAttachments());
 }
-function renderDetailAttachments(){
-  const el = document.getElementById('detailAttachList');
-  if(detailAttachState==='loading') el.innerHTML = '<div class="picker-skel"></div><div class="picker-skel"></div>';
-  else if(detailAttachState==='error') el.innerHTML = '<div class="picker-state" style="padding:12px">附件列表加载失败 <button class="action-link" onclick="setDetailAttachState(\'normal\')">重试</button></div>';
-  else el.innerHTML = attachDetailRows(detailAttachState==='empty' ? [] : detailAttachData);
-}
-function setDetailAttachState(s){ detailAttachState = s; renderDetailAttachments(); }
 
 /* ---- 第三节点审批人选择（步骤三），数据形状对应 API-activity-001-admin：employee_id / name / employee_no ---- */
 const EMPLOYEES = [
@@ -2477,83 +2242,15 @@ function submitApproval(){
     document.getElementById('pickerChips').scrollIntoView({behavior:'smooth', block:'center'});
     return;
   }
-  openApproval({
-    deptStatus:'pending',
-    meId:null,
-    attachments: doneAttachments(),
-    assignees: thirdSelected.map(id=>({employee_id:id, status:'pending', comment:'', acted_at:''}))
-  }, 'initiator');
+  try{
+    sessionStorage.setItem('proto011_fresh', JSON.stringify({
+      assignee_ids: thirdSelected,
+      attachments: doneAttachments().map(a=>({name:a.name, size:a.size}))
+    }));
+  }catch(e){}
+  location.href = DETAIL_PAGE + '?fresh=1&viewer=initiator';
 }
 
-/* ---- 审批进度：固定三个节点（提交 / 部门主管审批 / 第三节点审批） ---- */
-let approvalData = null;
-const ASSIGNEE_ST = {pending:'待处理', approved:'已通过', rejected:'已驳回', revoked:'已撤销'};
-function demoApprovalData(){
-  return {
-    deptStatus:'approved',
-    meId:'E2047',
-    attachments:[
-      {name:'活动方案-30周年庆典.pdf', size:3.2*1048576, uploaded_at:'2026-09-14 10:20'},
-      {name:'预算明细.xlsx', size:860*1024, uploaded_at:'2026-09-14 10:24'},
-      {name:'场地平面图-总部三楼多功能厅-含消防通道标注与设备摆放位置说明-终版-v3.pptx', size:12.4*1048576, uploaded_at:'2026-09-14 10:30'}
-    ],
-    assignees:[
-      {employee_id:'E1023', status:'approved', comment:'同意，预算说明清楚。', acted_at:'2026-09-14 14:20'},
-      {employee_id:'E2047', status:'pending',  comment:'', acted_at:''},
-      {employee_id:'E1188', status:'pending',  comment:'', acted_at:''}
-    ]
-  };
-}
-function thirdNodeStatus(d){
-  if(d.assignees.some(a=>a.status==='rejected')) return 'rejected';
-  if(d.assignees.every(a=>a.status==='approved')) return 'approved';
-  return d.deptStatus==='approved' ? 'current' : 'waiting';
-}
-function approvalRow(numCls, numText, title, subHtml, stCls, stText, extraHtml){
-  return '<div class="approval-step-row"><div class="approval-num '+numCls+'">'+numText+'</div>'+
-    '<div class="approval-info"><div class="approval-title">'+title+'</div>'+subHtml+(extraHtml||'')+'</div>'+
-    '<div class="approval-status '+stCls+'">'+stText+'</div></div>';
-}
-function renderApproval(){
-  const d = approvalData;
-  const third = thirdNodeStatus(d);
-  let html = approvalRow('done','✓','提交','<div class="approval-sub">XY · 2026-09-14 10:32</div>','done','已提交');
-  html += d.deptStatus==='approved'
-    ? approvalRow('done','✓','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>','done','已通过',
-        '<div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>')
-    : approvalRow('current','2','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 待处理</div>','current','进行中');
-  const rows = d.assignees.map(a=>{
-    const e = empById(a.employee_id);
-    return '<div class="assignee-row"><div class="assignee-main"><span class="assignee-name">'+e.name+'</span><span class="assignee-no">工号 '+e.employee_no+'</span>'+
-      (a.employee_id===d.meId ? '<span class="assignee-me">我</span>' : '')+
-      (a.comment ? '<div class="assignee-note">'+a.comment+(a.acted_at?' · '+a.acted_at:'')+'</div>' : '')+'</div>'+
-      '<span class="assignee-st '+a.status+'">'+ASSIGNEE_ST[a.status]+'</span></div>';
-  }).join('');
-  const done = d.assignees.filter(a=>a.status==='approved').length;
-  const numCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : '';
-  const numTxt = third==='approved' ? '✓' : third==='rejected' ? '✕' : '3';
-  const stCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : 'conditional';
-  const stTxt = third==='approved' ? '已通过' : third==='rejected' ? '已驳回' : third==='current' ? '进行中 '+done+'/'+d.assignees.length : '待处理';
-  html += approvalRow(numCls, numTxt, '第三节点审批',
-    '<div class="approval-sub">共 '+d.assignees.length+' 位审批人并行处理，全部通过才算通过</div>',
-    stCls, stTxt, '<div class="approval-assignees">'+rows+'</div>');
-  document.getElementById('approvalTimeline').innerHTML = html;
-}
-function openApproval(data, mode){
-  approvalData = data;
-  const badge = document.getElementById('approvalHeaderBadge');
-  badge.className = 'status-badge review';
-  badge.textContent = '审批中';
-  document.getElementById('approverComment').value = '';
-  document.getElementById('demoOthersWrap').classList.add('hidden');
-  goStep(4);
-  detailAttachState = 'normal';
-  detailAttachData = data.attachments || [];
-  renderDetailAttachments();
-  renderApproval();
-  const me = data.assignees.find(a=>a.employee_id===data.meId);
-  setApprovalMode(mode==='approver' && me && me.status==='pending' ? 'approver' : 'initiator');
-}
 renderChips();
 renderPicker();
 renderAttachments();
@@ -2587,79 +2284,10 @@ function showEditor(){
   resetAttachments();
   goStep(1);
 }
-function viewActivity(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
-    document.getElementById(id).classList.toggle('hidden', id!=='editorView');
-  });
-  document.getElementById('panel').classList.remove('wide');
-  setActiveNav('navActivities');
-  openApproval(demoApprovalData(), 'initiator');
-}
-function viewApproval(){
-  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
-    document.getElementById(id).classList.toggle('hidden', id!=='editorView');
-  });
-  document.getElementById('panel').classList.remove('wide');
-  setActiveNav('navActivities');
-  openApproval(demoApprovalData(), 'approver');
-  closeNotifications();
-}
-function setApprovalMode(mode){
-  document.getElementById('initiatorActions').classList.toggle('hidden', mode!=='initiator');
-  document.getElementById('approverActions').classList.toggle('hidden', mode!=='approver');
-  document.getElementById('approvalDoneMsg').classList.add('hidden');
-}
-function publishIfAllApproved(){
-  if(thirdNodeStatus(approvalData)!=='approved') return false;
-  const headerBadge = document.getElementById('approvalHeaderBadge');
-  headerBadge.className = 'status-badge approved';
-  headerBadge.textContent = '已发布';
-  return true;
-}
-function approveCurrentStep(){
-  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
-  me.status = 'approved';
-  me.comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
-  me.acted_at = '刚刚';
-  renderApproval();
-  document.getElementById('approverActions').classList.add('hidden');
-  const msg = document.getElementById('approvalDoneMsg');
-  if(publishIfAllApproved()){
-    msg.textContent = '第三节点全部通过，活动已自动发布。';
-  } else {
-    const left = approvalData.assignees.filter(a=>a.status==='pending').length;
-    msg.textContent = '已通过，还有 '+left+' 位审批人未处理，全部通过后活动将自动发布。';
-    document.getElementById('demoOthersWrap').classList.remove('hidden');
-  }
-  msg.classList.remove('hidden');
-  updateTodoBadge(-1);
-}
-function demoOthersApprove(){
-  approvalData.assignees.forEach(a=>{
-    if(a.status==='pending'){ a.status='approved'; a.comment='同意。'; a.acted_at='刚刚'; }
-  });
-  renderApproval();
-  publishIfAllApproved();
-  document.getElementById('approvalDoneMsg').textContent = '第三节点全部通过，活动已自动发布。';
-  document.getElementById('demoOthersWrap').classList.add('hidden');
-}
-function rejectCurrentStep(){
-  const comment = document.getElementById('approverComment').value.trim();
-  if(!comment){ alert('驳回需要填写审批意见'); return; }
-  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
-  me.status = 'rejected';
-  me.comment = comment;
-  me.acted_at = '刚刚';
-  approvalData.assignees.forEach(a=>{ if(a.status==='pending') a.status='revoked'; });
-  renderApproval();
-  const headerBadge = document.getElementById('approvalHeaderBadge');
-  headerBadge.className = 'status-badge rejected';
-  headerBadge.textContent = '已驳回';
-  document.getElementById('approverActions').classList.add('hidden');
-  document.getElementById('approvalDoneMsg').textContent = '已驳回，其余审批人的待办已同步撤销，活动退回发起人修改。';
-  document.getElementById('approvalDoneMsg').classList.remove('hidden');
-  updateTodoBadge(-1);
-}
+/* 活动详情已迁移到 activity-011-admin-pc.html（审批进度、附件、外部可见性、模块配置、修改记录都在那一个文件里） */
+const DETAIL_PAGE = 'activity-011-admin-pc.html';
+function viewActivity(c){ location.href = DETAIL_PAGE + '?case=' + (c || 'review'); }
+function viewApproval(){ location.href = DETAIL_PAGE + '?case=review&viewer=approver'; }   // 从待办通知进入：审批人视角
 function showModuleLibrary(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='moduleLibraryView');
@@ -3347,8 +2975,9 @@ function doUnpublish(rowId){
   const badge = row.querySelector('.status-badge');
   badge.className = 'status-badge ended';
   badge.textContent = '已结束';
+  row.setAttribute('onclick', "viewActivity('ended')");
   row.querySelector('.table-actions').innerHTML =
-    '<button class="action-link" onclick="event.stopPropagation(); viewActivity()">查看详情</button>';
+    '<button class="action-link" onclick="event.stopPropagation(); viewActivity(\'ended\')">查看详情</button>';
 }
 function deleteActivity(rowId, name, btn){
   const actions = btn.parentElement;
@@ -3761,21 +3390,6 @@ let wallDeadlinePassed = false;
 function toggleWallDeadlineDemo(){
   wallDeadlinePassed = !wallDeadlinePassed;
   applyViewer();
-}
-function editExternalVisibility(){
-  document.getElementById('extVisibilityDisplay').classList.add('hidden');
-  document.getElementById('extVisibilityEdit').classList.remove('hidden');
-}
-function cancelExternalVisibilityEdit(){
-  document.getElementById('extVisibilityEdit').classList.add('hidden');
-  document.getElementById('extVisibilityDisplay').classList.remove('hidden');
-}
-function saveExternalVisibility(){
-  const selected = document.querySelector('#extVisibilityEdit .scope-btn.selected').textContent;
-  document.getElementById('extVisibilityDisplay').innerHTML =
-    selected + ' <button class="action-link" style="margin-left:6px; font-size:11px" onclick="editExternalVisibility()">修改</button>';
-  document.getElementById('extVisibilityEdit').classList.add('hidden');
-  document.getElementById('extVisibilityDisplay').classList.remove('hidden');
 }
 /* ---- 寄语配图：必填、仅 1 张、JPG/PNG、≤5MB；已选后再选 = 替换（REQ-005 AC-006 ～ AC-009）。which = 'user'（用户端弹窗）| 'admin'（行政代录入） ---- */
 const WALL_IMG = {user:null, admin:null, edit:null};

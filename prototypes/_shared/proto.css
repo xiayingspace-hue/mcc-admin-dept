@@ -101,3 +101,107 @@ body {
 /* ---------- 调试控制台 ---------- */
 #p-console { position: fixed; bottom: 16px; right: 16px; background: var(--brand-sidebar, #22282A); color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 12px; z-index: 999; max-width: 260px; }
 #p-console select, #p-console button { font-size: 12px; margin-top: 6px; }
+
+/* ---------- 通用小组件（REQ-011 起补充；只引用品牌 token，不新增颜色值） ---------- */
+.p-hidden { display: none !important; }
+.p-title { font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+.p-subtitle { font-size: 13px; color: var(--brand-text-secondary, #6B675E); margin: 0 0 24px; }
+.p-section-title { font-size: 13px; font-weight: 500; margin: 0 0 4px; }
+.p-section-hint { font-size: 12px; color: var(--brand-text-muted, #9C978A); margin: 0 0 12px; }
+.p-header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.p-meta { font-size: 12px; color: var(--brand-text-muted, #9C978A); margin: 0 0 24px; }
+.p-link { font-size: 12.5px; color: var(--brand-accent, #3B6E64); cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; }
+.p-link.muted { color: var(--brand-text-secondary, #6B675E); }
+.p-link:disabled { color: var(--brand-text-muted, #9C978A); cursor: default; }
+.p-chip { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 5px; margin-left: 6px; background: var(--brand-border, #E4E1D9); color: var(--brand-text-secondary, #6B675E); }
+.p-chip.on { background: var(--brand-accent-tint, #E6EFEC); color: var(--brand-accent, #3B6E64); }
+.p-badge.content { background: var(--brand-info-tint, #EEEAF6); color: var(--brand-info-text, #574B8C); margin-left: 8px; }
+.p-badge.interactive { background: var(--brand-warn-tint, #F7ECE1); color: var(--brand-warn, #B0642E); margin-left: 8px; }
+.p-demo-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 11.5px; color: var(--brand-text-muted, #9C978A); margin: 8px 0 24px; }
+.p-note { font-size: 12px; color: var(--brand-text-secondary, #6B675E); padding: 9px 11px; background: var(--brand-bg, #F6F5F2); border-radius: 6px; line-height: 1.5; }
+.p-banner { padding: 10px 12px; border-radius: 6px; border: 0.5px solid var(--brand-danger, #B23A34); color: var(--brand-danger, #B23A34); font-size: 12.5px; margin-bottom: 14px; line-height: 1.6; }
+.p-field-error { color: var(--brand-danger, #B23A34); font-size: 11.5px; margin-top: 5px; }
+.p-field input.p-invalid { border-color: var(--brand-danger, #B23A34); }
+
+/* 只读键值列表（摘要卡片内） */
+.p-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+.p-kv label { display: block; font-size: 11px; color: var(--brand-text-muted, #9C978A); margin-bottom: 3px; }
+
+/* 开关 */
+.p-toggle { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
+.p-toggle input { opacity: 0; width: 100%; height: 100%; position: absolute; margin: 0; cursor: pointer; z-index: 1; }
+.p-toggle .p-track { position: absolute; inset: 0; border-radius: 9px; background: var(--brand-border-strong, #D3CFC3); transition: background .15s; }
+.p-toggle .p-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--brand-surface, #fff); transition: left .15s; }
+.p-toggle input:checked + .p-track { background: var(--brand-accent, #3B6E64); }
+.p-toggle input:checked ~ .p-thumb { left: 16px; }
+
+/* 模块列表（配置摘要与编辑共用） */
+.p-module-list { border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: 12px; overflow: hidden; background: var(--brand-surface, #fff); margin-bottom: 14px; }
+.p-module-row { border-bottom: 0.5px solid var(--brand-border, #E4E1D9); }
+.p-module-row:last-child { border-bottom: none; }
+.p-module-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; }
+.p-module-name { font-size: 14px; font-weight: 500; }
+.p-module-name.off { color: var(--brand-text-muted, #9C978A); }
+.p-module-config { padding: 0 16px 16px 42px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.p-module-config label { display: block; font-size: 12px; color: var(--brand-text-secondary, #6B675E); margin-bottom: 4px; }
+.p-module-config input { width: 100%; height: 36px; padding: 0 12px; border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: var(--brand-radius, 8px); background: var(--brand-surface, #fff); font: inherit; color: inherit; }
+.p-module-config .p-field-error, .p-module-config .p-hint { grid-column: 1 / -1; }
+.p-hint { font-size: 11.5px; color: var(--brand-text-muted, #9C978A); }
+.p-module-summary { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; font-size: 12.5px; color: var(--brand-text-secondary, #6B675E); line-height: 1.7; }
+.p-module-summary .p-module-name { width: 150px; flex-shrink: 0; color: var(--brand-text-primary, #1E1E1C); }
+.p-move { display: flex; gap: 4px; }
+
+/* 记录列表 + 分页 */
+.p-log-item { padding: 12px 14px; border: 0.5px solid var(--brand-border, #E4E1D9); border-radius: var(--brand-radius, 8px); background: var(--brand-surface, #fff); margin-bottom: 8px; }
+.p-log-head { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: var(--brand-text-secondary, #6B675E); }
+.p-log-head b { color: var(--brand-text-primary, #1E1E1C); font-weight: 500; }
+.p-log-change { font-size: 12px; margin-top: 6px; color: var(--brand-text-secondary, #6B675E); word-break: break-all; }
+.p-log-val { color: var(--brand-text-primary, #1E1E1C); }
+.p-pager { display: flex; align-items: center; justify-content: flex-end; gap: 12px; font-size: 12px; color: var(--brand-text-muted, #9C978A); margin-top: 10px; }
+.p-diff { max-height: 150px; overflow-y: auto; margin-top: 14px; }
+.p-spacer { flex: 1; }
+.p-module-config input.p-invalid { border-color: var(--brand-danger, #B23A34); }
+
+/* ---------- 审批时间线 / 审批人行（活动详情页） ---------- */
+.p-timeline { border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: 12px; overflow: hidden; background: var(--brand-surface, #fff); margin-bottom: 14px; }
+.p-step { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-bottom: 0.5px solid var(--brand-border, #E4E1D9); }
+.p-step:last-child { border-bottom: none; }
+.p-step-num { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid var(--brand-border-strong, #D3CFC3); color: var(--brand-text-muted, #9C978A); background: var(--brand-surface, #fff); }
+.p-step-num.done { background: var(--brand-accent, #3B6E64); border-color: var(--brand-accent, #3B6E64); color: #fff; }
+.p-step-num.current { border-color: var(--brand-accent, #3B6E64); color: var(--brand-accent, #3B6E64); }
+.p-step-num.rejected { background: var(--brand-danger, #B23A34); border-color: var(--brand-danger, #B23A34); color: #fff; }
+.p-step-info { flex: 1; min-width: 0; }
+.p-step-title { font-weight: 500; font-size: 13.5px; }
+.p-step-sub { font-size: 12px; color: var(--brand-text-secondary, #6B675E); }
+.p-step-status { font-size: 11px; padding: 2px 8px; border-radius: 5px; flex-shrink: 0; background: var(--brand-border, #E4E1D9); color: var(--brand-text-muted, #9C978A); }
+.p-step-status.done { background: var(--brand-success-tint, #E4F0E8); color: var(--brand-success-text, #2F6B45); }
+.p-step-status.current { background: var(--brand-accent, #3B6E64); color: #fff; }
+.p-step-status.rejected { background: #F6E4E2; color: var(--brand-danger, #B23A34); }
+.p-assignees { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+.p-assignee { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--brand-text-secondary, #6B675E); padding: 7px 10px; background: var(--brand-bg, #F6F5F2); border-radius: 6px; }
+.p-assignee-main { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.p-assignee-name { color: var(--brand-text-primary, #1E1E1C); }
+.p-assignee-no { color: var(--brand-text-muted, #9C978A); margin-left: 4px; }
+.p-assignee-note { margin-top: 3px; line-height: 1.5; }
+.p-assignee-st { font-size: 11px; padding: 2px 8px; border-radius: 5px; flex-shrink: 0; background: var(--brand-border, #E4E1D9); color: var(--brand-text-muted, #9C978A); }
+.p-assignee-st.approved { background: var(--brand-success-tint, #E4F0E8); color: var(--brand-success-text, #2F6B45); }
+.p-assignee-st.rejected { background: #F6E4E2; color: var(--brand-danger, #B23A34); }
+.p-assignee-st.revoked { text-decoration: line-through; }
+.p-me { margin-left: 6px; font-size: 11px; padding: 1px 6px; border-radius: 4px; background: var(--brand-accent-tint, #E6EFEC); color: var(--brand-accent, #3B6E64); }
+
+/* 附件行 */
+.p-attach-list { max-height: 200px; overflow-y: auto; margin-bottom: 8px; }
+.p-attach { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 0.5px solid var(--brand-border, #E4E1D9); border-radius: var(--brand-radius, 8px); background: var(--brand-surface, #fff); margin-bottom: 6px; font-size: 12.5px; }
+.p-attach-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-attach-size { color: var(--brand-text-muted, #9C978A); font-size: 12px; flex-shrink: 0; }
+
+/* 两项互斥切换 + 封面占位 */
+.p-scope { display: flex; gap: 8px; margin-top: 6px; }
+.p-scope-btn { height: 34px; padding: 0 14px; border: 0.5px solid var(--brand-border-strong, #D3CFC3); border-radius: var(--brand-radius, 8px); background: var(--brand-surface, #fff); font: inherit; font-size: 13px; cursor: pointer; }
+.p-scope-btn.selected { border-color: var(--brand-accent, #3B6E64); background: var(--brand-accent-tint, #E6EFEC); color: var(--brand-accent, #3B6E64); font-weight: 500; }
+.p-cover { height: 110px; border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--brand-text-muted, #9C978A); background: linear-gradient(135deg, var(--brand-info-tint, #EEEAF6), var(--brand-warn-tint, #F7ECE1)); }
+.p-desc { font-size: 13px; line-height: 1.7; margin-top: 14px; padding-top: 14px; border-top: 0.5px dashed var(--brand-border-strong, #D3CFC3); }
+.p-back { margin-bottom: 18px; }
+.p-sidebar a.p-nav-item { color: inherit; text-decoration: none; }
+a.p-btn { display: inline-flex; align-items: center; text-decoration: none; color: inherit; } a.p-btn.primary { color: #fff; }
+.p-screen > .p-section-title, .p-screen > div > .p-section-title { margin-top: 26px; }
