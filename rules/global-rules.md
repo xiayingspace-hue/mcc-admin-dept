@@ -23,12 +23,12 @@
 - 小写 kebab-case，≤10 字符。
 - 命名业务域，不命名功能动作：`activity` 不是 `create-activity`，`wall` 不是 `submit-message`。
 - 全仓 slug 总数 ≤10 个，新增前必须先在 `requirements/shared/GLOSSARY.md` 登记，登记后才能在文件名里使用。
-- 本产品当前受控 slug：`activity`、`module`、`submission`、`registration`、`wall`、`stats`（见 GLOSSARY.md）。
+- 本产品当前受控 slug：`activity`、`module`、`submission`、`registration`、`wall`、`stats`、`celebration`、`sponsor`、`identity`（共 9 个，以 GLOSSARY.md 为准）。
 
 ## 端侧 × 载体
 
-- 端侧取值：`admin`（管理端，走 `/admin-api`）、`user`（用户端，走 `/app-api`）。
-- 载体取值：`pc`、`h5`、`native`。本产品当前登记：`admin` 仅 `pc`；`user` 仅 `h5`（企业微信内嵌网页）。
+- 端侧取值：`admin`（管理端）、`user`（用户端），两端接口路径前缀相同，均为 `/mcc-api/aiis-admin`。
+- 载体取值：`pc`、`h5`、`native`。本产品当前登记：`admin` 为 `pc`，另有 `h5`（仅现场扫码签到这一页，企业微信内嵌网页）；`user` 仅 `h5`（企业微信内嵌网页）。
 - 新增端侧或载体前先改 `background/product-overview.md` 的受控表。
 
 ## 目录归属

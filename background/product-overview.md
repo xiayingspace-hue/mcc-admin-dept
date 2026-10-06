@@ -8,14 +8,14 @@
 
 | 端侧 | 说明 | 已登记载体 |
 |---|---|---|
-| `admin` | 行政后台，走 `/mcc-api/aiis-admin`（真实后端，路径规则见 `background/conventions.md` 接口路径与请求方式） | `pc` |
-| `user` | 员工/外部访客访问的活动页面，走 `/app-api` | `h5`（企业微信内嵌网页） |
+| `admin` | 行政后台，走 `/mcc-api/aiis-admin`（真实后端，路径规则见 `background/conventions.md` 接口路径与请求方式） | `pc`；`h5`（现场签到扫码页，企业微信内嵌网页，仅此一页） |
+| `user` | 员工/外部访客访问的活动页面，同样走 `/mcc-api/aiis-admin`（路径规则同上） | `h5`（企业微信内嵌网页） |
 
 新增端侧或载体，先在此表登记再使用。
 
 ## 角色速览
 
-详见 [`requirements/shared/ROLES.md`](../requirements/shared/ROLES.md)：行政、部门主管、财务、员工、外部人士。
+详见 [`requirements/shared/ROLES.md`](../requirements/shared/ROLES.md)：行政、部门主管、第三节点审批人、员工、外部人士。
 
 ## 模块地图
 

@@ -100,7 +100,7 @@ requirements/<端侧>/<载体>/<模块>-<编号>-<端侧>-<载体>.md  只写载
 
 | 轴 | 取值 | 含义 |
 |----|------|------|
-| **端侧** | `admin` / `user` | 管理端走 `/admin-api`，用户端走 `/app-api` |
+| **端侧** | `admin` / `user` | 管理端与用户端接口都走 `/mcc-api/aiis-admin`（`mcc-api` 网关层 + `aiis-admin` 服务层） |
 | **载体** | `pc` / `native` / `h5` | 桌面浏览器 / 原生 APP / 移动网页 |
 
 取值在 `background/product-overview.md` 登记，**按需创建目录**——只做管理端就不建 `user/`。

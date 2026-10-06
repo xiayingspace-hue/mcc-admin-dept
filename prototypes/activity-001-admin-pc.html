@@ -159,6 +159,85 @@
   .approval-status.current{background:var(--accent); color:#fff}
   .approval-comment{font-size:12px; color:var(--text-secondary); margin-top:8px; padding:9px 11px; background:var(--bg); border-radius:6px; line-height:1.5}
 
+  .approval-num.rejected{background:var(--danger); color:#fff}
+  .approval-status.rejected{background:#F6E4E2; color:var(--danger)}
+  .approval-assignees{margin-top:8px; display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto}
+  .assignee-row{display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-secondary); padding:7px 10px; background:var(--bg); border-radius:6px}
+  .assignee-main{flex:1; min-width:0; overflow-wrap:anywhere}
+  .assignee-name{color:var(--text-primary)}
+  .assignee-no{color:var(--text-muted); margin-left:4px}
+  .assignee-note{margin-top:3px; line-height:1.5}
+  .assignee-st{font-size:11px; padding:2px 8px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .assignee-st.approved{background:#E4F0E8; color:#2F6B45}
+  .assignee-st.rejected{background:#F6E4E2; color:var(--danger)}
+  .assignee-st.revoked{text-decoration:line-through}
+  .assignee-me{margin-left:6px; font-size:11px; padding:1px 6px; border-radius:4px; background:var(--accent-tint); color:var(--accent)}
+
+  .picker-chips{display:flex; flex-wrap:wrap; gap:6px; min-height:40px; max-height:96px; overflow-y:auto; padding:8px; border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); margin-bottom:8px}
+  .picker-chips-empty{font-size:12.5px; color:var(--text-muted); align-self:center}
+  .chip{display:inline-flex; align-items:center; gap:4px; padding:3px 4px 3px 10px; border-radius:14px; background:var(--accent-tint); color:var(--accent); font-size:12.5px; max-width:100%}
+  .chip-no{color:var(--text-secondary)}
+  .chip-x{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 6px}
+  .picker-list{border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); max-height:196px; overflow-y:auto; margin-top:8px}
+  .picker-item{display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:0.5px solid var(--border); font-size:13px}
+  .picker-item:last-child{border-bottom:none}
+  .picker-item .grow{flex:1}
+  .picker-state{padding:22px 12px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+  .picker-skel{height:14px; margin:14px 12px; border-radius:4px; background:var(--border)}
+  .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+
+  .attach-list-scroll{max-height:200px; overflow-y:auto}
+  .attach-row{display:flex; align-items:center; gap:10px; padding:8px 12px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--surface); font-size:13px; margin-top:6px}
+  .attach-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .attach-size{color:var(--text-muted); font-size:12px; flex-shrink:0}
+  .attach-st{font-size:11px; padding:2px 8px; border-radius:5px; flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .attach-st.fail{background:#F6E4E2; color:var(--danger)}
+  .attach-error{color:var(--danger); font-size:11.5px; margin-top:5px}
+  .summary-attach{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
+
+  .submission-media{font-size:11px; color:var(--text-muted); margin-top:2px}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
+  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .u-work-overlay.open{display:flex}
+  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
+  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-nav:disabled{opacity:.35; cursor:default}
+  .u-work-nav.prev{left:10px}
+  .u-work-nav.next{right:10px}
+  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
+  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
+  .u-vote-thumb{position:relative; cursor:pointer}
+
+  .adm-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--sidebar) 70%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:24px}
+  .adm-overlay.open{display:flex}
+  .adm-box{background:var(--surface); border-radius:12px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto}
+  .adm-head{display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:0.5px solid var(--border)}
+  .adm-stage{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-secondary); font-size:13.5px; text-align:center; padding:16px}
+  .adm-nav{position:absolute; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; border:0.5px solid var(--border-strong); background:var(--surface); color:var(--text-primary); cursor:pointer}
+  .adm-nav:disabled{opacity:.35; cursor:default}
+  .adm-nav.prev{left:10px}
+  .adm-nav.next{right:10px}
+  .adm-info{padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px 20px}
+  .adm-info label{display:block; font-size:11px; color:var(--text-muted); margin-bottom:2px}
+  .adm-info .val{font-size:13.5px}
+  .adm-info .wide{grid-column:1/-1}
+  .adm-desc{font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
+
+  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--border); border-radius:8px}
+  .qr-c{display:block; background:transparent}
+  .qr-c.on{background:var(--text-primary)}
+  .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--text-primary)}
+  .qr-hint{font-size:12px; color:var(--text-muted); text-align:center; margin-top:6px}
+
+  .u-img-row{display:flex; align-items:center; gap:8px; padding:8px 10px; border:0.5px solid var(--u-gold-tint); border-radius:8px; font-size:12.5px; margin-top:6px}
+  .u-img-err{color:var(--danger); font-size:11.5px; margin-top:5px}
+
+  .wall-edited{font-size:11px; color:var(--text-muted); border:0.5px solid var(--border-strong); border-radius:4px; padding:0 6px; cursor:help}
+
+  .tier-cell{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; max-width:200px}
+
   .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
 
   .panel.wide{max-width:920px}
@@ -213,9 +292,9 @@
     color:var(--text-muted); font-size:24px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint));
   }
   .submission-body{padding:11px 13px}
-  .submission-author{font-size:13px; font-weight:500}
+  .submission-author{font-size:13px; font-weight:500; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere}
   .submission-sub{font-size:11.5px; color:var(--text-muted); margin-top:1px}
-  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0}
+  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .submission-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
   .status-badge.hidden-st{background:var(--border); color:var(--text-muted)}
 
@@ -281,11 +360,18 @@
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
   .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .u-vote-info{padding:10px 12px}
-  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text)}
+  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
   .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
   .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
   .u-vote-btn.voted{background:var(--u-gold); color:#fff}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
+  .u-viewer-hint{font-size:12px; color:var(--u-text-muted); line-height:1.5}
+  .u-viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
+  .u-viewer-banner{max-width:640px; margin:0 auto 14px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
+  .u-viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:400; text-align:center}
+  .u-toast.show{opacity:1}
   .u-wall-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:640px; margin:0 auto}
   .u-wall-card{background:#fff; border-radius:12px; padding:15px; border:0.5px solid var(--u-gold-tint)}
   .u-wall-quote{font-size:12.5px; color:var(--u-text); line-height:1.7; margin-bottom:12px}
@@ -409,11 +495,11 @@
           <div class="notif-panel-head">待办事项</div>
           <div id="notifList">
             <div class="notif-item" onclick="viewApproval()">
-              <div class="notif-item-title"><span>公司30周年庆典</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-title"><span>公司30周年庆典</span><span class="status-badge review">第三节点审批</span></div>
               <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
             </div>
             <div class="notif-item" onclick="alert('原型演示：跳转到「中秋福利活动」审批处理页')">
-              <div class="notif-item-title"><span>中秋福利活动</span><span class="status-badge review">行政初审</span></div>
+              <div class="notif-item-title"><span>中秋福利活动</span><span class="status-badge review">第三节点审批</span></div>
               <div class="notif-item-sub">发起人 XY · 部门主管已通过 · 待你处理</div>
             </div>
           </div>
@@ -447,15 +533,15 @@
           <table class="activity-table">
             <thead>
               <tr>
-                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>举办时间</th><th>发起人</th><th>操作</th>
+                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>计划举办时间</th><th>发起人</th><th>操作</th>
               </tr>
             </thead>
             <tbody>
-              <tr onclick="viewActivity()">
+              <tr data-created="2026-09-28 10:05" onclick="viewActivity()">
                 <td class="title-cell">公司30周年庆典</td>
                 <td>周年庆</td>
                 <td><span class="status-badge review">审批中</span></td>
-                <td>¥68,000</td>
+                <td>S$68,000</td>
                 <td>2026-11-20</td>
                 <td>XY</td>
                 <td>
@@ -464,11 +550,11 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="viewActivity()" id="row-annual">
+              <tr data-created="2026-09-25 16:40" onclick="viewActivity()" id="row-annual">
                 <td class="title-cell">2026年会</td>
                 <td>年会</td>
                 <td><span class="status-badge approved">已发布</span></td>
-                <td>¥120,000</td>
+                <td>S$120,000</td>
                 <td>2027-01-15</td>
                 <td>王芳</td>
                 <td>
@@ -478,11 +564,11 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="viewActivity()">
+              <tr data-created="2026-09-18 09:30" onclick="viewActivity()">
                 <td class="title-cell">Q3部门团建</td>
                 <td>团建</td>
                 <td><span class="status-badge ended">已结束</span></td>
-                <td>¥8,000</td>
+                <td>S$8,000</td>
                 <td>2026-08-02</td>
                 <td>李强</td>
                 <td>
@@ -491,11 +577,11 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="showEditor()" id="row-onboarding">
+              <tr data-created="2026-09-10 14:20" onclick="showEditor()" id="row-onboarding">
                 <td class="title-cell">新人入职欢迎会</td>
                 <td>培训分享会</td>
                 <td><span class="status-badge draft">草稿</span></td>
-                <td>¥2,000</td>
+                <td>S$2,000</td>
                 <td class="muted-cell">未设定</td>
                 <td>XY</td>
                 <td>
@@ -505,11 +591,11 @@
                   </div>
                 </td>
               </tr>
-              <tr onclick="showEditor()">
+              <tr data-created="2026-09-02 11:00" onclick="showEditor()">
                 <td class="title-cell">中秋福利活动</td>
                 <td>生日会</td>
                 <td><span class="status-badge rejected">已驳回</span></td>
-                <td>¥15,000</td>
+                <td>S$15,000</td>
                 <td>2026-09-25</td>
                 <td>XY</td>
                 <td>
@@ -573,14 +659,14 @@
 
           <div class="row2">
             <div class="field">
-              <label>开始时间<span class="req-mark">*</span></label>
+              <label>计划开始时间<span class="req-mark">*</span></label>
               <input type="datetime-local" id="fieldStart">
-              <div class="field-error" id="errStart">请选择开始时间</div>
+              <div class="field-error" id="errStart">请选择计划开始时间</div>
             </div>
             <div class="field">
-              <label>结束时间<span class="req-mark">*</span></label>
+              <label>计划结束时间<span class="req-mark">*</span></label>
               <input type="datetime-local" id="fieldEnd">
-              <div class="field-error" id="errEnd">请选择结束时间</div>
+              <div class="field-error" id="errEnd">请选择计划结束时间</div>
             </div>
           </div>
 
@@ -591,7 +677,7 @@
               <div class="field-error" id="errLocation">请填写举办地点</div>
             </div>
             <div class="field">
-              <label>预算（元）<span class="req-mark">*</span></label>
+              <label>预算（S$）<span class="req-mark">*</span></label>
               <input type="number" id="fieldBudget" placeholder="0">
               <div class="field-error" id="errBudget">请填写预算</div>
             </div>
@@ -630,6 +716,24 @@
                 <button type="button" class="rte-btn" onclick="rteCmd('removeFormat')" title="清除格式">✕</button>
               </div>
               <div class="rte-editable" contenteditable="true" data-placeholder="简单介绍活动背景和目的"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>附件（选填）<span id="attachCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
+            <div class="upload-box" id="attachBox" onclick="openAttachPicker()">
+              <span id="attachBoxText">点击上传附件（PDF、Word、Excel、PowerPoint、图片；单个不超过 20MB，最多 10 个）</span>
+              <input type="file" id="attachInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.gif" style="display:none" onclick="event.stopPropagation()" onchange="handleAttachFiles(this.files); this.value=''">
+            </div>
+            <div class="attach-error" id="attachError" style="display:none"></div>
+            <div class="attach-list-scroll" id="attachList"></div>
+            <div class="picker-demo">
+              <span>原型演示：</span>
+              <button class="action-link" onclick="demoAttach('ok')">添加示例文件</button>
+              <button class="action-link" onclick="demoAttach('big')">模拟超过 20MB</button>
+              <button class="action-link" onclick="demoAttach('type')">模拟类型不符</button>
+              <button class="action-link" onclick="demoAttach('fail')">模拟上传失败</button>
+              <button class="action-link" onclick="demoAttach('many')">模拟加满 10 个</button>
             </div>
           </div>
 
@@ -687,8 +791,6 @@
               </div>
               <div class="module-config">
                 <div><label>开始展示时间（选填）</label><input type="datetime-local"></div>
-                <div><label>展示样式</label><select><option>网格</option><option>轮播</option></select></div>
-                <div><label>允许外部人士留言</label><select><option>是</option><option>否</option></select></div>
                 <div><label>留言截止时间</label><input type="datetime-local"></div>
               </div>
             </div>
@@ -712,9 +814,9 @@
             <div class="summary-grid">
               <div class="summary-item"><label>活动标题</label><div class="val">公司30周年庆典</div></div>
               <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
-              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>计划举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
               <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
-              <div class="summary-item"><label>预算</label><div class="val">¥68,000</div></div>
+              <div class="summary-item"><label>预算</label><div class="val">S$68,000</div></div>
               <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
               <div class="summary-item"><label>外部可见性</label><div class="val">对外部人员开放</div></div>
             </div>
@@ -724,43 +826,24 @@
                 <ul><li>时间：2026年11月20日 14:00 – 17:00</li><li>地点：总部三楼多功能厅</li></ul>
               </div>
             </div>
-            <div class="summary-flag">预算超过 ¥50,000 阈值，将自动加入财务审批环节</div>
           </div>
+            <div class="summary-attach">
+              <div class="summary-desc-label">附件</div>
+              <div class="attach-list-scroll" id="confirmAttachList"></div>
+            </div>
 
-          <p class="section-title">将经过以下审批</p>
-          <p class="section-hint">审批人根据活动类型与预算自动匹配，无需手动指定</p>
-          <div class="approval-timeline">
-            <div class="approval-step-row">
-              <div class="approval-num">1</div>
-              <div class="approval-info">
-                <div class="approval-title">部门主管审批</div>
-                <div class="approval-sub">发起人所属部门负责人</div>
-              </div>
-              <div class="approval-status">待发起</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">2</div>
-              <div class="approval-info">
-                <div class="approval-title">行政初审</div>
-                <div class="approval-sub">核对流程与合规性</div>
-              </div>
-              <div class="approval-status">待发起</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">3</div>
-              <div class="approval-info">
-                <div class="approval-title">财务审批</div>
-                <div class="approval-sub">预算超阈值触发</div>
-              </div>
-              <div class="approval-status conditional">已触发</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">4</div>
-              <div class="approval-info">
-                <div class="approval-title">行政终审并发布</div>
-                <div class="approval-sub">通过后自动生成活动页面</div>
-              </div>
-              <div class="approval-status">待发起</div>
+          <div class="field">
+            <label>第三节点审批人（必选，全公司员工，人数不限；所选人并行处理，全部通过后活动自动发布）<span id="thirdCountBadge" style="margin-left:6px; color:var(--text-muted)"></span></label>
+            <div class="picker-chips" id="pickerChips"></div>
+            <div class="field-error" id="errThird">请至少选择 1 位第三节点审批人</div>
+            <input type="text" id="pickerSearch" placeholder="按姓名或工号搜索全公司员工" oninput="renderPicker()">
+            <div class="picker-list" id="pickerList"></div>
+            <div class="picker-demo">
+              <span>原型演示状态：</span>
+              <button class="action-link" onclick="setPickerState('normal')">正常</button>
+              <button class="action-link" onclick="setPickerState('loading')">加载中</button>
+              <button class="action-link" onclick="setPickerState('error')">加载失败</button>
+              <button class="action-link" onclick="pickAllDemo()">全选（演示人数很多）</button>
             </div>
           </div>
 
@@ -788,9 +871,9 @@
             <div class="summary-cover">封面图预览</div>
             <div class="summary-grid">
               <div class="summary-item"><label>活动类型</label><div class="val">周年庆</div></div>
-              <div class="summary-item"><label>举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
+              <div class="summary-item"><label>计划举办时间</label><div class="val">2026-11-20 14:00 – 17:00</div></div>
               <div class="summary-item"><label>举办地点</label><div class="val">总部三楼多功能厅</div></div>
-              <div class="summary-item"><label>预算</label><div class="val">¥68,000</div></div>
+              <div class="summary-item"><label>预算</label><div class="val">S$68,000</div></div>
               <div class="summary-item"><label>参与范围</label><div class="val">全员</div></div>
               <div class="summary-item">
                 <label>外部可见性</label>
@@ -816,44 +899,21 @@
               </div>
             </div>
           </div>
+            <div class="summary-attach">
+              <div class="summary-desc-label">附件</div>
+              <div class="attach-list-scroll" id="detailAttachList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="setDetailAttachState('normal')">正常</button>
+                <button class="action-link" onclick="setDetailAttachState('loading')">加载中</button>
+                <button class="action-link" onclick="setDetailAttachState('error')">加载失败</button>
+                <button class="action-link" onclick="setDetailAttachState('empty')">无附件</button>
+              </div>
+            </div>
 
           <p class="section-title">审批进度</p>
           <p class="section-hint">实时反映各节点的处理状态</p>
-          <div class="approval-timeline">
-            <div class="approval-step-row">
-              <div class="approval-num done">✓</div>
-              <div class="approval-info">
-                <div class="approval-title">部门主管审批</div>
-                <div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>
-                <div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>
-              </div>
-              <div class="approval-status done">已通过</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num current" id="anum2">2</div>
-              <div class="approval-info" id="ainfo2">
-                <div class="approval-title">行政初审</div>
-                <div class="approval-sub">待行政部处理 · 预计1个工作日内</div>
-              </div>
-              <div class="approval-status current" id="astatus2">进行中</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num" id="anum3">3</div>
-              <div class="approval-info" id="ainfo3">
-                <div class="approval-title">财务审批</div>
-                <div class="approval-sub">预算超阈值触发</div>
-              </div>
-              <div class="approval-status conditional" id="astatus3">待处理</div>
-            </div>
-            <div class="approval-step-row">
-              <div class="approval-num">4</div>
-              <div class="approval-info">
-                <div class="approval-title">行政终审并发布</div>
-                <div class="approval-sub">通过后自动生成活动页面</div>
-              </div>
-              <div class="approval-status">待处理</div>
-            </div>
-          </div>
+          <div class="approval-timeline" id="approvalTimeline"></div>
 
           <!-- Initiator view actions -->
           <div class="actions" id="initiatorActions">
@@ -862,7 +922,7 @@
 
           <!-- Approver view actions (shown when opened from 待办) -->
           <div class="hidden" id="approverActions">
-            <p class="section-title">我的审批（行政初审）</p>
+            <p class="section-title">我的审批（第三节点审批）</p>
             <div class="field">
               <label>审批意见（驳回时必填）</label>
               <textarea id="approverComment" rows="2" placeholder="填写审批意见"></textarea>
@@ -873,7 +933,10 @@
             </div>
           </div>
           <div class="hidden" id="approvalDoneMsg" style="font-size:12.5px; color:var(--text-secondary); padding:10px 0">
-            已提交处理结果，流程将流转至下一节点。
+            已提交处理结果。
+          </div>
+          <div class="hidden" id="demoOthersWrap" style="font-size:11.5px; color:var(--text-muted)">
+            原型演示：<button class="action-link" onclick="demoOthersApprove()">其余审批人全部通过</button>
           </div>
         </div>
 
@@ -945,9 +1008,9 @@
               <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">提交截止时间</span><span class="attr-type">日期时间</span></div>
-                <div class="attr-row"><span class="attr-name">投票截止时间</span><span class="attr-type">日期时间</span></div>
+                <div class="attr-row"><span class="attr-name">在用户端展示（展示开关）</span><span class="attr-type">开关，默认关闭</span></div>
+                <div class="attr-row"><span class="attr-name">提交截止时间</span><span class="attr-type">日期时间（须晚于 Celebration 结束时间）</span></div>
+                <div class="attr-row"><span class="attr-name">投票截止时间</span><span class="attr-type">日期时间（须晚于提交截止时间）</span></div>
                 <div class="attr-row"><span class="attr-name">作品来源</span><span class="attr-type">行政上传</span></div>
               </div>
               <div class="module-meta"><span>已被 2 个活动使用</span><span>查看使用记录 ›</span></div>
@@ -963,9 +1026,6 @@
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">展示样式</span><span class="attr-type">网格 / 轮播</span></div>
-                <div class="attr-row"><span class="attr-name">允许外部人士留言</span><span class="attr-type">开关</span></div>
-                <div class="attr-row"><span class="attr-name">支持配图</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">允许匿名留言</span><span class="attr-type">开关</span></div>
                 <div class="attr-row"><span class="attr-name">留言截止时间</span><span class="attr-type">日期时间</span></div>
               </div>
@@ -981,8 +1041,8 @@
               <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
-                <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
-                <div class="attr-row"><span class="attr-name">报名截止时间</span><span class="attr-type">日期时间</span></div>
+                <div class="attr-row"><span class="attr-name">在用户端展示（展示开关）</span><span class="attr-type">开关，默认关闭</span></div>
+                <div class="attr-row"><span class="attr-name">报名截止时间</span><span class="attr-type">日期时间（选填）</span></div>
                 <div class="attr-row"><span class="attr-name">名额上限</span><span class="attr-type">数字（留空不限）</span></div>
                 <div class="attr-row"><span class="attr-name">需要签到</span><span class="attr-type">开关</span></div>
               </div>
@@ -1033,7 +1093,7 @@
           </div>
 
           <div class="upload-panel">
-            <p class="upload-panel-title">上传作品</p>
+            <p class="upload-panel-title" id="subPanelTitle">上传作品</p>
             <div class="row2">
               <div class="field">
                 <label>所属 Celebration</label>
@@ -1051,20 +1111,52 @@
                 </div>
               </div>
             </div>
-            <div class="row2">
-              <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：陈思思"></div>
-              <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：产品部"></div>
+            <div class="field">
+              <label>作者姓名（必填）</label>
+              <input type="text" id="subAuthorName" placeholder="例如：陈思思, 王芳, 李强" oninput="updateAuthorHint()">
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:5px">一次输入所有人；团队作品只用逗号“,”分隔，最多 10 位，每位 ≤30 字符</div>
+              <div id="subNameHint" style="font-size:11.5px; color:var(--text-secondary); margin-top:3px"></div>
+              <div class="attach-error" id="subNameError" style="display:none"></div>
             </div>
             <div class="field">
-              <label>作品图片</label>
-              <div class="upload-box">点击或拖拽上传作品图片</div>
+              <label>部门 / 头衔（选填）</label>
+              <input type="text" placeholder="例如：产品部">
             </div>
             <div class="field">
-              <label>作品说明（选填）</label>
-              <textarea rows="2" placeholder="作者想表达的创作说明"></textarea>
+              <label>作品图片（必填，1–9 张，JPG / PNG，单张 ≤5MB；第一张为封面，可调整顺序）<span id="subImgCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
+              <div class="upload-box" id="subImgBox" onclick="openSubImgPicker()">
+                <span id="subImgBoxText">点击上传作品图片，可一次选多张</span>
+                <input type="file" id="subImgInput" multiple accept=".jpg,.jpeg,.png" style="display:none" onclick="event.stopPropagation()" onchange="handleSubImages(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subImgError" style="display:none"></div>
+              <div class="attach-list-scroll" id="subImgList"></div>
+            </div>
+            <div class="field">
+              <label>作品视频（选填，最多 1 个，MP4，≤100MB）</label>
+              <div class="upload-box" id="subVideoBox" onclick="openSubVideoPicker()">
+                <span id="subVideoBoxText">点击上传作品视频</span>
+                <input type="file" id="subVideoInput" accept=".mp4" style="display:none" onclick="event.stopPropagation()" onchange="handleSubVideo(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subVideoError" style="display:none"></div>
+              <div id="subVideoList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="demoSub('img')">添加示例图片</button>
+                <button class="action-link" onclick="demoSub('bigimg')">模拟图片超过 5MB</button>
+                <button class="action-link" onclick="demoSub('type')">模拟类型不符</button>
+                <button class="action-link" onclick="demoSub('fail')">模拟图片上传失败</button>
+                <button class="action-link" onclick="demoSub('many')">模拟加满 9 张</button>
+                <button class="action-link" onclick="demoSub('video')">添加示例视频</button>
+                <button class="action-link" onclick="demoSub('bigvideo')">模拟视频超过 100MB</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>作品说明（选填，不超过 200 个字符）<span id="subDescCount" style="margin-left:6px; color:var(--text-muted)">0 / 200</span></label>
+              <textarea rows="2" id="subDesc" placeholder="作者想表达的创作说明" oninput="updateSubDescCount()"></textarea>
+              <div class="attach-error" id="subDescError" style="display:none"></div>
             </div>
             <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为未发布')">上传作品</button>
+              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">上传作品</button>
             </div>
           </div>
 
@@ -1094,12 +1186,13 @@
 
           <div class="submission-grid" id="submissionGrid">
 
-            <div class="submission-card" id="sub1" data-activity="sg30" data-status="draft">
+            <div class="submission-card" id="sub1" data-created="2026-09-30 09:10" data-votes="0" data-activity="sg30" data-status="draft" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">陈思思</div>
                 <div class="submission-sub">产品部 · 内部员工</div>
-                <p class="submission-desc">灵感来源于公司logo的演变过程</p>
+                <div class="submission-media">3 张图 + 视频</div>
+                <p class="submission-desc" title="灵感来源于公司logo的演变过程">灵感来源于公司logo的演变过程</p>
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
@@ -1109,11 +1202,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub2" data-activity="bj30" data-status="published">
+            <div class="submission-card" id="sub2" data-created="2026-09-28 15:00" data-votes="24" data-activity="bj30" data-status="published" data-images="2" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">王芳</div>
                 <div class="submission-sub">行政部 · 内部员工</div>
+                <div class="submission-media">2 张图</div>
+                <p class="submission-desc" title="以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。">以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。</p>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1123,12 +1218,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub3" data-activity="q3camp" data-status="published">
+            <div class="submission-card" id="sub3" data-created="2026-09-25 11:30" data-votes="31" data-activity="q3camp" data-status="published" data-images="5" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">李强</div>
                 <div class="submission-sub">工程部 · 内部员工</div>
-                <p class="submission-desc">手绘工地场景，致敬三十年建设历程</p>
+                <div class="submission-media">5 张图</div>
+                <p class="submission-desc" title="手绘工地场景，致敬三十年建设历程">手绘工地场景，致敬三十年建设历程</p>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1138,11 +1234,12 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub4" data-activity="sg30" data-status="published">
+            <div class="submission-card" id="sub4" data-created="2026-09-22 10:00" data-votes="18" data-activity="sg30" data-status="published" data-images="3" data-video="1">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
-                <div class="submission-author">张伟</div>
+                <div class="submission-author" title="张伟, 赵敏, 周杰">张伟, 赵敏, 周杰</div>
                 <div class="submission-sub">技术部 · 内部员工</div>
+                <div class="submission-media">3 张图 + 视频</div>
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
@@ -1152,12 +1249,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub5" data-activity="q3camp" data-status="hidden">
+            <div class="submission-card" id="sub5" data-created="2026-09-19 17:20" data-votes="9" data-activity="q3camp" data-status="hidden" data-images="4" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">周敏</div>
                 <div class="submission-sub">市场部 · 内部员工</div>
-                <p class="submission-desc">抽象色彩表达团队活力</p>
+                <div class="submission-media">4 张图</div>
+                <p class="submission-desc" title="抽象色彩表达团队活力">抽象色彩表达团队活力</p>
                 <div class="submission-footer">
                   <span class="status-badge hidden-st">已隐藏</span>
                   <div class="table-actions">
@@ -1168,12 +1266,13 @@
               </div>
             </div>
 
-            <div class="submission-card" id="sub6" data-activity="bj30" data-status="draft">
+            <div class="submission-card" id="sub6" data-created="2026-09-15 13:45" data-votes="0" data-activity="bj30" data-status="draft" data-images="1" data-video="0">
               <div class="submission-thumb">🎨</div>
               <div class="submission-body">
                 <div class="submission-author">田中一郎</div>
                 <div class="submission-sub">合作伙伴 · 外部人士</div>
-                <p class="submission-desc">感谢合作多年，祝福公司蒸蒸日上</p>
+                <div class="submission-media">1 张图</div>
+                <p class="submission-desc" title="感谢合作多年，祝福公司蒸蒸日上">感谢合作多年，祝福公司蒸蒸日上</p>
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
@@ -1200,11 +1299,12 @@
             <p class="upload-panel-title">手动添加报名</p>
             <div class="field">
               <label>所属 Celebration</label>
-              <select id="manualRegCelebration" style="width:100%">
+              <select id="manualRegCelebration" style="width:100%" onchange="updateRegCapacityUI()">
                 <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
                 <option value="bj30">公司30周年庆典 · 北京分公司站</option>
                 <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
               </select>
+              <div id="manualRegCapHint" style="font-size:11.5px; color:var(--text-muted); margin-top:5px"></div>
             </div>
             <div class="row2">
               <div class="field">
@@ -1217,6 +1317,10 @@
               <div class="field"><label>部门 / 头衔</label><input type="text" id="manualRegDept" placeholder="例如：产品部"></div>
             </div>
             <div class="field"><label>姓名</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+            <div class="row2">
+              <div class="field"><label>联系电话（选填）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
+              <div class="field"><label>邮箱（选填）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
+            </div>
             <div style="display:flex; justify-content:flex-end; gap:10px">
               <button class="btn" onclick="toggleManualReg()">取消</button>
               <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
@@ -1236,63 +1340,75 @@
           <div class="stat-row">
             <div class="stat-card"><div class="stat-num" id="statRegistered">86</div><div class="stat-label">已报名</div></div>
             <div class="stat-card"><div class="stat-num" id="statCheckedIn">52</div><div class="stat-label">已签到</div></div>
-            <div class="stat-card"><div class="stat-num">不限</div><div class="stat-label">名额上限</div></div>
+            <div class="stat-card"><div class="stat-num" id="statCapacity">—</div><div class="stat-label">名额上限</div></div>
           </div>
 
           <table class="activity-table">
             <thead>
               <tr>
-                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>报名时间</th><th>签到状态</th><th>操作</th>
+                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>联系电话</th><th>邮箱</th><th>报名时间</th><th>签到状态</th><th>操作</th>
               </tr>
             </thead>
             <tbody id="regTableBody">
-              <tr data-celebration="sg30">
+              <tr data-created="2026-09-10 09:20" data-celebration="sg30">
                 <td class="title-cell">陈思思</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>产品部</td>
+                <td>13800138001</td>
+                <td>chen.sisi@mcc.example</td>
                 <td>2026-09-10 09:20</td>
                 <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link muted" onclick="setCheckin('r1','pending')">撤销签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r1', this)">取消报名</button>
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="sg30">
+              <tr data-created="2026-09-10 10:05" data-celebration="sg30">
                 <td class="title-cell">王芳</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>行政部</td>
+                <td>13800138002</td>
+                <td>wang.fang@mcc.example</td>
                 <td>2026-09-10 10:05</td>
                 <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r2','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r2', this)">取消报名</button>
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="bj30">
+              <tr data-created="2026-09-11 14:40" data-celebration="bj30">
                 <td class="title-cell">李强</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>工程部</td>
+                <td>13800138003</td>
+                <td>li.qiang@mcc.example</td>
                 <td>2026-09-11 14:40</td>
                 <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r3','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r3', this)">取消报名</button>
                   </div>
                 </td>
               </tr>
-              <tr data-celebration="bj30">
+              <tr data-created="2026-09-12 16:00" data-celebration="bj30">
                 <td class="title-cell">田中一郎</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>合作伙伴 · 外部</td>
+                <td>+81 90-1234-5678</td>
+                <td>—</td>
                 <td>2026-09-12 16:00</td>
                 <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
                 <td>
                   <div class="table-actions">
+                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
                     <button class="action-link" onclick="setCheckin('r4','done')">签到</button>
                     <button class="action-link danger" onclick="cancelRegistration('r4', this)">取消报名</button>
                   </div>
@@ -1337,17 +1453,28 @@
               </div>
               <div class="field"><label>部门 / 头衔</label><input type="text" placeholder="例如：合作伙伴 · XX公司"></div>
             </div>
-            <div class="field"><label>作者姓名</label><input type="text" placeholder="例如：田中一郎"></div>
+            <div class="field"><label>作者姓名</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
             <div class="field">
-              <label>留言图片（选填）</label>
-              <div class="upload-box">点击或拖拽上传配图，如合影、手写卡片照片</div>
+              <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+              <div class="upload-box" id="adminWallImgBox" onclick="wallPickImage('admin')">点击上传一张配图，如合影、手写卡片照片</div>
+              <input type="file" id="adminWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('admin', this.files); this.value=''">
+              <div class="attach-error" id="adminWallImgError" style="display:none"></div>
+              <div id="adminWallImgList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="wallDemo('admin','ok')">添加示例图片</button>
+                <button class="action-link" onclick="wallDemo('admin','type')">类型不符</button>
+                <button class="action-link" onclick="wallDemo('admin','big')">超过 5MB</button>
+                <button class="action-link" onclick="wallDemo('admin','multi')">一次选多张</button>
+                <button class="action-link" onclick="wallDemo('admin','fail')">上传失败</button>
+              </div>
             </div>
             <div class="field">
               <label>留言内容</label>
-              <textarea rows="2" placeholder="代录入的祝福留言"></textarea>
+              <textarea rows="2" id="adminWallContent" placeholder="代录入的祝福留言"></textarea>
             </div>
             <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" onclick="alert('原型演示：将新建一条 Submission 记录，状态为待审核')">提交留言</button>
+              <button class="btn primary" onclick="submitWallAdmin()">提交留言</button>
             </div>
           </div>
 
@@ -1376,7 +1503,7 @@
 
           <div class="wall-list" id="wallList">
 
-            <div class="wall-row" id="w1" data-activity="30th" data-status="review">
+            <div class="wall-row" id="w1" data-created="2026-09-30 18:20" data-activity="30th" data-status="review">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1394,7 +1521,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w2" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w2" data-created="2026-09-29 12:05" data-activity="30th" data-status="published">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1412,7 +1539,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w3" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published">
               <div class="wall-avatar">🤝</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1430,7 +1557,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w4" data-activity="annual" data-status="review">
+            <div class="wall-row" id="w4" data-created="2026-09-24 16:30" data-activity="annual" data-status="review">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1448,7 +1575,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w5" data-activity="30th" data-status="review">
+            <div class="wall-row" id="w5" data-created="2026-09-21 10:15" data-activity="30th" data-status="review">
               <div class="wall-avatar">🙈</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1466,7 +1593,7 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w6" data-activity="annual" data-status="hidden">
+            <div class="wall-row" id="w6" data-created="2026-09-18 08:50" data-activity="annual" data-status="hidden">
               <div class="wall-avatar">👤</div>
               <div class="wall-body">
                 <div class="wall-name-row">
@@ -1494,6 +1621,7 @@
               <h1 style="margin:0 0 4px">赞助商管理</h1>
               <p class="subtitle" style="margin:0">用户端「Become a Sponsor」表单提交的赞助意向，需在 2 个工作日内跟进联系</p>
             </div>
+            <button class="btn" id="sponsorExportBtn" onclick="exportSponsors()">导出</button>
           </div>
 
           <div class="field" style="max-width:280px; margin-bottom:20px">
@@ -1512,7 +1640,7 @@
               </tr>
             </thead>
             <tbody id="sponsorTableBody">
-              <tr data-activity="30th">
+              <tr data-created="2026-09-20 11:15" data-activity="30th">
                 <td class="title-cell">星辰科技有限公司</td>
                 <td>林伟 · 市场总监</td>
                 <td>lin.wei@stellar-tech.com<br>+65 9123 4567</td>
@@ -1526,7 +1654,21 @@
                   </div>
                 </td>
               </tr>
-              <tr data-activity="30th">
+              <tr data-created="2026-09-21 15:30" data-activity="30th">
+                <td class="title-cell">远景建设集团</td>
+                <td>周启明 · 副总裁</td>
+                <td>zhou.qm@vista-build.com<br>+65 9345 6781</td>
+                <td><div class="tier-cell" title="希望以主赞助商身份赞助 S$20,000，并在活动现场提供独立展位、在活动物料和官方公众号上露出品牌，同时愿意为员工团建提供一场免费的参观活动。">Custom：希望以主赞助商身份赞助 S$20,000，并在活动现场提供独立展位、在活动物料和官方公众号上露出品牌，同时愿意为员工团建提供一场免费的参观活动。</div></td>
+                <td class="muted-cell">—</td>
+                <td>2026-09-21 15:30</td>
+                <td><span class="status-badge draft" id="sponsorstatus-s3">待联系</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="action-link" onclick="setSponsorStatus('s3','done')">标记已联系</button>
+                  </div>
+                </td>
+              </tr>
+              <tr data-created="2026-09-18 09:40" data-activity="30th">
                 <td class="title-cell">海纳物流</td>
                 <td>陈嘉怡 · 总经理</td>
                 <td>chenjy@hainacorp.sg<br>+65 8234 1290</td>
@@ -1671,23 +1813,23 @@
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sg30'">
                     <div class="u-vote-thumb">📷</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-08-11</div>
+                      <div class="u-vote-author" data-start="2026-08-11T09:00:00+08:00" data-end="2026-08-11T12:00:00+08:00">2026-08-11</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">新加坡总部站</div>
-                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已结束</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
                   </div>
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#bj30'">
                     <div class="u-vote-thumb">📷</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-08-11</div>
+                      <div class="u-vote-author" data-start="2026-08-11T09:00:00+08:00" data-end="2026-08-11T12:00:00+08:00">2026-08-11</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">北京分公司站</div>
-                      <div class="u-vote-footer"><span class="u-vote-count">已举办</span><span class="u-vote-btn">View More ›</span></div>
+                      <div class="u-vote-footer"><span class="u-vote-count">已结束</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
                   </div>
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sh30'">
                     <div class="u-vote-thumb" id="celCoverSH" style="font-size:12.5px; font-weight:600">⏳ Coming Soon</div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">2026-12-05</div>
+                      <div class="u-vote-author" data-start="2026-12-05T14:00:00+08:00" data-end="2026-12-06T17:00:00+08:00">2026-12-05</div>
                       <div style="font-size:12.5px; font-weight:600; color:var(--u-text); margin-top:2px">上海分公司站</div>
                       <div class="u-vote-footer"><span class="u-vote-count" id="celStatusSH">即将开始</span><span class="u-vote-btn">View More ›</span></div>
                     </div>
@@ -1701,8 +1843,10 @@
                   <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
                   <span id="wallClosedNote" class="hidden" style="font-size:12px; color:var(--u-text-muted)">留言征集已于 2026-11-18 24:00 截止</span>
                 </div>
+                <div id="wallViewerHint" class="u-viewer-hint hidden" style="max-width:640px; margin:0 auto 10px; text-align:right"></div>
                 <div style="max-width:640px; margin:0 auto 18px; text-align:right">
                   <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：切换留言征集截止状态</button>
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
                 </div>
                 <div class="u-wall-grid">
                   <div class="u-wall-card">
@@ -1750,8 +1894,18 @@
                     </label>
                   </div>
                   <div class="u-field">
-                    <label>配图（选填）</label>
-                    <div class="u-upload-box" id="wallImageUpload" onclick="this.textContent='已选择 celebration.jpg'; this.dataset.attached='1'">点击上传一张配图</div>
+                    <label>配图（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+                    <div class="u-upload-box" id="userWallImgBox" onclick="wallPickImage('user')">点击上传一张配图</div>
+                    <input type="file" id="userWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('user', this.files); this.value=''">
+                    <div class="u-img-err" id="userWallImgError" style="display:none"></div>
+                    <div id="userWallImgList"></div>
+                    <div style="font-size:11px; color:var(--u-text-muted); margin-top:6px">原型演示：
+                      <button class="u-work-link" onclick="wallDemo('user','ok')">添加示例图片</button>
+                      <button class="u-work-link" onclick="wallDemo('user','type')">类型不符</button>
+                      <button class="u-work-link" onclick="wallDemo('user','big')">超过 5MB</button>
+                      <button class="u-work-link" onclick="wallDemo('user','multi')">一次选多张</button>
+                      <button class="u-work-link" onclick="wallDemo('user','fail')">上传失败</button>
+                    </div>
                   </div>
                   <div class="u-field">
                     <label>留言内容</label>
@@ -1788,13 +1942,18 @@
                   <div class="u-field"><label>Phone 电话 *</label><input type="text" id="sponsorPhone"></div>
                   <div class="u-field">
                     <label>Preferred Sponsorship Tier 意向赞助等级（选填）</label>
-                    <select id="sponsorTier">
+                    <select id="sponsorTier" onchange="onSponsorTierChange()">
                       <option value="">请选择</option>
                       <option>Silver</option>
                       <option>Gold</option>
                       <option>Platinum</option>
                       <option>Custom</option>
                     </select>
+                  </div>
+                  <div class="u-field hidden" id="sponsorCustomWrap">
+                    <label>Custom Details 自定义赞助说明 * <span id="sponsorCustomCount" style="color:var(--u-text-muted); font-weight:400">0 / 200</span></label>
+                    <textarea rows="2" id="sponsorCustom" placeholder="请描述您希望的赞助方式或金额 / Describe your preferred sponsorship" oninput="updateSponsorCustomCount()"></textarea>
+                    <div class="u-img-err" id="sponsorCustomError" style="display:none"></div>
                   </div>
                   <div class="u-field"><label>Message / Special Requests 留言 / 特殊需求（选填）</label><textarea rows="2" id="sponsorMessage"></textarea></div>
 
@@ -1850,10 +2009,14 @@
               </div>
 
               <div class="u-section">
+                <div id="worksViewerBanner" class="u-viewer-banner hidden"></div>
+                <div style="max-width:640px; margin:0 auto 10px; text-align:right">
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
+                </div>
                 <div class="u-vote-grid">
 
                   <div class="u-vote-card" id="v1">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v1')">🎨<span class="u-media-tag">2 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">王芳 · 行政部</div>
                       <div class="u-vote-footer">
@@ -1864,7 +2027,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v2">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v2')">🎨<span class="u-media-tag">5 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">李强 · 工程部</div>
                       <div class="u-vote-footer">
@@ -1875,7 +2038,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v3">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v3')">🎨</div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">张伟 · 技术部</div>
                       <div class="u-vote-footer">
@@ -1886,9 +2049,9 @@
                   </div>
 
                   <div class="u-vote-card" id="v4">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v4')">🎨<span class="u-media-tag">3 张 · ▶</span></div>
                     <div class="u-vote-info">
-                      <div class="u-vote-author">陈思思 · 产品部</div>
+                      <div class="u-vote-author">陈思思, 王芳, 李强 · 产品部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="9">9 票</span>
                         <button class="u-vote-btn" onclick="toggleVote('v4')">投票</button>
@@ -1897,7 +2060,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v5">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v5')">🎨</div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">田中一郎 · 合作伙伴</div>
                       <div class="u-vote-footer">
@@ -1908,7 +2071,7 @@
                   </div>
 
                   <div class="u-vote-card" id="v6">
-                    <div class="u-vote-thumb">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v6')">🎨<span class="u-media-tag">4 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">周敏 · 市场部</div>
                       <div class="u-vote-footer">
@@ -1927,6 +2090,114 @@
 
         <!-- User-facing preview: single celebration detail -->
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="sponsorExportOverlay" onclick="if(event.target===this)closeSponsorExport()">
+  <div class="adm-box" style="max-width:920px">
+    <div class="adm-head"><strong>导出预览（原型示意：真实导出为 Excel 文件，由后端按最新数据生成）</strong><button class="action-link" onclick="closeSponsorExport()">关闭</button></div>
+    <div style="padding:14px 20px">
+      <div style="font-size:12.5px; color:var(--text-secondary)">文件名：<span id="sponsorExportName"></span>　共 <span id="sponsorExportCount"></span> 条（当前筛选下的全部线索，不只当前页）</div>
+      <div style="overflow-x:auto; margin-top:12px"><table class="activity-table" id="sponsorExportTable"></table></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px">
+        <button class="btn" onclick="setSponsorExportState('fail')">演示：导出失败</button>
+        <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">下载 Excel</button>
+      </div>
+      <div class="attach-error" id="sponsorExportError" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="wallEditOverlay" onclick="if(event.target===this)closeWallEdit()">
+  <div class="adm-box" style="max-width:520px">
+    <div class="adm-head"><strong id="wallEditTitle">编辑留言</strong><button class="action-link" onclick="closeWallEdit()">关闭</button></div>
+    <div style="padding:16px 20px">
+      <div id="wallEditAuthorFixed" style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px"></div>
+      <div id="wallEditAuthorFields">
+        <div class="row2">
+          <div class="field"><label>作者类型</label>
+            <select id="editWallType" style="width:100%"><option value="internal">内部员工</option><option value="external">外部人士</option></select></div>
+          <div class="field"><label>部门 / 头衔</label><input type="text" id="editWallOrg"></div>
+        </div>
+        <div class="field"><label>作者姓名</label><input type="text" id="editWallName"></div>
+      </div>
+      <div class="field">
+        <label>留言内容</label>
+        <textarea rows="3" id="editWallContent"></textarea>
+      </div>
+      <div class="field">
+        <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+        <div class="upload-box" id="editWallImgBox" onclick="wallPickImage('edit')">点击上传一张配图（重新选择会替换原图）</div>
+        <input type="file" id="editWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('edit', this.files); this.value=''">
+        <div class="attach-error" id="editWallImgError" style="display:none"></div>
+        <div id="editWallImgList"></div>
+        <div class="picker-demo">
+          <span>原型演示：</span>
+          <button class="action-link" onclick="wallDemo('edit','ok')">换一张示例图片</button>
+          <button class="action-link" onclick="wallDemo('edit','type')">类型不符</button>
+          <button class="action-link" onclick="wallDemo('edit','big')">超过 5MB</button>
+          <button class="action-link" onclick="wallDemo('edit','multi')">一次选多张</button>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px">
+        <button class="btn" onclick="closeWallEdit()">取消</button>
+        <button class="btn primary" onclick="saveWallEdit()">保存修改</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="regCodeOverlay" onclick="if(event.target===this)closeRegCode()">
+  <div class="adm-box" style="max-width:380px">
+    <div class="adm-head"><strong style="font-size:14px">签到码</strong><button class="action-link" onclick="closeRegCode()">关闭</button></div>
+    <div style="padding:20px; text-align:center">
+      <div id="regCodeWho" style="font-size:13px; margin-bottom:12px"></div>
+      <div class="qr-grid" id="regCodeQr"></div>
+      <div class="qr-code-text" id="regCodeText"></div>
+      <div class="qr-hint">二维码内容只有签到码，不含个人信息。外部人士没有系统账号，可把码发给对方，活动当天出示。</div>
+      <div style="display:flex; justify-content:center; gap:14px; margin-top:14px">
+        <button class="action-link" onclick="copyRegCode()">复制签到码</button>
+        <button class="action-link" onclick="alert('原型演示：下载二维码图片')">下载二维码图片</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay" id="admWorkOverlay" onclick="if(event.target===this)closeAdmWork()">
+  <div class="adm-box">
+    <div class="adm-head">
+      <strong style="font-size:14px">作品详情</strong>
+      <button class="action-link" onclick="closeAdmWork()">关闭</button>
+    </div>
+    <div class="adm-stage" id="admStage"></div>
+    <div style="padding:8px 20px 0; font-size:11.5px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px">
+      <span id="admCount"></span>
+      <span>原型演示（当前项加载状态）：
+        <button class="action-link" onclick="setAdmMedia('normal')">正常</button>
+        <button class="action-link" onclick="setAdmMedia('loading')">加载中</button>
+        <button class="action-link" onclick="setAdmMedia('error')">加载失败</button>
+      </span>
+    </div>
+    <div class="adm-info" id="admInfo"></div>
+  </div>
+</div>
+
+<div class="u-work-overlay" id="workOverlay" onclick="if(event.target===this)closeWork()">
+  <div class="u-work-box">
+    <div class="u-work-stage" id="workStage"></div>
+    <div class="u-work-meta">
+      <div id="workTitle" style="font-weight:600"></div>
+      <div id="workDesc" style="margin-top:4px; color:var(--u-text-muted); font-size:12.5px"></div>
+      <div id="workCount" style="margin-top:6px; color:var(--u-text-muted); font-size:11.5px"></div>
+    </div>
+    <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+      <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
+        <button class="u-work-link" onclick="setWorkMedia('normal')">正常</button>
+        <button class="u-work-link" onclick="setWorkMedia('loading')">加载中</button>
+        <button class="u-work-link" onclick="setWorkMedia('error')">加载失败</button>
+      </span>
+      <button class="u-work-link" onclick="closeWork()">关闭</button>
     </div>
   </div>
 </div>
@@ -1957,11 +2228,11 @@ function validateStep1(){
   if(start.value && end.value){
     if(end.value <= start.value){
       end.classList.add('field-invalid');
-      errEnd.textContent = '结束时间需晚于开始时间';
+      errEnd.textContent = '计划结束时间需晚于计划开始时间';
       errEnd.style.display = 'block';
       valid = false;
     } else {
-      errEnd.textContent = '请选择结束时间';
+      errEnd.textContent = '请选择计划结束时间';
     }
   }
 
@@ -1996,10 +2267,273 @@ function goStep(n){
   });
   const labels = {1:'创建活动',2:'配置活动模块',3:'提交审批',4:'审批进度'};
   document.getElementById('crumb').textContent = labels[n];
+  if(n===3) renderConfirmAttach();
+}
+/* ---- 附件（步骤一上传 / 步骤三确认 / 详情页展示），数据形状对应 API-activity-001-admin：file_name / file_size / uploaded_at ---- */
+const ATTACH_MAX = 10, ATTACH_MAX_BYTES = 20*1024*1024;
+const ATTACH_EXT = ['pdf','doc','docx','xls','xlsx','ppt','pptx','png','jpg','jpeg','gif'];
+let attachments = [];            // {id, name, size, status: uploading|done|fail}
+let attachSeq = 0;
+let detailAttachState = 'normal'; // normal | loading | error | empty
+let detailAttachData = [];
+function fmtSize(b){ return b>=1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
+function showAttachError(msg){
+  const e = document.getElementById('attachError');
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function addAttachment(name, size, forceFail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!ATTACH_EXT.includes(ext)) return '「'+name+'」类型不支持，仅限 PDF、Word、Excel、PowerPoint 与常见图片';
+  if(size > ATTACH_MAX_BYTES) return '「'+name+'」超过 20MB，未上传';
+  if(attachments.length >= ATTACH_MAX) return '已达 10 个附件上限，「'+name+'」未上传';
+  const a = {id:'A'+(++attachSeq), name, size, status:'uploading', forceFail:!!forceFail};
+  attachments.push(a);
+  renderAttachments();
+  setTimeout(()=>{ a.status = a.forceFail ? 'fail' : 'done'; renderAttachments(); }, 700);
+  return '';
+}
+function handleAttachFiles(files){
+  const errs = [];
+  Array.from(files).forEach(f=>{ const e = addAttachment(f.name, f.size); if(e) errs.push(e); });
+  showAttachError(errs.join('；'));
+}
+function openAttachPicker(){
+  if(attachments.length >= ATTACH_MAX){ showAttachError('已达 10 个附件上限，请先删除再上传'); return; }
+  document.getElementById('attachInput').click();
+}
+function retryAttachment(id){
+  const a = attachments.find(x=>x.id===id);
+  a.status = 'uploading'; a.forceFail = false; renderAttachments();
+  setTimeout(()=>{ a.status = 'done'; renderAttachments(); }, 700);
+}
+function removeAttachment(id){
+  attachments = attachments.filter(x=>x.id!==id);
+  showAttachError(''); renderAttachments();
+}
+function demoAttach(kind){
+  const errs = [];
+  if(kind==='ok')   errs.push(addAttachment('活动方案-30周年庆典.pdf', 3.2*1048576));
+  if(kind==='big')  errs.push(addAttachment('宣传视频素材.pdf', 35*1048576));
+  if(kind==='type') errs.push(addAttachment('安装包.exe', 2*1048576));
+  if(kind==='fail') errs.push(addAttachment('预算明细.xlsx', 860*1024, true));
+  if(kind==='many'){
+    for(let i=attachments.length; i<ATTACH_MAX; i++) addAttachment('补充材料-'+(i+1)+'-这是一个特别特别长的文件名用来演示超长文件名不会撑破布局.pdf', 500*1024);
+    errs.push(addAttachment('第11个文件.pdf', 100*1024));
+  }
+  showAttachError(errs.filter(Boolean).join('；'));
+}
+function renderAttachments(){
+  document.getElementById('attachList').innerHTML = attachments.length
+    ? attachments.map(a=>{
+        const del = '<button class="action-link danger" onclick="removeAttachment(\''+a.id+'\')">删除</button>';
+        const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
+                 : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retryAttachment(\''+a.id+'\')">重试</button>'+del
+                 : del;
+        return '<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st+'</div>';
+      }).join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">尚未上传附件</div>';
+  document.getElementById('attachCount').textContent = attachments.length ? '已添加 '+attachments.length+'/'+ATTACH_MAX : '';
+  const full = attachments.length >= ATTACH_MAX;
+  document.getElementById('attachBoxText').textContent = full ? '已达 10 个上限，请先删除再上传'
+    : '点击上传附件（PDF、Word、Excel、PowerPoint、图片；单个不超过 20MB，最多 10 个）';
+  document.getElementById('attachBox').style.cursor = full ? 'not-allowed' : 'pointer';
+}
+function resetAttachments(){ attachments = []; showAttachError(''); renderAttachments(); }
+function doneAttachments(){
+  return attachments.filter(a=>a.status==='done').map(a=>({name:a.name, size:a.size, uploaded_at:'刚刚'}));
+}
+function attachDetailRows(list){
+  return list.length
+    ? list.map(a=>'<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+(a.uploaded_at?' · '+a.uploaded_at:'')+'</span><button class="action-link" onclick="alert(\'原型演示：下载 \'+this.parentNode.firstChild.textContent)">下载</button></div>').join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">暂无附件</div>';
+}
+function renderConfirmAttach(){
+  document.getElementById('confirmAttachList').innerHTML = attachDetailRows(doneAttachments());
+}
+function renderDetailAttachments(){
+  const el = document.getElementById('detailAttachList');
+  if(detailAttachState==='loading') el.innerHTML = '<div class="picker-skel"></div><div class="picker-skel"></div>';
+  else if(detailAttachState==='error') el.innerHTML = '<div class="picker-state" style="padding:12px">附件列表加载失败 <button class="action-link" onclick="setDetailAttachState(\'normal\')">重试</button></div>';
+  else el.innerHTML = attachDetailRows(detailAttachState==='empty' ? [] : detailAttachData);
+}
+function setDetailAttachState(s){ detailAttachState = s; renderDetailAttachments(); }
+
+/* ---- 第三节点审批人选择（步骤三），数据形状对应 API-activity-001-admin：employee_id / name / employee_no ---- */
+const EMPLOYEES = [
+  {employee_id:'E0001', name:'XY',  employee_no:'0001'},
+  {employee_id:'E1023', name:'王芳', employee_no:'1023'},
+  {employee_id:'E2047', name:'陈静', employee_no:'2047'},
+  {employee_id:'E1188', name:'刘洋', employee_no:'1188'},
+  {employee_id:'E3012', name:'张伟', employee_no:'3012'},
+  {employee_id:'E3305', name:'张伟', employee_no:'3305'},
+  {employee_id:'E2210', name:'赵敏', employee_no:'2210'},
+  {employee_id:'E1575', name:'孙浩', employee_no:'1575'},
+  {employee_id:'E4021', name:'周婷', employee_no:'4021'},
+  {employee_id:'E0876', name:'吴磊', employee_no:'0876'},
+  {employee_id:'E2933', name:'郑凯', employee_no:'2933'},
+  {employee_id:'E1740', name:'林悦', employee_no:'1740'}
+];
+let thirdSelected = [];          // third_node_approver_ids[]
+let pickerState = 'normal';      // normal | loading | error
+function empById(id){ return EMPLOYEES.find(e=>e.employee_id===id); }
+function renderChips(){
+  const wrap = document.getElementById('pickerChips');
+  wrap.innerHTML = thirdSelected.length
+    ? thirdSelected.map(id=>{
+        const e = empById(id);
+        return '<span class="chip">'+e.name+'<span class="chip-no">'+e.employee_no+'</span><button class="chip-x" onclick="removeApprover(\''+id+'\')" title="移除">×</button></span>';
+      }).join('')
+    : '<span class="picker-chips-empty">尚未选择审批人</span>';
+  const badge = document.getElementById('thirdCountBadge');
+  badge.textContent = thirdSelected.length ? '已选 '+thirdSelected.length+' 人' : '';
+}
+function renderPicker(){
+  const list = document.getElementById('pickerList');
+  if(pickerState==='loading'){
+    list.innerHTML = '<div class="picker-skel"></div><div class="picker-skel"></div><div class="picker-skel"></div>';
+    return;
+  }
+  if(pickerState==='error'){
+    list.innerHTML = '<div class="picker-state">员工列表加载失败，请检查网络后重试<br><button class="action-link" style="margin-top:8px" onclick="setPickerState(\'normal\')">重试</button></div>';
+    return;
+  }
+  const q = document.getElementById('pickerSearch').value.trim();
+  const rows = EMPLOYEES.filter(e=>!q || e.name.includes(q) || e.employee_no.includes(q));
+  if(!rows.length){
+    list.innerHTML = '<div class="picker-state">没有找到「'+q+'」相关的员工，换个姓名或工号试试</div>';
+    return;
+  }
+  list.innerHTML = rows.map(e=>{
+    const picked = thirdSelected.includes(e.employee_id);
+    return '<div class="picker-item"><span class="grow">'+e.name+'<span class="assignee-no">工号 '+e.employee_no+'</span></span>'+
+      (picked ? '<span class="assignee-st approved">已选</span>'
+              : '<button class="action-link" onclick="addApprover(\''+e.employee_id+'\')">添加</button>')+'</div>';
+  }).join('');
+}
+function setPickerState(s){ pickerState = s; renderPicker(); }
+function addApprover(id){
+  if(thirdSelected.includes(id)) return;     // 同一人不能重复选
+  thirdSelected.push(id);
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
+}
+function removeApprover(id){
+  thirdSelected = thirdSelected.filter(x=>x!==id);
+  renderChips(); renderPicker();
+}
+function pickAllDemo(){
+  thirdSelected = EMPLOYEES.map(e=>e.employee_id);
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
+}
+function resetThirdPicker(){
+  thirdSelected = []; pickerState = 'normal';
+  document.getElementById('pickerSearch').value = '';
+  document.getElementById('errThird').style.display = 'none';
+  document.getElementById('pickerChips').classList.remove('field-invalid');
+  renderChips(); renderPicker();
 }
 function submitApproval(){
-  goStep(4);
+  if(!thirdSelected.length){
+    document.getElementById('errThird').style.display = 'block';
+    document.getElementById('pickerChips').classList.add('field-invalid');
+    document.getElementById('pickerChips').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  openApproval({
+    deptStatus:'pending',
+    meId:null,
+    attachments: doneAttachments(),
+    assignees: thirdSelected.map(id=>({employee_id:id, status:'pending', comment:'', acted_at:''}))
+  }, 'initiator');
 }
+
+/* ---- 审批进度：固定三个节点（提交 / 部门主管审批 / 第三节点审批） ---- */
+let approvalData = null;
+const ASSIGNEE_ST = {pending:'待处理', approved:'已通过', rejected:'已驳回', revoked:'已撤销'};
+function demoApprovalData(){
+  return {
+    deptStatus:'approved',
+    meId:'E2047',
+    attachments:[
+      {name:'活动方案-30周年庆典.pdf', size:3.2*1048576, uploaded_at:'2026-09-14 10:20'},
+      {name:'预算明细.xlsx', size:860*1024, uploaded_at:'2026-09-14 10:24'},
+      {name:'场地平面图-总部三楼多功能厅-含消防通道标注与设备摆放位置说明-终版-v3.pptx', size:12.4*1048576, uploaded_at:'2026-09-14 10:30'}
+    ],
+    assignees:[
+      {employee_id:'E1023', status:'approved', comment:'同意，预算说明清楚。', acted_at:'2026-09-14 14:20'},
+      {employee_id:'E2047', status:'pending',  comment:'', acted_at:''},
+      {employee_id:'E1188', status:'pending',  comment:'', acted_at:''}
+    ]
+  };
+}
+function thirdNodeStatus(d){
+  if(d.assignees.some(a=>a.status==='rejected')) return 'rejected';
+  if(d.assignees.every(a=>a.status==='approved')) return 'approved';
+  return d.deptStatus==='approved' ? 'current' : 'waiting';
+}
+function approvalRow(numCls, numText, title, subHtml, stCls, stText, extraHtml){
+  return '<div class="approval-step-row"><div class="approval-num '+numCls+'">'+numText+'</div>'+
+    '<div class="approval-info"><div class="approval-title">'+title+'</div>'+subHtml+(extraHtml||'')+'</div>'+
+    '<div class="approval-status '+stCls+'">'+stText+'</div></div>';
+}
+function renderApproval(){
+  const d = approvalData;
+  const third = thirdNodeStatus(d);
+  let html = approvalRow('done','✓','提交','<div class="approval-sub">XY · 2026-09-14 10:32</div>','done','已提交');
+  html += d.deptStatus==='approved'
+    ? approvalRow('done','✓','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 2026-09-14 11:05</div>','done','已通过',
+        '<div class="approval-comment">同意，注意控制现场噪音，提前和物业报备。</div>')
+    : approvalRow('current','2','部门主管审批','<div class="approval-sub">张伟（技术部经理）· 待处理</div>','current','进行中');
+  const rows = d.assignees.map(a=>{
+    const e = empById(a.employee_id);
+    return '<div class="assignee-row"><div class="assignee-main"><span class="assignee-name">'+e.name+'</span><span class="assignee-no">工号 '+e.employee_no+'</span>'+
+      (a.employee_id===d.meId ? '<span class="assignee-me">我</span>' : '')+
+      (a.comment ? '<div class="assignee-note">'+a.comment+(a.acted_at?' · '+a.acted_at:'')+'</div>' : '')+'</div>'+
+      '<span class="assignee-st '+a.status+'">'+ASSIGNEE_ST[a.status]+'</span></div>';
+  }).join('');
+  const done = d.assignees.filter(a=>a.status==='approved').length;
+  const numCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : '';
+  const numTxt = third==='approved' ? '✓' : third==='rejected' ? '✕' : '3';
+  const stCls = third==='approved' ? 'done' : third==='rejected' ? 'rejected' : third==='current' ? 'current' : 'conditional';
+  const stTxt = third==='approved' ? '已通过' : third==='rejected' ? '已驳回' : third==='current' ? '进行中 '+done+'/'+d.assignees.length : '待处理';
+  html += approvalRow(numCls, numTxt, '第三节点审批',
+    '<div class="approval-sub">共 '+d.assignees.length+' 位审批人并行处理，全部通过才算通过</div>',
+    stCls, stTxt, '<div class="approval-assignees">'+rows+'</div>');
+  document.getElementById('approvalTimeline').innerHTML = html;
+}
+function openApproval(data, mode){
+  approvalData = data;
+  const badge = document.getElementById('approvalHeaderBadge');
+  badge.className = 'status-badge review';
+  badge.textContent = '审批中';
+  document.getElementById('approverComment').value = '';
+  document.getElementById('demoOthersWrap').classList.add('hidden');
+  goStep(4);
+  detailAttachState = 'normal';
+  detailAttachData = data.attachments || [];
+  renderDetailAttachments();
+  renderApproval();
+  const me = data.assignees.find(a=>a.employee_id===data.meId);
+  setApprovalMode(mode==='approver' && me && me.status==='pending' ? 'approver' : 'initiator');
+}
+renderChips();
+renderPicker();
+renderAttachments();
+
+/* Celebrations 卡片列表的时间合并显示，规则见 REQ-007 §5.4（同 celebration-007-user-h5.html 的 fmtCelebrationTime） */
+const CEL_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtCelebrationTime(startIso, endIso){
+  const p = iso => { const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); return {y:m[1], mo:+m[2]-1, d:+m[3], hm:m[4]+':'+m[5], day:m[1]+m[2]+m[3]}; };
+  const a = p(startIso), b = p(endIso);
+  const dm = x => x.d+' '+CEL_MONTHS[x.mo]+' '+x.y;
+  return a.day===b.day ? dm(a)+' '+a.hm+' - '+b.hm : dm(a)+' '+a.hm+' - '+dm(b)+' '+b.hm;
+}
+document.querySelectorAll('.u-vote-author[data-start]').forEach(el=>{
+  el.textContent = fmtCelebrationTime(el.dataset.start, el.dataset.end);
+});
 function showList(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='listView');
@@ -2014,6 +2548,8 @@ function showEditor(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
+  resetThirdPicker();
+  resetAttachments();
   goStep(1);
 }
 function viewActivity(){
@@ -2022,8 +2558,7 @@ function viewActivity(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
-  goStep(4);
-  setApprovalMode('initiator');
+  openApproval(demoApprovalData(), 'initiator');
 }
 function viewApproval(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
@@ -2031,8 +2566,7 @@ function viewApproval(){
   });
   document.getElementById('panel').classList.remove('wide');
   setActiveNav('navActivities');
-  goStep(4);
-  setApprovalMode('approver');
+  openApproval(demoApprovalData(), 'approver');
   closeNotifications();
 }
 function setApprovalMode(mode){
@@ -2040,52 +2574,54 @@ function setApprovalMode(mode){
   document.getElementById('approverActions').classList.toggle('hidden', mode!=='approver');
   document.getElementById('approvalDoneMsg').classList.add('hidden');
 }
+function publishIfAllApproved(){
+  if(thirdNodeStatus(approvalData)!=='approved') return false;
+  const headerBadge = document.getElementById('approvalHeaderBadge');
+  headerBadge.className = 'status-badge approved';
+  headerBadge.textContent = '已发布';
+  return true;
+}
 function approveCurrentStep(){
-  document.getElementById('anum2').className = 'approval-num done';
-  document.getElementById('anum2').textContent = '✓';
-  document.getElementById('astatus2').className = 'approval-status done';
-  document.getElementById('astatus2').textContent = '已通过';
-  const comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
-  const info2 = document.getElementById('ainfo2');
-  if(!info2.querySelector('.approval-comment')){
-    const c = document.createElement('div');
-    c.className = 'approval-comment';
-    c.textContent = comment;
-    info2.appendChild(c);
-  }
-  document.getElementById('anum3').className = 'approval-num current';
-  document.getElementById('astatus3').className = 'approval-status current';
-  document.getElementById('astatus3').textContent = '进行中';
+  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
+  me.status = 'approved';
+  me.comment = document.getElementById('approverComment').value.trim() || '同意，符合流程要求。';
+  me.acted_at = '刚刚';
+  renderApproval();
   document.getElementById('approverActions').classList.add('hidden');
-  document.getElementById('approvalDoneMsg').textContent = '已提交处理结果，流程将流转至下一节点。';
-  document.getElementById('approvalDoneMsg').classList.remove('hidden');
+  const msg = document.getElementById('approvalDoneMsg');
+  if(publishIfAllApproved()){
+    msg.textContent = '第三节点全部通过，活动已自动发布。';
+  } else {
+    const left = approvalData.assignees.filter(a=>a.status==='pending').length;
+    msg.textContent = '已通过，还有 '+left+' 位审批人未处理，全部通过后活动将自动发布。';
+    document.getElementById('demoOthersWrap').classList.remove('hidden');
+  }
+  msg.classList.remove('hidden');
   updateTodoBadge(-1);
+}
+function demoOthersApprove(){
+  approvalData.assignees.forEach(a=>{
+    if(a.status==='pending'){ a.status='approved'; a.comment='同意。'; a.acted_at='刚刚'; }
+  });
+  renderApproval();
+  publishIfAllApproved();
+  document.getElementById('approvalDoneMsg').textContent = '第三节点全部通过，活动已自动发布。';
+  document.getElementById('demoOthersWrap').classList.add('hidden');
 }
 function rejectCurrentStep(){
   const comment = document.getElementById('approverComment').value.trim();
   if(!comment){ alert('驳回需要填写审批意见'); return; }
-  const num2 = document.getElementById('anum2');
-  num2.className = 'approval-num';
-  num2.style.background = 'var(--danger)';
-  num2.style.color = '#fff';
-  num2.textContent = '✕';
-  const status2 = document.getElementById('astatus2');
-  status2.className = 'approval-status';
-  status2.style.background = '#F6E4E2';
-  status2.style.color = 'var(--danger)';
-  status2.textContent = '已驳回';
-  const info2 = document.getElementById('ainfo2');
-  if(!info2.querySelector('.approval-comment')){
-    const c = document.createElement('div');
-    c.className = 'approval-comment';
-    c.textContent = comment;
-    info2.appendChild(c);
-  }
+  const me = approvalData.assignees.find(a=>a.employee_id===approvalData.meId);
+  me.status = 'rejected';
+  me.comment = comment;
+  me.acted_at = '刚刚';
+  approvalData.assignees.forEach(a=>{ if(a.status==='pending') a.status='revoked'; });
+  renderApproval();
   const headerBadge = document.getElementById('approvalHeaderBadge');
   headerBadge.className = 'status-badge rejected';
   headerBadge.textContent = '已驳回';
   document.getElementById('approverActions').classList.add('hidden');
-  document.getElementById('approvalDoneMsg').textContent = '已驳回，活动将退回发起人修改。';
+  document.getElementById('approvalDoneMsg').textContent = '已驳回，其余审批人的待办已同步撤销，活动退回发起人修改。';
   document.getElementById('approvalDoneMsg').classList.remove('hidden');
   updateTodoBadge(-1);
 }
@@ -2157,11 +2693,52 @@ function showSponsors(){
   document.getElementById('crumb').textContent = '赞助商管理';
   setActiveNav('navSponsors');
 }
+/* ---- 赞助线索导出（REQ-008 AC-012 ～ AC-016）：范围 = 当前「按活动筛选」下的全部线索；列、格式见需求 §8。原型用预览表示导出内容 ---- */
+const SPONSOR_ACTIVITY_NAMES = {'30th':'公司30周年庆典', 'annual':'2026年会'};
+function sponsorExportRows(){
+  const f = document.getElementById('sponsorActivityFilter').value;
+  return [...document.querySelectorAll('#sponsorTableBody tr')].filter(r=>f==='all' || r.dataset.activity===f).map(r=>{
+    const c = r.children, cp = c[1].textContent.split(' · '), contact = c[2].innerHTML.split('<br>');
+    const tierEl = c[3].querySelector('.tier-cell'), tierText = tierEl ? 'Custom' : c[3].textContent.trim();
+    const dash = v => (v === '—' ? '' : v);                         // 空值导出为空，不写「—」
+    return [SPONSOR_ACTIVITY_NAMES[r.dataset.activity] || r.dataset.activity, c[0].textContent.trim(), cp[0].trim(), (cp[1]||'').trim(),
+            contact[0].trim(), (contact[1]||'').trim(), dash(tierText), tierEl ? tierEl.title : '', dash(c[4].textContent.trim()),
+            c[5].textContent.trim(), c[6].textContent.trim()];       // 完整全文取 title，不截断
+  });
+}
+const SPONSOR_EXPORT_HEAD = ['所属活动','公司名称','联系人','职位','邮箱','电话','意向赞助等级','自定义赞助说明','留言 / 特殊需求','提交时间','跟进状态'];
+function updateSponsorExportBtn(){ document.getElementById('sponsorExportBtn').disabled = sponsorExportRows().length === 0; }   // 没有数据时置灰
+function exportSponsors(){
+  const rows = sponsorExportRows();
+  if(!rows.length) return;
+  const f = document.getElementById('sponsorActivityFilter').value;
+  const d = new Date(), pad = n => String(n).padStart(2,'0');
+  const name = '赞助商线索_' + (f==='all' ? '全部活动' : SPONSOR_ACTIVITY_NAMES[f]) + '_' + d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()) + '.xlsx';
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.getElementById('sponsorExportName').textContent = name;
+  document.getElementById('sponsorExportCount').textContent = rows.length;
+  document.getElementById('sponsorExportTable').innerHTML = '<thead><tr>' + SPONSOR_EXPORT_HEAD.map(h=>'<th>'+h+'</th>').join('') + '</tr></thead><tbody>'
+    + rows.map(r=>'<tr>' + r.map(v=>'<td style="white-space:normal; min-width:90px">'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
+  document.getElementById('sponsorExportError').style.display = 'none';
+  document.getElementById('sponsorExportDownload').disabled = false; document.getElementById('sponsorExportDownload').textContent = '下载 Excel';
+  document.getElementById('sponsorExportOverlay').classList.add('open');
+}
+function closeSponsorExport(){ document.getElementById('sponsorExportOverlay').classList.remove('open'); }
+function setSponsorExportState(st){
+  const e = document.getElementById('sponsorExportError');
+  if(st === 'fail'){ e.textContent = '导出失败：服务暂时不可用，请稍后重试'; e.style.display = 'block'; }
+}
+function downloadSponsorExport(){
+  const b = document.getElementById('sponsorExportDownload');
+  b.disabled = true; b.textContent = '导出中…';                       // 导出中不可重复点击
+  setTimeout(()=>{ b.disabled = false; b.textContent = '下载 Excel'; alert('原型演示：已下载 ' + document.getElementById('sponsorExportName').textContent); }, 600);
+}
 function filterSponsors(){
   const val = document.getElementById('sponsorActivityFilter').value;
   document.querySelectorAll('#sponsorTableBody tr').forEach(row=>{
     row.style.display = (val === 'all' || row.dataset.activity === val) ? '' : 'none';
   });
+  updateSponsorExportBtn();
 }
 function setSponsorStatus(rowId, status){
   const badge = document.getElementById('sponsorstatus-'+rowId);
@@ -2183,11 +2760,23 @@ function updateSponsorNavBadge(){
   badge.textContent = count;
   badge.classList.toggle('hidden', count === 0);
 }
+/* 名额上限（演示数据）：人数含行政代报名、不论是否已签到；已满时代报名同样被拦截（REQ-004 AC-013） */
+const REG_CAPACITY = {sg30:null, bj30:2, q3camp:null};
+function regCount(celId){ return [...document.querySelectorAll('#regTableBody tr')].filter(r=>r.dataset.celebration===celId).length; }
+function regIsFull(celId){ const c = REG_CAPACITY[celId]; return c != null && regCount(celId) >= c; }
+function updateRegCapacityUI(){
+  const f = document.getElementById('registrationCelFilter').value;
+  document.getElementById('statCapacity').textContent = f === 'all' ? '—' : (REG_CAPACITY[f] == null ? '不限' : REG_CAPACITY[f]);
+  const cel = document.getElementById('manualRegCelebration').value, c = REG_CAPACITY[cel];
+  document.getElementById('manualRegCapHint').textContent = c == null ? '名额上限：不限'
+    : '名额上限：' + c + '，已报名 ' + regCount(cel) + (regIsFull(cel) ? '（已满，无法再添加）' : '');
+}
 function filterRegistrations(){
   const val = document.getElementById('registrationCelFilter').value;
   document.querySelectorAll('#regTableBody tr').forEach(row=>{
     row.style.display = (val === 'all' || row.dataset.celebration === val) ? '' : 'none';
   });
+  updateRegCapacityUI();
 }
 function toggleCelebrationDemo(){
   const cover = document.getElementById('celCoverSH');
@@ -2195,7 +2784,7 @@ function toggleCelebrationDemo(){
   const isComingSoon = cover.textContent.indexOf('Coming Soon') !== -1;
   if(isComingSoon){
     cover.textContent = '📷';
-    status.textContent = '已举办';
+    status.textContent = '进行中';
   } else {
     cover.textContent = '⏳ Coming Soon';
     status.textContent = '即将开始';
@@ -2204,6 +2793,261 @@ function toggleCelebrationDemo(){
 function toggleUsage(id){
   document.getElementById(id).classList.toggle('open');
 }
+/* ---- 管理端作品上传 / 编辑：多张图片（可调序）+ 可选视频（REQ-003 AC-009 / AC-010 / AC-013） ---- */
+const SUB_IMG_EXT = ['jpg','jpeg','png'], SUB_IMG_MAX = 9, SUB_IMG_BYTES = 5*1048576, SUB_VID_BYTES = 100*1048576;
+let subImages = [], subVideo = null, subSeq = 0, subEditingId = null;
+function subShow(id, msg){ const e = document.getElementById(id); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+function addSubImage(name, size, forceFail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!SUB_IMG_EXT.includes(ext)) return '「'+name+'」类型不支持，图片仅限 JPG 或 PNG';
+  if(size > SUB_IMG_BYTES) return '「'+name+'」超过 5MB，未上传';
+  if(subImages.length >= SUB_IMG_MAX) return '已达 9 张上限，「'+name+'」未上传';
+  const a = {id:'M'+(++subSeq), name, size, status:'uploading', forceFail:!!forceFail};
+  subImages.push(a); renderSubImages();
+  setTimeout(()=>{ a.status = a.forceFail ? 'fail' : 'done'; renderSubImages(); }, 700);
+  return '';
+}
+function handleSubImages(files){
+  const errs = []; Array.from(files).forEach(f=>{ const e = addSubImage(f.name, f.size); if(e) errs.push(e); });
+  subShow('subImgError', errs.join('；'));
+}
+function openSubImgPicker(){
+  if(subImages.length >= SUB_IMG_MAX){ subShow('subImgError', '已达 9 张上限，请先删除再上传'); return; }
+  document.getElementById('subImgInput').click();
+}
+function retrySubImage(id){
+  const a = subImages.find(x=>x.id===id); a.status = 'uploading'; a.forceFail = false; renderSubImages();
+  setTimeout(()=>{ a.status = 'done'; renderSubImages(); }, 700);
+}
+function removeSubImage(id){ subImages = subImages.filter(x=>x.id!==id); subShow('subImgError',''); renderSubImages(); }
+function moveSubImage(id, d){
+  const i = subImages.findIndex(x=>x.id===id), j = i + d;
+  if(j < 0 || j >= subImages.length) return;
+  const t = subImages[i]; subImages[i] = subImages[j]; subImages[j] = t; renderSubImages();
+}
+function renderSubImages(){
+  document.getElementById('subImgList').innerHTML = subImages.length
+    ? subImages.map((a,i)=>{
+        const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
+          : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retrySubImage(\''+a.id+'\')">重试</button>' : '';
+        return '<div class="attach-row">'
+          + '<span class="attach-st"'+(i===0?' style="background:var(--accent-tint); color:var(--accent)"':'')+'>'+(i===0?'封面':(i+1))+'</span>'
+          + '<span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st
+          + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',-1)"'+(i===0?' disabled':'')+'>↑</button>'
+          + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',1)"'+(i===subImages.length-1?' disabled':'')+'>↓</button>'
+          + '<button class="action-link danger" onclick="removeSubImage(\''+a.id+'\')">删除</button></div>';
+      }).join('')
+    : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">尚未上传图片</div>';
+  document.getElementById('subImgCount').textContent = subImages.length ? '已添加 '+subImages.length+'/'+SUB_IMG_MAX : '';
+  const full = subImages.length >= SUB_IMG_MAX;
+  document.getElementById('subImgBoxText').textContent = full ? '已达 9 张上限，请先删除再上传' : '点击上传作品图片，可一次选多张';
+  document.getElementById('subImgBox').style.cursor = full ? 'not-allowed' : 'pointer';
+}
+function addSubVideo(name, size){
+  if(subVideo) return '已有视频，请先删除再上传「'+name+'」';
+  if(name.split('.').pop().toLowerCase() !== 'mp4') return '「'+name+'」类型不支持，视频仅限 MP4';
+  if(size > SUB_VID_BYTES) return '「'+name+'」超过 100MB，未上传';
+  subVideo = {name, size, status:'uploading'}; renderSubVideo();
+  setTimeout(()=>{ if(subVideo){ subVideo.status = 'done'; renderSubVideo(); } }, 900);
+  return '';
+}
+function handleSubVideo(files){ if(files.length) subShow('subVideoError', addSubVideo(files[0].name, files[0].size)); }
+function openSubVideoPicker(){
+  if(subVideo){ subShow('subVideoError', '已有视频，请先删除再上传'); return; }
+  document.getElementById('subVideoInput').click();
+}
+function removeSubVideo(){ subVideo = null; subShow('subVideoError',''); renderSubVideo(); }
+function renderSubVideo(){
+  document.getElementById('subVideoList').innerHTML = subVideo
+    ? '<div class="attach-row"><span class="attach-name" title="'+subVideo.name+'">▶ '+subVideo.name+'</span><span class="attach-size">'+fmtSize(subVideo.size)+'</span>'
+      + (subVideo.status==='uploading' ? '<span class="attach-st">上传中…</span>' : '<button class="action-link danger" onclick="removeSubVideo()">删除</button>') + '</div>'
+    : '';
+  document.getElementById('subVideoBoxText').textContent = subVideo ? '已有视频，如需更换请先删除' : '点击上传作品视频';
+}
+function demoSub(kind){
+  const errs = [];
+  if(kind==='img')      errs.push(addSubImage('涂鸦作品-'+(subImages.length+1)+'.jpg', 1.8*1048576));
+  if(kind==='bigimg')   errs.push(addSubImage('高清原图.png', 7*1048576));
+  if(kind==='type')     errs.push(addSubImage('动图.gif', 2*1048576));
+  if(kind==='fail')     errs.push(addSubImage('作品图-上传失败演示.jpg', 2*1048576, true));
+  if(kind==='many'){ for(let i=subImages.length; i<SUB_IMG_MAX; i++) addSubImage('作品图-'+(i+1)+'-这是一个特别特别长的文件名用来演示超长文件名不会撑破布局.jpg', 900*1024); errs.push(addSubImage('第10张.jpg', 500*1024)); }
+  subShow('subImgError', errs.filter(Boolean).join('；'));
+  if(kind==='video')    subShow('subVideoError', addSubVideo('创作过程.mp4', 48*1048576));
+  if(kind==='bigvideo') subShow('subVideoError', addSubVideo('原始素材.mp4', 130*1048576));
+}
+/* ---- 作者姓名：一个输入框一次输入所有人，只按逗号（, 或 ，）拆分，REQ-003 AC-018（顿号 / 分号提示后阻止，空格不作分隔符、保留英文姓名中的空格） ---- */
+const SUB_NAME_MAX = 10, SUB_NAME_LEN = 30;
+function parseAuthors(raw){
+  const names = [], errors = [];
+  if(/[、;；]/.test(raw)) errors.push('请只用逗号“,”分隔姓名，不要使用顿号或分号');
+  raw.split(/[,，]/).map(x=>x.trim()).forEach(p=>{
+    if(!p) return;
+    if(Array.from(p).length > SUB_NAME_LEN){ errors.push('「'+p.slice(0,8)+'…」超过 '+SUB_NAME_LEN+' 个字符'); return; }
+    if(names.includes(p)){ errors.push('「'+p+'」重复，同一作品内姓名不能重复'); return; }
+    names.push(p);
+  });
+  if(names.length > SUB_NAME_MAX) errors.push('最多 '+SUB_NAME_MAX+' 位作者，当前识别到 '+names.length+' 位');
+  return {names, errors};
+}
+function updateAuthorHint(){
+  const r = parseAuthors(document.getElementById('subAuthorName').value);
+  document.getElementById('subNameHint').textContent = r.names.length ? '已识别 '+r.names.length+' 位作者：'+r.names.join(', ') : '';
+  subShow('subNameError', r.errors.join('；'));
+}
+
+const SUB_DESC_MAX = 200;
+function subDescLen(){ return Array.from(document.getElementById('subDesc').value).length; }   // 汉字 / 字母 / 标点 / 空格 / 换行都按 1 个计
+function updateSubDescCount(){
+  const n = subDescLen(), over = n > SUB_DESC_MAX;
+  const c = document.getElementById('subDescCount');
+  c.textContent = n + ' / ' + SUB_DESC_MAX;
+  c.style.color = over ? 'var(--danger)' : 'var(--text-muted)';
+  subShow('subDescError', over ? '作品说明超出 ' + SUB_DESC_MAX + ' 个字符上限，请精简后再上传（已输入内容不会被截断）' : '');
+}
+function resetSubForm(){
+  document.getElementById('subDesc').value = ''; updateSubDescCount();
+  subImages = []; subVideo = null; subEditingId = null;
+  subShow('subImgError',''); subShow('subVideoError','');
+  document.getElementById('subAuthorName').value = ''; updateAuthorHint();
+  document.getElementById('subPanelTitle').textContent = '上传作品';
+  document.getElementById('subSubmitBtn').textContent = '上传作品';
+  renderSubImages(); renderSubVideo();
+}
+function submitSubmission(){
+  if(!subImages.length){ subShow('subImgError', subVideo ? '只有视频不能上传作品，请至少添加 1 张作品图片' : '请至少上传 1 张作品图片'); document.getElementById('subImgList').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  const authors = parseAuthors(document.getElementById('subAuthorName').value);
+  if(!authors.names.length || authors.errors.length){
+    subShow('subNameError', authors.errors.length ? authors.errors.join('；') : '请至少输入 1 位作者姓名');
+    document.getElementById('subAuthorName').scrollIntoView({behavior:'smooth', block:'center'}); return;
+  }
+  if(subDescLen() > SUB_DESC_MAX){ updateSubDescCount(); document.getElementById('subDesc').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  alert(subEditingId ? '原型演示：保存修改，状态与票数不变' : '原型演示：将新建一条 Submission 记录，状态为未发布');
+  resetSubForm();
+}
+function editSubmission(cardId){
+  const card = document.getElementById(cardId);
+  if(card.dataset.status === 'published') return;      // 已发布没有编辑入口（AC-013）
+  resetSubForm();
+  subEditingId = cardId;
+  const n = +card.dataset.images;
+  for(let i=1; i<=n; i++) subImages.push({id:'M'+(++subSeq), name:'作品图-'+i+'.jpg', size:1.2*1048576, status:'done'});
+  if(card.dataset.video === '1') subVideo = {name:'创作过程.mp4', size:48*1048576, status:'done'};
+  document.getElementById('subAuthorName').value = card.querySelector('.submission-author').textContent; updateAuthorHint();
+  document.getElementById('subDesc').value = (card.querySelector('.submission-desc')||{}).textContent || ''; updateSubDescCount();
+  document.getElementById('subPanelTitle').textContent = '编辑作品 · ' + card.querySelector('.submission-author').textContent + '（状态与票数不变）';
+  document.getElementById('subSubmitBtn').textContent = '保存修改';
+  renderSubImages(); renderSubVideo();
+  document.querySelector('.upload-panel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
+const WORKS = {"v1": {"images": 2, "video": false, "author": "王芳", "org": "行政部", "desc": "以三十周年主题色致敬公司历程"}, "v2": {"images": 5, "video": false, "author": "李强", "org": "工程部", "desc": "工地上的三十年"}, "v3": {"images": 1, "video": false, "author": "张伟", "org": "技术部", "desc": "代码里的涂鸦"}, "v4": {"images": 3, "video": true, "author": "陈思思, 王芳, 李强", "org": "产品部", "desc": "灵感来源于公司logo的演变过程"}, "v5": {"images": 1, "video": false, "author": "田中一郎", "org": "合作伙伴", "desc": "感谢合作多年，祝福公司蒸蒸日上"}, "v6": {"images": 4, "video": false, "author": "周敏", "org": "市场部", "desc": "抽象色彩表达团队活力"}};
+let workCur = null, workIdx = 0, workMediaState = 'normal';
+function workItems(w){
+  const a = [];
+  for(let i=1; i<=w.images; i++) a.push({t:'img', n:i});
+  if(w.video) a.push({t:'video'});
+  return a;
+}
+function openWork(id){
+  workCur = id; workIdx = 0; workMediaState = 'normal';
+  document.getElementById('workOverlay').classList.add('open');
+  renderWork();
+}
+function closeWork(){ document.getElementById('workOverlay').classList.remove('open'); }
+function stepWork(d){
+  const n = workItems(WORKS[workCur]).length;
+  workIdx = Math.max(0, Math.min(n-1, workIdx+d));
+  workMediaState = 'normal';
+  renderWork();
+}
+function setWorkMedia(s){ workMediaState = s; renderWork(); }
+function renderWork(){
+  const w = WORKS[workCur], items = workItems(w), it = items[workIdx];
+  document.getElementById('workTitle').textContent = w.author + ' · ' + w.org;
+  document.getElementById('workDesc').textContent = w.desc;
+  document.getElementById('workCount').textContent = items.length > 1 ? (workIdx+1) + ' / ' + items.length : '';
+  let html;
+  if(workMediaState === 'loading'){
+    html = '<div class="u-work-skel"></div><div class="u-work-skel" style="width:45%"></div>';
+  } else if(workMediaState === 'error' && it.t === 'video'){
+    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
+  } else if(it.t === 'video'){
+    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  } else {
+    html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
+  }
+  if(items.length > 1){
+    html += '<button class="u-work-nav prev" onclick="stepWork(-1)"' + (workIdx===0?' disabled':'') + '>‹</button>'
+          + '<button class="u-work-nav next" onclick="stepWork(1)"' + (workIdx===items.length-1?' disabled':'') + '>›</button>';
+  }
+  document.getElementById('workStage').innerHTML = html;
+}
+
+renderSubImages();
+renderSubVideo();
+updateAuthorHint();
+updateSponsorExportBtn();
+document.querySelectorAll('#wallList .wall-row').forEach(r=>{ r.querySelector('.table-actions').innerHTML = wallActionsHtml(r.id, r.dataset.status); });
+{ const w3 = document.querySelector('#w3 .wall-name-row'); if(w3){ const t = document.createElement('span'); t.className = 'wall-edited'; t.textContent = '已编辑'; t.title = '修改人：行政小李 · 修改时间：2026-09-16 09:40'; w3.appendChild(t); } }
+/* 所有管理端列表默认按创建时间倒序（最新创建的在最前），见 conventions.md「列表默认排序」；与筛选共同生效，状态变化、编辑不改变位置。
+   原型用 data-created 表示记录创建时间，页面加载时排一次；新增记录（代报名、赞助线索、留言）直接插到最前。 */
+function sortByCreatedDesc(container, itemSelector){
+  const items = Array.from(container.children).filter(el=>el.matches(itemSelector));
+  items.sort((x,y)=>(y.dataset.created||'').localeCompare(x.dataset.created||''));   // 同一时间保持原有先后
+  items.forEach(el=>container.appendChild(el));
+}
+sortByCreatedDesc(document.querySelector('#listView .activity-table tbody'), 'tr');
+sortByCreatedDesc(document.getElementById('submissionGrid'), '.submission-card');
+sortByCreatedDesc(document.getElementById('regTableBody'), 'tr');
+sortByCreatedDesc(document.getElementById('wallList'), '.wall-row');
+sortByCreatedDesc(document.getElementById('sponsorTableBody'), 'tr');
+document.querySelectorAll('#submissionGrid .submission-card').forEach(c=>setSubmissionStatus(c.id, c.dataset.status));
+
+/* ---- 管理端作品详情（只读，REQ-003 AC-017）：图片可切换、视频最后一项、完整说明、作者信息、状态与票数 ---- */
+const ADM_CELEBRATIONS = {"sg30": "公司30周年庆典 · 新加坡总部站", "bj30": "公司30周年庆典 · 北京分公司站", "q3camp": "Q3部门团建 · Q3团建营地站"};
+let admCur = null, admIdx = 0, admMediaState = 'normal';
+function admItems(card){
+  const a = [], n = +card.dataset.images;
+  for(let i=1; i<=n; i++) a.push({t:'img', n:i, total:n});
+  if(card.dataset.video === '1') a.push({t:'video'});
+  return a;
+}
+function viewSubmission(cardId){
+  admCur = cardId; admIdx = 0; admMediaState = 'normal';
+  document.getElementById('admWorkOverlay').classList.add('open');
+  renderAdmWork();
+}
+function closeAdmWork(){ document.getElementById('admWorkOverlay').classList.remove('open'); }
+function stepAdmWork(d){
+  const n = admItems(document.getElementById(admCur)).length;
+  admIdx = Math.max(0, Math.min(n-1, admIdx+d)); admMediaState = 'normal'; renderAdmWork();
+}
+function setAdmMedia(st){ admMediaState = st; renderAdmWork(); }
+function renderAdmWork(){
+  const card = document.getElementById(admCur), items = admItems(card), it = items[admIdx];
+  let html;
+  if(admMediaState === 'loading') html = '<div class="picker-skel" style="width:70%"></div><div class="picker-skel" style="width:45%"></div>';
+  else if(admMediaState === 'error' && it.t === 'video') html = '<div>视频加载失败</div><button class="action-link" onclick="setAdmMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--text-muted)">图片仍可左右切换查看</div>';
+  else if(it.t === 'video') html = '<div style="font-size:40px">▶</div><div>作品视频 · MP4</div><button class="action-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  else html = '<div style="font-size:40px">🖼</div><div>作品图片 '+it.n+' / '+it.total+(it.n===1?'（封面）':'')+'</div>';
+  if(items.length > 1) html += '<button class="adm-nav prev" onclick="stepAdmWork(-1)"'+(admIdx===0?' disabled':'')+'>‹</button><button class="adm-nav next" onclick="stepAdmWork(1)"'+(admIdx===items.length-1?' disabled':'')+'>›</button>';
+  document.getElementById('admStage').innerHTML = html;
+  document.getElementById('admCount').textContent = items.length > 1 ? (admIdx+1)+' / '+items.length : '';
+  const sub = card.querySelector('.submission-sub').textContent.split('·').map(x=>x.trim());
+  const descEl = card.querySelector('.submission-desc');
+  const desc = descEl ? descEl.textContent : '';
+  document.getElementById('admInfo').innerHTML =
+      '<div><label>作者姓名'+(card.querySelector('.submission-author').textContent.split(/,\s*/).length>1?'（'+card.querySelector('.submission-author').textContent.split(/,\s*/).length+' 人）':'')+'</label><div class="val">'+card.querySelector('.submission-author').textContent+'</div></div>'
+    + '<div><label>作者类型</label><div class="val">'+(sub[1]||'')+'</div></div>'
+    + '<div><label>部门 / 所属机构</label><div class="val">'+(sub[0]||'')+'</div></div>'
+    + '<div><label>所属 Celebration</label><div class="val">'+(ADM_CELEBRATIONS[card.dataset.activity]||'')+'</div></div>'
+    + '<div><label>状态</label><div class="val">'+card.querySelector('.status-badge').textContent+'</div></div>'
+    + '<div><label>票数</label><div class="val">'+card.dataset.votes+' 票</div></div>'
+    + '<div class="wide"><label>作品说明</label><div class="adm-desc">'+(desc || '<span style="color:var(--text-muted)">无说明</span>')+'</div></div>';
+}
+
+function VIEW(cardId){ return '<button class="action-link" onclick="viewSubmission(\''+cardId+'\')">查看详情</button>'; }
 function setSubmissionStatus(cardId, status){
   const card = document.getElementById(cardId);
   const badge = card.querySelector('.status-badge');
@@ -2212,15 +3056,17 @@ function setSubmissionStatus(cardId, status){
   if(status === 'draft'){
     badge.className = 'status-badge draft';
     badge.textContent = '未发布';
-    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
+      + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
   } else if(status === 'published'){
     badge.className = 'status-badge approved';
     badge.textContent = '已发布';
-    actions.innerHTML = '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
   } else if(status === 'hidden'){
     badge.className = 'status-badge hidden-st';
     badge.textContent = '已隐藏';
-    actions.innerHTML = '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
+      + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
       + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
   }
   filterSubmissions();
@@ -2276,6 +3122,44 @@ function cancelInlineAction(btn){
 function toggleManualReg(){
   document.getElementById('manualRegPanel').classList.toggle('hidden');
 }
+/* 签到码二维码（原型示意：按签到码文字生成固定的方块图案，非真实二维码；真实实现由后端生成 / 前端二维码库渲染） */
+function checkInCodeFor(seed){
+  let h = 2166136261;
+  for(const ch of seed){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = [];
+  for(let i=0; i<12; i++){ h = (Math.imul(h, 1664525) + 1013904223) >>> 0; out.push(chars[h % chars.length]); }
+  return out.slice(0,4).join('')+'-'+out.slice(4,8).join('')+'-'+out.slice(8,12).join('');
+}
+function renderQr(el, code){
+  const N = 21, cells = [];
+  let h = 5381; for(const ch of code){ h = (Math.imul(h,33) + ch.charCodeAt(0)) >>> 0; }
+  const finder = (r,c) => (r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);
+  for(let r=0; r<N; r++){ for(let c=0; c<N; c++){
+    let on;
+    if(finder(r,c)){
+      const lr = r<7 ? r : r-(N-7), lc = c<7 ? c : c-(N-7);
+      on = (lr===0||lr===6||lc===0||lc===6) || (lr>=2&&lr<=4&&lc>=2&&lc<=4);
+    } else { h = (Math.imul(h,1103515245) + 12345) >>> 0; on = ((h >>> 16) & 3) !== 0; }
+    cells.push('<i class="qr-c'+(on?' on':'')+'"></i>');
+  } }
+  el.innerHTML = cells.join('');
+}
+function viewRegCode(btn){
+  const tr = btn.closest('tr');
+  const who = tr.children[0].textContent + ' · ' + tr.children[1].textContent;
+  const code = checkInCodeFor(tr.dataset.celebration + '|' + tr.children[0].textContent);
+  document.getElementById('regCodeWho').textContent = who;
+  document.getElementById('regCodeText').textContent = code;
+  renderQr(document.getElementById('regCodeQr'), code);
+  document.getElementById('regCodeOverlay').classList.add('open');
+}
+function closeRegCode(){ document.getElementById('regCodeOverlay').classList.remove('open'); }
+function copyRegCode(){
+  const t = document.getElementById('regCodeText').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(t).catch(()=>{});
+  alert('已复制签到码：' + t);
+}
+function isValidEmail(v){ return v.length <= 100 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }   // REQ-004 §8：含 @ 与域名，≤100 个字符
 function submitManualRegistration(){
   const name = document.getElementById('manualRegName').value.trim();
   const dept = document.getElementById('manualRegDept').value.trim();
@@ -2283,8 +3167,12 @@ function submitManualRegistration(){
     alert('请填写姓名');
     return;
   }
+  const phone = document.getElementById('manualRegPhone').value.trim();
+  const email = document.getElementById('manualRegEmail').value.trim();
+  if(email && !isValidEmail(email)){ alert('邮箱格式不正确（须包含 @ 和域名，且不超过 100 个字符）'); return; }
   const celSelect = document.getElementById('manualRegCelebration');
   const celId = celSelect.value;
+  if(regIsFull(celId)){ alert('报名人数已达上限，无法再添加报名'); return; }
   const celName = celSelect.options[celSelect.selectedIndex].text.split(' · ').pop();
   const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const now = new Date();
@@ -2297,9 +3185,12 @@ function submitManualRegistration(){
     '<td class="title-cell">' + escape(name) + '</td>'
     + '<td class="muted-cell">' + escape(celName) + '</td>'
     + '<td>' + (dept ? escape(dept) : '—') + '</td>'
+    + '<td>' + (phone ? escape(phone) : '—') + '</td>'
+    + '<td>' + (email ? escape(email) : '—') + '</td>'
     + '<td>' + stamp + '</td>'
     + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
     + '<td><div class="table-actions">'
+    +   '<button class="action-link" onclick="viewRegCode(this)">查看签到码</button>'
     +   '<button class="action-link" onclick="setCheckin(\'' + rowId + '\',\'done\')">签到</button>'
     +   '<button class="action-link danger" onclick="cancelRegistration(\'' + rowId + '\', this)">取消报名</button>'
     + '</div></td>';
@@ -2310,7 +3201,10 @@ function submitManualRegistration(){
 
   document.getElementById('manualRegName').value = '';
   document.getElementById('manualRegDept').value = '';
+  document.getElementById('manualRegPhone').value = '';
+  document.getElementById('manualRegEmail').value = '';
   document.getElementById('manualRegPanel').classList.add('hidden');
+  updateRegCapacityUI();
 }
 function setCheckin(rowId, status){
   const badge = document.getElementById('regstatus-'+rowId);
@@ -2343,6 +3237,7 @@ function doCancelRegistration(rowId){
   const row = badge.closest('tr');
   const wasCheckedIn = badge.textContent === '已签到';
   row.remove();
+  updateRegCapacityUI();
   const registeredStat = document.getElementById('statRegistered');
   if(registeredStat) registeredStat.textContent = Math.max(0, parseInt(registeredStat.textContent, 10) - 1);
   if(wasCheckedIn){
@@ -2376,7 +3271,52 @@ function updateTodoBadge(delta){
     document.getElementById('notifList').innerHTML = '<div class="notif-empty">暂无待办事项</div>';
   }
 }
+/* ---- 访问者身份（REQ-009）：员工 / 外部人员 / 登录已过期 / 确认中 / 确认失败；真实实现由后端 GET /viewer 判定 ---- */
+const VIEWER_ORDER = ['employee','external','expired','loading','error'];
+const VIEWER_LABEL = {employee:'员工', external:'外部人员', expired:'登录已过期', loading:'确认中', error:'确认失败'};
+const MSG_EXPIRED = '登录已过期，请重新登录';
+let viewerState = 'employee';
+function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：三个参与入口都不显示（AC-002、AC-009）
+  return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
+}
+function viewerHint(){   // 只有确认失败才在原入口位置显示提示；外部人员没有任何提示文字（AC-002）；登录已过期在点击后才提示
+  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">重试</button>' : '';
+}
+function showToast(msg){
+  let t = document.getElementById('uToast');
+  if(!t){ t = document.createElement('div'); t.id = 'uToast'; t.className = 'u-toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function viewerAllows(){   // 点击参与动作时的守卫；后端同样会拒绝，这里只是体验层
+  if(viewerState === 'employee') return true;
+  if(viewerState === 'expired') showToast(MSG_EXPIRED);
+  return false;
+}
+function applyViewer(){
+  const vh = viewerHint();
+  // 涂鸦投票：提示只在区域顶部出现一次，卡片上不重复
+  const banner = document.getElementById('worksViewerBanner');
+  banner.innerHTML = vh; banner.classList.toggle('hidden', !vh);
+  document.querySelectorAll('#userWorksView .u-vote-btn').forEach(b=>b.style.display = viewerEntriesHidden() ? 'none' : '');   // 作品与票数照常显示
+  // 寄语：身份先于留言截止判断（外部人员没有提交入口，也看不到"已截止"文案）
+  const wb = document.getElementById('wallWriteBtn'), wh = document.getElementById('wallViewerHint');
+  const hide = viewerEntriesHidden();
+  wb.classList.toggle('hidden', hide || wallDeadlinePassed);
+  document.getElementById('wallClosedNote').classList.toggle('hidden', hide || !wallDeadlinePassed);
+  wh.innerHTML = vh; wh.classList.toggle('hidden', !vh);
+  document.querySelectorAll('.demoViewerState').forEach(e=>e.textContent = VIEWER_LABEL[viewerState]);
+}
+function retryViewer(){
+  viewerState = 'loading'; applyViewer();
+  setTimeout(()=>{ viewerState = 'employee'; applyViewer(); }, 700);
+}
+function demoToggleViewer(){
+  viewerState = VIEWER_ORDER[(VIEWER_ORDER.indexOf(viewerState) + 1) % VIEWER_ORDER.length];
+  applyViewer();
+}
 function toggleVote(cardId){
+  if(!viewerAllows()) return;
   const card = document.getElementById(cardId);
   const btn = card.querySelector('.u-vote-btn');
   const countEl = card.querySelector('.u-vote-count');
@@ -2393,6 +3333,61 @@ function toggleVote(cardId){
   countEl.dataset.count = count;
   countEl.textContent = count + ' 票';
 }
+/* ---- 行政编辑留言（REQ-005 AC-010 ～ AC-014）：待审核 / 已隐藏可编辑，已展示需先隐藏；员工提交的作者与匿名只读 ---- */
+let wallEditingId = null;
+function wallActionsHtml(id, status){
+  const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">编辑</button>';
+  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">展示</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">拒绝</button>';
+  if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">隐藏</button>';
+  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">恢复</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+}
+function wallAdminEntered(row){ return row.querySelector('.wall-meta').textContent.includes('行政代录入'); }
+function openWallEdit(id){
+  const row = document.getElementById(id);
+  if(row.dataset.status === 'published') return;                        // 已展示没有编辑入口
+  wallEditingId = id;
+  const fixed = !wallAdminEntered(row);
+  const name = row.querySelector('.wall-name').textContent;
+  document.getElementById('wallEditTitle').textContent = '编辑留言 · ' + name + (row.dataset.status === 'hidden' ? '（已隐藏）' : '（待审核）');
+  document.getElementById('wallEditAuthorFixed').style.display = fixed ? 'block' : 'none';
+  document.getElementById('wallEditAuthorFixed').textContent = '作者：' + name + ' · ' + row.querySelector('.wall-meta').textContent + '（员工自主提交，作者身份和匿名选项不可修改）';
+  document.getElementById('wallEditAuthorFields').style.display = fixed ? 'none' : 'block';
+  if(!fixed){
+    document.getElementById('editWallName').value = name;
+    document.getElementById('editWallOrg').value = row.querySelector('.wall-meta').textContent.split(' · ')[0];
+    document.getElementById('editWallType').value = row.dataset.authorType || 'external';
+  }
+  document.getElementById('editWallContent').value = row.querySelector('.wall-quote').textContent;
+  WALL_IMG.edit = row.querySelector('.wall-image') ? {name:'已上传的配图.jpg', size:1.2*1048576, status:'done'} : null;   // 历史留言可能没有配图
+  wallMsg('edit',''); renderWallImg('edit');
+  document.getElementById('wallEditOverlay').classList.add('open');
+}
+function closeWallEdit(){ document.getElementById('wallEditOverlay').classList.remove('open'); }
+function saveWallEdit(){
+  const row = document.getElementById(wallEditingId);
+  const content = document.getElementById('editWallContent').value.trim();
+  if(!content){ alert('请填写留言内容'); return; }
+  if(!wallImageReady('edit')) return;                                   // AC-012：配图必填，原本没有配图的也要补
+  row.querySelector('.wall-quote').textContent = content;
+  if(!row.querySelector('.wall-image')){
+    const img = document.createElement('div'); img.className = 'wall-image'; img.textContent = '📷';
+    row.querySelector('.wall-quote').before(img);
+  }
+  if(wallAdminEntered(row)){
+    const name = document.getElementById('editWallName').value.trim();
+    if(!name){ alert('请填写作者姓名'); return; }
+    row.querySelector('.wall-name').textContent = name;
+    const org = document.getElementById('editWallOrg').value.trim();
+    row.querySelector('.wall-meta').textContent = (org ? org + ' · ' : '') + '行政代录入';
+    row.dataset.authorType = document.getElementById('editWallType').value;
+  }
+  const now = new Date(), pad = n => String(n).padStart(2,'0');
+  const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  let tag = row.querySelector('.wall-edited');
+  if(!tag){ tag = document.createElement('span'); tag.className = 'wall-edited'; tag.textContent = '已编辑'; row.querySelector('.wall-name-row').appendChild(tag); }
+  tag.title = '修改人：行政小李 · 修改时间：' + stamp;                        // 只记录最后一次，不保存历史版本
+  closeWallEdit();
+}
 function setWallStatus(rowId, status){
   const row = document.getElementById(rowId);
   const badge = row.querySelector('.status-badge');
@@ -2401,13 +3396,11 @@ function setWallStatus(rowId, status){
   if(status === 'published'){
     badge.className = 'status-badge approved';
     badge.textContent = '已展示';
-    actions.innerHTML = '<button class="action-link muted" onclick="setWallStatus(\''+rowId+'\',\'hidden\')">隐藏</button>';
   } else if(status === 'hidden'){
     badge.className = 'status-badge hidden-st';
     badge.textContent = '已隐藏';
-    actions.innerHTML = '<button class="action-link" onclick="setWallStatus(\''+rowId+'\',\'published\')">恢复</button>'
-      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
   }
+  actions.innerHTML = wallActionsHtml(rowId, status);
   filterWallMessages();
 }
 function filterWallMessages(){
@@ -2426,7 +3419,24 @@ document.addEventListener('click', function(e){
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape'){ closeWallModal(); closeSponsorModal(); }
 });
+const SPONSOR_CUSTOM_MAX = 200;
+function sponsorCustomLen(){ return Array.from(document.getElementById('sponsorCustom').value).length; }   // 汉字 / 字母 / 标点 / 空格 / 换行各按 1 个计
+function updateSponsorCustomCount(){
+  const n = sponsorCustomLen(), over = n > SPONSOR_CUSTOM_MAX;
+  const c = document.getElementById('sponsorCustomCount');
+  c.textContent = n + ' / ' + SPONSOR_CUSTOM_MAX;
+  c.style.color = over ? 'var(--danger)' : 'var(--u-text-muted)';
+  const e = document.getElementById('sponsorCustomError');
+  e.textContent = over ? '自定义赞助说明超出 ' + SPONSOR_CUSTOM_MAX + ' 个字符上限，请精简后再提交（已输入内容不会被截断）' : '';
+  e.style.display = over ? 'block' : 'none';
+}
+function onSponsorTierChange(){                      // REQ-008 AC-007 / AC-009
+  const isCustom = document.getElementById('sponsorTier').value === 'Custom';
+  document.getElementById('sponsorCustomWrap').classList.toggle('hidden', !isCustom);
+  if(!isCustom){ document.getElementById('sponsorCustom').value = ''; updateSponsorCustomCount(); }   // 离开 Custom：隐藏并清除，不提交
+}
 function openSponsorModal(){
+  document.getElementById('sponsorTier').value = ''; onSponsorTierChange();
   document.getElementById('sponsorFormBody').classList.remove('hidden');
   document.getElementById('sponsorSuccessBody').classList.add('hidden');
   document.getElementById('sponsorModalOverlay').classList.add('open');
@@ -2447,6 +3457,12 @@ function submitSponsorForm(){
     alert('请输入有效的邮箱地址');
     return;
   }
+  const isCustom = document.getElementById('sponsorTier').value === 'Custom';
+  const customNote = document.getElementById('sponsorCustom').value.trim();
+  if(isCustom){                                      // AC-008：选了 Custom 必填，≤200 个字符
+    if(!customNote){ alert('选择 Custom 时，请填写自定义赞助说明'); return; }
+    if(sponsorCustomLen() > SPONSOR_CUSTOM_MAX){ updateSponsorCustomCount(); return; }
+  }
   document.getElementById('sponsorFormBody').classList.add('hidden');
   document.getElementById('sponsorSuccessBody').classList.remove('hidden');
 
@@ -2458,7 +3474,8 @@ function submitSponsorForm(){
     const contact = escape(document.getElementById('sponsorContact').value.trim());
     const title = escape(document.getElementById('sponsorTitle').value.trim());
     const phone = escape(document.getElementById('sponsorPhone').value.trim());
-    const tier = document.getElementById('sponsorTier').value || '—';
+    const tierVal = document.getElementById('sponsorTier').value;
+    const tier = tierVal === 'Custom' ? '<div class="tier-cell" title="' + escape(customNote) + '">Custom：' + escape(customNote) + '</div>' : (tierVal || '—');
     const message = document.getElementById('sponsorMessage').value.trim();
     const now = new Date();
     const pad = n => String(n).padStart(2,'0');
@@ -2479,13 +3496,13 @@ function submitSponsorForm(){
       + '</div></td>';
     tbody.prepend(tr);
     updateSponsorNavBadge();
+    updateSponsorExportBtn();
   }
 }
 let wallDeadlinePassed = false;
 function toggleWallDeadlineDemo(){
   wallDeadlinePassed = !wallDeadlinePassed;
-  document.getElementById('wallWriteBtn').classList.toggle('hidden', wallDeadlinePassed);
-  document.getElementById('wallClosedNote').classList.toggle('hidden', !wallDeadlinePassed);
+  applyViewer();
 }
 function editExternalVisibility(){
   document.getElementById('extVisibilityDisplay').classList.add('hidden');
@@ -2502,14 +3519,77 @@ function saveExternalVisibility(){
   document.getElementById('extVisibilityEdit').classList.add('hidden');
   document.getElementById('extVisibilityDisplay').classList.remove('hidden');
 }
+/* ---- 寄语配图：必填、仅 1 张、JPG/PNG、≤5MB；已选后再选 = 替换（REQ-005 AC-006 ～ AC-009）。which = 'user'（用户端弹窗）| 'admin'（行政代录入） ---- */
+const WALL_IMG = {user:null, admin:null, edit:null};
+const WALL_IMG_BYTES = 5*1048576;
+function wallMsg(which, msg){
+  const e = document.getElementById(which+'WallImgError'); e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function wallPickImage(which){ document.getElementById(which+'WallImgInput').click(); }
+function wallSetImage(which, name, size, fail){
+  const ext = name.split('.').pop().toLowerCase();
+  if(!['jpg','jpeg','png'].includes(ext)) return '「'+name+'」类型不支持，配图仅限 JPG 或 PNG';
+  if(size > WALL_IMG_BYTES) return '「'+name+'」超过 5MB，未上传';
+  const img = {name, size, status:'uploading', fail:!!fail};
+  WALL_IMG[which] = img;                                   // 已有图片则直接替换
+  renderWallImg(which);
+  setTimeout(()=>{ if(WALL_IMG[which] === img){ img.status = img.fail ? 'fail' : 'done'; renderWallImg(which); } }, 700);
+  return '';
+}
+function wallHandleFiles(which, files){
+  if(files.length > 1){ wallMsg(which, '只能上传 1 张配图，未保存'); return; }
+  if(files.length) wallMsg(which, wallSetImage(which, files[0].name, files[0].size));
+}
+function wallRetry(which){
+  const img = WALL_IMG[which]; img.status = 'uploading'; img.fail = false; renderWallImg(which);
+  setTimeout(()=>{ if(WALL_IMG[which] === img){ img.status = 'done'; renderWallImg(which); } }, 700);
+}
+function wallRemove(which){ WALL_IMG[which] = null; wallMsg(which, ''); renderWallImg(which); }
+function renderWallImg(which){
+  const img = WALL_IMG[which], el = document.getElementById(which+'WallImgList');
+  const rowCls = which === 'user' ? 'u-img-row' : 'attach-row';
+  if(!img){ el.innerHTML = ''; }
+  else {
+    const st = img.status==='uploading' ? '<span style="color:var(--text-muted)">上传中…</span>'
+      : img.status==='fail' ? '<span style="color:var(--danger)">上传失败</span> <button class="action-link" onclick="wallRetry(\''+which+'\')">重试</button>' : '';
+    el.innerHTML = '<div class="'+rowCls+'"><span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="'+img.name+'">'+img.name+'</span>'
+      + '<span style="color:var(--text-muted)">'+fmtSize(img.size)+'</span>'+st
+      + '<button class="action-link muted" onclick="wallPickImage(\''+which+'\')">重新选择</button>'
+      + '<button class="action-link danger" onclick="wallRemove(\''+which+'\')">删除</button></div>';
+  }
+}
+function wallDemo(which, kind){
+  if(kind==='ok')   wallMsg(which, wallSetImage(which, '合影-'+(Math.floor(Math.random()*90)+10)+'.jpg', 1.6*1048576));
+  if(kind==='type') wallMsg(which, wallSetImage(which, '动图.gif', 2*1048576));
+  if(kind==='big')  wallMsg(which, wallSetImage(which, '高清原图.png', 7*1048576));
+  if(kind==='multi')wallHandleFiles(which, [{name:'图1.jpg',size:1000},{name:'图2.jpg',size:1000}]);
+  if(kind==='fail') wallMsg(which, wallSetImage(which, '上传失败演示.jpg', 2*1048576, true));
+}
+function wallImageReady(which){
+  const img = WALL_IMG[which];
+  if(!img){ wallMsg(which, '请上传配图'); return false; }
+  if(img.status === 'uploading'){ wallMsg(which, '配图上传中，请稍候'); return false; }
+  if(img.status === 'fail'){ wallMsg(which, '配图上传失败，请重试或重新选择'); return false; }
+  return true;
+}
+function submitWallAdmin(){
+  const name = document.getElementById('adminWallName').value.trim();
+  const content = document.getElementById('adminWallContent').value.trim();
+  if(!name){ alert('请填写作者姓名'); return; }
+  if(!content){ alert('请填写留言内容'); return; }
+  if(!wallImageReady('admin')) return;                     // AC-008：配图必填
+  alert('原型演示：将新建一条留言记录，状态为待审核');
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallContent').value = '';
+  wallRemove('admin');
+}
+
 function openWallModal(){
+  if(!viewerAllows()) return;
   document.getElementById('wallFormBody').classList.remove('hidden');
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';
   document.getElementById('wallAnonCheck').checked = false;
-  const upload = document.getElementById('wallImageUpload');
-  upload.textContent = '点击上传一张配图';
-  upload.dataset.attached = '';
+  wallRemove('user');
   document.getElementById('wallModalOverlay').classList.add('open');
 }
 function closeWallModal(){
@@ -2521,6 +3601,7 @@ function submitWallMessage(){
     alert('请填写留言内容');
     return;
   }
+  if(!wallImageReady('user')) return;                     // AC-006：配图必填，匿名也一样
   document.getElementById('wallFormBody').classList.add('hidden');
   document.getElementById('wallSuccessBody').classList.remove('hidden');
 
@@ -2531,8 +3612,7 @@ function submitWallMessage(){
     const displayName = anon ? '匿名员工' : '陈思思';
     const meta = anon ? '已开启匿名 · 员工提交' : '产品部 · 员工提交';
     const escaped = msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const hasImage = document.getElementById('wallImageUpload').dataset.attached === '1';
-    const imageHtml = hasImage ? '<div class="wall-image">📷</div>' : '';
+    const imageHtml = '<div class="wall-image">📷</div>';
     const rowId = 'w-new-' + Date.now();
     const row = document.createElement('div');
     row.className = 'wall-row';
@@ -2546,10 +3626,7 @@ function submitWallMessage(){
       +   imageHtml
       +   '<p class="wall-quote">' + escaped + '</p>'
       +   '<div class="wall-footer"><span class="status-badge review">待审核</span>'
-      +     '<div class="table-actions">'
-      +       '<button class="action-link" onclick="setWallStatus(\'' + rowId + '\',\'published\')">展示</button>'
-      +       '<button class="action-link danger" onclick="setWallStatus(\'' + rowId + '\',\'hidden\')">拒绝</button>'
-      +     '</div></div>'
+      +     '<div class="table-actions">' + wallActionsHtml(rowId, 'review') + '</div></div>'
       + '</div>';
     list.prepend(row);
 
