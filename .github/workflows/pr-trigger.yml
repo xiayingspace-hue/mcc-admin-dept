@@ -1,0 +1,26 @@
+name: Notify Developer Repository
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify frontend & backend developer repository
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.CROSS_REPO_TOKEN }}" \
+            https://api.github.com/repos/xiayingspace-hue/smart-site-front-pc/dispatches \
+            -d '{
+              "event_type": "frontend_coding_pr_opened",
+              "client_payload": {
+                "pr_number": "${{ github.event.pull_request.number }}",
+                "pr_url": "${{ github.event.pull_request.html_url }}",
+                "branch": "${{ github.head_ref }}"
+              }
+            }'
