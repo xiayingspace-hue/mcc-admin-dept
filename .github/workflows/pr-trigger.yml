@@ -2,10 +2,13 @@ name: Notify Developer Repository
 
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
+    branches:
+      - main
 
 jobs:
-  notify:
+  after-merge:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
