@@ -12,15 +12,15 @@
 
 | 枚举 | 取值 | 说明 |
 |---|---|---|
-| `module_type` | `ceo_speech`（CEO致辞） \| `timeline`（历史时间轴） \| `doodle_vote`（涂鸦展示） \| `wall`（寄语墙） \| `registration`（报名信息） \| `blog_list`（周年博客列表） | 见需求文档 §1；`doodle_vote`/`registration` 仅出现在「获取模块类型清单」的只读目录中，不出现在 `activityModule` 接口 |
+| `module_type` | `doodle_vote`（涂鸦展示） \| `wall`（寄语墙） \| `registration`（报名信息） \| `blog_list`（Celebrations，原名「周年博客列表」，仅改显示名称，标识不变） | 见需求文档 §1；`doodle_vote`/`registration` 仅出现在「获取模块类型清单」的只读目录中，不出现在 `activityModule` 接口。`ceo_speech`（CEO致辞）、`timeline`（历史时间轴）已下线，不再是合法取值（见需求文档 §3 变更说明、AC-006），传入会被后端拒绝 |
 | `module_category` | `content`（内容型） \| `interactive`（互动型） | 见需求文档 §6，由 `module_type` 派生，只读 |
-| `mount_target`（只读） | `activity` \| `celebration` | 该模块类型的挂载对象；`ceo_speech`/`timeline`/`blog_list`/`wall` 为 `activity`，`doodle_vote`/`registration` 为 `celebration` |
+| `mount_target`（只读） | `activity` \| `celebration` | 该模块类型的挂载对象；`blog_list`/`wall` 为 `activity`，`doodle_vote`/`registration` 为 `celebration` |
 
 ## 获取模块类型清单
 
 `GET /mcc-api/aiis-admin/moduleType`
 
-模块库页面共用本接口，收录全部六类模块类型（含挂载在活动上与挂载在 Celebration 上的）；类型数量固定且 ≤10，不分页。
+模块库页面共用本接口，收录全部四类模块类型（含挂载在活动上与挂载在 Celebration 上的）；类型数量固定且 ≤10，不分页。
 
 **请求参数**
 
@@ -44,7 +44,7 @@
 
 `GET /mcc-api/aiis-admin/activityModule`
 
-编辑活动（创建流程步骤二回显、或已保存活动的模块配置查看）时调用；仅返回挂载在活动上的四类模块（`ceo_speech`/`timeline`/`blog_list`/`wall`）。
+编辑活动（创建流程步骤二回显、或已保存活动的模块配置查看）时调用；仅返回挂载在活动上的两类模块（`blog_list`/`wall`）。
 
 **请求参数**
 
@@ -56,7 +56,7 @@
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `module_type` | string（枚举，限 `ceo_speech`/`timeline`/`blog_list`/`wall`） | 见枚举总表 |
+| `module_type` | string（枚举，限 `blog_list`/`wall`） | 见枚举总表 |
 | `category` | string（枚举） | 只读，由 `module_type` 派生 |
 | `display_start_time` | string(ISO 8601) \| null | 开始展示时间，未填为 `null` |
 | `sort_order` | number | 排序 |
@@ -73,7 +73,7 @@
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
 | `activity_id` | string | 是 | |
-| `modules` | array | 是 | 仅包含本次勾选启用的模块（限 `ceo_speech`/`timeline`/`blog_list`/`wall`）；取消勾选的类型不出现在数组中即视为不启用，AC-001 |
+| `modules` | array | 是 | 仅包含本次勾选启用的模块（限 `blog_list`/`wall`，传入 `ceo_speech`/`timeline` 等已下线或其他类型整个请求被拒绝，AC-006）；取消勾选的类型不出现在数组中即视为不启用，AC-001 |
 | `modules[].module_type` | string（枚举） | 是 | |
 | `modules[].display_start_time` | string(ISO 8601) | 否 | 不得晚于该模块自身任何截止时间字段，AC-003 |
 | `modules[].sort_order` | number | 是 | |
