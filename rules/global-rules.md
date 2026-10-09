@@ -13,9 +13,11 @@
 需求文档   <模块>-<编号>-<端侧>[-<载体>].md      activity-001-admin.md
 派生文档   <类型>-<模块>-<编号>-<端侧>.md         API-activity-001-admin.md
 原型       <模块>-<编号>-<端侧>-<载体>.html      activity-001-admin-pc.html
+原型附属   <原型同名前缀>[.<职责>].js            activity-011-admin-pc.data.js
 ```
 
 - `<类型>` 取 `API` 或 `QA`。
+- 原型附属文件（脚本）与入口 html **同目录、同前缀**，只允许 `.js`：`<前缀>.js` 是入口脚本，`<前缀>.<职责>.js` 是按职责拆出的脚本（`<职责>` 为小写英文单词，如 `data`、`approval`、`modules`）。附属文件不单独对应编号，`grep -rn "activity-011"` 仍能一并捞出。样式不建附属 css，一律进 `prototypes/_shared/`。
 - 载体差异文件仅当真实存在差异时才建；只写"同 shared"的空壳文件禁止提交。
 
 ## 模块 slug
