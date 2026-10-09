@@ -453,6 +453,12 @@
   button.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
   button.btn.primary:hover{background:#325D54}
 
+  /* REQ-004 名单搜索 */
+  .reg-search-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .reg-search-foot{display:flex; align-items:center; gap:14px; min-height:20px; margin:-6px 0 14px; font-size:11.5px; color:var(--text-muted)}
+  #regTableBody td{overflow-wrap:anywhere}
+  #regTableBody td:first-child{min-width:96px}
+  #regStateBox{margin-bottom:20px}
   .hidden{display:none}
 </style>
 </head>
@@ -1168,11 +1174,29 @@
             </select>
           </div>
 
+          <div id="regSearch">
+            <div class="reg-search-grid">
+              <div class="field"><label>姓名</label><input type="text" id="regSearchName" maxlength="50" autocomplete="off" placeholder="例如：王芳 / tan"></div>
+              <div class="field"><label>部门 / 类型</label><input type="text" id="regSearchOrg" maxlength="50" autocomplete="off" placeholder="部门名，或「内部员工」「外部人士」"></div>
+              <div class="field"><label>联系电话</label><input type="text" id="regSearchPhone" maxlength="50" autocomplete="off" placeholder="数字片段，例如 9012"></div>
+            </div>
+            <div class="reg-search-foot"><button class="action-link hidden" id="regSearchClear" onclick="RegSearch.clear()">清空搜索</button><span id="regStatHint"></span></div>
+          </div>
+
           <div class="stat-row">
             <div class="stat-card"><div class="stat-num" id="statRegistered">86</div><div class="stat-label">已报名</div></div>
             <div class="stat-card"><div class="stat-num" id="statCheckedIn">52</div><div class="stat-label">已签到</div></div>
             <div class="stat-card"><div class="stat-num" id="statCapacity">—</div><div class="stat-label">名额上限</div></div>
           </div>
+          <div class="picker-demo" style="margin:-10px 0 16px">
+            <span>原型演示 名单状态：</span>
+            <button class="action-link" onclick="RegSearch.setMode('normal')">正常</button>
+            <button class="action-link" onclick="RegSearch.setMode('loading')">加载中</button>
+            <button class="action-link" onclick="RegSearch.setMode('error')">加载失败</button>
+            <button class="action-link" onclick="RegSearch.setMode('overflow')">姓名所属很长</button>
+            <span>（名单里放了十多条示例记录，统计按这些记录实时计算）</span>
+          </div>
+          <div id="regStateBox" class="hidden"></div>
 
           <table class="activity-table">
             <thead>
@@ -2012,6 +2036,7 @@
   </div>
 </div>
 
+<script src="activity-001-admin-pc.registrations.js"></script>
 <script>
 function selectScope(btn){
   btn.closest('.scope-toggle').querySelectorAll('.scope-btn').forEach(b=>b.classList.remove('selected'));
@@ -2435,10 +2460,7 @@ function updateRegCapacityUI(){
     : '名额上限：' + c + '，已报名 ' + regCount(cel) + (regIsFull(cel) ? '（已满，无法再添加）' : '');
 }
 function filterRegistrations(){
-  const val = document.getElementById('registrationCelFilter').value;
-  document.querySelectorAll('#regTableBody tr').forEach(row=>{
-    row.style.display = (val === 'all' || row.dataset.celebration === val) ? '' : 'none';
-  });
+  RegSearch.apply();            // 下拉与搜索框同时生效（REQ-004 AC-031），统计与空态也由它负责
   updateRegCapacityUI();
 }
 function toggleCelebrationDemo(){
@@ -3058,6 +3080,8 @@ function submitManualRegistration(){
   const rowId = 'manual-' + Date.now();
   const tr = document.createElement('tr');
   tr.dataset.celebration = celId;
+  tr.dataset.type = who.type;
+  tr.dataset.org = dept || '';
   tr.innerHTML =
     '<td class="title-cell">' + escape(name) + '</td>'
     + '<td class="muted-cell">' + escape(celName) + '</td>'
@@ -3072,9 +3096,7 @@ function submitManualRegistration(){
     +   '<button class="action-link danger" onclick="cancelRegistration(\'' + rowId + '\', this)">取消报名</button>'
     + '</div></td>';
   document.getElementById('regTableBody').prepend(tr);
-
-  const statEl = document.getElementById('statRegistered');
-  statEl.textContent = parseInt(statEl.textContent, 10) + 1;
+  RegSearch.afterAdd();         // 清空搜索条件并重新统计（暂按 REQ-004 AC-003，§11 待行政确认）
 
   document.getElementById('manualRegName').value = '';
   document.getElementById('manualRegDept').value = '';
@@ -3087,20 +3109,18 @@ function submitManualRegistration(){
 function setCheckin(rowId, status){
   const badge = document.getElementById('regstatus-'+rowId);
   const actions = badge.closest('tr').querySelector('.table-actions');
-  const checkedInStat = document.getElementById('statCheckedIn');
   if(status === 'done'){
     badge.className = 'status-badge approved';
     badge.textContent = '已签到';
     actions.innerHTML = '<button class="action-link muted" onclick="setCheckin(\''+rowId+'\',\'pending\')">撤销签到</button>'
       + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
-    if(checkedInStat) checkedInStat.textContent = parseInt(checkedInStat.textContent, 10) + 1;
   } else {
     badge.className = 'status-badge draft';
     badge.textContent = '未签到';
     actions.innerHTML = '<button class="action-link" onclick="setCheckin(\''+rowId+'\',\'done\')">签到</button>'
       + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
-    if(checkedInStat) checkedInStat.textContent = parseInt(checkedInStat.textContent, 10) - 1;
   }
+  RegSearch.apply();            // 签到 / 撤销签到后统计与结果联动，搜索条件保持（REQ-004 AC-037）
 }
 function cancelRegistration(rowId, btn){
   const actions = btn.parentElement;
@@ -3113,15 +3133,9 @@ function cancelRegistration(rowId, btn){
 function doCancelRegistration(rowId){
   const badge = document.getElementById('regstatus-'+rowId);
   const row = badge.closest('tr');
-  const wasCheckedIn = badge.textContent === '已签到';
   row.remove();
   updateRegCapacityUI();
-  const registeredStat = document.getElementById('statRegistered');
-  if(registeredStat) registeredStat.textContent = Math.max(0, parseInt(registeredStat.textContent, 10) - 1);
-  if(wasCheckedIn){
-    const checkedInStat = document.getElementById('statCheckedIn');
-    if(checkedInStat) checkedInStat.textContent = Math.max(0, parseInt(checkedInStat.textContent, 10) - 1);
-  }
+  RegSearch.apply();            // 取消的记录从结果中消失，统计重新计算，搜索条件保持（REQ-004 AC-037）
 }
 function toggleNotifications(){
   document.getElementById('notifPanel').classList.toggle('open');

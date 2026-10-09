@@ -26,6 +26,11 @@
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
 | `celebration_id` | string | 是 | 报名管理页面绑定单个 Celebration，AC-005 |
+| `name` | string | 否 | 姓名搜索关键字，包含匹配、英文不区分大小写，匹配 `list[].author_name`；最多 50 字符，首尾空格忽略，全空格视为未传，AC-027、AC-028 |
+| `org_keyword` | string | 否 | 部门 / 类型搜索关键字，包含匹配、英文不区分大小写；同时匹配 `list[].author_org` 与类型名称（`author_type` 对应的「内部员工」「外部人士」），因此传「外部」命中全部外部人士，AC-029；最多 50 字符 |
+| `contact` | string | 否 | 联系电话搜索关键字，只比较数字：服务端先去掉非数字字符再做包含匹配，对 `list[].contact` 同样去掉非数字字符后比较；去掉非数字后为空视为未传；`contact` 为 `null` 的记录在传了该参数时不命中，AC-030；最多 50 字符 |
+
+三个搜索参数同时传为「且」，并与 `celebration_id` 同时生效；都不传则不过滤，AC-031。搜索由服务端完成（不是前端在当前页内过滤），AC-034。参数校验（长度上限）见需求文档 §8。
 
 分页：列表部分见 `conventions.md`
 
@@ -35,9 +40,9 @@
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `summary.registered_count` | number | 已报名总数，AC-001/AC-002/AC-003 联动的统计数字 |
-| `summary.checked_in_count` | number | 已签到人数 |
-| `summary.capacity` | number \| null | 名额上限，留空为不限，见 `celebration-007-admin` §6 |
+| `summary.registered_count` | number | 已报名人数：按 `celebration_id` 与搜索参数过滤后的结果统计，随搜索变化，AC-001/AC-002/AC-003、AC-032 |
+| `summary.checked_in_count` | number | 已签到人数：统计口径同上，AC-032 |
+| `summary.capacity` | number \| null | 名额上限，留空为不限，见 `celebration-007-admin` §6；是 Celebration 自身的设定值，**不随搜索参数变化**，AC-032 |
 | `list[].id` | string | 报名记录ID |
 | `list[].celebration_id` | string | 归属 Celebration ID，AC-005 |
 | `list[].celebration_site` | string | 归属 Celebration 的 Site 名称（列表展示用），AC-005 |
