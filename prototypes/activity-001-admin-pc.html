@@ -677,6 +677,26 @@
   .u-section-title{font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 22px; text-align:center}
   .u-vote-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:640px; margin:0 auto}
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
+  .wall-image img,.u-wall-image img{cursor:zoom-in}
+  .img-lightbox{position:fixed; inset:0; z-index:500; display:none; align-items:center; justify-content:center; padding:32px; background:color-mix(in srgb,var(--sidebar) 80%,transparent); cursor:zoom-out}
+  .img-lightbox.open{display:flex}
+  .img-lightbox img{max-width:100%; max-height:100%; border-radius:var(--radius); box-shadow:0 12px 40px color-mix(in srgb,var(--sidebar) 40%,transparent)}
+  .img-lightbox-close{position:absolute; top:20px; right:24px; width:40px; height:40px; border:none; border-radius:50%; background:color-mix(in srgb,var(--surface) 16%,transparent); color:#fff; font-size:22px; line-height:1; cursor:pointer}
+  .img-lightbox-close:hover{background:color-mix(in srgb,var(--surface) 28%,transparent)}
+  .pager{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:16px}
+  .pager-total{font-size:13px; color:var(--text-secondary)}
+  .pager-ctrl{display:inline-flex; align-items:center; gap:6px; margin-left:auto}
+  .pager-btn{min-width:32px; height:32px; padding:0 10px; border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); color:var(--text-primary); font:inherit; font-size:13px; cursor:pointer; transition:background .15s ease, border-color .15s ease}
+  .pager-btn:hover:not(:disabled):not(.current){background:var(--accent-tint); border-color:var(--accent); color:var(--accent)}
+  .pager-btn.current{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:500; cursor:default}
+  .pager-btn:disabled{color:var(--text-muted); background:var(--bg); cursor:not-allowed}
+  .pager-gap{color:var(--text-muted); padding:0 2px}
+  .pager-demo{flex-basis:100%; text-align:right; background:none; border:none; padding:0; font-size:11px; color:var(--text-muted); text-decoration:underline; cursor:pointer}
+  .pager-demo.on{color:var(--st-danger)}
+  .pager-error{margin-bottom:12px; padding:12px 16px; border-radius:var(--radius); background:var(--st-danger-tint); color:var(--st-danger); font-size:13px}
+  .pager-error .action-link{margin-left:8px}
+  tr.pg-off{display:none !important}
+  .table-card.pg-loading{opacity:.45; pointer-events:none; transition:opacity .15s ease}
   .wall-avatar,.u-wall-avatar{overflow:hidden}
   .wall-avatar img,.u-wall-avatar img{width:100%;height:100%;object-fit:cover;display:block}
   .wall-image,.u-wall-image{overflow:hidden}
@@ -2386,6 +2406,7 @@
 </div>
 
 <script src="activity-001-admin-pc.registrations.js"></script>
+<script src="activity-001-admin-pc.pager.js"></script>
 <script>
 /* 通用图标按钮（带颜色与悬停提示） */
 const ICON_PATH = {"eye": "<path d=\"M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "eyeoff": "<path d=\"M9.9 4.2A10 10 0 0112 4c6.4 0 10 8 10 8a17 17 0 01-2.2 3.2M6.6 6.6C3.4 8.5 2 12 2 12s3.6 8 10 8a9.7 9.7 0 005.4-1.6\"/><path d=\"M2 2l20 20M9.9 9.9a3 3 0 004.2 4.2\"/>", "pencil": "<path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z\"/>", "trash": "<path d=\"M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6\"/>", "checkc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9 12l2 2 4-4\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>", "xc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M15 9l-6 6M9 9l6 6\"/>", "restore": "<path d=\"M3 12a9 9 0 109-9 9.8 9.8 0 00-6.7 2.8L3 8\"/><path d=\"M3 3v5h5\"/>"};
@@ -3986,5 +4007,12 @@ if(hashRoutes[location.hash]){
   </div>
 </div>
 <div class="app-toast" id="appToast" role="status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span id="appToastMsg"></span></div>
+<div class="img-lightbox" id="imgLightbox" onclick="closeLightbox()"><button class="img-lightbox-close" aria-label="Close" onclick="closeLightbox()">×</button><img id="imgLightboxImg" alt="" onclick="event.stopPropagation()"></div>
+<script>
+function openLightbox(src){ document.getElementById('imgLightboxImg').src = src; document.getElementById('imgLightbox').classList.add('open'); }
+function closeLightbox(){ document.getElementById('imgLightbox').classList.remove('open'); }
+document.addEventListener('click', function(e){ var t = e.target; if(t.tagName === 'IMG' && t.closest('.wall-image, .u-wall-image')) openLightbox(t.src); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+</script>
 </body>
 </html>

@@ -133,6 +133,16 @@ var RegSearch = (function () {
     { id: 'r11', name: 'Sarah Tan', org: 'Orchid Pte Ltd', type: 'external', phone: '+65 9123 4567', email: 'sarah@orchid.example', at: '2026-09-13 14:15' },
     { id: 'r12', name: 'Michael Lim', org: 'Lim & Co', type: 'external', phone: '', email: '', at: '2026-09-13 16:50' }
   ];
+  (function () {   // 补一批示例记录，让名单超过 20 条、能演示分页（分页见 activity-001-admin-pc.pager.js）
+    var f = ['陈', '王', '李', '张', '刘', '杨', '黄', '赵', '周', '吴'], g = ['明', '芳', '伟', '婷', '磊', '洋', '静', '浩', '敏', '杰'];
+    var orgs = ['技术部', '市场部', '财务部', '人力资源部', '产品部', '行政部', '运营部'];
+    function p2(n) { return (n < 10 ? '0' : '') + n; }
+    for (var i = 0; i < 35; i++) {
+      SEED.push({ id: 'rg' + i, name: f[i % 10] + g[(i * 3) % 10] + (i % 4 ? '' : g[(i + 5) % 10]), org: orgs[i % orgs.length], type: 'internal',
+        phone: '1380013' + (8000 + i), email: 'staff' + i + '@mcc.example',
+        at: '2026-09-' + p2(1 + (i % 9)) + ' ' + p2(8 + (i % 10)) + ':' + p2((i * 11) % 60), done: i % 4 === 0 });
+    }
+  })();
   function makeRow(d) {
     var tr = document.createElement('tr');
     tr.dataset.created = d.at; tr.dataset.celebration = 'sg30'; tr.dataset.type = d.type; tr.dataset.org = d.org;
