@@ -56,7 +56,10 @@
   .nav-item.active, .nav-item.active:hover{background:var(--accent); color:#fff; box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
   .nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
   .nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .side-user{margin-top:auto; display:flex; align-items:center; gap:10px; padding:14px 8px 0; border-top:0.5px solid var(--border)}
+  .top-right{display:flex; align-items:center; gap:16px}
+  .top-user{display:flex; align-items:center; gap:12px}
+  .notif-wrap + .top-user{padding-left:16px; border-left:0.5px solid var(--border)}
+  .top-user .side-avatar{width:40px; height:40px}
   .side-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--accent-tint);color:var(--accent)}
   .side-name{font-size:13.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
   .side-role{font-size:12px;color:var(--text-muted);line-height:1.3}
@@ -624,17 +627,23 @@
 
   .notif-wrap{position:relative}
   .notif-btn{
-    width:40px; height:40px; border-radius:8px; border:0.5px solid var(--border-strong);
-    background:var(--surface); cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
-    font-size:15px; color:var(--text-secondary);
+    width:40px; height:40px; border-radius:50%; border:none; background:transparent; color:var(--text-secondary);
+    cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
+    transition:background .15s ease, color .15s ease;
   }
-  .notif-btn:hover{background:var(--bg)}
+  .notif-btn svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; transform-origin:50% 4px}
+  .notif-btn:hover, .notif-wrap:has(.notif-panel.open) .notif-btn{background:var(--accent-tint); color:var(--accent)}
+  .notif-btn:hover svg{animation:bell-ring .6s ease-in-out}
+  .notif-btn:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  @keyframes bell-ring{0%,100%{transform:rotate(0)} 20%{transform:rotate(14deg)} 40%{transform:rotate(-12deg)} 60%{transform:rotate(8deg)} 80%{transform:rotate(-5deg)}}
+  @media (prefers-reduced-motion:reduce){.notif-btn:hover svg{animation:none}}
   .notif-dot{
-    position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 3px; border-radius:8px;
-    background:var(--danger); color:#fff; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center;
+    position:absolute; top:3px; right:2px; min-width:18px; height:18px; padding:0 5px; border-radius:999px;
+    background:var(--st-danger); color:#fff; font-size:11px; font-weight:600; line-height:1; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2px var(--surface);
   }
   .notif-panel{
-    display:none; position:absolute; top:42px; right:0; width:340px; max-height:420px; overflow-y:auto;
+    display:none; position:absolute; top:48px; right:0; width:340px; max-height:420px; overflow-y:auto;
     background:var(--surface); border:0.5px solid var(--border-strong); border-radius:12px;
     box-shadow:0 8px 24px rgba(0,0,0,.08); z-index:20;
   }
@@ -804,18 +813,15 @@
     <div class="nav-item" id="navUserPreview" onclick="showUserPreview()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 13h6"/></svg></span>Activity Page</div>
     <div class="nav-item" id="navUserWorks" onclick="showUserWorks()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M17 13v8M13 17h8"/></svg></span>Showcase Page</div>
 
-    <div class="side-user">
-      <div class="side-avatar">A</div>
-      <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
-    </div>
   </div>
 
   <div class="main">
     <div class="topbar">
       <div class="breadcrumb">活动管理 / <b id="crumb">创建活动</b></div>
+      <div class="top-right">
       <div class="notif-wrap">
-        <button class="notif-btn" onclick="toggleNotifications()">
-          🔔<span class="notif-dot" id="notifDot">2</span>
+        <button class="notif-btn" onclick="toggleNotifications()" aria-label="Notifications" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/></svg><span class="notif-dot" id="notifDot">2</span>
         </button>
         <div class="notif-panel" id="notifPanel">
           <div class="notif-panel-head">待办事项</div>
@@ -830,6 +836,11 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="top-user">
+        <div class="side-avatar">A</div>
+        <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
+      </div>
       </div>
     </div>
 

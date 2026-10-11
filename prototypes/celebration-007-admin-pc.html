@@ -6,25 +6,32 @@
 <title>Celebrations 管理 · 活动运营后台</title>
 <style>
   :root{
-    --bg: #F6F5F2;
-    --sidebar: #22282A;
-    --sidebar-text: #B7BEC0;
+    --bg: #F5F4FB;
+    --sidebar: #1B1F3B;
+    --sidebar-text: #B8BCD6;
     --sidebar-text-active: #FFFFFF;
-    --sidebar-active-bg: #33393B;
+    --sidebar-active-bg: #2A2F52;
     --surface: #FFFFFF;
-    --border: #E4E1D9;
-    --border-strong: #D3CFC3;
-    --text-primary: #1E1E1C;
-    --text-secondary: #6B675E;
-    --text-muted: #9C978A;
-    --accent: #3B6E64;
-    --accent-tint: #E6EFEC;
+    --border: #E9E8F4;
+    --border-strong: #D9D8EA;
+    --text-primary: #1B1F3B;
+    --text-secondary: #5B6078;
+    --text-muted: #9A9FB8;
+    --accent: #2F5FE3;
+    --accent-tint: #EAF0FF;
     --interactive: #B0642E;
     --interactive-tint: #F7ECE1;
-    --content-tint: #EEEAF6;
+    --content-tint: #EEEAF9;
     --content-text: #574B8C;
+    --radius-sm: 4px;
     --radius: 8px;
+    --radius-lg: 16px;
     --danger: #B23A34;
+    --st-success: #0F8F4A; --st-success-tint: #E6F7EE;
+    --st-warn: #C26A00;    --st-warn-tint: #FEF1E1;
+    --st-danger: #D92D2D;  --st-danger-tint: #FDE9E9;
+    --st-neutral: #5F6684; --st-neutral-tint: #EFF0F7;
+    --st-muted: #8A90A8;
   }
   *{box-sizing:border-box}
   body{
@@ -33,30 +40,56 @@
   }
   .shell{display:flex; min-height:100vh}
   .sidebar{
-    width:216px; background:var(--sidebar); color:var(--sidebar-text);
-    flex-shrink:0; padding:20px 12px; display:flex; flex-direction:column;
+    width:220px; background:var(--surface); color:var(--text-secondary); border-right:0.5px solid var(--border);
+    flex-shrink:0; padding:24px 16px 16px; display:flex; flex-direction:column;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
   }
-  .brand{display:flex; align-items:center; gap:8px; padding:4px 10px 20px; color:#fff; font-weight:600; font-size:15px}
-  .brand-mark{width:22px;height:22px;border-radius:6px;background:var(--accent);flex-shrink:0}
-  .nav-group-label{font-size:11px; color:#6E7476; padding:14px 10px 6px; letter-spacing:0.02em}
+  .brand{display:flex; align-items:center; gap:10px; padding:0 8px 24px; color:var(--text-primary); font-weight:600; font-size:17px; letter-spacing:-.01em}
+  .brand-mark{width:32px;height:32px;border-radius:var(--radius);background:var(--accent);flex-shrink:0;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .nav-group-label{font-size:11px; color:var(--text-muted); padding:14px 12px 8px; letter-spacing:.06em}
   .nav-item{
-    display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
-    font-size:13.5px; cursor:pointer; color:var(--sidebar-text);
+    display:flex; flex-shrink:0; align-items:center; gap:12px; height:40px; padding:0 12px; margin-bottom:4px; border-radius:var(--radius);
+    font-size:14px; font-weight:500; cursor:pointer; color:var(--text-secondary); text-decoration:none;
+    transition:background .15s ease, color .15s ease, box-shadow .15s ease;
   }
-  a.nav-item{text-decoration:none}
-  .nav-item:hover{background:#2A3032}
-  .nav-item.active{background:var(--sidebar-active-bg); color:var(--sidebar-text-active); font-weight:500}
-  .nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .nav-item:hover{background:var(--bg); color:var(--text-primary)}
+  .nav-item.active, .nav-item.active:hover{background:var(--accent); color:#fff; box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .top-right{display:flex; align-items:center; gap:16px}
+  .top-user{display:flex; align-items:center; gap:12px}
+  .notif-wrap + .top-user{padding-left:16px; border-left:0.5px solid var(--border)}
+  .top-user .side-avatar{width:40px; height:40px}
+  .side-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--accent-tint);color:var(--accent)}
+  .side-name{font-size:13.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
+  .side-role{font-size:12px;color:var(--text-muted);line-height:1.3}
+  .nav-badge{
+    margin-left:auto; min-width:18px; height:18px; padding:0 5px; border-radius:999px;
+    background:var(--danger); color:#fff; font-size:10px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
   .main{flex:1; min-width:0; display:flex; flex-direction:column}
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
-    padding:16px 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
+    height:60px; padding:0 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
   }
   .breadcrumb{font-size:13px; color:var(--text-secondary)}
   .breadcrumb b{color:var(--text-primary); font-weight:500}
   .content{flex:1; padding:32px; display:flex; justify-content:center}
   .panel{width:100%; max-width:640px}
-  .panel.wide{max-width:920px}
+
+  .steps{display:flex; align-items:center; margin-bottom:32px}
+  .step{display:flex; align-items:center; gap:8px; cursor:pointer}
+  .step-dot{
+    width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:12px; font-weight:600; background:var(--border); color:var(--text-muted); flex-shrink:0;
+  }
+  .step.done .step-dot{background:var(--accent); color:#fff}
+  .step.current .step-dot{background:var(--accent); color:#fff}
+  .step-label{font-size:13px; color:var(--text-muted)}
+  .step.current .step-label{color:var(--text-primary); font-weight:500}
+  .step.done .step-label{color:var(--text-secondary)}
+  .step-line{width:40px; height:1px; background:var(--border-strong); margin:0 10px}
 
   h1{font-size:19px; font-weight:600; margin:0 0 4px}
   .subtitle{font-size:13px; color:var(--text-secondary); margin:0 0 28px}
@@ -65,65 +98,625 @@
   .field label{display:block; font-size:13px; color:var(--text-secondary); margin-bottom:6px}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
   input[type=text], input[type=number], input[type=datetime-local], select, textarea{
-    width:100%; height:36px; padding:0 12px; border:0.5px solid var(--border-strong); border-radius:var(--radius);
-    background:var(--surface); font-size:13.5px; color:var(--text-primary); font-family:inherit;
+    width:100%; height:40px; padding:0 12px; border:0.5px solid var(--border-strong); border-radius:var(--radius);
+    background:var(--surface); font-size:14px; color:var(--text-primary); font-family:inherit;
   }
   textarea{height:auto; padding:8px 12px; resize:vertical}
   input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-tint)}
 
-  .req-mark{color:var(--danger); margin-left:2px}
+  .scope-toggle{display:flex; gap:8px}
+  .scope-btn{
+    flex:1; height:40px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
+    background:var(--surface); font-size:14px; color:var(--text-primary); cursor:pointer;
+  }
+  .scope-btn.selected{border-color:var(--accent); background:var(--accent-tint); color:var(--accent); font-weight:500}
 
   .upload-box{
     border:1px dashed var(--border-strong); border-radius:var(--radius); padding:22px; text-align:center;
     color:var(--text-muted); font-size:13px; cursor:pointer;
   }
 
-  .module-list{border:0.5px solid var(--border-strong); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .module-list{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface)}
   .module-row{border-bottom:0.5px solid var(--border)}
   .module-row:last-child{border-bottom:none}
   .module-head{display:flex; align-items:center; gap:10px; padding:14px 16px}
+  .grip{color:var(--text-muted); cursor:grab; font-size:14px}
   .module-name{font-size:14px; font-weight:500}
-  .badge{display:inline-block; flex-shrink:0; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:5px; margin-left:8px}
+  .module-name.off{color:var(--text-muted)}
+  .badge{display:inline-block; flex:none; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:var(--radius-sm); margin-left:8px}
   .badge.content{background:var(--content-tint); color:var(--content-text)}
   .badge.interactive{background:var(--interactive-tint); color:var(--interactive)}
   .toggle{position:relative; width:32px; height:18px; flex-shrink:0}
   .toggle input{opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer; z-index:1}
-  .toggle .track{position:absolute; inset:0; border-radius:9px; background:var(--border-strong); transition:background .15s}
+  .toggle .track{position:absolute; inset:0; border-radius:999px; background:var(--border-strong); transition:background .15s}
   .toggle .thumb{position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition:left .15s}
   .toggle input:checked + .track{background:var(--accent)}
   .toggle input:checked ~ .thumb{left:16px}
-  .module-config{padding:0 16px 16px 16px; display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .module-config{padding:0 16px 16px 42px; display:grid; grid-template-columns:1fr 1fr; gap:12px}
   .module-config label{display:block; font-size:12px; color:var(--text-secondary); margin-bottom:4px}
+
+  .summary-card{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:18px 20px; background:var(--surface); margin-bottom:28px}
+  .summary-card-title{font-size:12px; color:var(--text-muted); margin-bottom:14px}
+  .summary-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px 20px}
+  .summary-item label{display:block; font-size:11px; color:var(--text-muted); margin-bottom:3px}
+  .summary-item .val{font-size:13.5px; color:var(--text-primary)}
+  .summary-cover{width:100%; height:130px; border-radius:8px; margin-bottom:16px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px}
+  .summary-desc{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
+  .summary-desc-label{font-size:11px; color:var(--text-muted); margin-bottom:6px}
+  .summary-desc-content{font-size:13px; color:var(--text-primary); line-height:1.7}
+  .summary-desc-content ul{margin:6px 0; padding-left:20px}
+  .summary-flag{margin-top:14px; padding:9px 12px; border-radius:var(--radius); font-size:12px; background:var(--interactive-tint); color:var(--interactive)}
 
   .section-title{font-size:13px; font-weight:500; margin:0 0 4px}
   .section-hint{font-size:12px; color:var(--text-muted); margin:0 0 14px}
 
+
   .actions{display:flex; justify-content:space-between; margin-top:32px; padding-top:20px; border-top:0.5px solid var(--border)}
-  .actions.end{justify-content:flex-end; gap:12px}
 
-  .status-badge{font-size:12px; padding:4px 10px; border-radius:6px; font-weight:500; display:inline-block}
-  .status-badge.review{background:var(--interactive-tint); color:var(--interactive)}
-  .status-badge.approved{background:#E4F0E8; color:#2F6B45}
-  .status-badge.ended{background:var(--border); color:var(--text-muted)}
+  .status-badge{font-size:12px; padding:4px 10px; border-radius:var(--radius-sm); font-weight:500; display:inline-block}
+  .status-badge.review{background:var(--st-warn-tint); color:var(--st-warn)}
+  .status-badge.approved{background:var(--st-success-tint); color:var(--st-success)}
+  .status-badge.rejected{background:var(--st-danger-tint); color:var(--st-danger)}
 
+
+
+  .assignee-row{display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-secondary); padding:7px 10px; background:var(--bg); border-radius:var(--radius)}
+  .assignee-main{flex:1; min-width:0; overflow-wrap:anywhere}
+  .assignee-name{color:var(--text-primary)}
+  .assignee-no{color:var(--text-muted); margin-left:4px}
+  .assignee-note{margin-top:3px; line-height:1.5}
+  .assignee-st{font-size:11px; padding:2px 8px; border-radius:var(--radius-sm); flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .assignee-st.approved{background:#E4F0E8; color:#2F6B45}
+  .assignee-st.rejected{background:#F6E4E2; color:var(--danger)}
+  .assignee-st.revoked{text-decoration:line-through}
+  .assignee-me{margin-left:6px; font-size:11px; padding:1px 6px; border-radius:4px; background:var(--accent-tint); color:var(--accent)}
+
+  .picker-chips{display:flex; flex-wrap:wrap; gap:6px; min-height:40px; max-height:96px; overflow-y:auto; padding:8px; border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); margin-bottom:8px}
+  .picker-chips-empty{font-size:12.5px; color:var(--text-muted); align-self:center}
+  .chip{display:inline-flex; align-items:center; gap:4px; padding:3px 4px 3px 10px; border-radius:999px; background:var(--accent-tint); color:var(--accent); font-size:12.5px; max-width:100%}
+  .chip-no{color:var(--text-secondary)}
+  .chip-x{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 6px}
+  .picker-list{border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); max-height:196px; overflow-y:auto; margin-top:8px}
+  .picker-item{display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:0.5px solid var(--border); font-size:13px}
+  .picker-item:last-child{border-bottom:none}
+  .picker-item .grow{flex:1}
+  .picker-state{padding:22px 12px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+  .picker-skel{height:14px; margin:14px 12px; border-radius:4px; background:var(--border)}
+  /* HR 人员 / 部门 / 项目选择器（REQ-010）*/
+  .pp-box{position:relative}
+  .pp-results{border:0.5px solid var(--border-strong); border-radius:var(--radius); background:var(--surface); margin-top:4px; max-height:168px; overflow-y:auto; font-size:12.5px}
+  .pp-item{padding:7px 10px; cursor:pointer; display:flex; justify-content:space-between; gap:12px; border-bottom:0.5px solid var(--border)}
+  .pp-item:last-child{border-bottom:none}
+  .pp-item:hover{background:var(--accent-tint)}
+  .pp-item .pp-meta{color:var(--text-muted); font-size:11.5px; white-space:nowrap}
+  .pp-item span:first-child{overflow-wrap:anywhere}
+  .pp-note{padding:8px 10px; color:var(--text-muted)}
+  .pp-note button{background:none; border:none; padding:0; margin-left:6px; color:var(--accent); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .pp-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+  .pp-chip{display:inline-flex; align-items:center; gap:6px; max-width:100%; padding:3px 6px 3px 10px; border-radius:999px; background:var(--accent-tint); color:var(--accent); font-size:12px; overflow-wrap:anywhere}
+  .pp-chip button{border:none; background:none; color:var(--accent); cursor:pointer; font-size:14px; line-height:1; padding:0 2px}
+  .pp-tree-row{display:flex; align-items:center; gap:6px; padding:6px 10px; border-bottom:0.5px solid var(--border); cursor:pointer}
+  .pp-tree-row:last-child{border-bottom:none}
+  .pp-tree-row:hover{background:var(--accent-tint)}
+  .pp-tree-row.branch{color:var(--text-secondary)}
+  .pp-tree-row .pp-arrow{width:14px; flex-shrink:0; text-align:center; color:var(--text-muted); font-size:11px}
+  .pp-tree-row span.pp-tname{overflow-wrap:anywhere}
+  .pp-path{margin-left:auto; padding-left:12px; color:var(--text-muted); font-size:11.5px; text-align:right; overflow-wrap:anywhere}
+  .pp-sub{font-size:11.5px; color:var(--text-muted); margin-top:4px}
+  .picker-demo{margin-top:8px; font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+
+  .attach-list-scroll{max-height:200px; overflow-y:auto}
+  .attach-row{display:flex; align-items:center; gap:10px; padding:8px 12px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--surface); font-size:13px; margin-top:6px}
+  .attach-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .attach-size{color:var(--text-muted); font-size:12px; flex-shrink:0}
+  .attach-st{font-size:11px; padding:2px 8px; border-radius:var(--radius-sm); flex-shrink:0; background:var(--border); color:var(--text-muted)}
+  .attach-st.fail{background:#F6E4E2; color:var(--danger)}
+  .attach-error{color:var(--danger); font-size:11.5px; margin-top:5px}
+  .summary-attach{margin-top:16px; padding-top:16px; border-top:0.5px dashed var(--border)}
+
+  .submission-media{font-size:11px; color:var(--text-muted); margin-top:2px}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
+  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .u-work-overlay.open{display:flex}
+  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
+  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-nav:disabled{opacity:.35; cursor:default}
+  .u-work-nav.prev{left:10px}
+  .u-work-nav.next{right:10px}
+  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
+  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
+  .u-vote-thumb{position:relative; cursor:pointer}
+
+  .adm-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--sidebar) 45%,transparent); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:300; padding:24px}
+  .adm-overlay.open{display:flex}
+  .adm-overlay.open .adm-box{animation:cf-pop .18s ease-out}
+  .adm-box{background:var(--surface); border-radius:var(--radius-lg); width:100%; max-width:720px; max-height:90vh; overflow-y:auto; box-shadow:0 12px 40px color-mix(in srgb,var(--text-primary) 22%,transparent)}
+  .adm-head{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border-bottom:0.5px solid var(--border)}
+  .adm-head strong{font-size:18px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary)}
+  /* Drawer variant: slides in from the right, header fixed, body scrolls inside */
+  .adm-overlay.adm-drawer{align-items:stretch; justify-content:flex-end; padding:0}
+  .adm-drawer .adm-box{display:flex; flex-direction:column; max-width:560px; height:100%; max-height:none; overflow:hidden; border-radius:var(--radius-lg) 0 0 var(--radius-lg); box-shadow:-12px 0 40px color-mix(in srgb,var(--text-primary) 18%,transparent)}
+  .adm-overlay.adm-drawer.open .adm-box{animation:drawer-in .26s cubic-bezier(.2,.8,.2,1)}
+  .adm-overlay.adm-drawer.closing{animation:drawer-fade .2s ease-in forwards}
+  .adm-overlay.adm-drawer.closing .adm-box{animation:drawer-out .2s ease-in forwards}
+  @keyframes drawer-in{from{transform:translateX(100%)} to{transform:none}}
+  @keyframes drawer-out{from{transform:none} to{transform:translateX(100%)}}
+  @keyframes drawer-fade{from{opacity:1} to{opacity:0}}
+  .adm-drawer .adm-head{flex-shrink:0}
+  .adm-body{flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin}
+  .adm-drawer .adm-stage{aspect-ratio:auto; height:clamp(200px,34vh,320px)}
+  .adm-pad{padding:24px}
+  /* forms inside drawers */
+  .adm-pad .field{margin-bottom:24px}
+  .adm-pad .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  .adm-pad input:hover, .adm-pad select:hover, .adm-pad textarea:hover{border-color:var(--text-muted)}
+  .adm-pad input:focus, .adm-pad select:focus, .adm-pad textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  .adm-pad #reg-int{margin-bottom:24px}
+  .adm-pad #wall-int{margin-bottom:24px}
+  .adm-pad .picker-demo{margin-top:12px; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  .adm-pad .row2{grid-template-columns:1fr; gap:0}
+  .adm-pad #manualRegCapHint{font-size:13px !important}
+  .adm-pad textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6}
+  .adm-foot{flex-shrink:0; display:flex; justify-content:flex-end; align-items:center; gap:12px; padding:16px 24px; border-top:0.5px solid var(--border); background:var(--surface)}
+  @media (prefers-reduced-motion:reduce){.adm-overlay.adm-drawer.open .adm-box, .adm-overlay.adm-drawer.closing, .adm-overlay.adm-drawer.closing .adm-box{animation-duration:.01ms!important}}
+  .adm-sub{margin-top:2px; font-size:13px; font-weight:400; color:var(--text-muted)}
+  .adm-close{width:32px; height:32px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:none; border-radius:var(--radius); background:transparent; color:var(--text-muted); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .adm-close:hover{background:var(--bg); color:var(--text-primary)}
+  .adm-close svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .adm-stage{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-secondary); font-size:14px; text-align:center; padding:16px}
+  .adm-nav{position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:0.5px solid var(--border); background:var(--surface); color:var(--text-primary); cursor:pointer; box-shadow:0 2px 8px color-mix(in srgb,var(--text-primary) 14%,transparent); transition:box-shadow .15s ease, transform .15s ease}
+  .adm-nav svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .adm-nav:hover:not(:disabled){box-shadow:0 4px 12px color-mix(in srgb,var(--text-primary) 20%,transparent); transform:translateY(-50%) scale(1.06)}
+  .adm-nav:disabled{opacity:.35; cursor:default}
+  .adm-nav.prev{left:16px}
+  .adm-nav.next{right:16px}
+  .adm-meta{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; padding:16px 24px 0; font-size:12px; color:var(--text-muted)}
+  .adm-meta #admCount:not(:empty){display:inline-block; padding:2px 8px; border-radius:var(--radius-sm); background:var(--bg); color:var(--text-secondary); font-size:13px; font-variant-numeric:tabular-nums}
+  .adm-demo{padding:4px 12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  .adm-info{padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px 24px}
+  .adm-info label{display:block; font-size:13px; color:var(--text-muted); margin-bottom:4px}
+  .adm-info .val{font-size:14px; color:var(--text-primary)}
+  .adm-info .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400}
+  .adm-info .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  .adm-info .wide{grid-column:1/-1}
+  .adm-desc{font-size:14px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
+
+  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--border); border-radius:8px}
+  .qr-c{display:block; background:transparent}
+  .qr-c.on{background:var(--text-primary)}
+  .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--text-primary)}
+  .qr-hint{font-size:12px; color:var(--text-muted); text-align:center; margin-top:6px}
+
+  .u-img-row{display:flex; align-items:center; gap:8px; padding:8px 10px; border:0.5px solid var(--u-gold-tint); border-radius:8px; font-size:12.5px; margin-top:6px}
+  .u-img-err{color:var(--danger); font-size:11.5px; margin-top:5px}
+
+  .wall-edited{font-size:11px; color:var(--text-muted); border:0.5px solid var(--border-strong); border-radius:4px; padding:0 6px; cursor:help}
+
+  .tier-cell{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; max-width:200px}
+
+  .btn.danger-text{color:var(--danger); border-color:var(--border-strong)}
+
+  .panel.wide{max-width:920px}
   .list-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px}
+  .filter-bar{display:flex; gap:10px; margin-bottom:18px}
+  .filter-bar select, .filter-bar input{width:auto; height:40px}
+  .filter-bar input[type=text]{flex:1}
 
-  .action-link{font-size:12.5px; color:var(--accent); cursor:pointer; background:none; border:none; padding:0; font-family:inherit; text-decoration:none}
+  .activity-table{width:100%; border-collapse:collapse; border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); overflow:hidden}
+  .activity-table th{
+    text-align:left; font-size:11.5px; font-weight:500; color:var(--text-muted);
+    padding:10px 14px; background:var(--bg); border-bottom:0.5px solid var(--border-strong);
+  }
+  .activity-table td{padding:13px 14px; font-size:13px; border-bottom:0.5px solid var(--border); vertical-align:middle}
+  .activity-table tr:last-child td{border-bottom:none}
+  .activity-table tbody tr{cursor:pointer}
+  .activity-table tbody tr:hover td{background:var(--bg)}
+  .activity-table .title-cell{font-weight:500}
+  .activity-table .muted-cell{color:var(--text-muted)}
+  .status-badge.draft{background:var(--st-neutral-tint); color:var(--st-neutral)}
+  .status-badge.ended{background:var(--st-neutral-tint); color:var(--st-muted)}
+  .table-actions{display:flex; gap:14px}
+  .action-link{font-size:12.5px; color:var(--accent); cursor:pointer; background:none; border:none; padding:0; font-family:inherit}
+  .action-link.muted{color:var(--text-secondary)}
+  .action-link.danger{color:var(--danger)}
+
+  /* Table list page: full-bleed content, 24px to every edge */
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)){padding:24px; justify-content:stretch}
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)) .panel{max-width:none}
+  .main:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)) .topbar{padding-left:24px; padding-right:24px}
+
+  /* Activities list table (scoped: other tables keep the old style for now) */
+  :is(#listView,#registrationsView,#sponsorsView) .table-card{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); overflow-x:auto}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table{border:none; border-radius:0}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table th{padding:14px 20px; font-size:14px; font-weight:600; color:var(--text-primary); background:var(--surface); border-bottom:0.5px solid var(--border-strong); white-space:nowrap}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table td{padding:12px 20px; font-size:14px; color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:0.5px solid var(--border)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tr:last-child td{border-bottom:none}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table td.title-cell{font-weight:400}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tbody tr{transition:background .15s ease}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tbody tr:hover td{background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:14px}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table th:last-child, :is(#listView,#registrationsView,#sponsorsView) .activity-table td:last-child{width:1%; white-space:nowrap}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge, :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link{font-weight:400}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .table-actions{gap:4px}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link{font-size:14px; padding:4px 10px; border-radius:var(--radius); font-weight:400; transition:background .15s ease, color .15s ease}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link:hover{background:var(--accent-tint)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.muted{color:var(--text-secondary)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.danger:hover{background:#F6E4E2}
+  /* Spacing scale for table pages: 24 outer / 16 between blocks / 12 between controls */
+  :is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView) .list-header{align-items:center; min-height:40px; margin-bottom:16px}
+  :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar{gap:12px; margin-bottom:16px; align-items:center}
+  :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar select, :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar input{height:40px}
+  #registrationsView > .field{margin-bottom:16px}
+  #registrationsView .reg-search-foot{min-height:16px; margin:-4px 0 16px}
+  #registrationsView .reg-search-foot:has(#regSearchClear.hidden):has(#regStatHint:empty){display:none}
+  #registrationsView .activity-table th, #registrationsView .activity-table td{padding-left:12px; padding-right:12px}
+  #registrationsView .activity-table th:first-child, #registrationsView .activity-table td:first-child{padding-left:24px}
+  #registrationsView .activity-table th:last-child, #registrationsView .activity-table td:last-child{padding-right:24px}
+  #registrationsView .activity-table td:nth-child(6){white-space:normal; min-width:96px}
+  #registrationsView .activity-table td:nth-child(5){white-space:normal; overflow-wrap:anywhere; min-width:140px}
+  #registrationsView .activity-table .table-actions{gap:0}
+  #registrationsView .activity-table .action-link{padding:4px 6px}
+  #registrationsView .activity-table td:last-child{padding-right:16px}
+  #registrationsView .activity-table .table-actions .icon-btn + .icon-btn{margin-left:2px}
+  #registrationsView .stat-row{gap:16px; margin-bottom:16px}
+  #registrationsView .picker-demo{margin:0 0 16px !important; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+
+  /* Create / edit activity page (3-step wizard) */
+  .content:has(#editorView:not(.hidden)){padding:24px}
+  .content:has(#editorView:not(.hidden)) .panel{max-width:920px}
+  #editorView .steps{margin:4px 0 24px}
+  #editorView .step{gap:10px}
+  #editorView .step-dot{width:32px; height:32px; font-size:13px; background:var(--surface); border:1.5px solid var(--border-strong); color:var(--text-muted); transition:background .15s ease, border-color .15s ease}
+  #editorView .step.current .step-dot, #editorView .step.done .step-dot{background:var(--accent); border-color:var(--accent); color:#fff}
+  #editorView .step.current .step-dot{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+  #editorView .step.done .step-dot{font-size:0}
+  #editorView .step.done .step-dot::after{content:"\2713"; font-size:14px}
+  #editorView .step-label{font-size:14px}
+  #editorView .step-line{flex:1; height:2px; border-radius:1px; background:var(--border); margin:0 14px}
+  #editorView .step.done + .step-line{background:var(--accent)}
+
+  #editorView > div[id^="panel"]{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:32px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #editorView h1{font-size:22px; letter-spacing:-.01em}
+  #editorView .subtitle{font-size:14px; margin-bottom:28px}
+  #editorView .field{margin-bottom:22px}
+  #editorView .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  #editorView .row2{gap:20px}
+  #editorView input[type=text], #editorView input[type=number], #editorView input[type=datetime-local], #editorView select{height:40px}
+  #editorView input::placeholder, #editorView textarea::placeholder{color:var(--text-muted)}
+  #editorView input:hover, #editorView select:hover{border-color:var(--text-muted)}
+  #editorView input:focus, #editorView select:focus, #editorView textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  #editorView .btn{height:40px}
+
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-toggle{display:inline-flex; gap:2px; padding:4px; background:var(--bg); border:0.5px solid var(--border); border-radius:12px}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn{flex:none; height:32px; padding:0 18px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); transition:background .15s ease, color .15s ease, box-shadow .15s ease}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn:hover:not(.selected){color:var(--text-primary)}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn.selected{background:var(--surface); color:var(--accent); font-weight:500; box-shadow:0 1px 3px color-mix(in srgb,var(--text-primary) 12%,transparent)}
+
+  :is(#editorView,#submissionsView,#wallFormOverlay) .upload-box{border-color:var(--border-strong); background:var(--bg); border-radius:var(--radius); padding:28px; font-size:14px; transition:border-color .15s ease, background .15s ease, color .15s ease}
+  :is(#editorView,#submissionsView,#wallFormOverlay) .upload-box:hover{border-color:var(--accent); background:var(--accent-tint); color:var(--accent)}
+  #editorView .rte-wrap{border-radius:var(--radius)}
+  #editorView .rte-editable{font-size:14px}
+
+  #editorView .module-list{border-color:var(--border); border-radius:var(--radius)}
+  #editorView .module-row{transition:background .15s ease}
+  #editorView .module-row:hover{background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+  #editorView .summary-card{background:var(--bg); border-color:var(--border); border-radius:var(--radius)}
+  #editorView .summary-card-title{font-size:13px; font-weight:500; color:var(--text-secondary)}
+  #editorView .summary-item label{font-size:12px}
+  #editorView .summary-item .val{font-size:14px}
+  #editorView .summary-desc-content{font-size:14px}
+  #editorView .actions{margin-top:32px; padding-top:24px}
+
+  /* Ghost back button: icon + label, no border */
+  button.btn.btn-back{display:inline-flex; align-items:center; gap:4px; margin-left:-8px; padding:0 16px 0 8px; border-color:transparent; background:transparent; box-shadow:none; color:var(--text-secondary); font-weight:500}
+  button.btn.btn-back svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .15s ease}
+  button.btn.btn-back:hover{background:color-mix(in srgb,var(--accent) 8%,transparent); border-color:transparent; color:var(--accent)}
+  button.btn.btn-back:hover svg{transform:translateX(-3px)}
+  button.btn.btn-back:active{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+
+  /* Step 3: attachments + approver picker + note */
+  #panel3 .summary-attach{margin-top:24px; padding-top:24px; border-top:0.5px solid var(--border)}
+  #panel3 .summary-attach .summary-desc-label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  #panel3 .attach-list-scroll{max-height:216px; padding-right:4px}
+  #panel3 .attach-row{min-height:40px; margin-top:8px; padding:0 12px; font-size:14px; color:var(--text-secondary); background:var(--bg); border-color:var(--border)}
+  #panel3 .attach-row:first-child{margin-top:0}
+  #panel3 .attach-size{font-size:13px}
+  #panel3 .summary-attach + .field{margin-top:24px; padding-top:24px; border-top:0.5px solid var(--border)}
+  #panel3 .field-hint{margin:-2px 0 12px; font-size:13px; color:var(--text-secondary)}
+  #panel3 .picker-chips{min-height:48px; padding:8px 12px; gap:8px; background:var(--bg); border-color:var(--border); border-radius:var(--radius)}
+  #panel3 .picker-chips-empty{font-size:14px}
+  #panel3 #pickerSearch{margin-top:8px}
+  #panel3 .picker-list{margin-top:8px; border-color:var(--border); border-radius:var(--radius); max-height:240px}
+  #panel3 .picker-item{min-height:48px; padding:0 12px; font-size:14px; transition:background .15s ease}
+  #panel3 .picker-item:hover{background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
+  #panel3 .picker-state{font-size:14px; padding:24px 12px}
+  #panel3 .picker-demo{margin-top:12px; font-size:12px; gap:8px 12px}
+  #panel3 .field textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6; border-radius:var(--radius)}
+  #panel3 > .field:last-of-type{margin-top:24px}
+
+  /* Confirm dialog + toast (replaces inline confirm in table cells) */
+  .cf-overlay{position:fixed; inset:0; z-index:400; display:none; align-items:center; justify-content:center; padding:24px; background:color-mix(in srgb,var(--sidebar) 45%,transparent); backdrop-filter:blur(2px)}
+  .cf-overlay.open{display:flex}
+  .cf-modal{position:relative; width:100%; max-width:440px; padding:32px; background:var(--surface); border-radius:var(--radius-lg); box-shadow:0 12px 40px color-mix(in srgb,var(--text-primary) 22%,transparent)}
+  .cf-overlay.open .cf-modal{animation:cf-pop .18s ease-out}
+  @keyframes cf-pop{from{opacity:0; transform:translateY(8px) scale(.98)} to{opacity:1; transform:none}}
+  .cf-close{position:absolute; top:16px; right:16px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:none; border-radius:var(--radius); background:transparent; color:var(--text-muted); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .cf-close:hover{background:var(--bg); color:var(--text-primary)}
+  .cf-close svg, .cf-icon svg{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .cf-close svg{width:20px; height:20px}
+  .cf-head{display:flex; align-items:center; gap:16px; margin-bottom:16px; padding-right:32px}
+  .cf-icon{width:40px; height:40px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:50%}
+  .cf-icon svg{width:20px; height:20px}
+  .cf-icon.danger{background:var(--st-danger-tint); color:var(--st-danger)}
+  .cf-icon.warn{background:var(--st-warn-tint); color:var(--st-warn)}
+  .cf-title{margin:0; font-size:18px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary)}
+  .cf-text{margin:0; font-size:14px; line-height:1.7; color:var(--text-secondary)}
+  .cf-text b{color:var(--text-primary); font-weight:600}
+  .cf-actions{display:flex; justify-content:flex-end; gap:12px; margin-top:32px}
+  button.btn.danger{background:var(--st-danger); border-color:var(--st-danger); color:#fff; box-shadow:0 1px 2px color-mix(in srgb,var(--st-danger) 30%,transparent)}
+  button.btn.danger:hover{background:color-mix(in srgb,var(--st-danger) 88%,var(--text-primary)); border-color:color-mix(in srgb,var(--st-danger) 88%,var(--text-primary)); box-shadow:0 4px 12px color-mix(in srgb,var(--st-danger) 32%,transparent); transform:translateY(-1px)}
+  button.btn.danger:active{transform:translateY(0); box-shadow:none}
+  button.btn.danger:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--st-danger) 25%,transparent)}
+  .app-toast{position:fixed; left:50%; bottom:32px; z-index:500; display:flex; align-items:center; gap:8px; max-width:86vw; padding:0 16px; height:40px; border-radius:var(--radius); background:var(--sidebar); color:#fff; font-size:14px; box-shadow:0 8px 24px color-mix(in srgb,var(--text-primary) 25%,transparent); opacity:0; transform:translate(-50%,8px); pointer-events:none; transition:opacity .2s ease, transform .2s ease}
+  .app-toast.show{opacity:1; transform:translate(-50%,0)}
+  .app-toast svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  tr.row-leaving td{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
+  @keyframes row-flash{from{background:color-mix(in srgb,var(--accent) 14%,var(--surface))} to{background:transparent}}
+  tr.row-flash td{animation:row-flash 1.2s ease-out}
+
+  /* Module library */
+  #moduleLibraryView .module-grid{grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:24px}
+  #moduleLibraryView .module-card{display:flex; flex-direction:column; padding:24px; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease}
+  #moduleLibraryView .module-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 12px 28px color-mix(in srgb,var(--text-primary) 10%,transparent); transform:translateY(-2px)}
+  #moduleLibraryView .module-card-head{gap:12px; margin-bottom:12px}
+  #moduleLibraryView .module-card-title{font-size:16px; font-weight:600; margin:0}
+  #moduleLibraryView .module-card-head .badge{margin-left:0}
+  #moduleLibraryView .module-desc{font-size:14px; line-height:1.7; margin:0 0 16px}
+  #moduleLibraryView .module-level{display:inline-flex; align-self:flex-start; align-items:center; gap:8px; height:24px; padding:0 8px; margin-bottom:24px; border-radius:var(--radius-sm); background:var(--bg); font-size:12px; color:var(--text-muted)}
+  #moduleLibraryView .module-level b{font-weight:500; color:var(--text-secondary)}
+  #moduleLibraryView .module-level.cel{background:var(--interactive-tint); color:var(--interactive)}
+  #moduleLibraryView .module-level.cel b{color:var(--interactive)}
+  #moduleLibraryView .module-attrs{border-top:0.5px solid var(--border); padding-top:16px; margin-bottom:16px}
+  #moduleLibraryView .module-attrs-label{font-size:13px; font-weight:500; color:var(--text-secondary); margin-bottom:8px}
+  #moduleLibraryView .attr-row{min-height:40px; gap:16px; padding:0; font-size:14px}
+  #moduleLibraryView .attr-type{flex-shrink:0; max-width:60%; padding:2px 8px; font-size:12px; text-align:right}
+  #moduleLibraryView .module-meta{margin-top:auto; padding-top:16px; border-top:0.5px solid var(--border); font-size:13px}
+  #moduleLibraryView .module-meta span:last-child{font-weight:500; color:var(--accent)}
+  #moduleLibraryView .module-card:hover .module-meta span:last-child{text-decoration:underline; text-underline-offset:3px}
+  #moduleLibraryView .module-usage{margin-top:12px; padding:12px 16px; border-top:none; border-radius:var(--radius); background:var(--bg); font-size:13px; line-height:1.7}
+
+  /* Submissions page */
+  #subFormPage{max-width:920px; margin:0 auto}
+  #submissionsView .upload-panel{padding:32px; margin-bottom:32px; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #submissionsView .upload-panel-title{font-size:16px; font-weight:600; margin:0 0 24px}
+  #submissionsView .field{margin-bottom:24px}
+  #submissionsView .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  #submissionsView .row2{gap:20px}
+  #submissionsView textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6}
+  #submissionsView input:hover, #submissionsView select:hover, #submissionsView textarea:hover{border-color:var(--text-muted)}
+  #submissionsView input:focus, #submissionsView select:focus, #submissionsView textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  #submissionsView .btn{height:40px}
+  #submissionsView .picker-demo{margin-top:12px; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  #submissionsView #sub-int{margin-bottom:24px}
+  #submissionsView .section-title{font-size:16px; font-weight:600; margin:0 0 4px}
+  #submissionsView .section-hint{font-size:13px; margin:0 0 16px}
+  #submissionsView .submission-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px}
+  #submissionsView .submission-card{display:flex; flex-direction:column; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease}
+  #submissionsView .submission-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 12px 28px color-mix(in srgb,var(--text-primary) 10%,transparent); transform:translateY(-2px)}
+  #submissionsView .submission-thumb{aspect-ratio:16/10; font-size:32px}
+  #submissionsView .submission-body{display:flex; flex-direction:column; flex:1; padding:20px}
+  #submissionsView .submission-author{font-size:16px; font-weight:600; line-height:1.4}
+  #submissionsView .submission-sub{font-size:13px; margin-top:2px}
+  #submissionsView .submission-media{align-self:flex-start; margin-top:12px; padding:2px 8px; font-size:12px; border-radius:var(--radius-sm); background:var(--bg)}
+  #submissionsView .submission-desc{margin:12px 0 16px; font-size:14px; line-height:1.6}
+  #submissionsView .submission-card{position:relative}
+  #submissionsView .submission-footer{display:block; margin-top:auto; padding-top:12px; border-top:0.5px solid var(--border)}
+  /* status pill sits on the thumbnail corner so the footer is free for actions */
+  #submissionsView .submission-footer .status-badge{position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400; white-space:nowrap; box-shadow:0 1px 3px color-mix(in srgb,var(--text-primary) 12%,transparent)}
+  #submissionsView .submission-footer .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #submissionsView .submission-footer .table-actions{flex-wrap:nowrap; gap:4px; margin-left:-8px}
+  #submissionsView .submission-footer .action-link{padding:4px 8px; font-size:14px; font-weight:400; white-space:nowrap; border-radius:var(--radius); transition:background .15s ease, color .15s ease}
+  #submissionsView .submission-footer .action-link:hover{background:var(--accent-tint)}
+  #submissionsView .submission-footer .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  #submissionsView .submission-footer .action-link.danger:hover{background:var(--st-danger-tint)}
+
+  /* Message wall */
+  #wallView .stat-row{gap:16px; margin-bottom:16px}
+  #wallListPage .filter-bar select{min-width:200px}
+  #wallView .wall-list{border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #wallView .wall-row{gap:16px; padding:24px; border-bottom-color:var(--border); transition:background .15s ease}
+  #wallView .wall-row:hover{background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+  #wallView .wall-avatar{width:40px; height:40px; font-size:16px}
+  #wallView .wall-name-row{gap:8px 12px; margin-bottom:8px}
+  #wallView .wall-name{font-size:16px; font-weight:600}
+  #wallView .wall-meta{font-size:13px}
+  #wallView .wall-quote{font-size:14px; line-height:1.7; margin:0 0 12px}
+  #wallView .wall-image{width:200px; height:112px; border-radius:var(--radius); margin-bottom:12px}
+  #wallView .wall-edited{font-size:12px; padding:0 8px; border-radius:var(--radius-sm)}
+  #wallView .wall-footer{padding-top:12px; border-top:0.5px solid var(--border)}
+  #wallView .wall-footer .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400}
+  #wallView .wall-footer .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #wallView .wall-footer .table-actions{gap:4px; flex-wrap:nowrap}
+  #wallView .wall-footer .action-link{padding:4px 8px; font-size:14px; font-weight:400; white-space:nowrap; border-radius:var(--radius); transition:background .15s ease, color .15s ease}
+  #wallView .wall-footer .action-link:hover{background:var(--accent-tint)}
+  #wallView .wall-footer .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  #wallView .wall-footer .action-link.danger:hover{background:var(--st-danger-tint)}
+  /* separate records: each message is its own card with space between */
+  #wallView .wall-list{display:flex; flex-direction:column; gap:16px; overflow:visible; border:none; border-radius:0; background:transparent; box-shadow:none}
+  #wallView .wall-row{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease}
+  #wallView .wall-row:last-child{border-bottom:0.5px solid var(--border)}
+  #wallView .wall-row:hover{background:var(--surface); border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 10px 24px color-mix(in srgb,var(--text-primary) 9%,transparent)}
+
+  /* Sponsors page */
+  #sponsorsView .activity-table th, #sponsorsView .activity-table td{padding-left:12px; padding-right:12px; white-space:normal}
+  #sponsorsView .activity-table th:first-child, #sponsorsView .activity-table td:first-child{padding-left:24px}
+  #sponsorsView .activity-table th:last-child, #sponsorsView .activity-table td:last-child{padding-right:24px}
+  #sponsorsView .activity-table td:nth-child(1){min-width:150px}
+  #sponsorsView .activity-table td:nth-child(2), #sponsorsView .activity-table td:nth-child(3){white-space:nowrap}
+  #sponsorsView .activity-table td:nth-child(6), #sponsorsView .activity-table .status-badge{white-space:nowrap}
+  #sponsorsView .activity-table td:nth-child(5){min-width:140px}
+  #sponsorsView .activity-table .tier-cell{max-width:240px}
+  #sponsorsView .activity-table .table-actions{white-space:nowrap}
+  /* Icon button with tooltip (actions in tables) */
+  .icon-btn{--tone:var(--text-secondary); --tone-tint:var(--bg); position:relative; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; padding:0; border:none; border-radius:var(--radius); background:transparent; color:var(--tone); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .icon-btn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .icon-btn.tone-view{--tone:var(--accent); --tone-tint:var(--accent-tint)}
+  .icon-btn.tone-edit{--tone:#7B4FE0; --tone-tint:#F1EBFD}
+  .icon-btn.tone-ok{--tone:var(--st-success); --tone-tint:var(--st-success-tint)}
+  .icon-btn.tone-warn{--tone:var(--st-warn); --tone-tint:var(--st-warn-tint)}
+  .icon-btn.tone-danger{--tone:var(--st-danger); --tone-tint:var(--st-danger-tint)}
+  .icon-btn:hover, .icon-btn:focus-visible{background:var(--tone-tint); outline:none}
+  .icon-btn:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--tone) 25%,transparent)}
+  .icon-btn::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:50%; transform:translate(-50%,4px); padding:4px 8px; border-radius:var(--radius-sm); background:var(--sidebar); color:#fff; font-size:12px; line-height:1.4; white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease .25s, transform .15s ease .25s; z-index:20}
+  .icon-btn:hover::after, .icon-btn:focus-visible::after{opacity:1; transform:translate(-50%,0)}
+  :is(#listView,#sponsorsView) .table-actions .icon-btn + .icon-btn{margin-left:2px}
+  #listView .activity-table td:last-child{padding-right:16px}
+  /* Registrations page extras */
+  :is(#registrationsView,#wallView) .stat-card{border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  :is(#registrationsView,#wallView) .stat-num{font-size:26px; letter-spacing:-.01em}
+  :is(#registrationsView,#wallView) .stat-label{font-size:14px; margin-top:4px}
+  #registrationsView .field input, #registrationsView .field select{transition:border-color .15s ease, box-shadow .15s ease}
+  #registrationsView .field input:focus, #registrationsView .field select:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  #registrationsView .activity-table .status-badge{white-space:nowrap}
+  #registrationsView .activity-table td:nth-child(4), #registrationsView .activity-table td:nth-child(5), #registrationsView .activity-table td:nth-child(6){white-space:nowrap}
+  #registrationsView .activity-table td:nth-child(1){min-width:120px}
+  #registrationsView .activity-table td:nth-child(3){min-width:140px}
 
   .module-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-  .module-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:18px; background:var(--surface)}
+  .module-card{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:18px; background:var(--surface); cursor:pointer}
   .module-card-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+  .module-icon{width:32px;height:32px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .module-icon.content{background:var(--content-tint); color:var(--content-text)}
+  .module-icon.interactive{background:var(--interactive-tint); color:var(--interactive)}
   .module-card-title{font-size:14px; font-weight:500; margin-bottom:2px}
   .module-desc{font-size:12.5px; color:var(--text-secondary); line-height:1.65; margin:0 0 12px}
   .module-meta{display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text-muted); padding-top:10px; border-top:0.5px dashed var(--border)}
+  .module-usage{display:none; margin-top:10px; padding-top:10px; border-top:0.5px dashed var(--border); font-size:12px; color:var(--text-secondary)}
+  .module-usage.open{display:block}
+  .module-usage div{padding:2px 0}
+  .module-attrs{border-top:0.5px dashed var(--border); padding-top:10px; margin-bottom:10px}
+  .module-attrs-label{font-size:11px; color:var(--text-muted); margin-bottom:6px}
+  .attr-row{display:flex; align-items:center; justify-content:space-between; font-size:12px; padding:3px 0}
+  .attr-name{color:var(--text-primary)}
+  .attr-type{color:var(--text-muted); font-size:11px; background:var(--bg); padding:1px 8px; border-radius:var(--radius-sm)}
 
-  .upload-panel{border:0.5px solid var(--border-strong); border-radius:12px; padding:20px; margin-bottom:28px; background:var(--surface)}
+  .upload-panel{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:20px; margin-bottom:28px; background:var(--surface)}
   .upload-panel-title{font-size:13px; font-weight:500; margin:0 0 16px}
+
+  .submission-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .submission-card{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface)}
+  .submission-thumb{
+    width:100%; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
+    color:var(--text-muted); font-size:24px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint));
+  }
+  .submission-body{padding:11px 13px}
+  .submission-author{font-size:13px; font-weight:500; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere}
+  .submission-sub{font-size:11.5px; color:var(--text-muted); margin-top:1px}
+  .submission-desc{font-size:12px; color:var(--text-secondary); line-height:1.5; margin:6px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+  .submission-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
+  .status-badge.hidden-st{background:var(--st-neutral-tint); color:var(--st-muted)}
+
+  .stat-row{display:flex; gap:14px; margin-bottom:24px}
+  .stat-card{flex:1; border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:14px 16px; background:var(--surface)}
+  .stat-num{font-size:22px; font-weight:600; line-height:1.2}
+  .stat-label{font-size:12px; color:var(--text-muted); margin-top:3px}
+
+  .notif-wrap{position:relative}
+  .notif-btn{
+    width:40px; height:40px; border-radius:8px; border:0.5px solid var(--border-strong);
+    background:var(--surface); cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
+    font-size:15px; color:var(--text-secondary);
+  }
+  .notif-btn:hover{background:var(--bg)}
+  .notif-dot{
+    position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 3px; border-radius:8px;
+    background:var(--danger); color:#fff; font-size:10px; font-weight:600; display:flex; align-items:center; justify-content:center;
+  }
+  .notif-panel{
+    display:none; position:absolute; top:42px; right:0; width:340px; max-height:420px; overflow-y:auto;
+    background:var(--surface); border:0.5px solid var(--border-strong); border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08); z-index:20;
+  }
+  .notif-panel.open{display:block}
+  .notif-panel-head{padding:12px 16px; font-size:13px; font-weight:500; border-bottom:0.5px solid var(--border)}
+  .notif-item{padding:12px 16px; border-bottom:0.5px solid var(--border); cursor:pointer}
+  .notif-item:last-child{border-bottom:none}
+  .notif-item:hover{background:var(--bg)}
+  .notif-item-title{font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:space-between; gap:8px}
+  .notif-item-sub{font-size:12px; color:var(--text-secondary); margin-top:3px}
+  .notif-empty{padding:24px 16px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+
+  /* ---- User-facing preview (scoped) ---- */
+  .uview-frame{border:0.5px solid var(--border-strong); border-radius:14px; overflow:hidden; background:#fff; position:relative}
+  .uview-chrome{display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--bg); border-bottom:0.5px solid var(--border)}
+  .uview-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong)}
+  .uview-url{margin-left:10px; font-size:11.5px; color:var(--text-muted); background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius); padding:3px 10px}
+  .uview-body{
+    max-height:660px; overflow-y:auto;
+    --u-navy:#16232A; --u-ivory:#F8F5EE; --u-gold:#B8862E; --u-gold-tint:#F1E6CF; --u-text:#232620; --u-text-muted:#6E6A5E;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  .u-hero{background:linear-gradient(160deg, var(--u-navy), #223A41); color:#fff; padding:56px 40px 60px; text-align:center}
+  .u-hero h1{font-size:32px; font-weight:600; margin:0 0 10px; letter-spacing:-0.01em}
+  .u-hero p{font-size:14px; color:#D8D2C2; margin:0 0 16px}
+  .u-hero-meta{font-size:12.5px; color:#B9B2A0}
+  .u-section{padding:44px 40px; background:var(--u-ivory)}
+  .u-section.alt{background:#fff}
+  .u-section-title{font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 22px; text-align:center}
+  .u-vote-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:640px; margin:0 auto}
+  .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
+  .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
+  .u-vote-info{padding:10px 12px}
+  .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+  .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
+  .u-vote-count{font-size:11.5px; color:var(--u-text-muted)}
+  .u-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
+  .u-vote-btn.voted{background:var(--u-gold); color:#fff}
+  /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
+  .u-viewer-hint{font-size:12px; color:var(--u-text-muted); line-height:1.5}
+  .u-viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
+  .u-viewer-banner{max-width:640px; margin:0 auto 14px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
+  .u-viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:400; text-align:center}
+  .u-toast.show{opacity:1}
+  .u-wall-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:640px; margin:0 auto}
+  .u-wall-card{background:#fff; border-radius:12px; padding:15px; border:0.5px solid var(--u-gold-tint)}
+  .u-wall-quote{font-size:12.5px; color:var(--u-text); line-height:1.7; margin-bottom:12px}
+  .u-wall-author{display:flex; align-items:center; gap:8px}
+  .u-wall-avatar{width:24px;height:24px;border-radius:50%; background:var(--u-gold-tint); flex-shrink:0}
+  .u-wall-name{font-size:11.5px; font-weight:600; color:var(--u-text)}
+  .u-wall-role{font-size:10.5px; color:var(--u-text-muted)}
+  .u-wall-image{width:100%; height:100px; border-radius:8px; margin-bottom:10px; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--u-gold)}
+  .u-upload-box{border:1px dashed var(--u-gold-tint); border-radius:8px; padding:14px; text-align:center; font-size:12px; color:var(--u-text-muted); margin-bottom:13px; cursor:pointer}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px}
+  .kpi-card{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:16px; background:var(--surface)}
+  .kpi-num{font-size:24px; font-weight:600; line-height:1.2}
+  .kpi-label{font-size:12px; color:var(--text-muted); margin-top:4px}
+  .kpi-num.accent{color:var(--accent)}
+
+  .chart-card{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); padding:22px; background:var(--surface); margin-bottom:24px}
+  .chart-title{font-size:13px; font-weight:500; margin:0 0 18px}
+  .bar-row{display:flex; align-items:center; gap:12px; margin-bottom:14px}
+  .bar-row:last-child{margin-bottom:0}
+  .bar-label{width:130px; font-size:12.5px; color:var(--text-secondary); flex-shrink:0}
+  .bar-track{flex:1; height:10px; background:var(--bg); border-radius:999px; overflow:hidden}
+  .bar-fill{height:100%; background:var(--accent); border-radius:999px}
+  .bar-fill.alt{background:var(--interactive)}
+  .bar-value{width:44px; text-align:right; font-size:12px; color:var(--text-muted); flex-shrink:0}
+
+  .req-mark{color:var(--danger); margin-left:2px}
+  .field-error{display:none; color:var(--danger); font-size:11.5px; margin-top:5px}
+  .field-invalid{border-color:var(--danger) !important; box-shadow:0 0 0 2px rgba(178,58,52,.12)}
 
   .rte-wrap{border:0.5px solid var(--border-strong); border-radius:var(--radius); overflow:hidden}
   .rte-toolbar{display:flex; gap:2px; padding:6px; background:var(--bg); border-bottom:0.5px solid var(--border)}
   .rte-btn{
-    width:28px; height:28px; border:none; background:none; border-radius:6px; cursor:pointer;
+    width:28px; height:28px; border:none; background:none; border-radius:var(--radius-sm); cursor:pointer;
     font-size:13px; color:var(--text-secondary); display:flex; align-items:center; justify-content:center;
   }
   .rte-btn:hover{background:var(--surface); color:var(--text-primary)}
@@ -137,53 +730,233 @@
   }
   .rte-editable:empty::before{content:attr(data-placeholder); color:var(--text-muted)}
   .rte-editable ul{margin:6px 0; padding-left:20px}
+  .u-cta{text-align:center; padding:50px 40px; background:var(--u-navy); color:#fff}
+  .u-cta h3{font-size:19px; margin:0 0 8px}
+  .u-cta p{font-size:12.5px; color:#C9C3B2; margin:0 0 18px}
+  .u-cta-btn{background:var(--u-gold); color:#16232A; border:none; padding:10px 26px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer}
+  .u-cta-btn:disabled{opacity:.55; cursor:default}
 
+  .u-modal-overlay{display:none; position:absolute; inset:0; background:rgba(22,35,42,.55); align-items:center; justify-content:center; z-index:30; padding:20px}
+  .u-modal-overlay.open{display:flex}
+  .u-modal{background:#fff; border-radius:14px; width:100%; max-width:360px; max-height:100%; overflow-y:auto; padding:24px; color:var(--u-text); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+  .u-modal h3{font-size:16px; margin:0 0 4px}
+  .u-modal .u-modal-sub{font-size:12px; color:var(--u-text-muted); margin:0 0 18px}
+  .u-modal .u-field{margin-bottom:13px}
+  .u-modal label{font-size:12px; color:var(--u-text-muted); display:block; margin-bottom:5px}
+  .u-modal input, .u-modal textarea{width:100%; border:0.5px solid var(--u-gold-tint); border-radius:8px; padding:8px 10px; font-size:13px; font-family:inherit; color:var(--u-text); box-sizing:border-box}
+  .u-modal input:disabled{background:var(--u-ivory); color:var(--u-text-muted)}
+  .u-modal-actions{display:flex; justify-content:flex-end; gap:14px; align-items:center; margin-top:6px}
+  .u-modal-cancel{background:none; border:none; color:var(--u-text-muted); font-size:13px; cursor:pointer; padding:8px 2px}
+  .u-modal-submit{background:var(--u-gold); color:#16232A; border:none; padding:9px 20px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer}
+  .u-modal-success{text-align:center; padding:8px 0 4px}
+  .u-modal-success-icon{width:44px;height:44px;border-radius:50%; background:var(--u-gold-tint); color:var(--u-gold); font-size:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px}
+  .u-modal-success h3{margin-bottom:6px}
+  .u-modal-success p{font-size:12.5px; color:var(--u-text-muted); margin:0 0 20px}
+
+  .wall-list{border:0.5px solid var(--border-strong); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface)}
+  .wall-row{display:flex; gap:14px; padding:16px; border-bottom:0.5px solid var(--border); align-items:flex-start}
+  .wall-row:last-child{border-bottom:none}
+  .wall-avatar{width:38px;height:38px;border-radius:50%; background:var(--content-tint); color:var(--content-text); flex-shrink:0; display:flex;align-items:center;justify-content:center; font-size:14px}
+  .wall-body{flex:1; min-width:0}
+  .wall-name-row{display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap}
+  .wall-name{font-size:13.5px; font-weight:500}
+  .wall-meta{font-size:11.5px; color:var(--text-muted)}
+  .wall-quote{font-size:13px; color:var(--text-primary); line-height:1.65; margin:0 0 10px}
+  .wall-footer{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .wall-image{width:180px; max-width:100%; height:100px; border-radius:8px; margin-bottom:10px; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex;align-items:center;justify-content:center; color:var(--text-muted); font-size:20px}
+  .actions.end{justify-content:flex-end; gap:12px}
   button.btn{
-    height:36px; padding:0 18px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
-    background:var(--surface); font-size:13.5px; color:var(--text-primary); cursor:pointer;
+    height:40px; padding:0 16px; border-radius:var(--radius); border:0.5px solid var(--border-strong);
+    background:var(--surface); font-size:14px; color:var(--text-primary); cursor:pointer;
   }
   button.btn:hover{background:var(--bg)}
   button.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
-  button.btn.primary:hover{background:#325D54}
+  button.btn{transition:background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease}
+  button.btn:hover{border-color:var(--text-muted)}
+  button.btn.primary{box-shadow:0 1px 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+  button.btn.primary:hover{background:color-mix(in srgb,var(--accent) 88%,var(--text-primary)); border-color:color-mix(in srgb,var(--accent) 88%,var(--text-primary)); box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 32%,transparent); transform:translateY(-1px)}
+  button.btn:active{transform:translateY(0); box-shadow:none}
+  button.btn.primary:active{background:color-mix(in srgb,var(--accent) 78%,var(--text-primary))}
+  button.btn:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  button.btn:disabled{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none}
 
+  /* REQ-004 名单搜索 */
+  .reg-search-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .reg-search-foot{display:flex; align-items:center; gap:14px; min-height:20px; margin:-6px 0 14px; font-size:11.5px; color:var(--text-muted)}
+  #regTableBody td{overflow-wrap:anywhere}
+  #regTableBody td:first-child{min-width:96px}
+  #regStateBox{margin-bottom:20px}
   .hidden{display:none}
+
+  /* ===== Celebrations admin ===== */
+  .topbar{padding:0 24px}
+  .content{padding:24px; display:block}
+  .panel, .panel.wide{max-width:none}
+  .list-header{align-items:center; min-height:40px; margin-bottom:16px}
+  #celListPage .filter-bar{gap:12px; margin-bottom:16px; align-items:center}
+  #celListPage .filter-bar select{height:40px; min-width:200px}
+  #celebrationGrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:24px}
+  #celebrationGrid .module-card{display:flex; flex-direction:column; padding:24px; cursor:default; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease}
+  #celebrationGrid .module-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 12px 28px color-mix(in srgb,var(--text-primary) 10%,transparent); transform:translateY(-2px)}
+  #celebrationGrid .module-card-head{gap:12px; margin-bottom:12px}
+  #celebrationGrid .module-card-title{font-size:16px; font-weight:600; margin:0}
+  #celebrationGrid .module-desc{font-size:14px; line-height:1.7; margin:0 0 20px; color:var(--text-secondary)}
+  #celebrationGrid .status-badge{display:inline-flex; align-items:center; gap:6px; flex-shrink:0; white-space:nowrap; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400}
+  #celebrationGrid .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #celebrationGrid .module-meta{margin-top:auto; padding-top:16px; border-top:0.5px solid var(--border); font-size:13px; color:var(--text-muted)}
+  #celebrationGrid .module-meta .action-link{text-decoration:none; padding:4px 8px; font-size:14px; font-weight:400; border-radius:var(--radius); transition:background .15s ease, color .15s ease; cursor:pointer}
+  #celebrationGrid .module-meta .action-link:hover{background:var(--accent-tint)}
+  #celebrationGrid .module-meta > span:last-child{margin-right:-8px; gap:4px !important}
+  #celFormPage{max-width:920px; margin:0 auto}
+  #celFormPage .upload-panel{padding:32px; margin-bottom:0; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #celFormPage .upload-panel-title{font-size:18px; font-weight:600; margin:0 0 24px; letter-spacing:-.01em}
+  #celFormPage .field{margin-bottom:24px}
+  #celFormPage .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  #celFormPage .row2{gap:20px}
+  #celFormPage textarea{min-height:112px; padding:12px; font-size:14px; line-height:1.6}
+  #celFormPage input:hover, #celFormPage select:hover, #celFormPage textarea:hover{border-color:var(--text-muted)}
+  #celFormPage input:focus, #celFormPage select:focus, #celFormPage textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  #celFormPage .upload-box{border-color:var(--border-strong); background:var(--bg); border-radius:12px; padding:28px 20px; font-size:14px; line-height:1.6; transition:border-color .15s ease, background .15s ease, color .15s ease}
+  #celFormPage .upload-box:hover{border-color:var(--accent); background:var(--accent-tint); color:var(--accent)}
+  #celFormPage .rte-wrap{border-radius:10px}
+  #celFormPage .rte-editable{font-size:14px}
+  #celFormPage .section-title{font-size:16px; font-weight:600; margin:32px 0 4px}
+  #celFormPage .section-hint{font-size:13px; color:var(--text-secondary); margin:0 0 16px}
+  #celFormPage .module-list{border-color:var(--border); border-radius:12px}
+  #celFormPage .module-head{padding:16px 20px}
+  #celFormPage .module-config{padding:0 20px 20px; gap:16px}
+  #celFormPage .module-config label{font-size:13px; margin-bottom:6px}
+  #celFormPage .actions.end{margin-top:32px; padding-top:24px}
+  #celFormPage .btn{height:40px}
 </style>
 </head>
 <body>
 <div class="shell">
 
   <div class="sidebar">
-    <div class="brand"><div class="brand-mark"></div>活动运营后台</div>
-    <div class="nav-group-label">工作台</div>
-    <a class="nav-item" href="activity-001-admin-pc.html"><span class="nav-icon">&#9679;</span>活动管理</a>
-    <a class="nav-item" href="activity-001-admin-pc.html#modules"><span class="nav-icon">&#9679;</span>模块库</a>
-    <div class="nav-item active"><span class="nav-icon">&#9679;</span>Celebrations 管理</div>
-    <a class="nav-item" href="activity-001-admin-pc.html#submissions"><span class="nav-icon">&#9679;</span>作品管理</a>
-    <a class="nav-item" href="activity-001-admin-pc.html#registrations"><span class="nav-icon">&#9679;</span>报名管理</a>
-    <a class="nav-item" href="activity-001-admin-pc.html#wall"><span class="nav-icon">&#9679;</span>寄语墙管理</a>
-    <a class="nav-item" href="activity-001-admin-pc.html#stats"><span class="nav-icon">&#9679;</span>数据统计</a>
-    <div class="nav-group-label">用户端预览</div>
-    <a class="nav-item" href="activity-001-admin-pc.html#preview"><span class="nav-icon">&#9679;</span>活动详情页</a>
-    <a class="nav-item" href="activity-001-admin-pc.html#works"><span class="nav-icon">&#9679;</span>作品展示页面</a>
+    <div class="brand"><div class="brand-mark"></div>Activity Ops</div>
+    <div class="nav-group-label">WORKSPACE</div>
+    <a class="nav-item" href="activity-001-admin-pc.html"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></span>Activities</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#modules"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span>Module Library</a>
+    <a class="nav-item active" href="celebration-007-admin-pc.html"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21l4-12 8 8-12 4zM14 4v2M19 9h2M18 4l-1 1M20 14l-1.5-.5"/></svg></span>Celebrations</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#submissions"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="M21 16l-5-5-9 9"/></svg></span>Submissions</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#registrations"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1zM8 6H6a1 1 0 00-1 1v13a1 1 0 001 1h12a1 1 0 001-1V7a1 1 0 00-1-1h-2M9 14l2 2 4-4"/></svg></span>Registrations</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#wall"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg></span>Message Wall</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#sponsors"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 6.4-8 11-8 11z"/></svg></span>Sponsors</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#stats"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>Statistics</a>
+    <div class="nav-group-label">USER PREVIEW</div>
+    <a class="nav-item" href="activity-001-admin-pc.html#preview"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 13h6"/></svg></span>Activity Page</a>
+    <a class="nav-item" href="activity-001-admin-pc.html#works"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M17 13v8M13 17h8"/></svg></span>Showcase Page</a>
+
   </div>
 
   <div class="main">
     <div class="topbar">
-      <div class="breadcrumb">活动管理 / <b>Celebrations 管理</b></div>
+      <div class="breadcrumb">活动管理 / <b id="celCrumb">Celebrations 管理</b></div>
+      <div class="top-right">
+      <div class="top-user">
+        <div class="side-avatar">A</div>
+        <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
+      </div>
+      </div>
     </div>
 
     <div class="content">
       <div class="panel wide">
 
+        <!-- List page -->
+        <div id="celListPage">
         <div class="list-header">
           <div>
             <h1 style="margin:0 0 4px">Celebrations 管理</h1>
             <p class="subtitle" style="margin:0">一个活动可在多个 site 分别举办 celebration，每个 celebration 拥有独立的封面、文字描述、图片相册、报名与涂鸦展示，无需单独审批</p>
           </div>
-          <button class="btn primary" onclick="toggleCelebrationForm()">+ 新建 Celebration</button>
+          <button class="btn primary" onclick="openCelForm()">+ 新建 Celebration</button>
         </div>
 
-        <div class="upload-panel hidden" id="celebrationFormPanel">
+        <div class="filter-bar">
+          <select id="celebrationActivityFilter" aria-label="按活动筛选" onchange="filterCelebrations()">
+            <option value="all">全部活动</option>
+            <option value="30th">公司30周年庆典</option>
+            <option value="q3">Q3部门团建</option>
+          </select>
+          <select id="celebrationStatusFilter" aria-label="按状态筛选" onchange="filterCelebrations()">
+            <option value="all">全部状态</option>
+            <option value="upcoming">即将开始</option>
+            <option value="ongoing">进行中</option>
+            <option value="ended">已结束</option>
+          </select>
+        </div>
+
+        <div class="module-grid" id="celebrationGrid">
+
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-sg30" data-created="2026-09-05 10:00">
+            <div class="module-card-head">
+              <div class="module-card-title">新加坡总部站</div>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
+            <div class="module-meta">
+              <span>报名 62 · 涂鸦作品 18</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="openCelForm(this)">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#sg30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="30th" data-status="ended" id="cel-bj30" data-created="2026-09-04 14:30">
+            <div class="module-card-head">
+              <div class="module-card-title">北京分公司站</div>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
+            <div class="module-meta">
+              <span>报名 41 · 涂鸦作品 9</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="openCelForm(this)">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#bj30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="30th" data-status="upcoming" id="cel-sh30" data-created="2026-09-03 09:15">
+            <div class="module-card-head">
+              <div class="module-card-title">上海分公司站</div>
+              <span class="status-badge review">即将开始 · 预告封面</span>
+            </div>
+            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-12-05 14:00 – 17:00</p>
+            <div class="module-meta">
+              <span>报名 0 · 涂鸦作品 0</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="openCelForm(this)">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#sh30" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+          <div class="module-card" data-activity="q3" data-status="ended" id="cel-q3camp" data-created="2026-08-20 16:00">
+            <div class="module-card-head">
+              <div class="module-card-title">Q3团建营地站</div>
+              <span class="status-badge approved">已结束 · 实拍封面</span>
+            </div>
+            <p class="module-desc">Q3部门团建<br>2026-08-02 09:00 – 18:00</p>
+            <div class="module-meta">
+              <span>报名 34 · 涂鸦作品 6</span>
+              <span style="display:flex; gap:12px">
+                <span class="action-link" onclick="openCelForm(this)">编辑</span>
+                <a class="action-link" href="celebration-007-user-h5.html#q3camp" target="_blank">预览 ›</a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+        <!-- Create / edit page -->
+        <div id="celFormPage" class="hidden">
+          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeCelForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回 Celebration 列表</button>
+        <div class="upload-panel" id="celebrationFormPanel">
           <p class="upload-panel-title">新建 / 编辑 Celebration</p>
           <div class="row2">
             <div class="field">
@@ -271,93 +1044,10 @@
           </div>
 
           <div class="actions end" style="margin-top:20px">
-            <button class="btn" onclick="toggleCelebrationForm()">取消</button>
-            <button class="btn primary" onclick="alert('原型演示：保存 Celebration，无需审批立即生效')">保存 Celebration</button>
+            <button class="btn" onclick="closeCelForm()">取消</button>
+            <button class="btn primary" onclick="saveCelForm()">保存 Celebration</button>
           </div>
         </div>
-
-        <div style="display:flex; gap:16px; margin-bottom:20px">
-          <div class="field" style="max-width:280px; margin-bottom:0">
-            <label>按活动筛选</label>
-            <select id="celebrationActivityFilter" style="width:100%" onchange="filterCelebrations()">
-              <option value="all">全部活动</option>
-              <option value="30th">公司30周年庆典</option>
-              <option value="q3">Q3部门团建</option>
-            </select>
-          </div>
-          <div class="field" style="max-width:200px; margin-bottom:0">
-            <label>按状态筛选</label>
-            <select id="celebrationStatusFilter" style="width:100%" onchange="filterCelebrations()">
-              <option value="all">全部状态</option>
-              <option value="upcoming">即将开始</option>
-              <option value="ongoing">进行中</option>
-              <option value="ended">已结束</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="module-grid" id="celebrationGrid">
-
-          <div class="module-card" data-activity="30th" data-status="ended" id="cel-sg30" data-created="2026-09-05 10:00">
-            <div class="module-card-head">
-              <div class="module-card-title">新加坡总部站</div>
-              <span class="status-badge approved">已结束 · 实拍封面</span>
-            </div>
-            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
-            <div class="module-meta">
-              <span>报名 62 · 涂鸦作品 18</span>
-              <span style="display:flex; gap:12px">
-                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#sg30" target="_blank">预览 ›</a>
-              </span>
-            </div>
-          </div>
-
-          <div class="module-card" data-activity="30th" data-status="ended" id="cel-bj30" data-created="2026-09-04 14:30">
-            <div class="module-card-head">
-              <div class="module-card-title">北京分公司站</div>
-              <span class="status-badge approved">已结束 · 实拍封面</span>
-            </div>
-            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-08-11 09:00 – 12:00</p>
-            <div class="module-meta">
-              <span>报名 41 · 涂鸦作品 9</span>
-              <span style="display:flex; gap:12px">
-                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#bj30" target="_blank">预览 ›</a>
-              </span>
-            </div>
-          </div>
-
-          <div class="module-card" data-activity="30th" data-status="upcoming" id="cel-sh30" data-created="2026-09-03 09:15">
-            <div class="module-card-head">
-              <div class="module-card-title">上海分公司站</div>
-              <span class="status-badge review">即将开始 · 预告封面</span>
-            </div>
-            <p class="module-desc">公司30周年庆典 · From Foundation to Future: A Journey Through Time<br>2026-12-05 14:00 – 17:00</p>
-            <div class="module-meta">
-              <span>报名 0 · 涂鸦作品 0</span>
-              <span style="display:flex; gap:12px">
-                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#sh30" target="_blank">预览 ›</a>
-              </span>
-            </div>
-          </div>
-
-          <div class="module-card" data-activity="q3" data-status="ended" id="cel-q3camp" data-created="2026-08-20 16:00">
-            <div class="module-card-head">
-              <div class="module-card-title">Q3团建营地站</div>
-              <span class="status-badge approved">已结束 · 实拍封面</span>
-            </div>
-            <p class="module-desc">Q3部门团建<br>2026-08-02 09:00 – 18:00</p>
-            <div class="module-meta">
-              <span>报名 34 · 涂鸦作品 6</span>
-              <span style="display:flex; gap:12px">
-                <span class="action-link" onclick="toggleCelebrationForm()">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#q3camp" target="_blank">预览 ›</a>
-              </span>
-            </div>
-          </div>
-
         </div>
 
       </div>
@@ -369,8 +1059,23 @@
 function rteCmd(cmd){
   document.execCommand(cmd, false, null);
 }
-function toggleCelebrationForm(){
-  document.getElementById('celebrationFormPanel').classList.toggle('hidden');
+/* 列表页 / 新建·编辑页 */
+function showCelPage(page, crumb){
+  document.getElementById('celListPage').classList.toggle('hidden', page !== 'list');
+  document.getElementById('celFormPage').classList.toggle('hidden', page !== 'form');
+  document.getElementById('celCrumb').textContent = crumb || 'Celebrations 管理';
+  window.scrollTo(0, 0);
+}
+function openCelForm(trigger){
+  let name = '新建 Celebration';
+  if(trigger){ const card = trigger.closest('.module-card'); if(card) name = '编辑 · ' + card.querySelector('.module-card-title').textContent; }
+  document.querySelector('#celebrationFormPanel .upload-panel-title').textContent = trigger ? '编辑 Celebration' : '新建 Celebration';
+  showCelPage('form', name);
+}
+function closeCelForm(){ showCelPage('list'); }
+function saveCelForm(){
+  alert('原型演示：保存 Celebration，无需审批立即生效');
+  showCelPage('list');
 }
 /* 列表默认按创建时间倒序（最新创建的在最前），见 conventions.md「列表默认排序」；与筛选共同生效，状态自动变化、编辑不改变位置。
    原型用 data-created 表示创建时间，页面加载时排一次。 */
