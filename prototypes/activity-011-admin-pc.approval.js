@@ -36,7 +36,7 @@ var Approval011 = (function () {
     var c = ctx();
     var canEdit = (c.status === 'published' || c.status === 'ended') && c.account === 'admin';
     $('visDisplay').innerHTML = esc(D.VISIBLE_LABEL[c.external_visible]) +
-      (canEdit ? ' <button class="p-link" onclick="Approval011.editVisibility()">修改</button>' : '');
+      (canEdit ? ' <button class="p-link" onclick="Approval011.editVisibility()">Edit</button>' : '');
     $('visEdit').classList.add('p-hidden');
   }
   function editVisibility() {
@@ -63,7 +63,7 @@ var Approval011 = (function () {
     return list.map(function (a) {
       return '<div class="p-attach"><span class="p-attach-name" title="' + esc(a.file_name) + '">' + esc(a.file_name) + '</span>' +
         '<span class="p-attach-size">' + fmtSize(a.file_size) + (a.uploaded_at ? ' · ' + esc(a.uploaded_at) : '') + '</span>' +
-        '<button class="p-link" data-toast="原型演示：下载 ' + esc(a.file_name).slice(0, 20) + '">下载</button></div>';
+        '<button class="p-link" data-toast="原型演示：下载 ' + esc(a.file_name).slice(0, 20) + '">Download</button></div>';
     }).join('');
   }
   function renderAttachments() {

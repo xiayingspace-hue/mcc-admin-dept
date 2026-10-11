@@ -56,6 +56,9 @@
 
 分页：见 `conventions.md`
 
+分页响应：除 `list[]`（当页记录）外返回满足条件的总数 `total`（number，用于「共 N 条」和页码），`offset` / `limit` 规则见 `conventions.md`「分页」，AC-018。
+`total` 按 `activity_id`、`follow_up_status` 过滤后统计；导航角标的「待联系」数量是全量，不随翻页变化，AC-004。
+
 **排序**：默认按创建时间倒序，没有排序参数；先应用筛选、再排序、最后分页，AC-017，规则见 `conventions.md`「列表默认排序」。按 `submitted_at` 排序，它就是该线索的创建时间。
 
 **响应字段**
