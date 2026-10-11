@@ -21,6 +21,7 @@ var Proto011 = (function () {
   }
   function shown(m) { return m.display_start_time === null || m.display_start_time <= D.NOW; }      // 开始展示时间已到（或未填）= 用户页面已在显示
   function closed(m) { return !!m.message_deadline && m.message_deadline <= D.NOW; }
+  function attr(label, value, chip) { return '<div class="p-mod-attr"><span class="p-mod-label">' + label + '</span><span class="p-mod-val">' + value + '</span>' + (chip || '') + '</div>'; }
   function badge(m) { var c = meta(m.module_type || m).category; return '<span class="p-badge ' + c + '">' + D.CATEGORY_LABEL[c] + '</span>'; }
   function setPageState(group, state) { ProtoConsole.setState(group, state); }
 
@@ -35,18 +36,18 @@ var Proto011 = (function () {
     var on = {};
     var html = sorted.map(function (m) {
       on[m.module_type] = true;
-      var line = '开始展示时间：' + (m.display_start_time === null ? '未填（发布后即显示）' : fmtT(m.display_start_time)) +
-        (shown(m) ? '<span class="p-chip on">用户页面已显示</span>' : '<span class="p-chip">尚未开始展示</span>');
+      var attrs = attr('开始展示时间', m.display_start_time === null ? '未填（发布后即显示）' : fmtT(m.display_start_time),
+        shown(m) ? '<span class="p-chip on">用户页面已显示</span>' : '<span class="p-chip">尚未开始展示</span>');
       if (m.module_type === 'wall') {
-        line += '<br>留言截止时间：' + fmtT(m.message_deadline) +
-          (closed(m) ? '<span class="p-chip">已截止</span>' : '<span class="p-chip on">留言开放中</span>');
+        attrs += attr('留言截止时间', fmtT(m.message_deadline),
+          closed(m) ? '<span class="p-chip">已截止</span>' : '<span class="p-chip on">留言开放中</span>');
       }
       return '<div class="p-module-row"><div class="p-module-summary"><div class="p-module-name">' + meta(m.module_type).name + badge(m) + '</div>' +
-        '<div><span class="p-chip on">已启用</span> 排序 ' + m.sort_order + '<br>' + line + '</div></div></div>';
+        '<div class="p-mod-body"><div class="p-mod-top"><span class="p-chip on">已启用</span><span>排序 ' + m.sort_order + '</span></div>' + attrs + '</div></div></div>';
     }).join('');
     html += D.MODULE_TYPES.filter(function (x) { return !on[x.module_type]; }).map(function (x) {
       return '<div class="p-module-row"><div class="p-module-summary"><div class="p-module-name">' + x.name + badge(x.module_type) + '</div>' +
-        '<div><span class="p-chip">未启用</span> 用户页面不显示；已有数据保留，重新启用后恢复</div></div></div>';
+        '<div class="p-mod-body"><div class="p-mod-top"><span class="p-chip">未启用</span><span>用户页面不显示；已有数据保留，重新启用后恢复</span></div></div></div></div>';
     }).join('');
     $('cfgList').innerHTML = html;
 

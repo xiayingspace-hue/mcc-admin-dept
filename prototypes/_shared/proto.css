@@ -337,8 +337,36 @@ a.p-card:hover, .p-card.clickable:hover { box-shadow: var(--brand-shadow-md); bo
 /* 模块配置 / 修改记录 */
 #detail .p-module-list, #adjust .p-module-list { margin-bottom: 16px; }
 #detail .p-module-head, #adjust .p-module-head { padding: 16px 24px; }
-#detail .p-module-summary { padding: 16px 24px; font-size: 13px; }
+#detail .p-module-summary { gap: 24px; align-items: flex-start; padding: 20px 24px; font-size: 14px; line-height: 1.6; }
+#detail .p-module-summary .p-module-name { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; width: 200px; min-height: 24px; }
+#detail .p-module-summary .p-module-name .p-badge { margin-left: 0; }
+#detail .p-mod-body { flex: 1; min-width: 0; }
+#detail .p-mod-top { display: flex; align-items: center; gap: 12px; min-height: 24px; margin-bottom: 8px; font-size: 13px; color: var(--brand-text-secondary, #5B6078); }
+#detail .p-mod-top .p-chip, #detail .p-mod-attr .p-chip { margin-left: 0; padding: 2px 8px; font-size: 12px; }
+#detail .p-mod-attr { display: flex; align-items: center; gap: 12px; min-height: 32px; }
+#detail .p-mod-label { width: 112px; flex-shrink: 0; font-size: 13px; color: var(--brand-text-muted, #9A9FB8); }
+#detail .p-mod-val { color: var(--brand-text-primary, #1B1F3B); font-variant-numeric: tabular-nums; }
 #detail .p-module-name, #adjust .p-module-name { font-size: 14px; font-weight: 600; }
 #adjust .p-module-config { padding: 0 24px 24px 58px; gap: 16px; }
 #detail .p-log-item { padding: 16px; box-shadow: none; }
 #detail .p-note { margin-top: 16px; }
+
+/* ---------- 弹窗（确认类对话框） ---------- */
+.p-modal-overlay { padding: 24px; }
+.p-modal { position: relative; max-width: 440px; padding: 32px; }
+.p-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; border-radius: var(--brand-radius, 8px); background: transparent; color: var(--brand-text-muted, #9A9FB8); cursor: pointer; transition: background var(--brand-ease, .15s ease), color var(--brand-ease, .15s ease); }
+.p-modal-close:hover { background: var(--brand-bg, #F5F4FB); color: var(--brand-text-primary, #1B1F3B); }
+.p-modal-close .p-ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.p-modal-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-right: 32px; }
+.p-modal-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.p-modal-icon .p-ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.p-modal-icon.danger { background: var(--brand-status-danger-tint, #FDE9E9); color: var(--brand-status-danger, #D92D2D); }
+.p-modal-icon.info { background: var(--brand-accent-tint, #EAF0FF); color: var(--brand-accent, #2F5FE3); }
+.p-modal-title { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; color: var(--brand-text-primary, #1B1F3B); }
+.p-modal-text { margin: 0; font-size: 14px; line-height: 1.7; color: var(--brand-text-secondary, #5B6078); }
+.p-modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px; }
+
+/* 实心危险按钮（不可逆操作的确认） */
+.p-btn.danger { background: var(--brand-status-danger, #D92D2D); border-color: var(--brand-status-danger, #D92D2D); color: var(--brand-on-accent, #fff); box-shadow: 0 1px 2px color-mix(in srgb, var(--brand-status-danger, #D92D2D) 30%, transparent); }
+.p-btn.danger:hover { background: color-mix(in srgb, var(--brand-status-danger, #D92D2D) 88%, var(--brand-text-primary, #1B1F3B)); border-color: color-mix(in srgb, var(--brand-status-danger, #D92D2D) 88%, var(--brand-text-primary, #1B1F3B)); box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-status-danger, #D92D2D) 32%, transparent); transform: translateY(-1px); }
+.p-btn.danger:active { transform: translateY(0); box-shadow: none; }

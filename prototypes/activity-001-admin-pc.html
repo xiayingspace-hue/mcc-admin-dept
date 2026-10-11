@@ -120,7 +120,7 @@
   .grip{color:var(--text-muted); cursor:grab; font-size:14px}
   .module-name{font-size:14px; font-weight:500}
   .module-name.off{color:var(--text-muted)}
-  .badge{display:inline-block; flex-shrink:0; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:var(--radius-sm); margin-left:8px}
+  .badge{display:inline-block; flex:none; white-space:nowrap; font-size:11px; padding:2px 8px; border-radius:var(--radius-sm); margin-left:8px}
   .badge.content{background:var(--content-tint); color:var(--content-text)}
   .badge.interactive{background:var(--interactive-tint); color:var(--interactive)}
   .toggle{position:relative; width:32px; height:18px; flex-shrink:0}
@@ -281,9 +281,9 @@
   .action-link.danger{color:var(--danger)}
 
   /* Table list page: full-bleed content, 24px to every edge */
-  .content:has(:is(#listView,#registrationsView):not(.hidden)){padding:24px; justify-content:stretch}
-  .content:has(:is(#listView,#registrationsView):not(.hidden)) .panel{max-width:none}
-  .main:has(:is(#listView,#registrationsView):not(.hidden)) .topbar{padding-left:24px; padding-right:24px}
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)){padding:24px; justify-content:stretch}
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)) .panel{max-width:none}
+  .main:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)) .topbar{padding-left:24px; padding-right:24px}
 
   /* Activities list table (scoped: other tables keep the old style for now) */
   :is(#listView,#registrationsView) .table-card{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); overflow-x:auto}
@@ -305,7 +305,7 @@
   :is(#listView,#registrationsView) .activity-table .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
   :is(#listView,#registrationsView) .activity-table .action-link.danger:hover{background:#F6E4E2}
   /* Spacing scale for table pages: 24 outer / 16 between blocks / 12 between controls */
-  :is(#listView,#registrationsView) .list-header{align-items:center; min-height:40px; margin-bottom:16px}
+  :is(#listView,#registrationsView,#moduleLibraryView) .list-header{align-items:center; min-height:40px; margin-bottom:16px}
   #listView .filter-bar{gap:12px; margin-bottom:16px; align-items:center}
   #listView .filter-bar select, #listView .filter-bar input{height:40px}
   #registrationsView > .field{margin-bottom:16px}
@@ -387,6 +387,57 @@
   #panel3 .picker-demo{margin-top:12px; font-size:12px; gap:8px 12px}
   #panel3 .field textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6; border-radius:var(--radius)}
   #panel3 > .field:last-of-type{margin-top:24px}
+
+  /* Confirm dialog + toast (replaces inline confirm in table cells) */
+  .cf-overlay{position:fixed; inset:0; z-index:400; display:none; align-items:center; justify-content:center; padding:24px; background:color-mix(in srgb,var(--sidebar) 45%,transparent); backdrop-filter:blur(2px)}
+  .cf-overlay.open{display:flex}
+  .cf-modal{position:relative; width:100%; max-width:440px; padding:32px; background:var(--surface); border-radius:var(--radius-lg); box-shadow:0 12px 40px color-mix(in srgb,var(--text-primary) 22%,transparent)}
+  .cf-overlay.open .cf-modal{animation:cf-pop .18s ease-out}
+  @keyframes cf-pop{from{opacity:0; transform:translateY(8px) scale(.98)} to{opacity:1; transform:none}}
+  .cf-close{position:absolute; top:16px; right:16px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:none; border-radius:var(--radius); background:transparent; color:var(--text-muted); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .cf-close:hover{background:var(--bg); color:var(--text-primary)}
+  .cf-close svg, .cf-icon svg{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .cf-close svg{width:20px; height:20px}
+  .cf-head{display:flex; align-items:center; gap:16px; margin-bottom:16px; padding-right:32px}
+  .cf-icon{width:40px; height:40px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:50%}
+  .cf-icon svg{width:20px; height:20px}
+  .cf-icon.danger{background:var(--st-danger-tint); color:var(--st-danger)}
+  .cf-icon.warn{background:var(--st-warn-tint); color:var(--st-warn)}
+  .cf-title{margin:0; font-size:18px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary)}
+  .cf-text{margin:0; font-size:14px; line-height:1.7; color:var(--text-secondary)}
+  .cf-text b{color:var(--text-primary); font-weight:600}
+  .cf-actions{display:flex; justify-content:flex-end; gap:12px; margin-top:32px}
+  button.btn.danger{background:var(--st-danger); border-color:var(--st-danger); color:#fff; box-shadow:0 1px 2px color-mix(in srgb,var(--st-danger) 30%,transparent)}
+  button.btn.danger:hover{background:color-mix(in srgb,var(--st-danger) 88%,var(--text-primary)); border-color:color-mix(in srgb,var(--st-danger) 88%,var(--text-primary)); box-shadow:0 4px 12px color-mix(in srgb,var(--st-danger) 32%,transparent); transform:translateY(-1px)}
+  button.btn.danger:active{transform:translateY(0); box-shadow:none}
+  button.btn.danger:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--st-danger) 25%,transparent)}
+  .app-toast{position:fixed; left:50%; bottom:32px; z-index:500; display:flex; align-items:center; gap:8px; max-width:86vw; padding:0 16px; height:40px; border-radius:var(--radius); background:var(--sidebar); color:#fff; font-size:14px; box-shadow:0 8px 24px color-mix(in srgb,var(--text-primary) 25%,transparent); opacity:0; transform:translate(-50%,8px); pointer-events:none; transition:opacity .2s ease, transform .2s ease}
+  .app-toast.show{opacity:1; transform:translate(-50%,0)}
+  .app-toast svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  tr.row-leaving td{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
+  @keyframes row-flash{from{background:color-mix(in srgb,var(--accent) 14%,var(--surface))} to{background:transparent}}
+  tr.row-flash td{animation:row-flash 1.2s ease-out}
+
+  /* Module library */
+  #moduleLibraryView .module-grid{grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:24px}
+  #moduleLibraryView .module-card{display:flex; flex-direction:column; padding:24px; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease}
+  #moduleLibraryView .module-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 12px 28px color-mix(in srgb,var(--text-primary) 10%,transparent); transform:translateY(-2px)}
+  #moduleLibraryView .module-card-head{gap:12px; margin-bottom:12px}
+  #moduleLibraryView .module-card-title{font-size:16px; font-weight:600; margin:0}
+  #moduleLibraryView .module-card-head .badge{margin-left:0}
+  #moduleLibraryView .module-desc{font-size:14px; line-height:1.7; margin:0 0 16px}
+  #moduleLibraryView .module-level{display:inline-flex; align-self:flex-start; align-items:center; gap:8px; height:24px; padding:0 8px; margin-bottom:24px; border-radius:var(--radius-sm); background:var(--bg); font-size:12px; color:var(--text-muted)}
+  #moduleLibraryView .module-level b{font-weight:500; color:var(--text-secondary)}
+  #moduleLibraryView .module-level.cel{background:var(--interactive-tint); color:var(--interactive)}
+  #moduleLibraryView .module-level.cel b{color:var(--interactive)}
+  #moduleLibraryView .module-attrs{border-top:0.5px solid var(--border); padding-top:16px; margin-bottom:16px}
+  #moduleLibraryView .module-attrs-label{font-size:13px; font-weight:500; color:var(--text-secondary); margin-bottom:8px}
+  #moduleLibraryView .attr-row{min-height:40px; gap:16px; padding:0; font-size:14px}
+  #moduleLibraryView .attr-type{flex-shrink:0; max-width:60%; padding:2px 8px; font-size:12px; text-align:right}
+  #moduleLibraryView .module-meta{margin-top:auto; padding-top:16px; border-top:0.5px solid var(--border); font-size:13px}
+  #moduleLibraryView .module-meta span:last-child{font-weight:500; color:var(--accent)}
+  #moduleLibraryView .module-card:hover .module-meta span:last-child{text-decoration:underline; text-underline-offset:3px}
+  #moduleLibraryView .module-usage{margin-top:12px; padding:12px 16px; border-top:none; border-radius:var(--radius); background:var(--bg); font-size:13px; line-height:1.7}
 
   /* Registrations page extras */
   #registrationsView .stat-card{border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
@@ -999,7 +1050,7 @@
             <div class="module-card" onclick="toggleUsage('u3')">
               <div class="module-card-head"><div class="module-card-title">Celebrations</div><span class="badge content">内容型</span></div>
               <p class="module-desc">展示与活动相关的长文章，如员工专访、活动纪实，行政统一编辑发布。</p>
-              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
+              <div class="module-level">挂载层级<b>活动</b></div>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -1013,7 +1064,7 @@
             <div class="module-card" onclick="toggleUsage('u4')">
               <div class="module-card-head"><div class="module-card-title">涂鸦展示（原"涂鸦评选"）</div><span class="badge interactive">互动型</span></div>
               <p class="module-desc">行政上传员工作品，全员投票评选优胜作品，分"提交""投票"两个阶段依次开放；现按 Celebration 单独配置与统计。</p>
-              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
+              <div class="module-level cel">挂载层级<b>Celebration</b></div>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">在用户端展示（展示开关）</span><span class="attr-type">开关，默认关闭</span></div>
@@ -1029,7 +1080,7 @@
             <div class="module-card" onclick="toggleUsage('u5')">
               <div class="module-card-head"><div class="module-card-title">寄语墙</div><span class="badge interactive">互动型</span></div>
               <p class="module-desc">收集员工及外部合作伙伴的一句话祝福，支持行政代外部人士录入内容。</p>
-              <p style="font-size:11px; color:var(--text-muted); margin:0 0 10px">挂载层级：活动</p>
+              <div class="module-level">挂载层级<b>活动</b></div>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">开始展示时间</span><span class="attr-type">日期时间（选填）</span></div>
@@ -1045,7 +1096,7 @@
             <div class="module-card" onclick="toggleUsage('u6')">
               <div class="module-card-head"><div class="module-card-title">报名信息</div><span class="badge interactive">互动型</span></div>
               <p class="module-desc">员工在线报名参加活动，自动统计报名人数并支持现场扫码签到；现按 Celebration 单独配置与统计。</p>
-              <p style="font-size:11px; color:var(--interactive); margin:0 0 10px">挂载层级：Celebration</p>
+              <div class="module-level cel">挂载层级<b>Celebration</b></div>
               <div class="module-attrs">
                 <div class="module-attrs-label">可配置属性</div>
                 <div class="attr-row"><span class="attr-name">在用户端展示（展示开关）</span><span class="attr-type">开关，默认关闭</span></div>
@@ -3134,13 +3185,38 @@ function searchActivities(){
     tr.style.display = (!query || title.includes(query)) ? '' : 'none';
   });
 }
+let _cfAction = null;
+function openConfirm(o){
+  document.getElementById('cfTitle').textContent = o.title;
+  document.getElementById('cfText').innerHTML = o.text;
+  const icon = document.getElementById('cfIcon'); icon.className = 'cf-icon ' + (o.tone || 'danger');
+  const ok = document.getElementById('cfOk');
+  ok.textContent = o.okLabel; ok.className = 'btn ' + (o.okClass || 'danger');
+  _cfAction = o.onOk;
+  ok.onclick = function(){ const fn = _cfAction; closeConfirm(); if(fn) fn(); };
+  document.getElementById('cfOverlay').classList.add('open');
+  document.getElementById('cfCancel').focus();            // 不可逆操作：焦点默认落在「取消」上
+}
+function closeConfirm(){ document.getElementById('cfOverlay').classList.remove('open'); _cfAction = null; }
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeConfirm(); });
+let _toastTimer = null;
+function showAppToast(msg){
+  const t = document.getElementById('appToast');
+  document.getElementById('appToastMsg').textContent = msg;
+  t.classList.add('show'); clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+}
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function unpublishActivity(rowId, btn){
-  const actions = btn.parentElement;
-  actions.dataset.original = actions.innerHTML;
-  actions.innerHTML =
-    '<span style="font-size:12px;color:var(--text-secondary);margin-right:2px">Unpublish this activity?</span>'
-    + '<button class="action-link danger" onclick="event.stopPropagation(); doUnpublish(\'' + rowId + '\')">Confirm</button>'
-    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">Cancel</button>';
+  const row = document.getElementById(rowId);
+  const name = row ? row.querySelector('.title-cell').textContent.trim() : '';
+  openConfirm({
+    tone:'warn', title:'Unpublish this activity?',
+    text:'<b>' + escHtml(name) + '</b> will be taken offline and moved to Ended. Users will no longer be able to see it.',
+    okLabel:'Unpublish', okClass:'primary',
+    onOk:function(){ doUnpublish(rowId); }
+  });
 }
 function doUnpublish(rowId){
   const row = document.getElementById(rowId);
@@ -3150,18 +3226,22 @@ function doUnpublish(rowId){
   row.setAttribute('onclick', "viewActivity('ended')");
   row.querySelector('.table-actions').innerHTML =
     '<button class="action-link" onclick="event.stopPropagation(); viewActivity(\'ended\')">View</button>';
+  row.classList.remove('row-flash'); void row.offsetWidth; row.classList.add('row-flash');
+  showAppToast('Activity unpublished');
 }
 function deleteActivity(rowId, name, btn){
-  const actions = btn.parentElement;
-  actions.dataset.original = actions.innerHTML;
-  actions.innerHTML =
-    '<span style="font-size:12px;color:var(--danger);margin-right:2px">This cannot be undone</span>'
-    + '<button class="action-link danger" onclick="event.stopPropagation(); doDelete(\'' + rowId + '\')">Confirm Delete</button>'
-    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">Cancel</button>';
+  openConfirm({
+    tone:'danger', title:'Delete this activity?',
+    text:'<b>' + escHtml(name) + '</b> will be permanently deleted. This action cannot be undone.',
+    okLabel:'Delete', okClass:'danger',
+    onOk:function(){ doDelete(rowId); }
+  });
 }
 function doDelete(rowId){
   const row = document.getElementById(rowId);
-  if(row) row.remove();
+  if(!row) return;
+  row.classList.add('row-leaving');
+  setTimeout(function(){ row.remove(); showAppToast('Activity deleted'); }, 260);
 }
 function cancelInlineAction(btn){
   const actions = btn.closest('.table-actions');
@@ -3687,5 +3767,20 @@ if(hashRoutes[location.hash]){
   hashRoutes[location.hash]();
 }
 </script>
+<div class="cf-overlay" id="cfOverlay" onclick="if(event.target===this) closeConfirm()">
+  <div class="cf-modal" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <button class="cf-close" onclick="closeConfirm()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="cf-head">
+      <div class="cf-icon danger" id="cfIcon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+      <p class="cf-title" id="cfTitle"></p>
+    </div>
+    <p class="cf-text" id="cfText"></p>
+    <div class="cf-actions">
+      <button class="btn" id="cfCancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn danger" id="cfOk"></button>
+    </div>
+  </div>
+</div>
+<div class="app-toast" id="appToast" role="status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span id="appToastMsg"></span></div>
 </body>
 </html>

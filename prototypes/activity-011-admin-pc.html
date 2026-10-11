@@ -231,12 +231,16 @@
 
 <!-- 撤回申请二次确认 -->
 <div class="p-modal-overlay" id="withdrawModal">
-  <div class="p-modal">
-    <p class="p-section-title">撤回申请？</p>
-    <p class="p-section-hint">撤回后活动回到草稿，已通过节点的审批记录不会保留，重新提交需从第一个节点重新审批。这个操作不可逆。</p>
-    <div class="p-actions end">
+  <div class="p-modal" role="dialog" aria-modal="true" aria-labelledby="withdrawTitle">
+    <button class="p-modal-close" data-close aria-label="关闭"><svg class="p-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="p-modal-head">
+      <div class="p-modal-icon danger"><svg class="p-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+      <p class="p-modal-title" id="withdrawTitle">撤回申请？</p>
+    </div>
+    <p class="p-modal-text">撤回后活动回到草稿，已通过节点的审批记录不会保留，重新提交需从第一个节点重新审批。这个操作不可逆。</p>
+    <div class="p-modal-actions">
       <button class="p-btn" data-close>再想想</button>
-      <button class="p-btn danger-text" data-close onclick="Approval011.withdraw()">确认撤回</button>
+      <button class="p-btn danger" data-close onclick="Approval011.withdraw()">确认撤回</button>
     </div>
   </div>
 </div>
