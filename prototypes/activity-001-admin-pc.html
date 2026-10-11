@@ -6,22 +6,22 @@
 <title>活动运营后台</title>
 <style>
   :root{
-    --bg: #F6F5F2;
-    --sidebar: #22282A;
-    --sidebar-text: #B7BEC0;
+    --bg: #F5F4FB;
+    --sidebar: #1B1F3B;
+    --sidebar-text: #B8BCD6;
     --sidebar-text-active: #FFFFFF;
-    --sidebar-active-bg: #33393B;
+    --sidebar-active-bg: #2A2F52;
     --surface: #FFFFFF;
-    --border: #E4E1D9;
-    --border-strong: #D3CFC3;
-    --text-primary: #1E1E1C;
-    --text-secondary: #6B675E;
-    --text-muted: #9C978A;
-    --accent: #3B6E64;
-    --accent-tint: #E6EFEC;
+    --border: #E9E8F4;
+    --border-strong: #D9D8EA;
+    --text-primary: #1B1F3B;
+    --text-secondary: #5B6078;
+    --text-muted: #9A9FB8;
+    --accent: #2F5FE3;
+    --accent-tint: #EAF0FF;
     --interactive: #B0642E;
     --interactive-tint: #F7ECE1;
-    --content-tint: #EEEAF6;
+    --content-tint: #EEEAF9;
     --content-text: #574B8C;
     --radius: 8px;
     --danger: #B23A34;
@@ -33,19 +33,26 @@
   }
   .shell{display:flex; min-height:100vh}
   .sidebar{
-    width:216px; background:var(--sidebar); color:var(--sidebar-text);
-    flex-shrink:0; padding:20px 12px; display:flex; flex-direction:column;
+    width:220px; background:var(--surface); color:var(--text-secondary); border-right:0.5px solid var(--border);
+    flex-shrink:0; padding:24px 16px 16px; display:flex; flex-direction:column;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
   }
-  .brand{display:flex; align-items:center; gap:8px; padding:4px 10px 20px; color:#fff; font-weight:600; font-size:15px}
-  .brand-mark{width:22px;height:22px;border-radius:6px;background:var(--accent);flex-shrink:0}
-  .nav-group-label{font-size:11px; color:#6E7476; padding:14px 10px 6px; letter-spacing:0.02em}
+  .brand{display:flex; align-items:center; gap:10px; padding:0 8px 24px; color:var(--text-primary); font-weight:600; font-size:17px; letter-spacing:-.01em}
+  .brand-mark{width:30px;height:30px;border-radius:9px;background:var(--accent);flex-shrink:0;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .nav-group-label{font-size:11px; color:var(--text-muted); padding:14px 12px 8px; letter-spacing:.06em}
   .nav-item{
-    display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
-    font-size:13.5px; cursor:pointer; color:var(--sidebar-text);
+    display:flex; flex-shrink:0; align-items:center; gap:12px; height:42px; padding:0 12px; margin-bottom:4px; border-radius:10px;
+    font-size:14px; font-weight:500; cursor:pointer; color:var(--text-secondary); text-decoration:none;
+    transition:background .15s ease, color .15s ease, box-shadow .15s ease;
   }
-  .nav-item:hover{background:#2A3032}
-  .nav-item.active{background:var(--sidebar-active-bg); color:var(--sidebar-text-active); font-weight:500}
-  .nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .nav-item:hover{background:var(--bg); color:var(--text-primary)}
+  .nav-item.active, .nav-item.active:hover{background:var(--accent); color:#fff; box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .nav-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .side-user{margin-top:auto; display:flex; align-items:center; gap:10px; padding:14px 8px 0; border-top:0.5px solid var(--border)}
+  .side-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--accent-tint);color:var(--accent)}
+  .side-name{font-size:13.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
+  .side-role{font-size:12px;color:var(--text-muted);line-height:1.3}
   .nav-badge{
     margin-left:auto; min-width:18px; height:18px; padding:0 5px; border-radius:9px;
     background:var(--danger); color:#fff; font-size:10px; font-weight:600;
@@ -54,7 +61,7 @@
   .main{flex:1; min-width:0; display:flex; flex-direction:column}
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
-    padding:16px 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
+    height:60px; padding:0 32px; border-bottom:0.5px solid var(--border); background:var(--surface);
   }
   .breadcrumb{font-size:13px; color:var(--text-secondary)}
   .breadcrumb b{color:var(--text-primary); font-weight:500}
@@ -266,6 +273,31 @@
   .action-link.muted{color:var(--text-secondary)}
   .action-link.danger{color:var(--danger)}
 
+  /* Table list page: full-bleed content, 15px to every edge */
+  .content:has(#listView:not(.hidden)){padding:15px; justify-content:stretch}
+  .content:has(#listView:not(.hidden)) .panel{max-width:none}
+  .main:has(#listView:not(.hidden)) .topbar{padding-left:15px; padding-right:15px}
+
+  /* Activities list table (scoped: other tables keep the old style for now) */
+  #listView .table-card{background:var(--surface); border:0.5px solid var(--border); border-radius:14px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); overflow:hidden}
+  #listView .activity-table{border:none; border-radius:0}
+  #listView .activity-table th{padding:14px 20px; font-size:14px; font-weight:600; color:var(--text-primary); background:var(--surface); border-bottom:0.5px solid var(--border-strong); white-space:nowrap}
+  #listView .activity-table td{padding:12px 20px; font-size:14px; color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:0.5px solid var(--border)}
+  #listView .activity-table tr:last-child td{border-bottom:none}
+  #listView .activity-table td.title-cell{font-weight:400}
+  #listView .activity-table tbody tr{transition:background .15s ease}
+  #listView .activity-table tbody tr:hover td{background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
+  #listView .activity-table .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:14px}
+  #listView .activity-table .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #listView .activity-table th:last-child, #listView .activity-table td:last-child{width:1%; white-space:nowrap}
+  #listView .activity-table .status-badge, #listView .activity-table .action-link{font-weight:400}
+  #listView .activity-table .table-actions{gap:4px}
+  #listView .activity-table .action-link{font-size:14px; padding:4px 10px; border-radius:6px; font-weight:400; transition:background .15s ease, color .15s ease}
+  #listView .activity-table .action-link:hover{background:var(--accent-tint)}
+  #listView .activity-table .action-link.muted{color:var(--text-secondary)}
+  #listView .activity-table .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  #listView .activity-table .action-link.danger:hover{background:#F6E4E2}
+
   .module-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
   .module-card{border:0.5px solid var(--border-strong); border-radius:12px; padding:18px; background:var(--surface); cursor:pointer}
   .module-card-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
@@ -451,7 +483,14 @@
   }
   button.btn:hover{background:var(--bg)}
   button.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
-  button.btn.primary:hover{background:#325D54}
+  button.btn{transition:background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease}
+  button.btn:hover{border-color:var(--text-muted)}
+  button.btn.primary{box-shadow:0 1px 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+  button.btn.primary:hover{background:color-mix(in srgb,var(--accent) 88%,var(--text-primary)); border-color:color-mix(in srgb,var(--accent) 88%,var(--text-primary)); box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 32%,transparent); transform:translateY(-1px)}
+  button.btn:active{transform:translateY(0); box-shadow:none}
+  button.btn.primary:active{background:color-mix(in srgb,var(--accent) 78%,var(--text-primary))}
+  button.btn:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  button.btn:disabled{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none}
 
   /* REQ-004 名单搜索 */
   .reg-search-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
@@ -466,19 +505,24 @@
 <div class="shell">
 
   <div class="sidebar">
-    <div class="brand"><div class="brand-mark"></div>活动运营后台</div>
-    <div class="nav-group-label">工作台</div>
-    <div class="nav-item active" id="navActivities" onclick="showList()"><span class="nav-icon">&#9679;</span>活动管理</div>
-    <div class="nav-item" id="navModules" onclick="showModuleLibrary()"><span class="nav-icon">&#9679;</span>模块库</div>
-    <a class="nav-item" id="navCelebrations" href="celebration-007-admin-pc.html" style="text-decoration:none"><span class="nav-icon">&#9679;</span>Celebrations 管理</a>
-    <div class="nav-item" id="navSubmissions" onclick="showSubmissions()"><span class="nav-icon">&#9679;</span>作品管理</div>
-    <div class="nav-item" id="navRegistrations" onclick="showRegistrations()"><span class="nav-icon">&#9679;</span>报名管理</div>
-    <div class="nav-item" id="navWall" onclick="showWall()"><span class="nav-icon">&#9679;</span>寄语墙管理</div>
-    <div class="nav-item" id="navSponsors" onclick="showSponsors()"><span class="nav-icon">&#9679;</span>赞助商管理<span class="nav-badge hidden" id="navSponsorsBadge">0</span></div>
-    <div class="nav-item" id="navStats" onclick="showStats()"><span class="nav-icon">&#9679;</span>数据统计</div>
-    <div class="nav-group-label">用户端预览</div>
-    <div class="nav-item" id="navUserPreview" onclick="showUserPreview()"><span class="nav-icon">&#9679;</span>活动详情页</div>
-    <div class="nav-item" id="navUserWorks" onclick="showUserWorks()"><span class="nav-icon">&#9679;</span>作品展示页面</div>
+    <div class="brand"><div class="brand-mark"></div>Activity Ops</div>
+    <div class="nav-group-label">WORKSPACE</div>
+    <div class="nav-item active" id="navActivities" onclick="showList()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></span>Activities</div>
+    <div class="nav-item" id="navModules" onclick="showModuleLibrary()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span>Module Library</div>
+    <a class="nav-item" id="navCelebrations" href="celebration-007-admin-pc.html" style="text-decoration:none"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21l4-12 8 8-12 4zM14 4v2M19 9h2M18 4l-1 1M20 14l-1.5-.5"/></svg></span>Celebrations</a>
+    <div class="nav-item" id="navSubmissions" onclick="showSubmissions()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="M21 16l-5-5-9 9"/></svg></span>Submissions</div>
+    <div class="nav-item" id="navRegistrations" onclick="showRegistrations()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1zM8 6H6a1 1 0 00-1 1v13a1 1 0 001 1h12a1 1 0 001-1V7a1 1 0 00-1-1h-2M9 14l2 2 4-4"/></svg></span>Registrations</div>
+    <div class="nav-item" id="navWall" onclick="showWall()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg></span>Message Wall</div>
+    <div class="nav-item" id="navSponsors" onclick="showSponsors()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 6.4-8 11-8 11z"/></svg></span>Sponsors<span class="nav-badge hidden" id="navSponsorsBadge">0</span></div>
+    <div class="nav-item" id="navStats" onclick="showStats()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>Statistics</div>
+    <div class="nav-group-label">USER PREVIEW</div>
+    <div class="nav-item" id="navUserPreview" onclick="showUserPreview()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 13h6"/></svg></span>Activity Page</div>
+    <div class="nav-item" id="navUserWorks" onclick="showUserWorks()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M17 13v8M13 17h8"/></svg></span>Showcase Page</div>
+
+    <div class="side-user">
+      <div class="side-avatar">A</div>
+      <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
+    </div>
   </div>
 
   <div class="main">
@@ -527,83 +571,85 @@
             <button class="btn primary" onclick="searchActivities()">搜索</button>
           </div>
 
+          <div class="table-card">
           <table class="activity-table">
             <thead>
               <tr>
-                <th>活动标题</th><th>类型</th><th>状态</th><th>预算</th><th>计划举办时间</th><th>发起人</th><th>操作</th>
+                <th>Activity Title</th><th>Type</th><th>Status</th><th>Budget</th><th>Planned Date</th><th>Initiator</th><th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr data-created="2026-09-28 10:05" onclick="viewActivity('review')">
                 <td class="title-cell">公司30周年庆典</td>
-                <td>周年庆</td>
-                <td><span class="status-badge review">审批中</span></td>
+                <td>Anniversary</td>
+                <td><span class="status-badge review">In Review</span></td>
                 <td>S$68,000</td>
                 <td>2026-11-20</td>
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('review')">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('review')">View</button>
                   </div>
                 </td>
               </tr>
               <tr data-created="2026-09-25 16:40" onclick="viewActivity('published')" id="row-annual">
                 <td class="title-cell">2026年会</td>
-                <td>年会</td>
-                <td><span class="status-badge approved">已发布</span></td>
+                <td>Annual Party</td>
+                <td><span class="status-badge approved">Published</span></td>
                 <td>S$120,000</td>
                 <td>2027-01-15</td>
                 <td>王芳</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('published')">查看详情</button>
-                    <button class="action-link muted" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)">下线</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('published')">View</button>
+                    <button class="action-link muted" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)">Unpublish</button>
                   </div>
                 </td>
               </tr>
               <tr data-created="2026-09-18 09:30" onclick="viewActivity('ended')">
                 <td class="title-cell">Q3部门团建</td>
-                <td>团建</td>
-                <td><span class="status-badge ended">已结束</span></td>
+                <td>Team Building</td>
+                <td><span class="status-badge ended">Ended</span></td>
                 <td>S$8,000</td>
                 <td>2026-08-02</td>
                 <td>李强</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('ended')">查看详情</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('ended')">View</button>
                   </div>
                 </td>
               </tr>
               <tr data-created="2026-09-10 14:20" onclick="showEditor()" id="row-onboarding">
                 <td class="title-cell">新人入职欢迎会</td>
-                <td>培训分享会</td>
-                <td><span class="status-badge draft">草稿</span></td>
+                <td>Training Session</td>
+                <td><span class="status-badge draft">Draft</span></td>
                 <td>S$2,000</td>
-                <td class="muted-cell">未设定</td>
+                <td class="muted-cell">Not set</td>
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); showEditor()">编辑</button>
-                    <button class="action-link danger" onclick="event.stopPropagation(); deleteActivity('row-onboarding','新人入职欢迎会', this)">删除</button>
+                    <button class="action-link" onclick="event.stopPropagation(); showEditor()">Edit</button>
+                    <button class="action-link danger" onclick="event.stopPropagation(); deleteActivity('row-onboarding','新人入职欢迎会', this)">Delete</button>
                   </div>
                 </td>
               </tr>
               <tr data-created="2026-09-02 11:00" onclick="showEditor()">
                 <td class="title-cell">中秋福利活动</td>
-                <td>生日会</td>
-                <td><span class="status-badge rejected">已驳回</span></td>
+                <td>Birthday Party</td>
+                <td><span class="status-badge rejected">Rejected</span></td>
                 <td>S$15,000</td>
                 <td>2026-09-25</td>
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('rejected')">查看详情</button>
-                    <button class="action-link muted" onclick="event.stopPropagation(); showEditor()">编辑</button>
+                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('rejected')">View</button>
+                    <button class="action-link muted" onclick="event.stopPropagation(); showEditor()">Edit</button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
 
         <!-- Editor view -->
@@ -2988,26 +3034,26 @@ function unpublishActivity(rowId, btn){
   const actions = btn.parentElement;
   actions.dataset.original = actions.innerHTML;
   actions.innerHTML =
-    '<span style="font-size:12px;color:var(--text-secondary);margin-right:2px">确定下线？</span>'
-    + '<button class="action-link danger" onclick="event.stopPropagation(); doUnpublish(\'' + rowId + '\')">确认</button>'
-    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">取消</button>';
+    '<span style="font-size:12px;color:var(--text-secondary);margin-right:2px">Unpublish this activity?</span>'
+    + '<button class="action-link danger" onclick="event.stopPropagation(); doUnpublish(\'' + rowId + '\')">Confirm</button>'
+    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">Cancel</button>';
 }
 function doUnpublish(rowId){
   const row = document.getElementById(rowId);
   const badge = row.querySelector('.status-badge');
   badge.className = 'status-badge ended';
-  badge.textContent = '已结束';
+  badge.textContent = 'Ended';
   row.setAttribute('onclick', "viewActivity('ended')");
   row.querySelector('.table-actions').innerHTML =
-    '<button class="action-link" onclick="event.stopPropagation(); viewActivity(\'ended\')">查看详情</button>';
+    '<button class="action-link" onclick="event.stopPropagation(); viewActivity(\'ended\')">View</button>';
 }
 function deleteActivity(rowId, name, btn){
   const actions = btn.parentElement;
   actions.dataset.original = actions.innerHTML;
   actions.innerHTML =
-    '<span style="font-size:12px;color:var(--danger);margin-right:2px">删除后不可恢复</span>'
-    + '<button class="action-link danger" onclick="event.stopPropagation(); doDelete(\'' + rowId + '\')">确认删除</button>'
-    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">取消</button>';
+    '<span style="font-size:12px;color:var(--danger);margin-right:2px">This cannot be undone</span>'
+    + '<button class="action-link danger" onclick="event.stopPropagation(); doDelete(\'' + rowId + '\')">Confirm Delete</button>'
+    + '<button class="action-link muted" onclick="event.stopPropagation(); cancelInlineAction(this)">Cancel</button>';
 }
 function doDelete(rowId){
   const row = document.getElementById(rowId);
