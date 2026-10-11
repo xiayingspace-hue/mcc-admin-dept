@@ -4,63 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Celebration 详情</title>
+<link rel="stylesheet" href="_shared/tokens.css">
 <style>
+  /* 颜色、圆角、阴影、字体全部来自 _shared/tokens.css；这里只做语义别名，不写新的取值 */
   :root{
-    --u-navy:#1B2430; --u-cream:#FBEDE4; --u-gold:#B8862E; --u-gold-tint:#F1E6CF;
-    --u-text:#2B2118; --u-text-muted:#8A7F6E;
+    --u-bg:var(--brand-bg); --u-surface:var(--brand-surface); --u-ink:var(--brand-sidebar);
+    --u-text:var(--brand-text-primary); --u-text-2:var(--brand-text-secondary); --u-text-muted:var(--brand-text-muted);
+    --u-accent:var(--brand-accent); --u-accent-tint:var(--brand-accent-tint); --u-on-accent:var(--brand-on-accent);
+    --u-border:var(--brand-border); --u-border-strong:var(--brand-border-strong);
   }
   *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--u-cream); color:var(--u-text);
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  }
+  body{margin:0; background:var(--u-bg); color:var(--u-text); font-family:var(--brand-font); -webkit-font-smoothing:antialiased}
+  img{display:block}
 
-  .back-bar{padding:12px 20px; background:var(--u-navy)}
-  .back-link{font-size:12.5px; color:#B9B2A0; text-decoration:none; cursor:pointer}
-  .back-link:hover{color:#fff}
+  .back-bar{padding:12px 20px; background:var(--u-ink)}
+  .back-link{font-size:13px; color:var(--brand-sidebar-text); text-decoration:none; cursor:pointer; transition:color var(--brand-ease)}
+  .back-link:hover{color:var(--brand-sidebar-text-active)}
 
   /* ---- Hero ---- */
-  .page-hero{position:relative; min-height:340px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; color:#fff}
-  .hero-photo-bg{
-    position:absolute; inset:0;
-    background:
-      radial-gradient(circle at 18% 25%, rgba(216,178,120,.35), transparent 45%),
-      radial-gradient(circle at 82% 15%, rgba(184,134,46,.32), transparent 42%),
-      radial-gradient(circle at 60% 85%, rgba(120,90,60,.4), transparent 55%),
-      linear-gradient(160deg,#2b2420,#1b2430);
-    transition:filter .2s;
-  }
+  .page-hero{position:relative; min-height:360px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; color:var(--u-on-accent)}
+  .hero-photo-bg{position:absolute; inset:0; background:var(--u-ink) url(_shared/photos/hero-1.jpg) center/cover no-repeat; transition:filter .2s}
   .hero-photo-bg.dimmed{filter:grayscale(.5) brightness(.65)}
-  .page-hero::before{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,26,38,.25), rgba(15,20,30,.9)); z-index:1}
-  .hero-inner{position:relative; z-index:2; max-width:1080px; margin:0 auto; padding:44px 44px 0}
-  .hero-title{font-family:Georgia,"Songti SC",serif; font-size:34px; font-weight:600; margin:0 0 40px; line-height:1.2}
+  .page-hero::before{content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, color-mix(in srgb,var(--u-ink) 20%,transparent), color-mix(in srgb,var(--u-ink) 88%,transparent))}
+  .hero-inner{position:relative; z-index:2; width:100%; max-width:1120px; margin:0 auto; padding:56px 44px 0}
+  .hero-title{font-size:38px; font-weight:700; letter-spacing:-.02em; margin:0 0 44px; line-height:1.2; max-width:760px}
 
   /* ---- Body ---- */
-  .page-body{display:grid; grid-template-columns:1fr 320px; gap:36px; max-width:1080px; margin:0 auto; padding:44px 44px 64px}
-  .content-section{margin-bottom:40px}
-  .poster-img{width:100%; aspect-ratio:3/4; border-radius:12px; background:linear-gradient(160deg,var(--u-gold-tint),#fff); border:0.5px solid var(--u-gold-tint); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--u-text)}
-  .poster-img .poster-title{font-family:Georgia,"Songti SC",serif; font-size:22px; font-weight:600; line-height:1.3; margin-bottom:10px}
-  .poster-img .poster-meta{font-size:13px; color:var(--u-text-muted)}
-  .poster-img .poster-tag{margin-top:18px; font-size:11px; color:var(--u-text-muted); border:1px dashed var(--u-gold); border-radius:999px; padding:4px 12px}
-  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:var(--u-navy); color:#fff; border-radius:999px; padding:2px 8px}
-  .u-work-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--u-navy) 72%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
+  .page-body{display:grid; grid-template-columns:1fr 340px; gap:40px; max-width:1120px; margin:0 auto; padding:44px 44px 64px; align-items:start}
+  .content-section{margin-bottom:44px}
+  .poster-img{position:relative; width:100%; aspect-ratio:3/4; border-radius:var(--brand-radius-lg); overflow:hidden; background:var(--u-accent-tint); box-shadow:var(--brand-shadow-md)}
+  .poster-img img{width:100%; height:100%; object-fit:cover}
+  .poster-caption{position:absolute; left:0; right:0; bottom:0; padding:48px 24px 22px; color:var(--u-on-accent); background:linear-gradient(180deg, transparent, color-mix(in srgb,var(--u-ink) 82%,transparent))}
+  .poster-caption .poster-title{font-size:22px; font-weight:700; letter-spacing:-.01em; line-height:1.3; margin-bottom:6px}
+  .poster-caption .poster-meta{font-size:13px; opacity:.88; line-height:1.6}
+  .u-media-tag{position:absolute; right:8px; bottom:8px; font-size:11px; background:color-mix(in srgb,var(--u-ink) 78%,transparent); color:var(--u-on-accent); border-radius:999px; padding:2px 8px; backdrop-filter:blur(4px)}
+  .u-work-overlay{position:fixed; inset:0; background:var(--brand-overlay); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:300; padding:20px}
   .u-work-overlay.open{display:flex}
-  .u-work-box{background:#fff; border-radius:14px; width:100%; max-width:520px; overflow:hidden}
-  .u-work-stage{position:relative; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px}
-  .u-work-nav{position:absolute; top:50%; transform:translateY(-50%); width:34px; height:34px; border-radius:50%; border:0.5px solid var(--u-gold-tint); background:#fff; color:var(--u-text); cursor:pointer; font-size:16px}
+  .u-work-box{background:var(--u-surface); border-radius:var(--brand-radius-lg); width:100%; max-width:540px; overflow:hidden; box-shadow:var(--brand-shadow-lg)}
+  .u-work-stage{position:relative; aspect-ratio:4/3; background:var(--u-accent-tint); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-size:14px; color:var(--u-text); text-align:center; padding:16px; overflow:hidden}
+  .u-work-stage .work-photo{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+  .u-work-cap{position:absolute; left:12px; bottom:12px; font-size:12px; padding:3px 10px; border-radius:999px; background:color-mix(in srgb,var(--u-ink) 78%,transparent); color:var(--u-on-accent)}
+  .u-work-nav{position:absolute; z-index:2; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:0.5px solid var(--u-border); background:var(--u-surface); color:var(--u-text); cursor:pointer; font-size:16px; box-shadow:var(--brand-shadow-sm)}
   .u-work-nav:disabled{opacity:.35; cursor:default}
-  .u-work-nav.prev{left:10px}
-  .u-work-nav.next{right:10px}
-  .u-work-meta{padding:14px 16px 6px; font-size:13px; color:var(--u-text)}
-  .u-work-skel{width:70%; height:14px; border-radius:4px; background:var(--u-gold-tint)}
-  .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
-  .section-title{font-family:Georgia,"Songti SC",serif; font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 20px}
+  .u-work-nav.prev{left:12px}
+  .u-work-nav.next{right:12px}
+  .u-work-meta{padding:16px 18px 6px; font-size:14px; color:var(--u-text)}
+  .u-work-skel{width:70%; height:14px; border-radius:var(--brand-radius-sm); background:var(--u-border)}
+  .u-work-link{background:none; border:none; color:var(--u-accent); cursor:pointer; font-size:13px; padding:0; text-decoration:underline}
+  .section-title{font-size:20px; font-weight:700; letter-spacing:-.01em; color:var(--u-text); margin:0 0 20px}
 
-  .lede{font-style:italic; color:#8A6A3D; font-size:15px; line-height:1.7; margin:0 0 18px}
-  .divider{border:none; border-top:2px solid var(--u-gold); width:56px; margin:0 0 26px}
-  .main-col p{font-size:14px; line-height:1.85; color:var(--u-text); margin:0 0 18px}
-  blockquote{margin:0 0 20px; padding:4px 0 4px 20px; border-left:3px solid var(--u-gold); font-style:italic; color:#4a3b2c; font-size:15px; line-height:1.7}
-  .empty-note{font-size:13.5px; color:var(--u-text-muted); padding:32px 0; text-align:center}
+  .lede{color:var(--u-text-2); font-size:17px; line-height:1.7; margin:0 0 20px}
+  .divider{border:none; border-top:3px solid var(--u-accent); border-radius:2px; width:48px; margin:0 0 26px}
+  .main-col p{font-size:15px; line-height:1.85; color:var(--u-text); margin:0 0 18px}
+  blockquote{margin:0 0 22px; padding:16px 20px; border-left:3px solid var(--u-accent); border-radius:0 var(--brand-radius) var(--brand-radius) 0; background:var(--u-accent-tint); color:var(--u-text); font-size:15px; line-height:1.75}
+  .empty-note{font-size:14px; color:var(--u-text-muted); padding:32px 0; text-align:center}
 
   .gallery-grid{
     display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(3,150px);
@@ -70,74 +67,87 @@
       "e f g g";
     gap:10px;
   }
-  .gallery-item{border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:22px}
+  .gallery-item{border-radius:var(--brand-radius); overflow:hidden; background:var(--u-accent-tint)}
+  .gallery-item img{width:100%; height:100%; object-fit:cover; transition:transform .3s ease}
+  .gallery-item:hover img{transform:scale(1.04)}
   @media (max-width:720px){
     .gallery-grid{grid-template-columns:repeat(2,1fr); grid-template-rows:none; grid-template-areas:none}
     .gallery-item{grid-area:auto !important; aspect-ratio:4/3}
   }
 
-  .doodle-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
-  .doodle-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
-  .doodle-thumb{position:relative; cursor:pointer; aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
-  .doodle-info{padding:10px 12px}
-  .doodle-author{font-size:13px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
-  .doodle-org{font-size:11.5px; color:var(--u-text-muted); margin-top:2px}
-  .doodle-desc{font-size:12px; color:var(--u-text); line-height:1.6; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
-  .doodle-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px}
-  .doodle-count{font-size:11.5px; color:var(--u-text-muted)}
-  .doodle-vote-btn{font-size:11px; padding:5px 11px; border-radius:999px; border:1px solid var(--u-gold); background:#fff; color:var(--u-gold); cursor:pointer}
-  .doodle-vote-btn.voted{background:var(--u-gold); color:#fff}
+  .doodle-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+  .doodle-card{border-radius:var(--brand-radius-lg); overflow:hidden; background:var(--u-surface); border:0.5px solid var(--u-border); box-shadow:var(--brand-shadow-sm); transition:box-shadow var(--brand-ease), transform var(--brand-ease)}
+  .doodle-card:hover{box-shadow:var(--brand-shadow-md); transform:translateY(-2px)}
+  .doodle-thumb{position:relative; cursor:pointer; aspect-ratio:4/3; background:var(--u-accent-tint); overflow:hidden}
+  .doodle-thumb img{width:100%; height:100%; object-fit:cover}
+  .doodle-info{padding:14px 16px 16px}
+  .doodle-author{font-size:14px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+  .doodle-org{font-size:12px; color:var(--u-text-muted); margin-top:2px}
+  .doodle-desc{font-size:13px; color:var(--u-text-2); line-height:1.6; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+  .doodle-footer{display:flex; align-items:center; justify-content:space-between; margin-top:12px}
+  .doodle-count{font-size:12px; color:var(--u-text-muted)}
+  .doodle-vote-btn{font:inherit; font-size:12px; font-weight:500; height:32px; padding:0 14px; border-radius:999px; border:0.5px solid var(--u-accent); background:var(--u-surface); color:var(--u-accent); cursor:pointer; transition:background var(--brand-ease), color var(--brand-ease)}
+  .doodle-vote-btn:hover{background:var(--u-accent-tint)}
+  .doodle-vote-btn.voted{background:var(--u-accent); color:var(--u-on-accent)}
 
-  .side-col .details-card{background:#fff; border-radius:14px; padding:26px; box-shadow:0 2px 14px rgba(30,20,10,.06)}
-  .details-card h3{font-family:Georgia,serif; font-size:17px; margin:0 0 18px; color:var(--u-text)}
-  .detail-row{margin-bottom:14px}
-  .detail-row label{display:block; font-size:10.5px; letter-spacing:.05em; color:#A99A82; margin-bottom:3px; text-transform:uppercase}
-  .detail-row div{font-size:13.5px; color:var(--u-text)}
-  .details-divider{border:none; border-top:0.5px solid #EEE3D6; margin:18px 0}
-  .highlights-label{font-size:11px; letter-spacing:.05em; color:#5C6B8A; text-transform:uppercase; font-weight:700; margin:0 0 10px; padding-bottom:8px; border-bottom:0.5px solid #EEE3D6}
-  .highlights-list{list-style:none; margin:0 0 22px; padding:0}
-  .highlights-list li{font-size:13px; color:var(--u-text); padding:5px 0 5px 16px; position:relative}
-  .highlights-list li::before{content:''; position:absolute; left:0; top:12px; width:5px; height:5px; border-radius:50%; background:var(--u-gold)}
-  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--u-gold-tint); border-radius:8px}
+  .side-col{position:sticky; top:24px}
+  .side-col .details-card{background:var(--u-surface); border:0.5px solid var(--u-border); border-radius:var(--brand-radius-lg); padding:26px; box-shadow:var(--brand-shadow-md)}
+  .details-card h3{font-size:18px; font-weight:700; margin:0 0 20px; color:var(--u-text)}
+  .detail-row{margin-bottom:16px}
+  .detail-row label{display:block; font-size:11px; letter-spacing:.06em; color:var(--u-text-muted); margin-bottom:4px; text-transform:uppercase}
+  .detail-row div{font-size:14px; color:var(--u-text)}
+  .details-divider{border:none; border-top:0.5px solid var(--u-border); margin:20px 0}
+  .highlights-label{font-size:11px; letter-spacing:.06em; color:var(--u-text-muted); text-transform:uppercase; font-weight:600; margin:0 0 10px}
+  .highlights-list{list-style:none; margin:0 0 24px; padding:0}
+  .highlights-list li{font-size:13.5px; color:var(--u-text); padding:6px 0 6px 18px; position:relative; line-height:1.5}
+  .highlights-list li::before{content:''; position:absolute; left:0; top:13px; width:6px; height:6px; border-radius:50%; background:var(--u-accent)}
+  .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:var(--u-surface); border:0.5px solid var(--u-border-strong); border-radius:var(--brand-radius)}
   .qr-c{display:block; background:transparent}
-  .qr-c.on{background:var(--u-navy)}
+  .qr-c.on{background:var(--u-ink)}
   .qr-code-text{font-family:ui-monospace,Menlo,monospace; font-size:15px; letter-spacing:.06em; text-align:center; margin-top:10px; color:var(--u-text)}
-  .qr-hint{font-size:12px; color:var(--u-text-muted); text-align:center; margin-top:6px}
-  .my-code-link{display:none; width:100%; margin-top:8px; background:none; border:none; color:var(--u-gold); font-size:12.5px; text-decoration:underline; cursor:pointer}
-  .register-btn{width:100%; background:var(--u-navy); color:#fff; border:none; padding:13px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer}
-  .register-btn:hover{background:#223046}
-  .register-btn:disabled{opacity:.55; cursor:default}
+  .qr-hint{font-size:12px; color:var(--u-text-muted); text-align:center; margin-top:6px; line-height:1.6}
+  .my-code-link{display:none; width:100%; margin-top:10px; background:none; border:none; color:var(--u-accent); font-size:13px; text-decoration:underline; cursor:pointer}
+  .register-btn{width:100%; height:44px; background:var(--u-accent); color:var(--u-on-accent); border:none; border-radius:var(--brand-radius); font:inherit; font-size:14px; font-weight:600; cursor:pointer; box-shadow:var(--brand-shadow-accent); transition:filter var(--brand-ease)}
+  .register-btn:hover{filter:brightness(.93)}
+  .register-btn:focus-visible{outline:none; box-shadow:var(--brand-focus-ring)}
+  .register-btn:disabled{opacity:.55; cursor:default; box-shadow:none; filter:none}
   /* 访问者不是员工 / 确认中 / 确认失败（REQ-009）：入口直接不显示；确认失败时在原位置显示一行提示与重试 */
-  .viewer-hint{margin:8px 0 0; font-size:12px; color:var(--u-text-muted); text-align:center; line-height:1.5}
-  .viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12px}
-  .viewer-banner{margin:0 0 16px; padding:10px 14px; border-radius:8px; background:var(--u-gold-tint); color:var(--u-text); font-size:12.5px; line-height:1.5}
-  .viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-gold); text-decoration:underline; cursor:pointer; font-size:12.5px}
-  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-navy); color:#fff; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; text-align:center}
+  .viewer-hint{margin:10px 0 0; font-size:12.5px; color:var(--u-text-muted); text-align:center; line-height:1.5}
+  .viewer-hint button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-accent); text-decoration:underline; cursor:pointer; font-size:12.5px}
+  .viewer-banner{margin:0 0 16px; padding:12px 16px; border-radius:var(--brand-radius); background:var(--u-accent-tint); color:var(--u-text); font-size:13px; line-height:1.5}
+  .viewer-banner button{background:none; border:none; padding:0; margin-left:6px; color:var(--u-accent); text-decoration:underline; cursor:pointer; font-size:13px}
+  .u-toast{position:fixed; left:50%; bottom:56px; transform:translateX(-50%); max-width:86vw; padding:10px 18px; border-radius:999px; background:var(--u-ink); color:var(--u-on-accent); font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:200; text-align:center; box-shadow:var(--brand-shadow-lg)}
   .u-toast.show{opacity:1}
 
   @media (max-width:720px){
-    .page-body{grid-template-columns:1fr; padding:28px 20px 48px}
-    .hero-inner{padding:32px 20px 0}
-    .hero-title{font-size:26px}
+    .page-body{grid-template-columns:1fr; padding:28px 20px 48px; gap:28px}
+    .side-col{position:static}
+    .hero-inner{padding:40px 20px 0}
+    .hero-title{font-size:27px; margin-bottom:32px}
   }
 
   /* ---- Modal (shared) ---- */
-  .u-modal-overlay{display:none; position:fixed; inset:0; background:rgba(22,35,42,.55); align-items:center; justify-content:center; z-index:30; padding:20px}
+  .u-modal-overlay{display:none; position:fixed; inset:0; background:var(--brand-overlay); backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:30; padding:20px}
   .u-modal-overlay.open{display:flex}
-  .u-modal{background:#fff; border-radius:14px; width:100%; max-width:360px; max-height:90%; overflow-y:auto; padding:24px; color:var(--u-text)}
-  .u-modal h3{font-size:16px; margin:0 0 4px}
-  .u-modal .u-modal-sub{font-size:12px; color:var(--u-text-muted); margin:0 0 18px}
-  .u-modal .u-field{margin-bottom:13px}
-  .u-modal label{font-size:12px; color:var(--u-text-muted); display:block; margin-bottom:5px}
-  .u-modal input{width:100%; border:0.5px solid var(--u-gold-tint); border-radius:8px; padding:8px 10px; font-size:13px; font-family:inherit; color:var(--u-text); box-sizing:border-box}
-  .u-modal input:disabled{background:var(--u-cream); color:var(--u-text-muted)}
-  .u-modal-actions{display:flex; justify-content:flex-end; gap:14px; align-items:center; margin-top:6px}
-  .u-modal-cancel{background:none; border:none; color:var(--u-text-muted); font-size:13px; cursor:pointer; padding:8px 2px}
-  .u-modal-submit{background:var(--u-gold); color:#16232A; border:none; padding:9px 20px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer}
+  .u-modal{background:var(--u-surface); border-radius:var(--brand-radius-lg); width:100%; max-width:380px; max-height:90%; overflow-y:auto; padding:28px; color:var(--u-text); box-shadow:var(--brand-shadow-lg)}
+  .u-modal h3{font-size:18px; font-weight:700; margin:0 0 4px}
+  .u-modal .u-modal-sub{font-size:13px; color:var(--u-text-muted); margin:0 0 20px}
+  .u-modal .u-field{margin-bottom:14px}
+  .u-modal label{font-size:13px; color:var(--u-text-2); display:block; margin-bottom:6px}
+  .u-modal input{width:100%; height:40px; border:0.5px solid var(--u-border-strong); border-radius:var(--brand-radius); padding:0 12px; font-size:14px; font-family:inherit; color:var(--u-text); background:var(--u-surface); box-sizing:border-box; transition:border-color var(--brand-ease), box-shadow var(--brand-ease)}
+  .u-modal input:focus{outline:none; border-color:var(--u-accent); box-shadow:var(--brand-focus-ring)}
+  .u-modal input:disabled{background:var(--u-bg); color:var(--u-text-muted)}
+  .u-modal-actions{display:flex; justify-content:flex-end; gap:12px; align-items:center; margin-top:8px}
+  .u-modal-cancel{background:none; border:none; color:var(--u-text-2); font-size:14px; cursor:pointer; padding:8px 4px}
+  .u-modal-submit{background:var(--u-accent); color:var(--u-on-accent); border:none; height:40px; padding:0 20px; border-radius:var(--brand-radius); font:inherit; font-size:14px; font-weight:600; cursor:pointer; box-shadow:var(--brand-shadow-accent); transition:filter var(--brand-ease)}
+  .u-modal-submit:hover{filter:brightness(.93)}
   .u-modal-success{text-align:center; padding:8px 0 4px}
-  .u-modal-success-icon{width:44px;height:44px;border-radius:50%; background:var(--u-gold-tint); color:var(--u-gold); font-size:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px}
+  .u-modal-success-icon{width:48px; height:48px; border-radius:50%; background:var(--brand-status-success-tint); color:var(--brand-status-success); font-size:22px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px}
   .u-modal-success h3{margin-bottom:6px}
-  .u-modal-success p{font-size:12.5px; color:var(--u-text-muted); margin:0 0 20px}
+  .u-modal-success p{font-size:13px; color:var(--u-text-muted); margin:0 0 20px; line-height:1.6}
+
+  .demo-bar{max-width:1120px; margin:0 auto; padding:0 44px 28px; font-size:12px; color:var(--u-text-muted)}
+  .demo-bar button{background:none; border:none; color:var(--u-text-muted); text-decoration:underline; cursor:pointer; font-size:12px}
 
   .hidden{display:none}
 </style>
@@ -196,13 +206,13 @@
   </aside>
 </div>
 
-<div style="max-width:1080px; margin:0 auto; padding:0 44px 28px; font-size:11.5px; color:var(--u-text-muted)">
+<div class="demo-bar">
   原型演示（管理端的展示开关）：
-  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('registration')">Registration info:<span id="demoRegState">Open</span></button>
-  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleModule('doodle')">Doodle display:<span id="demoDoodleState">Open</span></button>
-  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleFull()">Slots (click to toggle):<span id="demoFullState">Not full</span></button>
-  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleStage()">Status (click to cycle):<span id="demoStageState">Starting soon</span></button>
-  <button style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px" onclick="demoToggleViewer()">Visitor identity (click to cycle):<span id="demoViewerState">Staff</span></button>
+  <button onclick="demoToggleModule('registration')">Registration info:<span id="demoRegState">Open</span></button>
+  <button onclick="demoToggleModule('doodle')">Doodle display:<span id="demoDoodleState">Open</span></button>
+  <button onclick="demoToggleFull()">Slots (click to toggle):<span id="demoFullState">Not full</span></button>
+  <button onclick="demoToggleStage()">Status (click to cycle):<span id="demoStageState">Starting soon</span></button>
+  <button onclick="demoToggleViewer()">Visitor identity (click to cycle):<span id="demoViewerState">Staff</span></button>
 </div>
 
 <div class="u-toast" id="uToast"></div>
@@ -216,7 +226,7 @@
       <div id="workCount" style="margin-top:6px; color:var(--u-text-muted); font-size:11.5px"></div>
     </div>
     <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
-      <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
+      <span style="font-size:12px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
         <button class="u-work-link" onclick="setWorkMedia('normal')">Normal</button>
         <button class="u-work-link" onclick="setWorkMedia('loading')">Loading</button>
         <button class="u-work-link" onclick="setWorkMedia('error')">Load failed</button>
@@ -335,7 +345,7 @@ function renderCelebration(id){
   document.getElementById('heroTitle').textContent = data.title;
   document.getElementById('detailSite').textContent = data.site;
   document.getElementById('detailDate').textContent = when;
-  document.getElementById('posterBox').innerHTML = '<div class="poster-title">'+data.title+'</div><div class="poster-meta">'+data.site+'<br>'+when+'</div><div class="poster-tag">预告海报 · JPG / PNG，宽度自适应完整显示</div>';
+  document.getElementById('posterBox').innerHTML = '<img src="_shared/photos/poster-1.jpg" alt=""><div class="poster-caption"><div class="poster-title">'+data.title+'</div><div class="poster-meta">'+data.site+'<br>'+when+'</div></div>';
   document.getElementById('celRegModalSub').textContent = data.site + ' · ' + when;
 
 
@@ -350,22 +360,22 @@ function renderCelebration(id){
   const gallery = document.getElementById('galleryContent');
   const doodle = document.getElementById('doodleContent');
     gallery.innerHTML = '<div class="gallery-grid">'
-      + '<div class="gallery-item" style="grid-area:a; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
-      + '<div class="gallery-item" style="grid-area:b; background:linear-gradient(150deg,#2b2420,#4a3b2c); color:#fff">📷</div>'
-      + '<div class="gallery-item" style="grid-area:c; background:linear-gradient(150deg,#1b2430,#2b2420); color:#fff">📷</div>'
-      + '<div class="gallery-item" style="grid-area:d; background:linear-gradient(150deg,#1b2430,#3a2f28); color:#fff">📷</div>'
-      + '<div class="gallery-item" style="grid-area:e; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
-      + '<div class="gallery-item" style="grid-area:f; background:linear-gradient(150deg,#2b2420,#4a3b2c); color:#fff">📷</div>'
-      + '<div class="gallery-item" style="grid-area:g; background:linear-gradient(135deg,var(--u-gold-tint),#fff); color:var(--u-gold)">📷</div>'
+      + '<div class="gallery-item" style="grid-area:a"><img src="_shared/photos/gallery-1.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:b"><img src="_shared/photos/gallery-2.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:c"><img src="_shared/photos/gallery-3.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:d"><img src="_shared/photos/gallery-4.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:e"><img src="_shared/photos/gallery-5.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:f"><img src="_shared/photos/gallery-6.jpg" alt=""></div>'
+      + '<div class="gallery-item" style="grid-area:g"><img src="_shared/photos/gallery-7.jpg" alt=""></div>'
       + '</div>';
     doodle.innerHTML = '<div class="doodle-grid">'
-      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb" onclick="openWork(\'cv1\')">🎨<span class="u-media-tag">3 张 · ▶</span></div><div class="doodle-info">'
+      + '<div class="doodle-card" id="cv1"><div class="doodle-thumb" onclick="openWork(\'cv1\')"><img src="_shared/photos/work-4.jpg" alt=""><span class="u-media-tag">3 张 · ▶</span></div><div class="doodle-info">'
       +   '<div class="doodle-author">陈思思, 王芳, 李强</div>'
       +   '<div class="doodle-org">产品部</div>'
       +   '<div class="doodle-desc">灵感来源于公司logo的演变过程</div>'
       +   '<div class="doodle-footer"><span class="doodle-count" data-count="14">14 票</span><button class="doodle-vote-btn" onclick="toggleVote(\'cv1\')">Vote</button></div>'
       + '</div></div>'
-      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb" onclick="openWork(\'cv2\')">🎨<span class="u-media-tag">2 张</span></div><div class="doodle-info">'
+      + '<div class="doodle-card" id="cv2"><div class="doodle-thumb" onclick="openWork(\'cv2\')"><img src="_shared/photos/work-1.jpg" alt=""><span class="u-media-tag">2 张</span></div><div class="doodle-info">'
       +   '<div class="doodle-author">王芳</div>'
       +   '<div class="doodle-org">行政部</div>'
       +   '<div class="doodle-desc">以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。</div>'
@@ -481,6 +491,7 @@ function demoToggleModule(key){
 
 /* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
 const WORKS = {"cv1": {"images": 3, "video": true, "author": "陈思思, 王芳, 李强", "org": "产品部", "desc": "灵感来源于公司logo的演变过程"}, "cv2": {"images": 2, "video": false, "author": "王芳", "org": "行政部", "desc": "以三十周年主题色致敬公司历程：从最初的小办公室，到如今遍布多个城市的团队，每一笔色彩都代表一段共同走过的时光，希望大家在这幅作品里看到属于自己的那一抹颜色。"}};
+const WORK_PHOTOS = {cv1:[4,5,6], cv2:[1,2]};   // 原型示意：作品图片用 _shared/photos 里的示例图
 let workCur = null, workIdx = 0, workMediaState = 'normal';
 function workItems(w){
   const a = [];
@@ -514,7 +525,7 @@ function renderWork(){
   } else if(it.t === 'video'){
     html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ Playing… (prototype)\'">▶ Play</button>';
   } else {
-    html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
+    html = '<img class="work-photo" src="_shared/photos/work-' + WORK_PHOTOS[workCur][it.n - 1] + '.jpg" alt=""><span class="u-work-cap">作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</span>';
   }
   if(items.length > 1){
     html += '<button class="u-work-nav prev" onclick="stepWork(-1)"' + (workIdx===0?' disabled':'') + '>‹</button>'
