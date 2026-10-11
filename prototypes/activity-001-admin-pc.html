@@ -226,20 +226,59 @@
   .u-work-link{background:none; border:none; color:var(--u-gold); cursor:pointer; font-size:12.5px; padding:0; text-decoration:underline}
   .u-vote-thumb{position:relative; cursor:pointer}
 
-  .adm-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--sidebar) 70%,transparent); display:none; align-items:center; justify-content:center; z-index:300; padding:24px}
+  .adm-overlay{position:fixed; inset:0; background:color-mix(in srgb,var(--sidebar) 45%,transparent); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:300; padding:24px}
   .adm-overlay.open{display:flex}
-  .adm-box{background:var(--surface); border-radius:var(--radius-lg); width:100%; max-width:640px; max-height:90vh; overflow-y:auto}
-  .adm-head{display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:0.5px solid var(--border)}
-  .adm-stage{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-secondary); font-size:13.5px; text-align:center; padding:16px}
-  .adm-nav{position:absolute; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; border:0.5px solid var(--border-strong); background:var(--surface); color:var(--text-primary); cursor:pointer}
+  .adm-overlay.open .adm-box{animation:cf-pop .18s ease-out}
+  .adm-box{background:var(--surface); border-radius:var(--radius-lg); width:100%; max-width:720px; max-height:90vh; overflow-y:auto; box-shadow:0 12px 40px color-mix(in srgb,var(--text-primary) 22%,transparent)}
+  .adm-head{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border-bottom:0.5px solid var(--border)}
+  .adm-head strong{font-size:18px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary)}
+  /* Drawer variant: slides in from the right, header fixed, body scrolls inside */
+  .adm-overlay.adm-drawer{align-items:stretch; justify-content:flex-end; padding:0}
+  .adm-drawer .adm-box{display:flex; flex-direction:column; max-width:560px; height:100%; max-height:none; overflow:hidden; border-radius:var(--radius-lg) 0 0 var(--radius-lg); box-shadow:-12px 0 40px color-mix(in srgb,var(--text-primary) 18%,transparent)}
+  .adm-overlay.adm-drawer.open .adm-box{animation:drawer-in .26s cubic-bezier(.2,.8,.2,1)}
+  .adm-overlay.adm-drawer.closing{animation:drawer-fade .2s ease-in forwards}
+  .adm-overlay.adm-drawer.closing .adm-box{animation:drawer-out .2s ease-in forwards}
+  @keyframes drawer-in{from{transform:translateX(100%)} to{transform:none}}
+  @keyframes drawer-out{from{transform:none} to{transform:translateX(100%)}}
+  @keyframes drawer-fade{from{opacity:1} to{opacity:0}}
+  .adm-drawer .adm-head{flex-shrink:0}
+  .adm-body{flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin}
+  .adm-drawer .adm-stage{aspect-ratio:auto; height:clamp(200px,34vh,320px)}
+  .adm-pad{padding:24px}
+  /* forms inside drawers */
+  .adm-pad .field{margin-bottom:24px}
+  .adm-pad .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  .adm-pad input:hover, .adm-pad select:hover, .adm-pad textarea:hover{border-color:var(--text-muted)}
+  .adm-pad input:focus, .adm-pad select:focus, .adm-pad textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  .adm-pad #reg-int{margin-bottom:24px}
+  .adm-pad #wall-int{margin-bottom:24px}
+  .adm-pad .picker-demo{margin-top:12px; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  .adm-pad .row2{grid-template-columns:1fr; gap:0}
+  .adm-pad #manualRegCapHint{font-size:13px !important}
+  .adm-pad textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6}
+  .adm-foot{flex-shrink:0; display:flex; justify-content:flex-end; align-items:center; gap:12px; padding:16px 24px; border-top:0.5px solid var(--border); background:var(--surface)}
+  @media (prefers-reduced-motion:reduce){.adm-overlay.adm-drawer.open .adm-box, .adm-overlay.adm-drawer.closing, .adm-overlay.adm-drawer.closing .adm-box{animation-duration:.01ms!important}}
+  .adm-sub{margin-top:2px; font-size:13px; font-weight:400; color:var(--text-muted)}
+  .adm-close{width:32px; height:32px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:none; border-radius:var(--radius); background:transparent; color:var(--text-muted); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .adm-close:hover{background:var(--bg); color:var(--text-primary)}
+  .adm-close svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .adm-stage{position:relative; aspect-ratio:16/9; background:linear-gradient(135deg,var(--content-tint),var(--interactive-tint)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-secondary); font-size:14px; text-align:center; padding:16px}
+  .adm-nav{position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:0.5px solid var(--border); background:var(--surface); color:var(--text-primary); cursor:pointer; box-shadow:0 2px 8px color-mix(in srgb,var(--text-primary) 14%,transparent); transition:box-shadow .15s ease, transform .15s ease}
+  .adm-nav svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .adm-nav:hover:not(:disabled){box-shadow:0 4px 12px color-mix(in srgb,var(--text-primary) 20%,transparent); transform:translateY(-50%) scale(1.06)}
   .adm-nav:disabled{opacity:.35; cursor:default}
-  .adm-nav.prev{left:10px}
-  .adm-nav.next{right:10px}
-  .adm-info{padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px 20px}
-  .adm-info label{display:block; font-size:11px; color:var(--text-muted); margin-bottom:2px}
-  .adm-info .val{font-size:13.5px}
+  .adm-nav.prev{left:16px}
+  .adm-nav.next{right:16px}
+  .adm-meta{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; padding:16px 24px 0; font-size:12px; color:var(--text-muted)}
+  .adm-meta #admCount:not(:empty){display:inline-block; padding:2px 8px; border-radius:var(--radius-sm); background:var(--bg); color:var(--text-secondary); font-size:13px; font-variant-numeric:tabular-nums}
+  .adm-demo{padding:4px 12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  .adm-info{padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px 24px}
+  .adm-info label{display:block; font-size:13px; color:var(--text-muted); margin-bottom:4px}
+  .adm-info .val{font-size:14px; color:var(--text-primary)}
+  .adm-info .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400}
+  .adm-info .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
   .adm-info .wide{grid-column:1/-1}
-  .adm-desc{font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
+  .adm-desc{font-size:14px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere}
 
   .qr-grid{display:grid; grid-template-columns:repeat(21,1fr); width:168px; height:168px; margin:0 auto; padding:8px; background:#fff; border:0.5px solid var(--border); border-radius:8px}
   .qr-c{display:block; background:transparent}
@@ -281,39 +320,47 @@
   .action-link.danger{color:var(--danger)}
 
   /* Table list page: full-bleed content, 24px to every edge */
-  .content:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)){padding:24px; justify-content:stretch}
-  .content:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)) .panel{max-width:none}
-  .main:has(:is(#listView,#registrationsView,#moduleLibraryView):not(.hidden)) .topbar{padding-left:24px; padding-right:24px}
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)){padding:24px; justify-content:stretch}
+  .content:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)) .panel{max-width:none}
+  .main:has(:is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView):not(.hidden)) .topbar{padding-left:24px; padding-right:24px}
 
   /* Activities list table (scoped: other tables keep the old style for now) */
-  :is(#listView,#registrationsView) .table-card{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); overflow-x:auto}
-  :is(#listView,#registrationsView) .activity-table{border:none; border-radius:0}
-  :is(#listView,#registrationsView) .activity-table th{padding:14px 20px; font-size:14px; font-weight:600; color:var(--text-primary); background:var(--surface); border-bottom:0.5px solid var(--border-strong); white-space:nowrap}
-  :is(#listView,#registrationsView) .activity-table td{padding:12px 20px; font-size:14px; color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:0.5px solid var(--border)}
-  :is(#listView,#registrationsView) .activity-table tr:last-child td{border-bottom:none}
-  :is(#listView,#registrationsView) .activity-table td.title-cell{font-weight:400}
-  :is(#listView,#registrationsView) .activity-table tbody tr{transition:background .15s ease}
-  :is(#listView,#registrationsView) .activity-table tbody tr:hover td{background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
-  :is(#listView,#registrationsView) .activity-table .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:14px}
-  :is(#listView,#registrationsView) .activity-table .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
-  :is(#listView,#registrationsView) .activity-table th:last-child, :is(#listView,#registrationsView) .activity-table td:last-child{width:1%; white-space:nowrap}
-  :is(#listView,#registrationsView) .activity-table .status-badge, :is(#listView,#registrationsView) .activity-table .action-link{font-weight:400}
-  :is(#listView,#registrationsView) .activity-table .table-actions{gap:4px}
-  :is(#listView,#registrationsView) .activity-table .action-link{font-size:14px; padding:4px 10px; border-radius:var(--radius); font-weight:400; transition:background .15s ease, color .15s ease}
-  :is(#listView,#registrationsView) .activity-table .action-link:hover{background:var(--accent-tint)}
-  :is(#listView,#registrationsView) .activity-table .action-link.muted{color:var(--text-secondary)}
-  :is(#listView,#registrationsView) .activity-table .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
-  :is(#listView,#registrationsView) .activity-table .action-link.danger:hover{background:#F6E4E2}
+  :is(#listView,#registrationsView,#sponsorsView) .table-card{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); overflow-x:auto}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table{border:none; border-radius:0}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table th{padding:14px 20px; font-size:14px; font-weight:600; color:var(--text-primary); background:var(--surface); border-bottom:0.5px solid var(--border-strong); white-space:nowrap}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table td{padding:12px 20px; font-size:14px; color:var(--text-secondary); font-variant-numeric:tabular-nums; border-bottom:0.5px solid var(--border)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tr:last-child td{border-bottom:none}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table td.title-cell{font-weight:400}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tbody tr{transition:background .15s ease}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table tbody tr:hover td{background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:14px}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table th:last-child, :is(#listView,#registrationsView,#sponsorsView) .activity-table td:last-child{width:1%; white-space:nowrap}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .status-badge, :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link{font-weight:400}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .table-actions{gap:4px}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link{font-size:14px; padding:4px 10px; border-radius:var(--radius); font-weight:400; transition:background .15s ease, color .15s ease}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link:hover{background:var(--accent-tint)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.muted{color:var(--text-secondary)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  :is(#listView,#registrationsView,#sponsorsView) .activity-table .action-link.danger:hover{background:#F6E4E2}
   /* Spacing scale for table pages: 24 outer / 16 between blocks / 12 between controls */
-  :is(#listView,#registrationsView,#moduleLibraryView) .list-header{align-items:center; min-height:40px; margin-bottom:16px}
-  #listView .filter-bar{gap:12px; margin-bottom:16px; align-items:center}
-  #listView .filter-bar select, #listView .filter-bar input{height:40px}
+  :is(#listView,#registrationsView,#moduleLibraryView,#submissionsView,#wallView,#sponsorsView) .list-header{align-items:center; min-height:40px; margin-bottom:16px}
+  :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar{gap:12px; margin-bottom:16px; align-items:center}
+  :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar select, :is(#listView,#submissionsView,#registrationsView,#wallView,#sponsorsView) .filter-bar input{height:40px}
   #registrationsView > .field{margin-bottom:16px}
-  #registrationsView .reg-search-grid{gap:12px 16px}
-  #registrationsView .reg-search-grid .field{margin-bottom:0}
-  #registrationsView .reg-search-foot{min-height:16px; margin:4px 0 8px}
+  #registrationsView .reg-search-foot{min-height:16px; margin:-4px 0 16px}
+  #registrationsView .reg-search-foot:has(#regSearchClear.hidden):has(#regStatHint:empty){display:none}
+  #registrationsView .activity-table th, #registrationsView .activity-table td{padding-left:12px; padding-right:12px}
+  #registrationsView .activity-table th:first-child, #registrationsView .activity-table td:first-child{padding-left:24px}
+  #registrationsView .activity-table th:last-child, #registrationsView .activity-table td:last-child{padding-right:24px}
+  #registrationsView .activity-table td:nth-child(6){white-space:normal; min-width:96px}
+  #registrationsView .activity-table td:nth-child(5){white-space:normal; overflow-wrap:anywhere; min-width:140px}
+  #registrationsView .activity-table .table-actions{gap:0}
+  #registrationsView .activity-table .action-link{padding:4px 6px}
+  #registrationsView .activity-table td:last-child{padding-right:16px}
+  #registrationsView .activity-table .table-actions .icon-btn + .icon-btn{margin-left:2px}
   #registrationsView .stat-row{gap:16px; margin-bottom:16px}
-  #registrationsView .picker-demo{margin:0 0 16px !important}
+  #registrationsView .picker-demo{margin:0 0 16px !important; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
 
   /* Create / edit activity page (3-step wizard) */
   .content:has(#editorView:not(.hidden)){padding:24px}
@@ -341,13 +388,13 @@
   #editorView input:focus, #editorView select:focus, #editorView textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
   #editorView .btn{height:40px}
 
-  #editorView .scope-toggle{display:inline-flex; gap:2px; padding:4px; background:var(--bg); border:0.5px solid var(--border); border-radius:12px}
-  #editorView .scope-btn{flex:none; height:32px; padding:0 18px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); transition:background .15s ease, color .15s ease, box-shadow .15s ease}
-  #editorView .scope-btn:hover:not(.selected){color:var(--text-primary)}
-  #editorView .scope-btn.selected{background:var(--surface); color:var(--accent); font-weight:500; box-shadow:0 1px 3px color-mix(in srgb,var(--text-primary) 12%,transparent)}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-toggle{display:inline-flex; gap:2px; padding:4px; background:var(--bg); border:0.5px solid var(--border); border-radius:12px}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn{flex:none; height:32px; padding:0 18px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); transition:background .15s ease, color .15s ease, box-shadow .15s ease}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn:hover:not(.selected){color:var(--text-primary)}
+  :is(#editorView,#submissionsView,#registrationsView,#manualRegOverlay,#wallFormOverlay) .scope-btn.selected{background:var(--surface); color:var(--accent); font-weight:500; box-shadow:0 1px 3px color-mix(in srgb,var(--text-primary) 12%,transparent)}
 
-  #editorView .upload-box{border-color:var(--border-strong); background:var(--bg); border-radius:var(--radius); padding:28px; font-size:14px; transition:border-color .15s ease, background .15s ease, color .15s ease}
-  #editorView .upload-box:hover{border-color:var(--accent); background:var(--accent-tint); color:var(--accent)}
+  :is(#editorView,#submissionsView,#wallFormOverlay) .upload-box{border-color:var(--border-strong); background:var(--bg); border-radius:var(--radius); padding:28px; font-size:14px; transition:border-color .15s ease, background .15s ease, color .15s ease}
+  :is(#editorView,#submissionsView,#wallFormOverlay) .upload-box:hover{border-color:var(--accent); background:var(--accent-tint); color:var(--accent)}
   #editorView .rte-wrap{border-radius:var(--radius)}
   #editorView .rte-editable{font-size:14px}
 
@@ -439,10 +486,96 @@
   #moduleLibraryView .module-card:hover .module-meta span:last-child{text-decoration:underline; text-underline-offset:3px}
   #moduleLibraryView .module-usage{margin-top:12px; padding:12px 16px; border-top:none; border-radius:var(--radius); background:var(--bg); font-size:13px; line-height:1.7}
 
+  /* Submissions page */
+  #subFormPage{max-width:920px; margin:0 auto}
+  #submissionsView .upload-panel{padding:32px; margin-bottom:32px; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #submissionsView .upload-panel-title{font-size:16px; font-weight:600; margin:0 0 24px}
+  #submissionsView .field{margin-bottom:24px}
+  #submissionsView .field label{font-size:14px; font-weight:500; color:var(--text-primary); margin-bottom:8px}
+  #submissionsView .row2{gap:20px}
+  #submissionsView textarea{min-height:96px; padding:12px; font-size:14px; line-height:1.6}
+  #submissionsView input:hover, #submissionsView select:hover, #submissionsView textarea:hover{border-color:var(--text-muted)}
+  #submissionsView input:focus, #submissionsView select:focus, #submissionsView textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+  #submissionsView .btn{height:40px}
+  #submissionsView .picker-demo{margin-top:12px; padding:8px 12px; gap:8px 12px; font-size:12px; border:1px dashed var(--border-strong); border-radius:var(--radius)}
+  #submissionsView #sub-int{margin-bottom:24px}
+  #submissionsView .section-title{font-size:16px; font-weight:600; margin:0 0 4px}
+  #submissionsView .section-hint{font-size:13px; margin:0 0 16px}
+  #submissionsView .submission-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px}
+  #submissionsView .submission-card{display:flex; flex-direction:column; border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease}
+  #submissionsView .submission-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 12px 28px color-mix(in srgb,var(--text-primary) 10%,transparent); transform:translateY(-2px)}
+  #submissionsView .submission-thumb{aspect-ratio:16/10; font-size:32px}
+  #submissionsView .submission-body{display:flex; flex-direction:column; flex:1; padding:20px}
+  #submissionsView .submission-author{font-size:16px; font-weight:600; line-height:1.4}
+  #submissionsView .submission-sub{font-size:13px; margin-top:2px}
+  #submissionsView .submission-media{align-self:flex-start; margin-top:12px; padding:2px 8px; font-size:12px; border-radius:var(--radius-sm); background:var(--bg)}
+  #submissionsView .submission-desc{margin:12px 0 16px; font-size:14px; line-height:1.6}
+  #submissionsView .submission-card{position:relative}
+  #submissionsView .submission-footer{display:block; margin-top:auto; padding-top:12px; border-top:0.5px solid var(--border)}
+  /* status pill sits on the thumbnail corner so the footer is free for actions */
+  #submissionsView .submission-footer .status-badge{position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400; white-space:nowrap; box-shadow:0 1px 3px color-mix(in srgb,var(--text-primary) 12%,transparent)}
+  #submissionsView .submission-footer .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #submissionsView .submission-footer .table-actions{flex-wrap:nowrap; gap:4px; margin-left:-8px}
+  #submissionsView .submission-footer .action-link{padding:4px 8px; font-size:14px; font-weight:400; white-space:nowrap; border-radius:var(--radius); transition:background .15s ease, color .15s ease}
+  #submissionsView .submission-footer .action-link:hover{background:var(--accent-tint)}
+  #submissionsView .submission-footer .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  #submissionsView .submission-footer .action-link.danger:hover{background:var(--st-danger-tint)}
+
+  /* Message wall */
+  #wallView .stat-row{gap:16px; margin-bottom:16px}
+  #wallListPage .filter-bar select{min-width:200px}
+  #wallView .wall-list{border-color:var(--border); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  #wallView .wall-row{gap:16px; padding:24px; border-bottom-color:var(--border); transition:background .15s ease}
+  #wallView .wall-row:hover{background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+  #wallView .wall-avatar{width:40px; height:40px; font-size:16px}
+  #wallView .wall-name-row{gap:8px 12px; margin-bottom:8px}
+  #wallView .wall-name{font-size:16px; font-weight:600}
+  #wallView .wall-meta{font-size:13px}
+  #wallView .wall-quote{font-size:14px; line-height:1.7; margin:0 0 12px}
+  #wallView .wall-image{width:200px; height:112px; border-radius:var(--radius); margin-bottom:12px}
+  #wallView .wall-edited{font-size:12px; padding:0 8px; border-radius:var(--radius-sm)}
+  #wallView .wall-footer{padding-top:12px; border-top:0.5px solid var(--border)}
+  #wallView .wall-footer .status-badge{display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; font-size:13px; font-weight:400}
+  #wallView .wall-footer .status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+  #wallView .wall-footer .table-actions{gap:4px; flex-wrap:nowrap}
+  #wallView .wall-footer .action-link{padding:4px 8px; font-size:14px; font-weight:400; white-space:nowrap; border-radius:var(--radius); transition:background .15s ease, color .15s ease}
+  #wallView .wall-footer .action-link:hover{background:var(--accent-tint)}
+  #wallView .wall-footer .action-link.muted:hover{background:var(--bg); color:var(--text-primary)}
+  #wallView .wall-footer .action-link.danger:hover{background:var(--st-danger-tint)}
+  /* separate records: each message is its own card with space between */
+  #wallView .wall-list{display:flex; flex-direction:column; gap:16px; overflow:visible; border:none; border-radius:0; background:transparent; box-shadow:none}
+  #wallView .wall-row{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent); transition:box-shadow .15s ease, border-color .15s ease}
+  #wallView .wall-row:last-child{border-bottom:0.5px solid var(--border)}
+  #wallView .wall-row:hover{background:var(--surface); border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 10px 24px color-mix(in srgb,var(--text-primary) 9%,transparent)}
+
+  /* Sponsors page */
+  #sponsorsView .activity-table th, #sponsorsView .activity-table td{padding-left:12px; padding-right:12px; white-space:normal}
+  #sponsorsView .activity-table th:first-child, #sponsorsView .activity-table td:first-child{padding-left:24px}
+  #sponsorsView .activity-table th:last-child, #sponsorsView .activity-table td:last-child{padding-right:24px}
+  #sponsorsView .activity-table td:nth-child(1){min-width:150px}
+  #sponsorsView .activity-table td:nth-child(2), #sponsorsView .activity-table td:nth-child(3){white-space:nowrap}
+  #sponsorsView .activity-table td:nth-child(6), #sponsorsView .activity-table .status-badge{white-space:nowrap}
+  #sponsorsView .activity-table td:nth-child(5){min-width:140px}
+  #sponsorsView .activity-table .tier-cell{max-width:240px}
+  #sponsorsView .activity-table .table-actions{white-space:nowrap}
+  /* Icon button with tooltip (actions in tables) */
+  .icon-btn{--tone:var(--text-secondary); --tone-tint:var(--bg); position:relative; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; padding:0; border:none; border-radius:var(--radius); background:transparent; color:var(--tone); cursor:pointer; transition:background .15s ease, color .15s ease}
+  .icon-btn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .icon-btn.tone-view{--tone:var(--accent); --tone-tint:var(--accent-tint)}
+  .icon-btn.tone-edit{--tone:#7B4FE0; --tone-tint:#F1EBFD}
+  .icon-btn.tone-ok{--tone:var(--st-success); --tone-tint:var(--st-success-tint)}
+  .icon-btn.tone-warn{--tone:var(--st-warn); --tone-tint:var(--st-warn-tint)}
+  .icon-btn.tone-danger{--tone:var(--st-danger); --tone-tint:var(--st-danger-tint)}
+  .icon-btn:hover, .icon-btn:focus-visible{background:var(--tone-tint); outline:none}
+  .icon-btn:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--tone) 25%,transparent)}
+  .icon-btn::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:50%; transform:translate(-50%,4px); padding:4px 8px; border-radius:var(--radius-sm); background:var(--sidebar); color:#fff; font-size:12px; line-height:1.4; white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease .25s, transform .15s ease .25s; z-index:20}
+  .icon-btn:hover::after, .icon-btn:focus-visible::after{opacity:1; transform:translate(-50%,0)}
+  :is(#listView,#sponsorsView) .table-actions .icon-btn + .icon-btn{margin-left:2px}
+  #listView .activity-table td:last-child{padding-right:16px}
   /* Registrations page extras */
-  #registrationsView .stat-card{border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
-  #registrationsView .stat-num{font-size:26px; letter-spacing:-.01em}
-  #registrationsView .stat-label{font-size:14px; margin-top:4px}
+  :is(#registrationsView,#wallView) .stat-card{border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:0 1px 2px color-mix(in srgb,var(--text-primary) 5%,transparent), 0 6px 20px color-mix(in srgb,var(--text-primary) 6%,transparent)}
+  :is(#registrationsView,#wallView) .stat-num{font-size:26px; letter-spacing:-.01em}
+  :is(#registrationsView,#wallView) .stat-label{font-size:14px; margin-top:4px}
   #registrationsView .field input, #registrationsView .field select{transition:border-color .15s ease, box-shadow .15s ease}
   #registrationsView .field input:focus, #registrationsView .field select:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
   #registrationsView .activity-table .status-badge{white-space:nowrap}
@@ -740,7 +873,7 @@
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('review')">View</button>
+                    <button class="icon-btn tone-view" data-tip="View" aria-label="View" onclick="event.stopPropagation(); viewActivity('review')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -753,8 +886,8 @@
                 <td>王芳</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('published')">View</button>
-                    <button class="action-link muted" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)">Unpublish</button>
+                    <button class="icon-btn tone-view" data-tip="View" aria-label="View" onclick="event.stopPropagation(); viewActivity('published')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="icon-btn tone-warn" data-tip="Unpublish" aria-label="Unpublish" onclick="event.stopPropagation(); unpublishActivity('row-annual', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 4.2A10 10 0 0112 4c6.4 0 10 8 10 8a17 17 0 01-2.2 3.2M6.6 6.6C3.4 8.5 2 12 2 12s3.6 8 10 8a9.7 9.7 0 005.4-1.6"/><path d="M2 2l20 20M9.9 9.9a3 3 0 004.2 4.2"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -767,7 +900,7 @@
                 <td>李强</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('ended')">View</button>
+                    <button class="icon-btn tone-view" data-tip="View" aria-label="View" onclick="event.stopPropagation(); viewActivity('ended')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -780,8 +913,8 @@
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); showEditor()">Edit</button>
-                    <button class="action-link danger" onclick="event.stopPropagation(); deleteActivity('row-onboarding','新人入职欢迎会', this)">Delete</button>
+                    <button class="icon-btn tone-edit" data-tip="Edit" aria-label="Edit" onclick="event.stopPropagation(); showEditor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
+                    <button class="icon-btn tone-danger" data-tip="Delete" aria-label="Delete" onclick="event.stopPropagation(); deleteActivity('row-onboarding','新人入职欢迎会', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -794,8 +927,8 @@
                 <td>XY</td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="event.stopPropagation(); viewActivity('rejected')">View</button>
-                    <button class="action-link muted" onclick="event.stopPropagation(); showEditor()">Edit</button>
+                    <button class="icon-btn tone-view" data-tip="View" aria-label="View" onclick="event.stopPropagation(); viewActivity('rejected')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="icon-btn tone-edit" data-tip="Edit" aria-label="Edit" onclick="event.stopPropagation(); showEditor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1115,106 +1248,30 @@
 
         <!-- Submission (works) management view -->
         <div id="submissionsView" class="hidden">
+          <!-- List page -->
+          <div id="subListPage">
           <div class="list-header">
             <div>
               <h1 style="margin:0 0 4px">作品管理</h1>
-              <p class="subtitle" style="margin:0">行政统一上传作品，展示在 Celebration 页面供全员投票；员工端不提供自主上传入口</p>
+              <p class="subtitle" style="margin:0">行政统一上传作品，展示在 Celebration 页面供全员投票；员工端不提供自主上传入口。全部由行政上传维护，发布后才会出现在员工端投票页。</p>
             </div>
+            <button class="btn primary" onclick="openSubForm()">+ 上传作品</button>
           </div>
 
-          <div class="upload-panel">
-            <p class="upload-panel-title" id="subPanelTitle">上传作品</p>
-            <div class="row2">
-              <div class="field">
-                <label>所属 Celebration</label>
-                <select style="width:100%">
-                  <option>公司30周年庆典 · 新加坡总部站</option>
-                  <option>公司30周年庆典 · 北京分公司站</option>
-                  <option>Q3部门团建 · Q3团建营地站</option>
-                </select>
-              </div>
-              <div class="field">
-                <label>作者类型</label>
-                <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="ppSwitch('sub','internal',this)">内部员工</button>
-                  <button class="scope-btn" onclick="ppSwitch('sub','external',this)">外部人士</button>
-                </div>
-              </div>
-            </div>
-            <div id="sub-int"></div>
-            <div id="sub-ext" class="hidden">
-            <div class="field">
-              <label>作者姓名（必填）</label>
-              <input type="text" id="subAuthorName" placeholder="例如：陈思思, 王芳, 李强" oninput="updateAuthorHint()">
-              <div style="font-size:11.5px; color:var(--text-muted); margin-top:5px">一次输入所有人；团队作品只用逗号“,”分隔，最多 10 位，每位 ≤30 字符</div>
-              <div id="subNameHint" style="font-size:11.5px; color:var(--text-secondary); margin-top:3px"></div>
-              <div class="attach-error" id="subNameError" style="display:none"></div>
-            </div>
-            <div class="field">
-              <label>部门 / 所属机构（选填，自由文本）</label>
-              <input type="text" id="subExtOrg" placeholder="例如：合作伙伴 · XX公司">
-            </div>
-            </div>
-            <div class="field">
-              <label>作品图片（必填，1–9 张，JPG / PNG，单张 ≤5MB；第一张为封面，可调整顺序）<span id="subImgCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
-              <div class="upload-box" id="subImgBox" onclick="openSubImgPicker()">
-                <span id="subImgBoxText">点击上传作品图片，可一次选多张</span>
-                <input type="file" id="subImgInput" multiple accept=".jpg,.jpeg,.png" style="display:none" onclick="event.stopPropagation()" onchange="handleSubImages(this.files); this.value=''">
-              </div>
-              <div class="attach-error" id="subImgError" style="display:none"></div>
-              <div class="attach-list-scroll" id="subImgList"></div>
-            </div>
-            <div class="field">
-              <label>作品视频（选填，最多 1 个，MP4，≤100MB）</label>
-              <div class="upload-box" id="subVideoBox" onclick="openSubVideoPicker()">
-                <span id="subVideoBoxText">点击上传作品视频</span>
-                <input type="file" id="subVideoInput" accept=".mp4" style="display:none" onclick="event.stopPropagation()" onchange="handleSubVideo(this.files); this.value=''">
-              </div>
-              <div class="attach-error" id="subVideoError" style="display:none"></div>
-              <div id="subVideoList"></div>
-              <div class="picker-demo">
-                <span>原型演示：</span>
-                <button class="action-link" onclick="demoSub('img')">添加示例图片</button>
-                <button class="action-link" onclick="demoSub('bigimg')">模拟图片超过 5MB</button>
-                <button class="action-link" onclick="demoSub('type')">模拟类型不符</button>
-                <button class="action-link" onclick="demoSub('fail')">模拟图片上传失败</button>
-                <button class="action-link" onclick="demoSub('many')">模拟加满 9 张</button>
-                <button class="action-link" onclick="demoSub('video')">添加示例视频</button>
-                <button class="action-link" onclick="demoSub('bigvideo')">模拟视频超过 100MB</button>
-              </div>
-            </div>
-            <div class="field">
-              <label>作品说明（选填，不超过 200 个字符）<span id="subDescCount" style="margin-left:6px; color:var(--text-muted)">0 / 200</span></label>
-              <textarea rows="2" id="subDesc" placeholder="作者想表达的创作说明" oninput="updateSubDescCount()"></textarea>
-              <div class="attach-error" id="subDescError" style="display:none"></div>
-            </div>
-            <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">上传作品</button>
-            </div>
-          </div>
 
-          <p class="section-title">已上传作品</p>
-          <p class="section-hint">全部由行政上传维护，发布后才会出现在员工端投票页</p>
-
-          <div style="display:flex; gap:16px; margin-bottom:16px">
-            <div class="field" style="max-width:280px; margin-bottom:0">
-              <label>按 Celebration 筛选</label>
-              <select id="submissionActivityFilter" style="width:100%" onchange="filterSubmissions()">
-                <option value="all">全部 Celebration</option>
-                <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
-                <option value="bj30">公司30周年庆典 · 北京分公司站</option>
-                <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
-              </select>
-            </div>
-            <div class="field" style="max-width:200px; margin-bottom:0">
-              <label>按状态筛选</label>
-              <select id="submissionStatusFilter" style="width:100%" onchange="filterSubmissions()">
-                <option value="all">全部状态</option>
-                <option value="draft">未发布</option>
-                <option value="published">已发布</option>
-                <option value="hidden">已隐藏</option>
-              </select>
-            </div>
+          <div class="filter-bar">
+            <select id="submissionActivityFilter" aria-label="按 Celebration 筛选" onchange="filterSubmissions()">
+              <option value="all">全部 Celebration</option>
+              <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
+              <option value="bj30">公司30周年庆典 · 北京分公司站</option>
+              <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
+            </select>
+            <select id="submissionStatusFilter" aria-label="按状态筛选" onchange="filterSubmissions()">
+              <option value="all">全部状态</option>
+              <option value="draft">未发布</option>
+              <option value="published">已发布</option>
+              <option value="hidden">已隐藏</option>
+            </select>
           </div>
 
           <div class="submission-grid" id="submissionGrid">
@@ -1316,6 +1373,84 @@
             </div>
 
           </div>
+        
+          </div>
+
+          <!-- Upload / edit page -->
+          <div id="subFormPage" class="hidden">
+          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeSubForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回作品列表</button>
+          <div class="upload-panel">
+            <p class="upload-panel-title" id="subPanelTitle">上传作品</p>
+            <div class="row2">
+              <div class="field">
+                <label>所属 Celebration</label>
+                <select style="width:100%">
+                  <option>公司30周年庆典 · 新加坡总部站</option>
+                  <option>公司30周年庆典 · 北京分公司站</option>
+                  <option>Q3部门团建 · Q3团建营地站</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>作者类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn selected" onclick="ppSwitch('sub','internal',this)">内部员工</button>
+                  <button class="scope-btn" onclick="ppSwitch('sub','external',this)">外部人士</button>
+                </div>
+              </div>
+            </div>
+            <div id="sub-int"></div>
+            <div id="sub-ext" class="hidden">
+            <div class="field">
+              <label>作者姓名（必填）</label>
+              <input type="text" id="subAuthorName" placeholder="例如：陈思思, 王芳, 李强" oninput="updateAuthorHint()">
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:5px">一次输入所有人；团队作品只用逗号“,”分隔，最多 10 位，每位 ≤30 字符</div>
+              <div id="subNameHint" style="font-size:11.5px; color:var(--text-secondary); margin-top:3px"></div>
+              <div class="attach-error" id="subNameError" style="display:none"></div>
+            </div>
+            <div class="field">
+              <label>部门 / 所属机构（选填，自由文本）</label>
+              <input type="text" id="subExtOrg" placeholder="例如：合作伙伴 · XX公司">
+            </div>
+            </div>
+            <div class="field">
+              <label>作品图片（必填，1–9 张，JPG / PNG，单张 ≤5MB；第一张为封面，可调整顺序）<span id="subImgCount" style="margin-left:6px; color:var(--text-muted)"></span></label>
+              <div class="upload-box" id="subImgBox" onclick="openSubImgPicker()">
+                <span id="subImgBoxText">点击上传作品图片，可一次选多张</span>
+                <input type="file" id="subImgInput" multiple accept=".jpg,.jpeg,.png" style="display:none" onclick="event.stopPropagation()" onchange="handleSubImages(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subImgError" style="display:none"></div>
+              <div class="attach-list-scroll" id="subImgList"></div>
+            </div>
+            <div class="field">
+              <label>作品视频（选填，最多 1 个，MP4，≤100MB）</label>
+              <div class="upload-box" id="subVideoBox" onclick="openSubVideoPicker()">
+                <span id="subVideoBoxText">点击上传作品视频</span>
+                <input type="file" id="subVideoInput" accept=".mp4" style="display:none" onclick="event.stopPropagation()" onchange="handleSubVideo(this.files); this.value=''">
+              </div>
+              <div class="attach-error" id="subVideoError" style="display:none"></div>
+              <div id="subVideoList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="demoSub('img')">添加示例图片</button>
+                <button class="action-link" onclick="demoSub('bigimg')">模拟图片超过 5MB</button>
+                <button class="action-link" onclick="demoSub('type')">模拟类型不符</button>
+                <button class="action-link" onclick="demoSub('fail')">模拟图片上传失败</button>
+                <button class="action-link" onclick="demoSub('many')">模拟加满 9 张</button>
+                <button class="action-link" onclick="demoSub('video')">添加示例视频</button>
+                <button class="action-link" onclick="demoSub('bigvideo')">模拟视频超过 100MB</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>作品说明（选填，不超过 200 个字符）<span id="subDescCount" style="margin-left:6px; color:var(--text-muted)">0 / 200</span></label>
+              <textarea rows="2" id="subDesc" placeholder="作者想表达的创作说明" oninput="updateSubDescCount()"></textarea>
+              <div class="attach-error" id="subDescError" style="display:none"></div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:12px">
+              <button class="btn" onclick="closeSubForm()">取消</button>
+              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">上传作品</button>
+            </div>
+          </div>
+          </div>
         </div>
 
         <!-- Registration management view -->
@@ -1325,59 +1460,20 @@
               <h1 style="margin:0 0 4px">报名管理</h1>
               <p class="subtitle" style="margin:0">员工在 Celebration 页面自主报名，此处查看名单并管理签到；报名按 Celebration 独立统计</p>
             </div>
-            <button class="btn" onclick="toggleManualReg()">+ 手动添加</button>
+            <button class="btn primary" onclick="openManualReg()">+ 手动添加</button>
           </div>
 
-          <div class="upload-panel hidden" id="manualRegPanel">
-            <p class="upload-panel-title">手动添加报名</p>
-            <div class="field">
-              <label>所属 Celebration</label>
-              <select id="manualRegCelebration" style="width:100%" onchange="updateRegCapacityUI()">
+          <div id="regSearch">
+            <div class="filter-bar">
+              <select id="registrationCelFilter" aria-label="按 Celebration 筛选" onchange="filterRegistrations()">
+                <option value="all">全部 Celebration</option>
                 <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
                 <option value="bj30">公司30周年庆典 · 北京分公司站</option>
                 <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
               </select>
-              <div id="manualRegCapHint" style="font-size:11.5px; color:var(--text-muted); margin-top:5px"></div>
-            </div>
-            <div class="row2">
-              <div class="field">
-                <label>类型</label>
-                <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="ppSwitch('reg','internal',this)">内部员工</button>
-                  <button class="scope-btn" onclick="ppSwitch('reg','external',this)">外部人士</button>
-                </div>
-              </div>
-            </div>
-            <div id="reg-int"></div>
-            <div id="reg-ext" class="hidden">
-              <div class="field"><label>姓名（必填）</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
-              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="manualRegDept" placeholder="例如：合作伙伴 · XX公司"></div>
-            </div>
-            <div class="row2">
-              <div class="field"><label>联系电话（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
-              <div class="field"><label>邮箱（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:10px">
-              <button class="btn" onclick="toggleManualReg()">取消</button>
-              <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
-            </div>
-          </div>
-
-          <div class="field" style="max-width:340px; margin-bottom:20px">
-            <label>按 Celebration 筛选</label>
-            <select id="registrationCelFilter" style="width:100%" onchange="filterRegistrations()">
-              <option value="all">全部 Celebration</option>
-              <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
-              <option value="bj30">公司30周年庆典 · 北京分公司站</option>
-              <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
-            </select>
-          </div>
-
-          <div id="regSearch">
-            <div class="reg-search-grid">
-              <div class="field"><label>姓名</label><input type="text" id="regSearchName" maxlength="50" autocomplete="off" placeholder="例如：王芳 / tan"></div>
-              <div class="field"><label>部门 / 类型</label><input type="text" id="regSearchOrg" maxlength="50" autocomplete="off" placeholder="部门名，或「内部员工」「外部人士」"></div>
-              <div class="field"><label>联系电话</label><input type="text" id="regSearchPhone" maxlength="50" autocomplete="off" placeholder="数字片段，例如 9012"></div>
+              <input type="text" id="regSearchName" maxlength="50" autocomplete="off" aria-label="姓名" placeholder="姓名，如 王芳 / tan">
+              <input type="text" id="regSearchOrg" maxlength="50" autocomplete="off" aria-label="部门 / 类型" placeholder="部门，或 内部员工 / 外部人士">
+              <input type="text" id="regSearchPhone" maxlength="50" autocomplete="off" aria-label="联系电话" placeholder="联系电话，数字片段如 9012">
             </div>
             <div class="reg-search-foot"><button class="action-link hidden" id="regSearchClear" onclick="RegSearch.clear()">清空搜索</button><span id="regStatHint"></span></div>
           </div>
@@ -1415,9 +1511,9 @@
                 <td><span class="status-badge approved" id="regstatus-r1">已签到</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
-                    <button class="action-link muted" onclick="setCheckin('r1','pending')">撤销签到</button>
-                    <button class="action-link danger" onclick="cancelRegistration('r1', this)">取消报名</button>
+                    <button class="icon-btn tone-view" data-tip="查看签到码" aria-label="查看签到码" onclick="viewRegCode(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17.5 21H21v-3.5"/></svg></button>
+                    <button class="icon-btn tone-warn" data-tip="撤销签到" aria-label="撤销签到" onclick="setCheckin('r1','pending')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/></svg></button>
+                    <button class="icon-btn tone-danger" data-tip="取消报名" aria-label="取消报名" onclick="cancelRegistration('r1', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 8l5 5M22 8l-5 5"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1431,9 +1527,9 @@
                 <td><span class="status-badge draft" id="regstatus-r2">未签到</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
-                    <button class="action-link" onclick="setCheckin('r2','done')">签到</button>
-                    <button class="action-link danger" onclick="cancelRegistration('r2', this)">取消报名</button>
+                    <button class="icon-btn tone-view" data-tip="查看签到码" aria-label="查看签到码" onclick="viewRegCode(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17.5 21H21v-3.5"/></svg></button>
+                    <button class="icon-btn tone-ok" data-tip="签到" aria-label="签到" onclick="setCheckin('r2','done')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11l2 2 4-4"/></svg></button>
+                    <button class="icon-btn tone-danger" data-tip="取消报名" aria-label="取消报名" onclick="cancelRegistration('r2', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 8l5 5M22 8l-5 5"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1447,9 +1543,9 @@
                 <td><span class="status-badge draft" id="regstatus-r3">未签到</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
-                    <button class="action-link" onclick="setCheckin('r3','done')">签到</button>
-                    <button class="action-link danger" onclick="cancelRegistration('r3', this)">取消报名</button>
+                    <button class="icon-btn tone-view" data-tip="查看签到码" aria-label="查看签到码" onclick="viewRegCode(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17.5 21H21v-3.5"/></svg></button>
+                    <button class="icon-btn tone-ok" data-tip="签到" aria-label="签到" onclick="setCheckin('r3','done')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11l2 2 4-4"/></svg></button>
+                    <button class="icon-btn tone-danger" data-tip="取消报名" aria-label="取消报名" onclick="cancelRegistration('r3', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 8l5 5M22 8l-5 5"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1463,9 +1559,9 @@
                 <td><span class="status-badge draft" id="regstatus-r4">未签到</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="viewRegCode(this)">查看签到码</button>
-                    <button class="action-link" onclick="setCheckin('r4','done')">签到</button>
-                    <button class="action-link danger" onclick="cancelRegistration('r4', this)">取消报名</button>
+                    <button class="icon-btn tone-view" data-tip="查看签到码" aria-label="查看签到码" onclick="viewRegCode(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17.5 21H21v-3.5"/></svg></button>
+                    <button class="icon-btn tone-ok" data-tip="签到" aria-label="签到" onclick="setCheckin('r4','done')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11l2 2 4-4"/></svg></button>
+                    <button class="icon-btn tone-danger" data-tip="取消报名" aria-label="取消报名" onclick="cancelRegistration('r4', this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 8l5 5M22 8l-5 5"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1476,19 +1572,14 @@
 
         <!-- Message wall (寄语墙) moderation view -->
         <div id="wallView" class="hidden">
+          <!-- List page -->
+          <div id="wallListPage">
           <div class="list-header">
             <div>
               <h1 style="margin:0 0 4px">寄语墙管理</h1>
-              <p class="subtitle" style="margin:0">员工自主提交留言，行政审核决定哪些展示在活动页面</p>
+              <p class="subtitle" style="margin:0">员工自主提交留言，行政审核决定哪些展示在活动页面。员工自主提交与行政代录入的留言统一在此审核。</p>
             </div>
-          </div>
-
-          <div class="field" style="max-width:340px; margin-bottom:20px">
-            <label>所属活动 · 模块</label>
-            <select style="width:100%">
-              <option>公司30周年庆典 · 寄语墙</option>
-              <option>2026年会 · 寄语墙</option>
-            </select>
+            <button class="btn primary" onclick="openWallForm()">+ 代录入寄语</button>
           </div>
 
           <div class="stat-row">
@@ -1497,67 +1588,22 @@
             <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">已隐藏</div></div>
           </div>
 
-          <div class="upload-panel">
-            <p class="upload-panel-title">代录入寄语（外部合作伙伴等无系统账号的人士，或由行政代员工录入）</p>
-            <div class="row2">
-              <div class="field">
-                <label>作者类型</label>
-                <div class="scope-toggle">
-                  <button class="scope-btn" onclick="ppSwitch('wall','internal',this)">内部员工</button>
-                  <button class="scope-btn selected" onclick="ppSwitch('wall','external',this)">外部人士</button>
-                </div>
-              </div>
-            </div>
-            <div id="wall-int" class="hidden"></div>
-            <div id="wall-ext">
-              <div class="field"><label>作者姓名（必填）</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
-              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="adminWallOrg" placeholder="例如：合作伙伴 · XX公司"></div>
-            </div>
-            <div class="field">
-              <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
-              <div class="upload-box" id="adminWallImgBox" onclick="wallPickImage('admin')">点击上传一张配图，如合影、手写卡片照片</div>
-              <input type="file" id="adminWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('admin', this.files); this.value=''">
-              <div class="attach-error" id="adminWallImgError" style="display:none"></div>
-              <div id="adminWallImgList"></div>
-              <div class="picker-demo">
-                <span>原型演示：</span>
-                <button class="action-link" onclick="wallDemo('admin','ok')">添加示例图片</button>
-                <button class="action-link" onclick="wallDemo('admin','type')">类型不符</button>
-                <button class="action-link" onclick="wallDemo('admin','big')">超过 5MB</button>
-                <button class="action-link" onclick="wallDemo('admin','multi')">一次选多张</button>
-                <button class="action-link" onclick="wallDemo('admin','fail')">上传失败</button>
-              </div>
-            </div>
-            <div class="field">
-              <label>留言内容</label>
-              <textarea rows="2" id="adminWallContent" placeholder="代录入的祝福留言"></textarea>
-            </div>
-            <div style="display:flex; justify-content:flex-end">
-              <button class="btn primary" onclick="submitWallAdmin()">提交留言</button>
-            </div>
-          </div>
-
-          <p class="section-title">全部留言</p>
-          <p class="section-hint">员工自主提交与行政代录入的留言统一在此审核</p>
-
-          <div style="display:flex; gap:16px; margin-bottom:16px">
-            <div class="field" style="max-width:280px; margin-bottom:0">
-              <label>按活动筛选</label>
-              <select id="wallActivityFilter" style="width:100%" onchange="filterWallMessages()">
-                <option value="all">全部活动</option>
-                <option value="30th">公司30周年庆典 · 寄语墙</option>
-                <option value="annual">2026年会 · 寄语墙</option>
-              </select>
-            </div>
-            <div class="field" style="max-width:200px; margin-bottom:0">
-              <label>按状态筛选</label>
-              <select id="wallStatusFilter" style="width:100%" onchange="filterWallMessages()">
-                <option value="all">全部状态</option>
-                <option value="review">待审核</option>
-                <option value="published">已展示</option>
-                <option value="hidden">已隐藏</option>
-              </select>
-            </div>
+          <div class="filter-bar">
+            <select aria-label="所属活动 · 模块">
+              <option>公司30周年庆典 · 寄语墙</option>
+              <option>2026年会 · 寄语墙</option>
+            </select>
+            <select id="wallActivityFilter" aria-label="按活动筛选" onchange="filterWallMessages()">
+              <option value="all">全部活动</option>
+              <option value="30th">公司30周年庆典 · 寄语墙</option>
+              <option value="annual">2026年会 · 寄语墙</option>
+            </select>
+            <select id="wallStatusFilter" aria-label="按状态筛选" onchange="filterWallMessages()">
+              <option value="all">全部状态</option>
+              <option value="review">待审核</option>
+              <option value="published">已展示</option>
+              <option value="hidden">已隐藏</option>
+            </select>
           </div>
 
           <div class="wall-list" id="wallList">
@@ -1671,6 +1717,7 @@
             </div>
 
           </div>
+          </div>
         </div>
 
         <!-- Sponsor management view -->
@@ -1683,15 +1730,15 @@
             <button class="btn" id="sponsorExportBtn" onclick="exportSponsors()">导出</button>
           </div>
 
-          <div class="field" style="max-width:280px; margin-bottom:20px">
-            <label>按活动筛选</label>
-            <select id="sponsorActivityFilter" style="width:100%" onchange="filterSponsors()">
+          <div class="filter-bar">
+            <select id="sponsorActivityFilter" aria-label="按活动筛选" onchange="filterSponsors()">
               <option value="all">全部活动</option>
               <option value="30th">公司30周年庆典</option>
               <option value="annual">2026年会</option>
             </select>
           </div>
 
+          <div class="table-card">
           <table class="activity-table" id="sponsorTable">
             <thead>
               <tr>
@@ -1709,7 +1756,7 @@
                 <td><span class="status-badge draft" id="sponsorstatus-s1">待联系</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setSponsorStatus('s1','done')">标记已联系</button>
+                    <button class="icon-btn tone-ok" data-tip="标记已联系" aria-label="标记已联系" onclick="setSponsorStatus('s1','done')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1723,7 +1770,7 @@
                 <td><span class="status-badge draft" id="sponsorstatus-s3">待联系</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setSponsorStatus('s3','done')">标记已联系</button>
+                    <button class="icon-btn tone-ok" data-tip="标记已联系" aria-label="标记已联系" onclick="setSponsorStatus('s3','done')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></button>
                   </div>
                 </td>
               </tr>
@@ -1737,12 +1784,13 @@
                 <td><span class="status-badge approved" id="sponsorstatus-s2">已联系</span></td>
                 <td>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setSponsorStatus('s2','pending')">标记待联系</button>
+                    <button class="icon-btn tone-warn" data-tip="标记待联系" aria-label="标记待联系" onclick="setSponsorStatus('s2','pending')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
 
         <!-- Data statistics dashboard -->
@@ -2124,25 +2172,25 @@
   </div>
 </div>
 
-<div class="adm-overlay" id="sponsorExportOverlay" onclick="if(event.target===this)closeSponsorExport()">
-  <div class="adm-box" style="max-width:920px">
-    <div class="adm-head"><strong>导出预览（原型示意：真实导出为 Excel 文件，由后端按最新数据生成）</strong><button class="action-link" onclick="closeSponsorExport()">关闭</button></div>
-    <div style="padding:14px 20px">
-      <div style="font-size:12.5px; color:var(--text-secondary)">文件名：<span id="sponsorExportName"></span>　共 <span id="sponsorExportCount"></span> 条（当前筛选下的全部线索，不只当前页）</div>
+<div class="adm-overlay adm-drawer" id="sponsorExportOverlay" onclick="if(event.target===this)closeSponsorExport()">
+  <div class="adm-box" style="max-width:min(920px,92vw)">
+    <div class="adm-head"><div><strong>导出预览</strong><div class="adm-sub">原型示意：真实导出为 Excel 文件，由后端按最新数据生成</div></div><button class="adm-close" onclick="closeSponsorExport()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="adm-body adm-pad">
+      <div style="font-size:14px; color:var(--text-secondary)">文件名：<span id="sponsorExportName"></span>　共 <span id="sponsorExportCount"></span> 条（当前筛选下的全部线索，不只当前页）</div>
       <div style="overflow-x:auto; margin-top:12px"><table class="activity-table" id="sponsorExportTable"></table></div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px">
-        <button class="btn" onclick="setSponsorExportState('fail')">演示：导出失败</button>
-        <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">下载 Excel</button>
-      </div>
       <div class="attach-error" id="sponsorExportError" style="display:none"></div>
+    </div>
+    <div class="adm-foot">
+      <button class="btn" onclick="setSponsorExportState('fail')">演示：导出失败</button>
+      <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">下载 Excel</button>
     </div>
   </div>
 </div>
 
-<div class="adm-overlay" id="wallEditOverlay" onclick="if(event.target===this)closeWallEdit()">
-  <div class="adm-box" style="max-width:520px">
-    <div class="adm-head"><strong id="wallEditTitle">编辑留言</strong><button class="action-link" onclick="closeWallEdit()">关闭</button></div>
-    <div style="padding:16px 20px">
+<div class="adm-overlay adm-drawer" id="wallEditOverlay" onclick="if(event.target===this)closeWallEdit()">
+  <div class="adm-box">
+    <div class="adm-head"><strong id="wallEditTitle">编辑留言</strong><button class="adm-close" onclick="closeWallEdit()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="adm-body adm-pad">
       <div id="wallEditAuthorFixed" style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px"></div>
       <div id="wallEditAuthorFields">
         <div class="field"><label>作者类型</label>
@@ -2175,18 +2223,98 @@
           <button class="action-link" onclick="wallDemo('edit','multi')">一次选多张</button>
         </div>
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px">
-        <button class="btn" onclick="closeWallEdit()">取消</button>
-        <button class="btn primary" onclick="saveWallEdit()">保存修改</button>
-      </div>
+    </div>
+    <div class="adm-foot">
+      <button class="btn" onclick="closeWallEdit()">取消</button>
+      <button class="btn primary" onclick="saveWallEdit()">保存修改</button>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay adm-drawer" id="manualRegOverlay" onclick="if(event.target===this)closeManualReg()">
+  <div class="adm-box">
+    <div class="adm-head"><strong>手动添加报名</strong><button class="adm-close" onclick="closeManualReg()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="adm-body adm-pad">
+            <div class="field">
+              <label>所属 Celebration</label>
+              <select id="manualRegCelebration" style="width:100%" onchange="updateRegCapacityUI()">
+                <option value="sg30">公司30周年庆典 · 新加坡总部站</option>
+                <option value="bj30">公司30周年庆典 · 北京分公司站</option>
+                <option value="q3camp">Q3部门团建 · Q3团建营地站</option>
+              </select>
+              <div id="manualRegCapHint" style="font-size:11.5px; color:var(--text-muted); margin-top:5px"></div>
+            </div>
+            <div class="field">
+                <label>类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn selected" onclick="ppSwitch('reg','internal',this)">内部员工</button>
+                  <button class="scope-btn" onclick="ppSwitch('reg','external',this)">外部人士</button>
+                </div>
+              </div>
+            <div id="reg-int"></div>
+            <div id="reg-ext" class="hidden">
+              <div class="field"><label>姓名（必填）</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
+              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="manualRegDept" placeholder="例如：合作伙伴 · XX公司"></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label>联系电话（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
+              <div class="field"><label>邮箱（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
+            </div>
+    </div>
+    <div class="adm-foot">
+      <button class="btn" onclick="closeManualReg()">取消</button>
+      <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
+    </div>
+  </div>
+</div>
+
+<div class="adm-overlay adm-drawer" id="wallFormOverlay" onclick="if(event.target===this)closeWallForm()">
+  <div class="adm-box">
+    <div class="adm-head"><div><strong>代录入寄语</strong><div class="adm-sub">外部合作伙伴等无系统账号的人士，或由行政代员工录入</div></div><button class="adm-close" onclick="closeWallForm()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="adm-body adm-pad">
+            <div class="field">
+                <label>作者类型</label>
+                <div class="scope-toggle">
+                  <button class="scope-btn" onclick="ppSwitch('wall','internal',this)">内部员工</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('wall','external',this)">外部人士</button>
+                </div>
+              </div>
+            <div id="wall-int" class="hidden"></div>
+            <div id="wall-ext">
+              <div class="field"><label>作者姓名（必填）</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
+              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="adminWallOrg" placeholder="例如：合作伙伴 · XX公司"></div>
+            </div>
+            <div class="field">
+              <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
+              <div class="upload-box" id="adminWallImgBox" onclick="wallPickImage('admin')">点击上传一张配图，如合影、手写卡片照片</div>
+              <input type="file" id="adminWallImgInput" accept=".jpg,.jpeg,.png" style="display:none" onchange="wallHandleFiles('admin', this.files); this.value=''">
+              <div class="attach-error" id="adminWallImgError" style="display:none"></div>
+              <div id="adminWallImgList"></div>
+              <div class="picker-demo">
+                <span>原型演示：</span>
+                <button class="action-link" onclick="wallDemo('admin','ok')">添加示例图片</button>
+                <button class="action-link" onclick="wallDemo('admin','type')">类型不符</button>
+                <button class="action-link" onclick="wallDemo('admin','big')">超过 5MB</button>
+                <button class="action-link" onclick="wallDemo('admin','multi')">一次选多张</button>
+                <button class="action-link" onclick="wallDemo('admin','fail')">上传失败</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>留言内容</label>
+              <textarea rows="2" id="adminWallContent" placeholder="代录入的祝福留言"></textarea>
+            </div>
+    </div>
+    <div class="adm-foot">
+      <button class="btn" onclick="closeWallForm()">取消</button>
+      <button class="btn primary" onclick="submitWallAdmin()">提交留言</button>
     </div>
   </div>
 </div>
 
 <div class="adm-overlay" id="regCodeOverlay" onclick="if(event.target===this)closeRegCode()">
   <div class="adm-box" style="max-width:380px">
-    <div class="adm-head"><strong style="font-size:14px">签到码</strong><button class="action-link" onclick="closeRegCode()">关闭</button></div>
-    <div style="padding:20px; text-align:center">
+    <div class="adm-head"><strong>签到码</strong><button class="adm-close" onclick="closeRegCode()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div style="padding:24px; text-align:center">
       <div id="regCodeWho" style="font-size:13px; margin-bottom:12px"></div>
       <div class="qr-grid" id="regCodeQr"></div>
       <div class="qr-code-text" id="regCodeText"></div>
@@ -2199,22 +2327,24 @@
   </div>
 </div>
 
-<div class="adm-overlay" id="admWorkOverlay" onclick="if(event.target===this)closeAdmWork()">
+<div class="adm-overlay adm-drawer" id="admWorkOverlay" onclick="if(event.target===this)closeAdmWork()">
   <div class="adm-box">
     <div class="adm-head">
-      <strong style="font-size:14px">作品详情</strong>
-      <button class="action-link" onclick="closeAdmWork()">关闭</button>
+      <strong>作品详情</strong>
+      <button class="adm-close" onclick="closeAdmWork()" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
     </div>
+    <div class="adm-body">
     <div class="adm-stage" id="admStage"></div>
-    <div style="padding:8px 20px 0; font-size:11.5px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px">
+    <div class="adm-meta">
       <span id="admCount"></span>
-      <span>原型演示（当前项加载状态）：
+      <span class="adm-demo">原型演示（当前项加载状态）：
         <button class="action-link" onclick="setAdmMedia('normal')">正常</button>
         <button class="action-link" onclick="setAdmMedia('loading')">加载中</button>
         <button class="action-link" onclick="setAdmMedia('error')">加载失败</button>
       </span>
     </div>
     <div class="adm-info" id="admInfo"></div>
+    </div>
   </div>
 </div>
 
@@ -2239,6 +2369,11 @@
 
 <script src="activity-001-admin-pc.registrations.js"></script>
 <script>
+/* 通用图标按钮（带颜色与悬停提示） */
+const ICON_PATH = {"eye": "<path d=\"M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "eyeoff": "<path d=\"M9.9 4.2A10 10 0 0112 4c6.4 0 10 8 10 8a17 17 0 01-2.2 3.2M6.6 6.6C3.4 8.5 2 12 2 12s3.6 8 10 8a9.7 9.7 0 005.4-1.6\"/><path d=\"M2 2l20 20M9.9 9.9a3 3 0 004.2 4.2\"/>", "pencil": "<path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z\"/>", "trash": "<path d=\"M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6\"/>", "checkc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9 12l2 2 4-4\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>", "xc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M15 9l-6 6M9 9l6 6\"/>", "restore": "<path d=\"M3 12a9 9 0 109-9 9.8 9.8 0 00-6.7 2.8L3 8\"/><path d=\"M3 3v5h5\"/>"};
+function iconBtn(tip, tone, key, onclick){
+  return '<button class="icon-btn ' + tone + '" data-tip="' + tip + '" aria-label="' + tip + '" onclick="' + onclick + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICON_PATH[key] + '</svg></button>';
+}
 function selectScope(btn){
   btn.closest('.scope-toggle').querySelectorAll('.scope-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
@@ -2527,9 +2662,19 @@ function showSubmissions(){
     document.getElementById(id).classList.toggle('hidden', id!=='submissionsView');
   });
   document.getElementById('panel').classList.add('wide');
-  document.getElementById('crumb').textContent = '作品管理';
   setActiveNav('navSubmissions');
+  resetSubForm();
+  showSubPage('list');                                  // 切到作品管理，先看到已上传作品列表
 }
+/* 作品管理：列表页 / 上传·编辑页 */
+function showSubPage(page){
+  document.getElementById('subListPage').classList.toggle('hidden', page !== 'list');
+  document.getElementById('subFormPage').classList.toggle('hidden', page !== 'form');
+  document.getElementById('crumb').textContent = page === 'form' ? (subEditingId ? '编辑作品' : '上传作品') : '作品管理';
+  window.scrollTo(0, 0);
+}
+function openSubForm(){ resetSubForm(); showSubPage('form'); }
+function closeSubForm(){ resetSubForm(); showSubPage('list'); }
 function showRegistrations(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='registrationsView');
@@ -2546,6 +2691,14 @@ function showWall(){
   document.getElementById('crumb').textContent = '寄语墙管理';
   setActiveNav('navWall');
 }
+/* 寄语墙管理：代录入在右侧抽屉里填写，列表始终可见 */
+function resetWallForm(){
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallContent').value = '';
+  ppReset('wall');
+  wallRemove('admin');
+}
+function openWallForm(){ resetWallForm(); document.getElementById('wallFormOverlay').classList.add('open'); }
+function closeWallForm(){ closeDrawer('wallFormOverlay'); setTimeout(resetWallForm, 220); }
 function showStats(){
   ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView'].forEach(id=>{
     document.getElementById(id).classList.toggle('hidden', id!=='statsView');
@@ -2612,7 +2765,7 @@ function exportSponsors(){
   document.getElementById('sponsorExportDownload').disabled = false; document.getElementById('sponsorExportDownload').textContent = '下载 Excel';
   document.getElementById('sponsorExportOverlay').classList.add('open');
 }
-function closeSponsorExport(){ document.getElementById('sponsorExportOverlay').classList.remove('open'); }
+function closeSponsorExport(){ closeDrawer('sponsorExportOverlay'); }
 function setSponsorExportState(st){
   const e = document.getElementById('sponsorExportError');
   if(st === 'fail'){ e.textContent = '导出失败：服务暂时不可用，请稍后重试'; e.style.display = 'block'; }
@@ -2635,13 +2788,14 @@ function setSponsorStatus(rowId, status){
   if(status === 'done'){
     badge.className = 'status-badge approved';
     badge.textContent = '已联系';
-    actions.innerHTML = '<button class="action-link muted" onclick="setSponsorStatus(\''+rowId+'\',\'pending\')">标记待联系</button>';
+    actions.innerHTML = iconBtn('标记待联系', 'tone-warn', 'clock', "setSponsorStatus('"+rowId+"','pending')");
   } else {
     badge.className = 'status-badge draft';
     badge.textContent = '待联系';
-    actions.innerHTML = '<button class="action-link" onclick="setSponsorStatus(\''+rowId+'\',\'done\')">标记已联系</button>';
+    actions.innerHTML = iconBtn('标记已联系', 'tone-ok', 'checkc', "setSponsorStatus('"+rowId+"','done')");
   }
   updateSponsorNavBadge();
+  showAppToast(status === 'done' ? '已标记为已联系' : '已标记为待联系');
 }
 function updateSponsorNavBadge(){
   const count = document.querySelectorAll('#sponsorTableBody .status-badge.draft').length;
@@ -3010,6 +3164,7 @@ function submitSubmission(){
   if(subDescLen() > SUB_DESC_MAX){ updateSubDescCount(); document.getElementById('subDesc').scrollIntoView({behavior:'smooth', block:'center'}); return; }
   alert(subEditingId ? '原型演示：保存修改，状态与票数不变' : '原型演示：将新建一条 Submission 记录，状态为未发布');
   resetSubForm();
+  showSubPage('list');
 }
 function editSubmission(cardId){
   const card = document.getElementById(cardId);
@@ -3034,7 +3189,7 @@ function editSubmission(cardId){
   document.getElementById('subPanelTitle').textContent = '编辑作品 · ' + card.querySelector('.submission-author').textContent + '（状态与票数不变）';
   document.getElementById('subSubmitBtn').textContent = '保存修改';
   renderSubImages(); renderSubVideo();
-  document.querySelector('.upload-panel').scrollIntoView({behavior:'smooth', block:'start'});
+  showSubPage('form');
 }
 
 /* ---- 用户端作品详情：图片可左右切换，有视频时视频是最后一项（REQ-003 AC-012） ---- */
@@ -3116,7 +3271,13 @@ function viewSubmission(cardId){
   document.getElementById('admWorkOverlay').classList.add('open');
   renderAdmWork();
 }
-function closeAdmWork(){ document.getElementById('admWorkOverlay').classList.remove('open'); }
+function closeDrawer(id){
+  const o = document.getElementById(id);
+  if(!o || !o.classList.contains('open') || o.classList.contains('closing')) return;
+  o.classList.add('closing');                          // 先播放右滑退出动画，再真正关闭
+  setTimeout(function(){ o.classList.remove('open','closing'); }, 200);
+}
+function closeAdmWork(){ closeDrawer('admWorkOverlay'); }
 function stepAdmWork(d){
   const n = admItems(document.getElementById(admCur)).length;
   admIdx = Math.max(0, Math.min(n-1, admIdx+d)); admMediaState = 'normal'; renderAdmWork();
@@ -3129,7 +3290,7 @@ function renderAdmWork(){
   else if(admMediaState === 'error' && it.t === 'video') html = '<div>视频加载失败</div><button class="action-link" onclick="setAdmMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--text-muted)">图片仍可左右切换查看</div>';
   else if(it.t === 'video') html = '<div style="font-size:40px">▶</div><div>作品视频 · MP4</div><button class="action-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
   else html = '<div style="font-size:40px">🖼</div><div>作品图片 '+it.n+' / '+it.total+(it.n===1?'（封面）':'')+'</div>';
-  if(items.length > 1) html += '<button class="adm-nav prev" onclick="stepAdmWork(-1)"'+(admIdx===0?' disabled':'')+'>‹</button><button class="adm-nav next" onclick="stepAdmWork(1)"'+(admIdx===items.length-1?' disabled':'')+'>›</button>';
+  if(items.length > 1) html += '<button class="adm-nav prev" aria-label="Previous" onclick="stepAdmWork(-1)"'+(admIdx===0?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button class="adm-nav next" aria-label="Next" onclick="stepAdmWork(1)"'+(admIdx===items.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>';
   document.getElementById('admStage').innerHTML = html;
   document.getElementById('admCount').textContent = items.length > 1 ? (admIdx+1)+' / '+items.length : '';
   const sub = card.querySelector('.submission-sub').textContent.split('·').map(x=>x.trim());
@@ -3140,7 +3301,7 @@ function renderAdmWork(){
     + '<div><label>作者类型</label><div class="val">'+(sub[1]||'')+'</div></div>'
     + '<div><label>部门 / 所属机构</label><div class="val">'+(sub[0]||'')+'</div></div>'
     + '<div><label>所属 Celebration</label><div class="val">'+(ADM_CELEBRATIONS[card.dataset.activity]||'')+'</div></div>'
-    + '<div><label>状态</label><div class="val">'+card.querySelector('.status-badge').textContent+'</div></div>'
+    + '<div><label>状态</label><div class="val"><span class="'+card.querySelector('.status-badge').className+'">'+card.querySelector('.status-badge').textContent+'</span></div></div>'
     + '<div><label>票数</label><div class="val">'+card.dataset.votes+' 票</div></div>'
     + '<div class="wide"><label>作品说明</label><div class="adm-desc">'+(desc || '<span style="color:var(--text-muted)">无说明</span>')+'</div></div>';
 }
@@ -3188,6 +3349,7 @@ function searchActivities(){
 let _cfAction = null;
 function openConfirm(o){
   document.getElementById('cfTitle').textContent = o.title;
+  document.getElementById('cfCancel').textContent = o.cancelLabel || 'Cancel';
   document.getElementById('cfText').innerHTML = o.text;
   const icon = document.getElementById('cfIcon'); icon.className = 'cf-icon ' + (o.tone || 'danger');
   const ok = document.getElementById('cfOk');
@@ -3198,7 +3360,7 @@ function openConfirm(o){
   document.getElementById('cfCancel').focus();            // 不可逆操作：焦点默认落在「取消」上
 }
 function closeConfirm(){ document.getElementById('cfOverlay').classList.remove('open'); _cfAction = null; }
-document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeConfirm(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeConfirm(); document.querySelectorAll('.adm-drawer.open').forEach(function(o){ closeDrawer(o.id); }); } });
 let _toastTimer = null;
 function showAppToast(msg){
   const t = document.getElementById('appToast');
@@ -3225,7 +3387,7 @@ function doUnpublish(rowId){
   badge.textContent = 'Ended';
   row.setAttribute('onclick', "viewActivity('ended')");
   row.querySelector('.table-actions').innerHTML =
-    '<button class="action-link" onclick="event.stopPropagation(); viewActivity(\'ended\')">View</button>';
+    '<button class="icon-btn tone-view" data-tip="View" aria-label="View" onclick="event.stopPropagation(); viewActivity(\'ended\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>';
   row.classList.remove('row-flash'); void row.offsetWidth; row.classList.add('row-flash');
   showAppToast('Activity unpublished');
 }
@@ -3247,8 +3409,13 @@ function cancelInlineAction(btn){
   const actions = btn.closest('.table-actions');
   actions.innerHTML = actions.dataset.original;
 }
+function openManualReg(){
+  updateRegCapacityUI();                                // 名额上限提示按所选 Celebration 刷新
+  document.getElementById('manualRegOverlay').classList.add('open');
+}
+function closeManualReg(){ closeDrawer('manualRegOverlay'); }
 function toggleManualReg(){
-  document.getElementById('manualRegPanel').classList.toggle('hidden');
+  if(document.getElementById('manualRegOverlay').classList.contains('open')) closeManualReg(); else openManualReg();
 }
 /* 签到码二维码（原型示意：按签到码文字生成固定的方块图案，非真实二维码；真实实现由后端生成 / 前端二维码库渲染） */
 function checkInCodeFor(seed){
@@ -3321,9 +3488,9 @@ function submitManualRegistration(){
     + '<td>' + stamp + '</td>'
     + '<td><span class="status-badge draft" id="regstatus-' + rowId + '">未签到</span></td>'
     + '<td><div class="table-actions">'
-    +   '<button class="action-link" onclick="viewRegCode(this)">查看签到码</button>'
-    +   '<button class="action-link" onclick="setCheckin(\'' + rowId + '\',\'done\')">签到</button>'
-    +   '<button class="action-link danger" onclick="cancelRegistration(\'' + rowId + '\', this)">取消报名</button>'
+    +   regIconBtn('qr', 'viewRegCode(this)')
+    +   regIconBtn('in', "setCheckin('" + rowId + "','done')")
+    +   regIconBtn('cancel', "cancelRegistration('" + rowId + "', this)")
     + '</div></td>';
   document.getElementById('regTableBody').prepend(tr);
   RegSearch.afterAdd();         // 清空搜索条件并重新统计（暂按 REQ-004 AC-003，§11 待行政确认）
@@ -3333,8 +3500,20 @@ function submitManualRegistration(){
   document.getElementById('manualRegPhone').value = '';
   document.getElementById('manualRegEmail').value = '';
   ppReset('reg');
-  document.getElementById('manualRegPanel').classList.add('hidden');
+  closeManualReg();
   updateRegCapacityUI();
+  showAppToast('报名已添加');
+}
+/* 报名名单操作图标（与静态行一致）：查看签到码 / 签到 / 撤销签到 / 取消报名 */
+const REG_ICON = {
+  qr:     ['查看签到码','tone-view','<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17.5 21H21v-3.5"/>'],
+  'in':   ['签到','tone-ok','<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11l2 2 4-4"/>'],
+  undo:   ['撤销签到','tone-warn','<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/>'],
+  cancel: ['取消报名','tone-danger','<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 8l5 5M22 8l-5 5"/>']
+};
+function regIconBtn(kind, onclick){
+  const d = REG_ICON[kind];
+  return '<button class="icon-btn ' + d[1] + '" data-tip="' + d[0] + '" aria-label="' + d[0] + '" onclick="' + onclick + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + d[2] + '</svg></button>';
 }
 function setCheckin(rowId, status){
   const badge = document.getElementById('regstatus-'+rowId);
@@ -3342,30 +3521,38 @@ function setCheckin(rowId, status){
   if(status === 'done'){
     badge.className = 'status-badge approved';
     badge.textContent = '已签到';
-    actions.innerHTML = '<button class="action-link muted" onclick="setCheckin(\''+rowId+'\',\'pending\')">撤销签到</button>'
-      + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
+    actions.innerHTML = regIconBtn('qr', 'viewRegCode(this)')
+      + regIconBtn('undo', "setCheckin('"+rowId+"','pending')")
+      + regIconBtn('cancel', "cancelRegistration('"+rowId+"', this)");
   } else {
     badge.className = 'status-badge draft';
     badge.textContent = '未签到';
-    actions.innerHTML = '<button class="action-link" onclick="setCheckin(\''+rowId+'\',\'done\')">签到</button>'
-      + '<button class="action-link danger" onclick="cancelRegistration(\''+rowId+'\', this)">取消报名</button>';
+    actions.innerHTML = regIconBtn('qr', 'viewRegCode(this)')
+      + regIconBtn('in', "setCheckin('"+rowId+"','done')")
+      + regIconBtn('cancel', "cancelRegistration('"+rowId+"', this)");
   }
   RegSearch.apply();            // 签到 / 撤销签到后统计与结果联动，搜索条件保持（REQ-004 AC-037）
 }
 function cancelRegistration(rowId, btn){
-  const actions = btn.parentElement;
-  actions.dataset.original = actions.innerHTML;
-  actions.innerHTML =
-    '<span style="font-size:12px;color:var(--danger);margin-right:2px">确定取消报名？</span>'
-    + '<button class="action-link danger" onclick="doCancelRegistration(\'' + rowId + '\')">确认</button>'
-    + '<button class="action-link muted" onclick="cancelInlineAction(this)">取消</button>';
+  const tr = document.getElementById('regstatus-'+rowId).closest('tr');
+  const name = tr.children[0].textContent.trim();
+  openConfirm({
+    tone:'danger', title:'取消报名？',
+    text:'<b>' + escHtml(name) + '</b> 的报名记录将被取消，并从名单中移除；已报名人数与名额统计随之更新。',
+    okLabel:'确认取消报名', cancelLabel:'再想想', okClass:'danger',
+    onOk:function(){ doCancelRegistration(rowId); }
+  });
 }
 function doCancelRegistration(rowId){
   const badge = document.getElementById('regstatus-'+rowId);
   const row = badge.closest('tr');
-  row.remove();
-  updateRegCapacityUI();
-  RegSearch.apply();            // 取消的记录从结果中消失，统计重新计算，搜索条件保持（REQ-004 AC-037）
+  row.classList.add('row-leaving');
+  setTimeout(function(){
+    row.remove();
+    updateRegCapacityUI();
+    RegSearch.apply();          // 取消的记录从结果中消失，统计重新计算，搜索条件保持（REQ-004 AC-037）
+    showAppToast('报名已取消');
+  }, 260);
 }
 function toggleNotifications(){
   document.getElementById('notifPanel').classList.toggle('open');
@@ -3494,7 +3681,7 @@ function openWallEdit(id){
   wallMsg('edit',''); renderWallImg('edit');
   document.getElementById('wallEditOverlay').classList.add('open');
 }
-function closeWallEdit(){ document.getElementById('wallEditOverlay').classList.remove('open'); }
+function closeWallEdit(){ closeDrawer('wallEditOverlay'); }
 function saveWallEdit(){
   const row = document.getElementById(wallEditingId);
   const content = document.getElementById('editWallContent').value.trim();
@@ -3623,7 +3810,7 @@ function submitSponsorForm(){
       + '<td>' + stamp + '</td>'
       + '<td><span class="status-badge draft" id="sponsorstatus-' + rowId + '">待联系</span></td>'
       + '<td><div class="table-actions">'
-      +   '<button class="action-link" onclick="setSponsorStatus(\'' + rowId + '\',\'done\')">标记已联系</button>'
+      +   iconBtn('标记已联系', 'tone-ok', 'checkc', "setSponsorStatus('" + rowId + "','done')")
       + '</div></td>';
     tbody.prepend(tr);
     updateSponsorNavBadge();
@@ -3695,9 +3882,8 @@ function submitWallAdmin(){
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('admin')) return;                     // AC-008：配图必填
   alert('原型演示：将新建一条留言记录，状态为待审核');
-  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallContent').value = '';
-  ppReset('wall');
-  wallRemove('admin');
+  closeWallForm();
+  showAppToast('留言已提交');
 }
 
 function openWallModal(){

@@ -141,9 +141,9 @@ var RegSearch = (function () {
       '<td>' + esc(d.org) + (d.type === 'external' ? ' · 外部' : '') + '</td>' +
       '<td>' + (d.phone ? esc(d.phone) : '—') + '</td><td>' + (d.email ? esc(d.email) : '—') + '</td><td>' + d.at + '</td>' +
       '<td><span class="status-badge draft" id="regstatus-' + d.id + '">未签到</span></td>' +
-      '<td><div class="table-actions"><button class="action-link" onclick="viewRegCode(this)">查看签到码</button>' +
-      '<button class="action-link" onclick="setCheckin(\'' + d.id + '\',\'done\')">签到</button>' +
-      '<button class="action-link danger" onclick="cancelRegistration(\'' + d.id + '\', this)">取消报名</button></div></td>';
+      '<td><div class="table-actions">' + regIconBtn('qr', 'viewRegCode(this)') +
+      regIconBtn('in', "setCheckin('" + d.id + "','done')") +
+      regIconBtn('cancel', "cancelRegistration('" + d.id + "', this)") + '</div></td>';
     return tr;
   }
   function seedRows() {
