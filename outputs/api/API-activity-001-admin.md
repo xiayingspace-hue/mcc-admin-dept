@@ -30,6 +30,8 @@
 | `type` | string | 否 | 活动类型筛选 |
 | `keyword` | string | 否 | 标题模糊搜索 |
 
+分页响应：除当页记录外，还返回满足条件的总数 `total`（number，用于「共 N 条」和页码），`offset` / `limit` 规则见 `conventions.md`「分页」，AC-023。
+
 **排序**：默认按创建时间倒序，没有排序参数；先应用筛选、再排序、最后分页，AC-022，规则见 `conventions.md`「列表默认排序」。
 
 **响应字段**

@@ -34,6 +34,9 @@
 
 分页：列表部分见 `conventions.md`
 
+分页响应：除 `list[]`（当页记录）外返回满足条件的总数 `total`（number，用于「共 N 条」和页码），`offset` / `limit` 规则见 `conventions.md`「分页」，AC-038。
+`total` 与 `list[]` 同样按 `celebration_id` 和搜索参数过滤后统计；`summary` 仍是过滤后的全量统计，不随翻页变化，AC-032。
+
 **排序**：默认按创建时间倒序，没有排序参数；先应用筛选、再排序、最后分页，AC-024，规则见 `conventions.md`「列表默认排序」。名单（`list[]`）按 `registered_at` 排序，它就是该记录的创建时间。
 
 **响应字段**
