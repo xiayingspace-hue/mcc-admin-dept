@@ -75,8 +75,8 @@ var Proto011 = (function () {
     }).join('');
     if (pages > 1) {
       h += '<div class="p-pager"><span>共 ' + all.length + ' 条，第 ' + page + ' / ' + pages + ' 页</span>' +
-        '<button class="p-link"' + (page <= 1 ? ' disabled' : ' onclick="Proto011.logGo(-1)"') + '>上一页</button>' +
-        '<button class="p-link"' + (page >= pages ? ' disabled' : ' onclick="Proto011.logGo(1)"') + '>下一页</button></div>';
+        '<button class="p-link"' + (page <= 1 ? ' disabled' : ' onclick="Proto011.logGo(-1)"') + '>Previous</button>' +
+        '<button class="p-link"' + (page >= pages ? ' disabled' : ' onclick="Proto011.logGo(1)"') + '>Next</button></div>';
     }
     return h;
   }
@@ -232,10 +232,10 @@ var Proto011 = (function () {
     var code = validate();
     if (code) { $('adjBanner').innerHTML = '<div class="p-banner">保存失败：请先修改标红的内容（' + code + '）</div>'; return; }
     // 以下模拟后端返回
-    if (failMode === 'ended') { banner(D.ADJUST_ERROR.activity_not_published, 'activity_not_published', '<button class="p-link" data-goto="detail">返回活动详情</button>'); return; }
-    if (failMode === 'conflict') { banner(D.ADJUST_ERROR.config_version_conflict, 'config_version_conflict', '<button class="p-link" onclick="Proto011.refresh()">刷新并查看最新配置</button>'); return; }
-    if (failMode === 'log_write_failed') { banner(D.ADJUST_ERROR.log_write_failed, 'log_write_failed', '<button class="p-link" onclick="Proto011.save()">重试</button>'); return; }
-    if (failMode === 'fail') { $('adjBanner').innerHTML = '<div class="p-banner">保存失败，请检查网络后重试<br><button class="p-link" onclick="Proto011.save()">重试</button></div>'; return; }
+    if (failMode === 'ended') { banner(D.ADJUST_ERROR.activity_not_published, 'activity_not_published', '<button class="p-link" data-goto="detail">Back to activity details</button>'); return; }
+    if (failMode === 'conflict') { banner(D.ADJUST_ERROR.config_version_conflict, 'config_version_conflict', '<button class="p-link" onclick="Proto011.refresh()">Refresh and view latest config</button>'); return; }
+    if (failMode === 'log_write_failed') { banner(D.ADJUST_ERROR.log_write_failed, 'log_write_failed', '<button class="p-link" onclick="Proto011.save()">Retry</button>'); return; }
+    if (failMode === 'fail') { $('adjBanner').innerHTML = '<div class="p-banner">保存失败，请检查网络后重试<br><button class="p-link" onclick="Proto011.save()">Retry</button></div>'; return; }
     P().modules = finalModules();
     P().config_version = 'v' + (parseInt(P().config_version.slice(1), 10) + 1);
     P().logs.unshift({ log_id: 'L' + (P().logs.length + 1) + 'x', operator_id: 'E0001', operator_name: 'XY', operated_at: fmtT(D.NOW), changes: ch });   // 新记录出现在最前（AC-017）

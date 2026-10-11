@@ -45,7 +45,7 @@
     position:sticky; top:0; height:100vh; overflow-y:auto;
   }
   .brand{display:flex; align-items:center; gap:10px; padding:0 8px 24px; color:var(--text-primary); font-weight:600; font-size:17px; letter-spacing:-.01em}
-  .brand-mark{width:32px;height:32px;border-radius:var(--radius);background:var(--accent);flex-shrink:0;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .brand-mark{display:flex;align-items:center;justify-content:center;color:var(--accent);width:32px;height:32px;flex-shrink:0}
   .nav-group-label{font-size:11px; color:var(--text-muted); padding:14px 12px 8px; letter-spacing:.06em}
   .nav-item{
     display:flex; flex-shrink:0; align-items:center; gap:12px; height:40px; padding:0 12px; margin-bottom:4px; border-radius:var(--radius);
@@ -59,7 +59,8 @@
   .top-right{display:flex; align-items:center; gap:16px}
   .top-user{display:flex; align-items:center; gap:12px}
   .notif-wrap + .top-user{padding-left:16px; border-left:0.5px solid var(--border)}
-  .top-user .side-avatar{width:40px; height:40px}
+  .top-user .side-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+  .side-avatar{overflow:hidden;width:40px; height:40px}
   .side-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--accent-tint);color:var(--accent)}
   .side-name{font-size:13.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
   .side-role{font-size:12px;color:var(--text-muted);line-height:1.3}
@@ -102,6 +103,7 @@
     background:var(--surface); font-size:14px; color:var(--text-primary); font-family:inherit;
   }
   textarea{height:auto; padding:8px 12px; resize:vertical}
+  select{appearance:none; -webkit-appearance:none; padding-right:40px; background-repeat:no-repeat; background-position:right 8px center; background-size:16px 16px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")}
   input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-tint)}
 
   .scope-toggle{display:flex; gap:8px}
@@ -563,7 +565,7 @@
   #sponsorsView .activity-table .table-actions{white-space:nowrap}
   /* Icon button with tooltip (actions in tables) */
   .icon-btn{--tone:var(--text-secondary); --tone-tint:var(--bg); position:relative; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; padding:0; border:none; border-radius:var(--radius); background:transparent; color:var(--tone); cursor:pointer; transition:background .15s ease, color .15s ease}
-  .icon-btn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .icon-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
   .icon-btn.tone-view{--tone:var(--accent); --tone-tint:var(--accent-tint)}
   .icon-btn.tone-edit{--tone:#7B4FE0; --tone-tint:#F1EBFD}
   .icon-btn.tone-ok{--tone:var(--st-success); --tone-tint:var(--st-success-tint)}
@@ -675,7 +677,12 @@
   .u-section-title{font-size:19px; font-weight:600; color:var(--u-text); margin:0 0 22px; text-align:center}
   .u-vote-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:640px; margin:0 auto}
   .u-vote-card{border-radius:12px; overflow:hidden; background:#fff; border:0.5px solid var(--u-gold-tint)}
-  .u-vote-thumb{aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
+  .wall-avatar,.u-wall-avatar{overflow:hidden}
+  .wall-avatar img,.u-wall-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .wall-image,.u-wall-image{overflow:hidden}
+  .wall-image img,.u-wall-image img{width:100%;height:100%;object-fit:cover;display:block}
+  .submission-thumb img,.u-vote-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .u-vote-thumb{overflow:hidden;aspect-ratio:4/3; background:linear-gradient(135deg,var(--u-gold-tint),#fff); display:flex;align-items:center;justify-content:center; font-size:24px}
   .u-vote-info{padding:10px 12px}
   .u-vote-author{font-size:12px; font-weight:600; color:var(--u-text); overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
   .u-vote-footer{display:flex; align-items:center; justify-content:space-between; margin-top:8px}
@@ -799,7 +806,7 @@
 <div class="shell">
 
   <div class="sidebar">
-    <div class="brand"><div class="brand-mark"></div>Activity Ops</div>
+    <div class="brand"><div class="brand-mark"><svg viewBox="0 0 32 32" width="32" height="32" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9.5l11 3.5v15L4 24.5z" opacity=".6"/><path d="M28 9.5L17 13v15l11-3.5z"/><path d="M16 4l3.5 1.8L16 7.6l-3.5-1.8z"/></svg></div>Activity Ops</div>
     <div class="nav-group-label">WORKSPACE</div>
     <div class="nav-item active" id="navActivities" onclick="showList()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></span>Activities</div>
     <div class="nav-item" id="navModules" onclick="showModuleLibrary()"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span>Module Library</div>
@@ -838,8 +845,8 @@
         </div>
       </div>
       <div class="top-user">
-        <div class="side-avatar">A</div>
-        <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
+        <div class="side-avatar"><img src="_shared/avatar.jpg" alt="Admin Staff"></div>
+        <div><div class="side-name">Admin Staff</div><div class="side-role">P0807207</div></div>
       </div>
       </div>
     </div>
@@ -851,7 +858,7 @@
         <div id="listView">
           <div class="list-header">
             <h1 style="margin:0">活动管理</h1>
-            <button class="btn primary" onclick="showEditor()">+ 创建活动</button>
+            <button class="btn primary" onclick="showEditor()">+ Create activity</button>
           </div>
 
           <div class="filter-bar">
@@ -864,7 +871,7 @@
               <option>团建</option><option>生日会</option><option>培训分享会</option>
             </select>
             <input type="text" id="activitySearchInput" placeholder="搜索活动标题" onkeydown="if(event.key==='Enter') searchActivities()">
-            <button class="btn primary" onclick="searchActivities()">搜索</button>
+            <button class="btn primary" onclick="searchActivities()">Search</button>
           </div>
 
           <div class="table-card">
@@ -951,7 +958,7 @@
         <!-- Editor view -->
         <div id="editorView" class="hidden">
 
-        <button class="btn btn-back" style="margin-bottom:16px" onclick="showList()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回活动列表</button>
+        <button class="btn btn-back" style="margin-bottom:16px" onclick="showList()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to activity list</button>
 
         <div class="steps">
           <div class="step" id="step1" onclick="goStep(1)">
@@ -1025,16 +1032,16 @@
           <div class="field">
             <label>参与范围</label>
             <div class="scope-toggle">
-              <button class="scope-btn selected" onclick="selectScope(this)">全员</button>
-              <button class="scope-btn" onclick="selectScope(this)">指定部门</button>
+              <button class="scope-btn selected" onclick="selectScope(this)">Everyone</button>
+              <button class="scope-btn" onclick="selectScope(this)">Specific departments</button>
             </div>
           </div>
 
           <div class="field">
             <label>外部可见性</label>
             <div class="scope-toggle">
-              <button class="scope-btn selected" onclick="selectScope(this)">仅内部可见</button>
-              <button class="scope-btn" onclick="selectScope(this)">对外部人员开放</button>
+              <button class="scope-btn selected" onclick="selectScope(this)">Internal only</button>
+              <button class="scope-btn" onclick="selectScope(this)">Open to external guests</button>
             </div>
           </div>
 
@@ -1068,17 +1075,17 @@
             <div class="attach-list-scroll" id="attachList"></div>
             <div class="picker-demo">
               <span>原型演示：</span>
-              <button class="action-link" onclick="demoAttach('ok')">添加示例文件</button>
-              <button class="action-link" onclick="demoAttach('big')">模拟超过 20MB</button>
-              <button class="action-link" onclick="demoAttach('type')">模拟类型不符</button>
-              <button class="action-link" onclick="demoAttach('fail')">模拟上传失败</button>
-              <button class="action-link" onclick="demoAttach('many')">模拟加满 10 个</button>
+              <button class="action-link" onclick="demoAttach('ok')">Add sample file</button>
+              <button class="action-link" onclick="demoAttach('big')">Simulate over 20MB</button>
+              <button class="action-link" onclick="demoAttach('type')">Simulate wrong type</button>
+              <button class="action-link" onclick="demoAttach('fail')">Simulate upload failure</button>
+              <button class="action-link" onclick="demoAttach('many')">Simulate 10 added</button>
             </div>
           </div>
 
           <div class="actions end">
-            <button class="btn">保存草稿</button>
-            <button class="btn primary" onclick="validateStep1()">下一步：配置模块 →</button>
+            <button class="btn">Save draft</button>
+            <button class="btn primary" onclick="validateStep1()">Next: Configure modules →</button>
           </div>
         </div>
 
@@ -1115,8 +1122,8 @@
           </div>
 
           <div class="actions">
-            <button class="btn btn-back" onclick="goStep(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>上一步</button>
-            <button class="btn primary" onclick="goStep(3)">下一步：提交审批 →</button>
+            <button class="btn btn-back" onclick="goStep(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+            <button class="btn primary" onclick="goStep(3)">Next: Submit for approval →</button>
           </div>
         </div>
 
@@ -1158,10 +1165,10 @@
             <div class="picker-list" id="pickerList"></div>
             <div class="picker-demo">
               <span>原型演示状态：</span>
-              <button class="action-link" onclick="setPickerState('normal')">正常</button>
-              <button class="action-link" onclick="setPickerState('loading')">加载中</button>
-              <button class="action-link" onclick="setPickerState('error')">加载失败</button>
-              <button class="action-link" onclick="pickAllDemo()">全选（演示人数很多）</button>
+              <button class="action-link" onclick="setPickerState('normal')">Normal</button>
+              <button class="action-link" onclick="setPickerState('loading')">Loading</button>
+              <button class="action-link" onclick="setPickerState('error')">Load failed</button>
+              <button class="action-link" onclick="pickAllDemo()">Select all (demo: many people)</button>
             </div>
           </div>
 
@@ -1171,8 +1178,8 @@
           </div>
 
           <div class="actions">
-            <button class="btn btn-back" onclick="goStep(2)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>上一步</button>
-            <button class="btn primary" onclick="submitApproval()">提交审批 →</button>
+            <button class="btn btn-back" onclick="goStep(2)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+            <button class="btn primary" onclick="submitApproval()">Submit for approval →</button>
           </div>
         </div>
 
@@ -1266,7 +1273,7 @@
               <h1 style="margin:0 0 4px">作品管理</h1>
               <p class="subtitle" style="margin:0">行政统一上传作品，展示在 Celebration 页面供全员投票；员工端不提供自主上传入口。全部由行政上传维护，发布后才会出现在员工端投票页。</p>
             </div>
-            <button class="btn primary" onclick="openSubForm()">+ 上传作品</button>
+            <button class="btn primary" onclick="openSubForm()">+ Upload work</button>
           </div>
 
 
@@ -1288,7 +1295,7 @@
           <div class="submission-grid" id="submissionGrid">
 
             <div class="submission-card" id="sub1" data-created="2026-09-30 09:10" data-votes="0" data-activity="sg30" data-status="draft" data-images="3" data-video="1">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-1.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author">陈思思</div>
                 <div class="submission-sub">产品部 · 内部员工</div>
@@ -1297,14 +1304,14 @@
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setSubmissionStatus('sub1','published')">发布</button>
+                    <button class="action-link" onclick="setSubmissionStatus('sub1','published')">Publish</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="submission-card" id="sub2" data-created="2026-09-28 15:00" data-votes="24" data-activity="bj30" data-status="published" data-images="2" data-video="0">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-2.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author">王芳</div>
                 <div class="submission-sub">行政部 · 内部员工</div>
@@ -1313,14 +1320,14 @@
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setSubmissionStatus('sub2','hidden')">隐藏</button>
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub2','hidden')">Hide</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="submission-card" id="sub3" data-created="2026-09-25 11:30" data-votes="31" data-activity="q3camp" data-status="published" data-images="5" data-video="0">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-3.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author">李强</div>
                 <div class="submission-sub">工程部 · 内部员工</div>
@@ -1329,14 +1336,14 @@
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setSubmissionStatus('sub3','hidden')">隐藏</button>
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub3','hidden')">Hide</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="submission-card" id="sub4" data-created="2026-09-22 10:00" data-votes="18" data-activity="sg30" data-status="published" data-images="3" data-video="1">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-4.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author" title="张伟, 赵敏, 周杰">张伟, 赵敏, 周杰</div>
                 <div class="submission-sub">技术部 · 内部员工</div>
@@ -1344,14 +1351,14 @@
                 <div class="submission-footer">
                   <span class="status-badge approved">已发布</span>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setSubmissionStatus('sub4','hidden')">隐藏</button>
+                    <button class="action-link muted" onclick="setSubmissionStatus('sub4','hidden')">Hide</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="submission-card" id="sub5" data-created="2026-09-19 17:20" data-votes="9" data-activity="q3camp" data-status="hidden" data-images="4" data-video="0">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-5.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author">周敏</div>
                 <div class="submission-sub">市场部 · 内部员工</div>
@@ -1360,15 +1367,15 @@
                 <div class="submission-footer">
                   <span class="status-badge hidden-st">已隐藏</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setSubmissionStatus('sub5','published')">恢复</button>
-                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">删除</button>
+                    <button class="action-link" onclick="setSubmissionStatus('sub5','published')">Restore</button>
+                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">Delete</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="submission-card" id="sub6" data-created="2026-09-15 13:45" data-votes="0" data-activity="bj30" data-status="draft" data-images="1" data-video="0">
-              <div class="submission-thumb">🎨</div>
+              <div class="submission-thumb"><img src="_shared/photos/work-6.jpg" alt=""></div>
               <div class="submission-body">
                 <div class="submission-author">田中一郎</div>
                 <div class="submission-sub">合作伙伴 · 外部人士</div>
@@ -1377,7 +1384,7 @@
                 <div class="submission-footer">
                   <span class="status-badge draft">未发布</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setSubmissionStatus('sub6','published')">发布</button>
+                    <button class="action-link" onclick="setSubmissionStatus('sub6','published')">Publish</button>
                   </div>
                 </div>
               </div>
@@ -1389,7 +1396,7 @@
 
           <!-- Upload / edit page -->
           <div id="subFormPage" class="hidden">
-          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeSubForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回作品列表</button>
+          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeSubForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to works list</button>
           <div class="upload-panel">
             <p class="upload-panel-title" id="subPanelTitle">上传作品</p>
             <div class="row2">
@@ -1404,8 +1411,8 @@
               <div class="field">
                 <label>作者类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="ppSwitch('sub','internal',this)">内部员工</button>
-                  <button class="scope-btn" onclick="ppSwitch('sub','external',this)">外部人士</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('sub','internal',this)">Internal staff</button>
+                  <button class="scope-btn" onclick="ppSwitch('sub','external',this)">External guests</button>
                 </div>
               </div>
             </div>
@@ -1442,13 +1449,13 @@
               <div id="subVideoList"></div>
               <div class="picker-demo">
                 <span>原型演示：</span>
-                <button class="action-link" onclick="demoSub('img')">添加示例图片</button>
-                <button class="action-link" onclick="demoSub('bigimg')">模拟图片超过 5MB</button>
-                <button class="action-link" onclick="demoSub('type')">模拟类型不符</button>
-                <button class="action-link" onclick="demoSub('fail')">模拟图片上传失败</button>
-                <button class="action-link" onclick="demoSub('many')">模拟加满 9 张</button>
-                <button class="action-link" onclick="demoSub('video')">添加示例视频</button>
-                <button class="action-link" onclick="demoSub('bigvideo')">模拟视频超过 100MB</button>
+                <button class="action-link" onclick="demoSub('img')">Add sample image</button>
+                <button class="action-link" onclick="demoSub('bigimg')">Simulate image over 5MB</button>
+                <button class="action-link" onclick="demoSub('type')">Simulate wrong type</button>
+                <button class="action-link" onclick="demoSub('fail')">Simulate image upload failure</button>
+                <button class="action-link" onclick="demoSub('many')">Simulate 9 added</button>
+                <button class="action-link" onclick="demoSub('video')">Add sample video</button>
+                <button class="action-link" onclick="demoSub('bigvideo')">Simulate video over 100MB</button>
               </div>
             </div>
             <div class="field">
@@ -1457,8 +1464,8 @@
               <div class="attach-error" id="subDescError" style="display:none"></div>
             </div>
             <div style="display:flex; justify-content:flex-end; gap:12px">
-              <button class="btn" onclick="closeSubForm()">取消</button>
-              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">上传作品</button>
+              <button class="btn" onclick="closeSubForm()">Cancel</button>
+              <button class="btn primary" id="subSubmitBtn" onclick="submitSubmission()">Upload work</button>
             </div>
           </div>
           </div>
@@ -1471,7 +1478,7 @@
               <h1 style="margin:0 0 4px">报名管理</h1>
               <p class="subtitle" style="margin:0">员工在 Celebration 页面自主报名，此处查看名单并管理签到；报名按 Celebration 独立统计</p>
             </div>
-            <button class="btn primary" onclick="openManualReg()">+ 手动添加</button>
+            <button class="btn primary" onclick="openManualReg()">+ Add manually</button>
           </div>
 
           <div id="regSearch">
@@ -1486,7 +1493,7 @@
               <input type="text" id="regSearchOrg" maxlength="50" autocomplete="off" aria-label="部门 / 类型" placeholder="部门，或 内部员工 / 外部人士">
               <input type="text" id="regSearchPhone" maxlength="50" autocomplete="off" aria-label="联系电话" placeholder="联系电话，数字片段如 9012">
             </div>
-            <div class="reg-search-foot"><button class="action-link hidden" id="regSearchClear" onclick="RegSearch.clear()">清空搜索</button><span id="regStatHint"></span></div>
+            <div class="reg-search-foot"><button class="action-link hidden" id="regSearchClear" onclick="RegSearch.clear()">Clear search</button><span id="regStatHint"></span></div>
           </div>
 
           <div class="stat-row">
@@ -1496,10 +1503,10 @@
           </div>
           <div class="picker-demo" style="margin:-10px 0 16px">
             <span>原型演示 名单状态：</span>
-            <button class="action-link" onclick="RegSearch.setMode('normal')">正常</button>
-            <button class="action-link" onclick="RegSearch.setMode('loading')">加载中</button>
-            <button class="action-link" onclick="RegSearch.setMode('error')">加载失败</button>
-            <button class="action-link" onclick="RegSearch.setMode('overflow')">姓名所属很长</button>
+            <button class="action-link" onclick="RegSearch.setMode('normal')">Normal</button>
+            <button class="action-link" onclick="RegSearch.setMode('loading')">Loading</button>
+            <button class="action-link" onclick="RegSearch.setMode('error')">Load failed</button>
+            <button class="action-link" onclick="RegSearch.setMode('overflow')">Long name & affiliation</button>
             <span>（名单里放了十多条示例记录，统计按这些记录实时计算）</span>
           </div>
           <div id="regStateBox" class="hidden"></div>
@@ -1590,7 +1597,7 @@
               <h1 style="margin:0 0 4px">寄语墙管理</h1>
               <p class="subtitle" style="margin:0">员工自主提交留言，行政审核决定哪些展示在活动页面。员工自主提交与行政代录入的留言统一在此审核。</p>
             </div>
-            <button class="btn primary" onclick="openWallForm()">+ 代录入寄语</button>
+            <button class="btn primary" onclick="openWallForm()">+ Add message on behalf</button>
           </div>
 
           <div class="stat-row">
@@ -1620,7 +1627,7 @@
           <div class="wall-list" id="wallList">
 
             <div class="wall-row" id="w1" data-created="2026-09-30 18:20" data-activity="30th" data-status="review">
-              <div class="wall-avatar">👤</div>
+              <div class="wall-avatar"><img src="_shared/photos/face-1.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">陈思思</span>
@@ -1630,51 +1637,51 @@
                 <div class="wall-footer">
                   <span class="status-badge review">待审核</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setWallStatus('w1','published')">展示</button>
-                    <button class="action-link danger" onclick="setWallStatus('w1','hidden')">拒绝</button>
+                    <button class="action-link" onclick="setWallStatus('w1','published')">Show</button>
+                    <button class="action-link danger" onclick="setWallStatus('w1','hidden')">Reject</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="wall-row" id="w2" data-created="2026-09-29 12:05" data-activity="30th" data-status="published">
-              <div class="wall-avatar">👤</div>
+              <div class="wall-avatar"><img src="_shared/photos/face-2.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">王芳</span>
                   <span class="wall-meta">行政部 · 员工提交</span>
                 </div>
                 <p class="wall-quote">谢谢团队一路的支持，祝公司三十周年快乐，越办越好！</p>
-                <div class="wall-image">📷</div>
+                <div class="wall-image"><img src="_shared/photos/wall-1.jpg" alt=""></div>
                 <div class="wall-footer">
                   <span class="status-badge approved">已展示</span>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setWallStatus('w2','hidden')">隐藏</button>
+                    <button class="action-link muted" onclick="setWallStatus('w2','hidden')">Hide</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published">
-              <div class="wall-avatar">🤝</div>
+              <div class="wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">田中一郎</span>
                   <span class="wall-meta">合作伙伴 · 行政代录入</span>
                 </div>
-                <div class="wall-image">📷</div>
+                <div class="wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                 <p class="wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</p>
                 <div class="wall-footer">
                   <span class="status-badge approved">已展示</span>
                   <div class="table-actions">
-                    <button class="action-link muted" onclick="setWallStatus('w3','hidden')">隐藏</button>
+                    <button class="action-link muted" onclick="setWallStatus('w3','hidden')">Hide</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="wall-row" id="w4" data-created="2026-09-24 16:30" data-activity="annual" data-status="review">
-              <div class="wall-avatar">👤</div>
+              <div class="wall-avatar"><img src="_shared/photos/face-4.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">李强</span>
@@ -1684,8 +1691,8 @@
                 <div class="wall-footer">
                   <span class="status-badge review">待审核</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setWallStatus('w4','published')">展示</button>
-                    <button class="action-link danger" onclick="setWallStatus('w4','hidden')">拒绝</button>
+                    <button class="action-link" onclick="setWallStatus('w4','published')">Show</button>
+                    <button class="action-link danger" onclick="setWallStatus('w4','hidden')">Reject</button>
                   </div>
                 </div>
               </div>
@@ -1702,15 +1709,15 @@
                 <div class="wall-footer">
                   <span class="status-badge review">待审核</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setWallStatus('w5','published')">展示</button>
-                    <button class="action-link danger" onclick="setWallStatus('w5','hidden')">拒绝</button>
+                    <button class="action-link" onclick="setWallStatus('w5','published')">Show</button>
+                    <button class="action-link danger" onclick="setWallStatus('w5','hidden')">Reject</button>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="wall-row" id="w6" data-created="2026-09-18 08:50" data-activity="annual" data-status="hidden">
-              <div class="wall-avatar">👤</div>
+              <div class="wall-avatar"><img src="_shared/photos/face-5.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">周敏</span>
@@ -1720,8 +1727,8 @@
                 <div class="wall-footer">
                   <span class="status-badge hidden-st">已隐藏</span>
                   <div class="table-actions">
-                    <button class="action-link" onclick="setWallStatus('w6','published')">恢复</button>
-                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">删除</button>
+                    <button class="action-link" onclick="setWallStatus('w6','published')">Restore</button>
+                    <button class="action-link danger" onclick="alert('原型演示：删除后不可恢复')">Delete</button>
                   </div>
                 </div>
               </div>
@@ -1738,7 +1745,7 @@
               <h1 style="margin:0 0 4px">赞助商管理</h1>
               <p class="subtitle" style="margin:0">用户端「Become a Sponsor」表单提交的赞助意向，需在 2 个工作日内跟进联系</p>
             </div>
-            <button class="btn" id="sponsorExportBtn" onclick="exportSponsors()">导出</button>
+            <button class="btn" id="sponsorExportBtn" onclick="exportSponsors()">Export</button>
           </div>
 
           <div class="filter-bar">
@@ -1896,7 +1903,7 @@
               <div class="u-section">
                 <p class="u-section-title">Celebrations</p>
                 <p style="text-align:center; margin:-14px 0 22px">
-                  <button onclick="toggleCelebrationDemo()" style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px">演示：切换「上海分公司站」封面的开始前 / 开始后状态</button>
+                  <button onclick="toggleCelebrationDemo()" style="background:none;border:none;color:var(--u-text-muted);text-decoration:underline;cursor:pointer;font-size:11.5px">Demo: toggle "Shanghai Branch" cover before / after start</button>
                 </p>
                 <div class="u-vote-grid" style="grid-template-columns:repeat(3,1fr)">
                   <div class="u-vote-card" style="cursor:pointer" onclick="location.href='celebration-007-user-h5.html#sg30'">
@@ -1929,28 +1936,28 @@
               <div class="u-section alt">
                 <div style="display:flex; align-items:center; justify-content:space-between; max-width:640px; margin:0 auto 10px">
                   <p class="u-section-title" style="margin:0; text-align:left">寄语墙</p>
-                  <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ 写下你的寄语</button>
+                  <button class="u-vote-btn" id="wallWriteBtn" style="padding:6px 14px" onclick="openWallModal()">+ Write your message</button>
                   <span id="wallClosedNote" class="hidden" style="font-size:12px; color:var(--u-text-muted)">留言征集已于 2026-11-18 24:00 截止</span>
                 </div>
                 <div id="wallViewerHint" class="u-viewer-hint hidden" style="max-width:640px; margin:0 auto 10px; text-align:right"></div>
                 <div style="max-width:640px; margin:0 auto 18px; text-align:right">
-                  <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：切换留言征集截止状态</button>
-                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
+                  <button onclick="toggleWallDeadlineDemo()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">Demo: toggle message wall deadline</button>
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">Demo: visitor identity (click to cycle):<span class="demoViewerState">Staff</span></button>
                 </div>
                 <div class="u-wall-grid">
                   <div class="u-wall-card">
-                    <div class="u-wall-image">📷</div>
+                    <div class="u-wall-image"><img src="_shared/photos/wall-1.jpg" alt=""></div>
                     <div class="u-wall-quote">见证了公司从十几个人到现在，这份归属感很难得。</div>
-                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">王芳</div><div class="u-wall-role">行政部</div></div></div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-2.jpg" alt=""></div><div><div class="u-wall-name">王芳</div><div class="u-wall-role">行政部</div></div></div>
                   </div>
                   <div class="u-wall-card">
-                    <div class="u-wall-image">📷</div>
+                    <div class="u-wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                     <div class="u-wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</div>
-                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">合作伙伴</div></div></div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">合作伙伴</div></div></div>
                   </div>
                   <div class="u-wall-card">
                     <div class="u-wall-quote">希望公司越来越好，大家一起加油！</div>
-                    <div class="u-wall-author"><div class="u-wall-avatar"></div><div><div class="u-wall-name">李强</div><div class="u-wall-role">工程部</div></div></div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-4.jpg" alt=""></div><div><div class="u-wall-name">李强</div><div class="u-wall-role">工程部</div></div></div>
                   </div>
                 </div>
               </div>
@@ -1989,11 +1996,11 @@
                     <div class="u-img-err" id="userWallImgError" style="display:none"></div>
                     <div id="userWallImgList"></div>
                     <div style="font-size:11px; color:var(--u-text-muted); margin-top:6px">原型演示：
-                      <button class="u-work-link" onclick="wallDemo('user','ok')">添加示例图片</button>
-                      <button class="u-work-link" onclick="wallDemo('user','type')">类型不符</button>
-                      <button class="u-work-link" onclick="wallDemo('user','big')">超过 5MB</button>
-                      <button class="u-work-link" onclick="wallDemo('user','multi')">一次选多张</button>
-                      <button class="u-work-link" onclick="wallDemo('user','fail')">上传失败</button>
+                      <button class="u-work-link" onclick="wallDemo('user','ok')">Add sample image</button>
+                      <button class="u-work-link" onclick="wallDemo('user','type')">Wrong type</button>
+                      <button class="u-work-link" onclick="wallDemo('user','big')">Over 5MB</button>
+                      <button class="u-work-link" onclick="wallDemo('user','multi')">Select multiple</button>
+                      <button class="u-work-link" onclick="wallDemo('user','fail')">Upload failed</button>
                     </div>
                   </div>
                   <div class="u-field">
@@ -2001,15 +2008,15 @@
                     <textarea id="wallMsgInput" rows="3" placeholder="写下你想说的话"></textarea>
                   </div>
                   <div class="u-modal-actions">
-                    <button class="u-modal-cancel" onclick="closeWallModal()">取消</button>
-                    <button class="u-modal-submit" onclick="submitWallMessage()">提交</button>
+                    <button class="u-modal-cancel" onclick="closeWallModal()">Cancel</button>
+                    <button class="u-modal-submit" onclick="submitWallMessage()">Submit</button>
                   </div>
                 </div>
                 <div id="wallSuccessBody" class="u-modal-success hidden">
                   <div class="u-modal-success-icon">✓</div>
                   <h3>提交成功</h3>
                   <p>行政审核通过后将展示在寄语墙</p>
-                  <button class="u-modal-submit" onclick="closeWallModal()">好的</button>
+                  <button class="u-modal-submit" onclick="closeWallModal()">OK</button>
                 </div>
               </div>
             </div>
@@ -2053,8 +2060,8 @@
                   </p>
 
                   <div class="u-modal-actions">
-                    <button class="u-modal-cancel" onclick="closeSponsorModal()">取消</button>
-                    <button class="u-modal-submit" onclick="submitSponsorForm()">提交</button>
+                    <button class="u-modal-cancel" onclick="closeSponsorModal()">Cancel</button>
+                    <button class="u-modal-submit" onclick="submitSponsorForm()">Submit</button>
                   </div>
                 </div>
                 <div id="sponsorSuccessBody" class="u-modal-success hidden">
@@ -2064,7 +2071,7 @@
                   <p style="font-size:11.5px; color:var(--u-text-muted); margin-bottom:18px">
                     For urgent matters, please contact / 如需紧急协助，请联系：<br>📧 admincorpculture@mccsingapore.com.sg
                   </p>
-                  <button class="u-modal-submit" onclick="closeSponsorModal()">好的</button>
+                  <button class="u-modal-submit" onclick="closeSponsorModal()">OK</button>
                 </div>
               </div>
             </div>
@@ -2100,72 +2107,72 @@
               <div class="u-section">
                 <div id="worksViewerBanner" class="u-viewer-banner hidden"></div>
                 <div style="max-width:640px; margin:0 auto 10px; text-align:right">
-                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">演示：访问者身份（点击循环）：<span class="demoViewerState">员工</span></button>
+                  <button onclick="demoToggleViewer()" style="background:none; border:none; font-size:11px; color:var(--u-text-muted); text-decoration:underline; cursor:pointer">Demo: visitor identity (click to cycle):<span class="demoViewerState">Staff</span></button>
                 </div>
                 <div class="u-vote-grid">
 
                   <div class="u-vote-card" id="v1">
-                    <div class="u-vote-thumb" onclick="openWork('v1')">🎨<span class="u-media-tag">2 张</span></div>
+                    <div class="u-vote-thumb" onclick="openWork('v1')"><img src="_shared/photos/work-1.jpg" alt=""><span class="u-media-tag">2 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">王芳 · 行政部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="24">24 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v1')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v1')">Vote</button>
                       </div>
                     </div>
                   </div>
 
                   <div class="u-vote-card" id="v2">
-                    <div class="u-vote-thumb" onclick="openWork('v2')">🎨<span class="u-media-tag">5 张</span></div>
+                    <div class="u-vote-thumb" onclick="openWork('v2')"><img src="_shared/photos/work-2.jpg" alt=""><span class="u-media-tag">5 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">李强 · 工程部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="31">31 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v2')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v2')">Vote</button>
                       </div>
                     </div>
                   </div>
 
                   <div class="u-vote-card" id="v3">
-                    <div class="u-vote-thumb" onclick="openWork('v3')">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v3')"><img src="_shared/photos/work-3.jpg" alt=""></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">张伟 · 技术部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="18">18 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v3')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v3')">Vote</button>
                       </div>
                     </div>
                   </div>
 
                   <div class="u-vote-card" id="v4">
-                    <div class="u-vote-thumb" onclick="openWork('v4')">🎨<span class="u-media-tag">3 张 · ▶</span></div>
+                    <div class="u-vote-thumb" onclick="openWork('v4')"><img src="_shared/photos/work-4.jpg" alt=""><span class="u-media-tag">3 张 · ▶</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">陈思思, 王芳, 李强 · 产品部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="9">9 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v4')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v4')">Vote</button>
                       </div>
                     </div>
                   </div>
 
                   <div class="u-vote-card" id="v5">
-                    <div class="u-vote-thumb" onclick="openWork('v5')">🎨</div>
+                    <div class="u-vote-thumb" onclick="openWork('v5')"><img src="_shared/photos/work-5.jpg" alt=""></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">田中一郎 · 合作伙伴</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="15">15 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v5')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v5')">Vote</button>
                       </div>
                     </div>
                   </div>
 
                   <div class="u-vote-card" id="v6">
-                    <div class="u-vote-thumb" onclick="openWork('v6')">🎨<span class="u-media-tag">4 张</span></div>
+                    <div class="u-vote-thumb" onclick="openWork('v6')"><img src="_shared/photos/work-6.jpg" alt=""><span class="u-media-tag">4 张</span></div>
                     <div class="u-vote-info">
                       <div class="u-vote-author">周敏 · 市场部</div>
                       <div class="u-vote-footer">
                         <span class="u-vote-count" data-count="12">12 票</span>
-                        <button class="u-vote-btn" onclick="toggleVote('v6')">投票</button>
+                        <button class="u-vote-btn" onclick="toggleVote('v6')">Vote</button>
                       </div>
                     </div>
                   </div>
@@ -2192,8 +2199,8 @@
       <div class="attach-error" id="sponsorExportError" style="display:none"></div>
     </div>
     <div class="adm-foot">
-      <button class="btn" onclick="setSponsorExportState('fail')">演示：导出失败</button>
-      <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">下载 Excel</button>
+      <button class="btn" onclick="setSponsorExportState('fail')">Demo: export failure</button>
+      <button class="btn primary" id="sponsorExportDownload" onclick="downloadSponsorExport()">Download Excel</button>
     </div>
   </div>
 </div>
@@ -2206,8 +2213,8 @@
       <div id="wallEditAuthorFields">
         <div class="field"><label>作者类型</label>
           <div class="scope-toggle" id="editWallTypeToggle">
-            <button class="scope-btn" onclick="ppSwitch('wedit','internal',this)">内部员工</button>
-            <button class="scope-btn selected" onclick="ppSwitch('wedit','external',this)">外部人士</button>
+            <button class="scope-btn" onclick="ppSwitch('wedit','internal',this)">Internal staff</button>
+            <button class="scope-btn selected" onclick="ppSwitch('wedit','external',this)">External guests</button>
           </div>
         </div>
         <div id="wedit-int" class="hidden"></div>
@@ -2228,16 +2235,16 @@
         <div id="editWallImgList"></div>
         <div class="picker-demo">
           <span>原型演示：</span>
-          <button class="action-link" onclick="wallDemo('edit','ok')">换一张示例图片</button>
-          <button class="action-link" onclick="wallDemo('edit','type')">类型不符</button>
-          <button class="action-link" onclick="wallDemo('edit','big')">超过 5MB</button>
-          <button class="action-link" onclick="wallDemo('edit','multi')">一次选多张</button>
+          <button class="action-link" onclick="wallDemo('edit','ok')">Swap sample image</button>
+          <button class="action-link" onclick="wallDemo('edit','type')">Wrong type</button>
+          <button class="action-link" onclick="wallDemo('edit','big')">Over 5MB</button>
+          <button class="action-link" onclick="wallDemo('edit','multi')">Select multiple</button>
         </div>
       </div>
     </div>
     <div class="adm-foot">
-      <button class="btn" onclick="closeWallEdit()">取消</button>
-      <button class="btn primary" onclick="saveWallEdit()">保存修改</button>
+      <button class="btn" onclick="closeWallEdit()">Cancel</button>
+      <button class="btn primary" onclick="saveWallEdit()">Save changes</button>
     </div>
   </div>
 </div>
@@ -2258,8 +2265,8 @@
             <div class="field">
                 <label>类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn selected" onclick="ppSwitch('reg','internal',this)">内部员工</button>
-                  <button class="scope-btn" onclick="ppSwitch('reg','external',this)">外部人士</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('reg','internal',this)">Internal staff</button>
+                  <button class="scope-btn" onclick="ppSwitch('reg','external',this)">External guests</button>
                 </div>
               </div>
             <div id="reg-int"></div>
@@ -2273,8 +2280,8 @@
             </div>
     </div>
     <div class="adm-foot">
-      <button class="btn" onclick="closeManualReg()">取消</button>
-      <button class="btn primary" onclick="submitManualRegistration()">添加报名</button>
+      <button class="btn" onclick="closeManualReg()">Cancel</button>
+      <button class="btn primary" onclick="submitManualRegistration()">Add registration</button>
     </div>
   </div>
 </div>
@@ -2286,8 +2293,8 @@
             <div class="field">
                 <label>作者类型</label>
                 <div class="scope-toggle">
-                  <button class="scope-btn" onclick="ppSwitch('wall','internal',this)">内部员工</button>
-                  <button class="scope-btn selected" onclick="ppSwitch('wall','external',this)">外部人士</button>
+                  <button class="scope-btn" onclick="ppSwitch('wall','internal',this)">Internal staff</button>
+                  <button class="scope-btn selected" onclick="ppSwitch('wall','external',this)">External guests</button>
                 </div>
               </div>
             <div id="wall-int" class="hidden"></div>
@@ -2303,11 +2310,11 @@
               <div id="adminWallImgList"></div>
               <div class="picker-demo">
                 <span>原型演示：</span>
-                <button class="action-link" onclick="wallDemo('admin','ok')">添加示例图片</button>
-                <button class="action-link" onclick="wallDemo('admin','type')">类型不符</button>
-                <button class="action-link" onclick="wallDemo('admin','big')">超过 5MB</button>
-                <button class="action-link" onclick="wallDemo('admin','multi')">一次选多张</button>
-                <button class="action-link" onclick="wallDemo('admin','fail')">上传失败</button>
+                <button class="action-link" onclick="wallDemo('admin','ok')">Add sample image</button>
+                <button class="action-link" onclick="wallDemo('admin','type')">Wrong type</button>
+                <button class="action-link" onclick="wallDemo('admin','big')">Over 5MB</button>
+                <button class="action-link" onclick="wallDemo('admin','multi')">Select multiple</button>
+                <button class="action-link" onclick="wallDemo('admin','fail')">Upload failed</button>
               </div>
             </div>
             <div class="field">
@@ -2316,8 +2323,8 @@
             </div>
     </div>
     <div class="adm-foot">
-      <button class="btn" onclick="closeWallForm()">取消</button>
-      <button class="btn primary" onclick="submitWallAdmin()">提交留言</button>
+      <button class="btn" onclick="closeWallForm()">Cancel</button>
+      <button class="btn primary" onclick="submitWallAdmin()">Submit message</button>
     </div>
   </div>
 </div>
@@ -2331,8 +2338,8 @@
       <div class="qr-code-text" id="regCodeText"></div>
       <div class="qr-hint">二维码内容只有签到码，不含个人信息。外部人士没有系统账号，可把码发给对方，活动当天出示。</div>
       <div style="display:flex; justify-content:center; gap:14px; margin-top:14px">
-        <button class="action-link" onclick="copyRegCode()">复制签到码</button>
-        <button class="action-link" onclick="alert('原型演示：下载二维码图片')">下载二维码图片</button>
+        <button class="action-link" onclick="copyRegCode()">Copy check-in code</button>
+        <button class="action-link" onclick="alert('原型演示：下载二维码图片')">Download QR code</button>
       </div>
     </div>
   </div>
@@ -2349,9 +2356,9 @@
     <div class="adm-meta">
       <span id="admCount"></span>
       <span class="adm-demo">原型演示（当前项加载状态）：
-        <button class="action-link" onclick="setAdmMedia('normal')">正常</button>
-        <button class="action-link" onclick="setAdmMedia('loading')">加载中</button>
-        <button class="action-link" onclick="setAdmMedia('error')">加载失败</button>
+        <button class="action-link" onclick="setAdmMedia('normal')">Normal</button>
+        <button class="action-link" onclick="setAdmMedia('loading')">Loading</button>
+        <button class="action-link" onclick="setAdmMedia('error')">Load failed</button>
       </span>
     </div>
     <div class="adm-info" id="admInfo"></div>
@@ -2369,11 +2376,11 @@
     </div>
     <div style="padding:6px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
       <span style="font-size:11px; color:var(--u-text-muted)">原型演示（当前项加载状态）：
-        <button class="u-work-link" onclick="setWorkMedia('normal')">正常</button>
-        <button class="u-work-link" onclick="setWorkMedia('loading')">加载中</button>
-        <button class="u-work-link" onclick="setWorkMedia('error')">加载失败</button>
+        <button class="u-work-link" onclick="setWorkMedia('normal')">Normal</button>
+        <button class="u-work-link" onclick="setWorkMedia('loading')">Loading</button>
+        <button class="u-work-link" onclick="setWorkMedia('error')">Load failed</button>
       </span>
-      <button class="u-work-link" onclick="closeWork()">关闭</button>
+      <button class="u-work-link" onclick="closeWork()">Close</button>
     </div>
   </div>
 </div>
@@ -2504,9 +2511,9 @@ function demoAttach(kind){
 function renderAttachments(){
   document.getElementById('attachList').innerHTML = attachments.length
     ? attachments.map(a=>{
-        const del = '<button class="action-link danger" onclick="removeAttachment(\''+a.id+'\')">删除</button>';
+        const del = '<button class="action-link danger" onclick="removeAttachment(\''+a.id+'\')">Delete</button>';
         const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
-                 : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retryAttachment(\''+a.id+'\')">重试</button>'+del
+                 : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retryAttachment(\''+a.id+'\')">Retry</button>'+del
                  : del;
         return '<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st+'</div>';
       }).join('')
@@ -2523,7 +2530,7 @@ function doneAttachments(){
 }
 function attachDetailRows(list){
   return list.length
-    ? list.map(a=>'<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+(a.uploaded_at?' · '+a.uploaded_at:'')+'</span><button class="action-link" onclick="alert(\'原型演示：下载 \'+this.parentNode.firstChild.textContent)">下载</button></div>').join('')
+    ? list.map(a=>'<div class="attach-row"><span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+(a.uploaded_at?' · '+a.uploaded_at:'')+'</span><button class="action-link" onclick="alert(\'原型演示：下载 \'+this.parentNode.firstChild.textContent)">Download</button></div>').join('')
     : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">暂无附件</div>';
 }
 function renderConfirmAttach(){
@@ -2566,7 +2573,7 @@ function renderPicker(){
     return;
   }
   if(pickerState==='error'){
-    list.innerHTML = '<div class="picker-state">员工列表加载失败，请检查网络后重试<br><button class="action-link" style="margin-top:8px" onclick="setPickerState(\'normal\')">重试</button></div>';
+    list.innerHTML = '<div class="picker-state">员工列表加载失败，请检查网络后重试<br><button class="action-link" style="margin-top:8px" onclick="setPickerState(\'normal\')">Retry</button></div>';
     return;
   }
   const q = document.getElementById('pickerSearch').value.trim();
@@ -2579,7 +2586,7 @@ function renderPicker(){
     const picked = thirdSelected.includes(e.employee_id);
     return '<div class="picker-item"><span class="grow">'+e.name+'<span class="assignee-no">工号 '+e.employee_no+'</span></span>'+
       (picked ? '<span class="assignee-st approved">已选</span>'
-              : '<button class="action-link" onclick="addApprover(\''+e.employee_id+'\')">添加</button>')+'</div>';
+              : '<button class="action-link" onclick="addApprover(\''+e.employee_id+'\')">Add</button>')+'</div>';
   }).join('');
 }
 function setPickerState(s){ pickerState = s; renderPicker(); }
@@ -2773,7 +2780,7 @@ function exportSponsors(){
   document.getElementById('sponsorExportTable').innerHTML = '<thead><tr>' + SPONSOR_EXPORT_HEAD.map(h=>'<th>'+h+'</th>').join('') + '</tr></thead><tbody>'
     + rows.map(r=>'<tr>' + r.map(v=>'<td style="white-space:normal; min-width:90px">'+esc(v)+'</td>').join('') + '</tr>').join('') + '</tbody>';
   document.getElementById('sponsorExportError').style.display = 'none';
-  document.getElementById('sponsorExportDownload').disabled = false; document.getElementById('sponsorExportDownload').textContent = '下载 Excel';
+  document.getElementById('sponsorExportDownload').disabled = false; document.getElementById('sponsorExportDownload').textContent = 'Download Excel';
   document.getElementById('sponsorExportOverlay').classList.add('open');
 }
 function closeSponsorExport(){ closeDrawer('sponsorExportOverlay'); }
@@ -2783,8 +2790,8 @@ function setSponsorExportState(st){
 }
 function downloadSponsorExport(){
   const b = document.getElementById('sponsorExportDownload');
-  b.disabled = true; b.textContent = '导出中…';                       // 导出中不可重复点击
-  setTimeout(()=>{ b.disabled = false; b.textContent = '下载 Excel'; alert('原型演示：已下载 ' + document.getElementById('sponsorExportName').textContent); }, 600);
+  b.disabled = true; b.textContent = 'Exporting…';                       // 导出中不可重复点击
+  setTimeout(()=>{ b.disabled = false; b.textContent = 'Download Excel'; alert('原型演示：已下载 ' + document.getElementById('sponsorExportName').textContent); }, 600);
 }
 function filterSponsors(){
   const val = document.getElementById('sponsorActivityFilter').value;
@@ -2880,13 +2887,13 @@ function renderSubImages(){
   document.getElementById('subImgList').innerHTML = subImages.length
     ? subImages.map((a,i)=>{
         const st = a.status==='uploading' ? '<span class="attach-st">上传中…</span>'
-          : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retrySubImage(\''+a.id+'\')">重试</button>' : '';
+          : a.status==='fail' ? '<span class="attach-st fail">上传失败</span><button class="action-link" onclick="retrySubImage(\''+a.id+'\')">Retry</button>' : '';
         return '<div class="attach-row">'
           + '<span class="attach-st"'+(i===0?' style="background:var(--accent-tint); color:var(--accent)"':'')+'>'+(i===0?'封面':(i+1))+'</span>'
           + '<span class="attach-name" title="'+a.name+'">'+a.name+'</span><span class="attach-size">'+fmtSize(a.size)+'</span>'+st
           + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',-1)"'+(i===0?' disabled':'')+'>↑</button>'
           + '<button class="action-link muted" onclick="moveSubImage(\''+a.id+'\',1)"'+(i===subImages.length-1?' disabled':'')+'>↓</button>'
-          + '<button class="action-link danger" onclick="removeSubImage(\''+a.id+'\')">删除</button></div>';
+          + '<button class="action-link danger" onclick="removeSubImage(\''+a.id+'\')">Delete</button></div>';
       }).join('')
     : '<div class="picker-chips-empty" style="display:block; padding:6px 2px">尚未上传图片</div>';
   document.getElementById('subImgCount').textContent = subImages.length ? '已添加 '+subImages.length+'/'+SUB_IMG_MAX : '';
@@ -2911,7 +2918,7 @@ function removeSubVideo(){ subVideo = null; subShow('subVideoError',''); renderS
 function renderSubVideo(){
   document.getElementById('subVideoList').innerHTML = subVideo
     ? '<div class="attach-row"><span class="attach-name" title="'+subVideo.name+'">▶ '+subVideo.name+'</span><span class="attach-size">'+fmtSize(subVideo.size)+'</span>'
-      + (subVideo.status==='uploading' ? '<span class="attach-st">上传中…</span>' : '<button class="action-link danger" onclick="removeSubVideo()">删除</button>') + '</div>'
+      + (subVideo.status==='uploading' ? '<span class="attach-st">上传中…</span>' : '<button class="action-link danger" onclick="removeSubVideo()">Delete</button>') + '</div>'
     : '';
   document.getElementById('subVideoBoxText').textContent = subVideo ? '已有视频，如需更换请先删除' : '点击上传作品视频';
 }
@@ -2982,12 +2989,12 @@ function ppRenderBlock(k){
     + '<div class="pp-chips" id="pp-'+k+'-emp-chips"></div><div class="attach-error" id="pp-'+k+'-emp-err" style="display:none"></div>'
     + '<div class="pp-sub">'+(multi?'同一作品内不能重复选同一位；团队作品所属请在下方自行选择。':'选中后所属默认带出该员工在 HR 里的部门，可改选。')+'姓名不能手填；只列在职员工，HR 里找不到需先让 HR 补数据。</div></div>'
     + '<div class="field"><label>所属（选填，部门或项目二选一，来自 HR）</label>'
-    + '<div class="scope-toggle" style="margin-bottom:6px"><button class="scope-btn selected" id="pp-'+k+'-kd" onclick="ppOrgKind(\''+k+'\',\'department\')">部门</button><button class="scope-btn" id="pp-'+k+'-kp" onclick="ppOrgKind(\''+k+'\',\'project\')">项目</button></div>'
+    + '<div class="scope-toggle" style="margin-bottom:6px"><button class="scope-btn selected" id="pp-'+k+'-kd" onclick="ppOrgKind(\''+k+'\',\'department\')">Department</button><button class="scope-btn" id="pp-'+k+'-kp" onclick="ppOrgKind(\''+k+'\',\'project\')">Project</button></div>'
     + '<div class="pp-box"><input type="text" id="pp-'+k+'-org" placeholder="搜索 HR 里的部门（只能选末级部门）" oninput="ppSearch(\''+k+'\',\'org\')" onfocus="ppSearch(\''+k+'\',\'org\')">'
     + '<div class="pp-results hidden" id="pp-'+k+'-org-res"></div></div>'
     + '<div class="pp-chips" id="pp-'+k+'-org-chips"></div></div>'
     + '<div class="picker-demo"><span>原型演示（HR 系统状态）：</span>'
-    + '<button class="action-link" onclick="ppDemo(\'normal\')">正常</button><button class="action-link" onclick="ppDemo(\'loading\')">搜索中</button><button class="action-link" onclick="ppDemo(\'error\')">查询失败</button></div>';
+    + '<button class="action-link" onclick="ppDemo(\'normal\')">Normal</button><button class="action-link" onclick="ppDemo(\'loading\')">Searching</button><button class="action-link" onclick="ppDemo(\'error\')">Query failed</button></div>';
   ppRenderChips(k);
 }
 function ppEsc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -3004,7 +3011,7 @@ function ppSearch(k, what){
   const kind = what==='emp' ? '员工' : (PP[k].orgKind==='department' ? '部门' : '项目');
   let html = '';
   if(hrState === 'loading'){ html = '<div class="pp-note">搜索中…</div>'; }
-  else if(hrState === 'error'){ html = '<div class="pp-note">HR 系统查询失败，无法选择'+kind+'<button onclick="ppDemo(\'normal\')">重试</button></div>'; }   // AC-008：不提供手动输入兜底，已选内容不丢失
+  else if(hrState === 'error'){ html = '<div class="pp-note">HR 系统查询失败，无法选择'+kind+'<button onclick="ppDemo(\'normal\')">Retry</button></div>'; }   // AC-008：不提供手动输入兜底，已选内容不丢失
   else if(what==='org' && PP[k].orgKind==='department'){
     html = ppDeptHtml(k, q);
   }
@@ -3158,7 +3165,7 @@ function resetSubForm(){
   document.getElementById('subAuthorName').value = ''; document.getElementById('subExtOrg').value = ''; updateAuthorHint();
   ppReset('sub');
   document.getElementById('subPanelTitle').textContent = '上传作品';
-  document.getElementById('subSubmitBtn').textContent = '上传作品';
+  document.getElementById('subSubmitBtn').textContent = 'Upload work';
   renderSubImages(); renderSubVideo();
 }
 function submitSubmission(){
@@ -3198,7 +3205,7 @@ function editSubmission(cardId){
   }
   document.getElementById('subDesc').value = (card.querySelector('.submission-desc')||{}).textContent || ''; updateSubDescCount();
   document.getElementById('subPanelTitle').textContent = '编辑作品 · ' + card.querySelector('.submission-author').textContent + '（状态与票数不变）';
-  document.getElementById('subSubmitBtn').textContent = '保存修改';
+  document.getElementById('subSubmitBtn').textContent = 'Save changes';
   renderSubImages(); renderSubVideo();
   showSubPage('form');
 }
@@ -3234,9 +3241,9 @@ function renderWork(){
   if(workMediaState === 'loading'){
     html = '<div class="u-work-skel"></div><div class="u-work-skel" style="width:45%"></div>';
   } else if(workMediaState === 'error' && it.t === 'video'){
-    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
+    html = '<div>视频加载失败</div><button class="u-work-link" onclick="setWorkMedia(\'normal\')">Retry</button><div style="font-size:12px; color:var(--u-text-muted)">图片仍可左右切换查看</div>';
   } else if(it.t === 'video'){
-    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+    html = '<div style="font-size:42px">▶</div><div>作品视频 · MP4</div><button class="u-work-link" onclick="this.textContent=\'⏸ Playing… (prototype)\'">▶ Play</button>';
   } else {
     html = '<div style="font-size:42px">🖼</div><div>作品图片 ' + it.n + ' / ' + w.images + (it.n === 1 ? '（封面）' : '') + '</div>';
   }
@@ -3298,8 +3305,8 @@ function renderAdmWork(){
   const card = document.getElementById(admCur), items = admItems(card), it = items[admIdx];
   let html;
   if(admMediaState === 'loading') html = '<div class="picker-skel" style="width:70%"></div><div class="picker-skel" style="width:45%"></div>';
-  else if(admMediaState === 'error' && it.t === 'video') html = '<div>视频加载失败</div><button class="action-link" onclick="setAdmMedia(\'normal\')">重试</button><div style="font-size:12px; color:var(--text-muted)">图片仍可左右切换查看</div>';
-  else if(it.t === 'video') html = '<div style="font-size:40px">▶</div><div>作品视频 · MP4</div><button class="action-link" onclick="this.textContent=\'⏸ 播放中…（原型示意）\'">▶ 播放</button>';
+  else if(admMediaState === 'error' && it.t === 'video') html = '<div>视频加载失败</div><button class="action-link" onclick="setAdmMedia(\'normal\')">Retry</button><div style="font-size:12px; color:var(--text-muted)">图片仍可左右切换查看</div>';
+  else if(it.t === 'video') html = '<div style="font-size:40px">▶</div><div>作品视频 · MP4</div><button class="action-link" onclick="this.textContent=\'⏸ Playing… (prototype)\'">▶ Play</button>';
   else html = '<div style="font-size:40px">🖼</div><div>作品图片 '+it.n+' / '+it.total+(it.n===1?'（封面）':'')+'</div>';
   if(items.length > 1) html += '<button class="adm-nav prev" aria-label="Previous" onclick="stepAdmWork(-1)"'+(admIdx===0?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button class="adm-nav next" aria-label="Next" onclick="stepAdmWork(1)"'+(admIdx===items.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>';
   document.getElementById('admStage').innerHTML = html;
@@ -3317,7 +3324,7 @@ function renderAdmWork(){
     + '<div class="wide"><label>作品说明</label><div class="adm-desc">'+(desc || '<span style="color:var(--text-muted)">无说明</span>')+'</div></div>';
 }
 
-function VIEW(cardId){ return '<button class="action-link" onclick="viewSubmission(\''+cardId+'\')">查看详情</button>'; }
+function VIEW(cardId){ return '<button class="action-link" onclick="viewSubmission(\''+cardId+'\')">View details</button>'; }
 function setSubmissionStatus(cardId, status){
   const card = document.getElementById(cardId);
   const badge = card.querySelector('.status-badge');
@@ -3326,18 +3333,18 @@ function setSubmissionStatus(cardId, status){
   if(status === 'draft'){
     badge.className = 'status-badge draft';
     badge.textContent = '未发布';
-    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
-      + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">发布</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">Edit</button>'
+      + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">Publish</button>';
   } else if(status === 'published'){
     badge.className = 'status-badge approved';
     badge.textContent = '已发布';
-    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">隐藏</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link muted" onclick="setSubmissionStatus(\''+cardId+'\',\'hidden\')">Hide</button>';
   } else if(status === 'hidden'){
     badge.className = 'status-badge hidden-st';
     badge.textContent = '已隐藏';
-    actions.innerHTML = VIEW(cardId) + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">恢复</button>'
-      + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">编辑</button>'
-      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+    actions.innerHTML = VIEW(cardId) + '<button class="action-link" onclick="setSubmissionStatus(\''+cardId+'\',\'published\')">Restore</button>'
+      + '<button class="action-link muted" onclick="editSubmission(\''+cardId+'\')">Edit</button>'
+      + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">Delete</button>';
   }
   filterSubmissions();
 }
@@ -3600,7 +3607,7 @@ function viewerEntriesHidden(){   // 外部人员 / 确认中 / 确认失败：�
   return viewerState === 'external' || viewerState === 'loading' || viewerState === 'error';
 }
 function viewerHint(){   // 只有确认失败才在原入口位置显示提示；外部人员没有任何提示文字（AC-002）；登录已过期在点击后才提示
-  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">重试</button>' : '';
+  return viewerState === 'error' ? '身份确认失败<button onclick="retryViewer()">Retry</button>' : '';
 }
 function showToast(msg){
   let t = document.getElementById('uToast');
@@ -3643,11 +3650,11 @@ function toggleVote(cardId){
   let count = parseInt(countEl.dataset.count, 10);
   if(btn.classList.contains('voted')){
     btn.classList.remove('voted');
-    btn.textContent = '投票';
+    btn.textContent = 'Vote';
     count -= 1;
   } else {
     btn.classList.add('voted');
-    btn.textContent = '已投票';
+    btn.textContent = 'Voted';
     count += 1;
   }
   countEl.dataset.count = count;
@@ -3656,10 +3663,10 @@ function toggleVote(cardId){
 /* ---- 行政编辑留言（REQ-005 AC-010 ～ AC-014）：待审核 / 已隐藏可编辑，已展示需先隐藏；员工提交的作者与匿名只读 ---- */
 let wallEditingId = null;
 function wallActionsHtml(id, status){
-  const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">编辑</button>';
-  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">展示</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">拒绝</button>';
-  if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">隐藏</button>';
-  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">恢复</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">删除</button>';
+  const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">Edit</button>';
+  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Show</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">Reject</button>';
+  if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">Hide</button>';
+  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Restore</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">Delete</button>';
 }
 function wallAdminEntered(row){ return row.querySelector('.wall-meta').textContent.includes('行政代录入'); }
 function openWallEdit(id){
@@ -3700,7 +3707,7 @@ function saveWallEdit(){
   if(!wallImageReady('edit')) return;                                   // AC-012：配图必填，原本没有配图的也要补
   row.querySelector('.wall-quote').textContent = content;
   if(!row.querySelector('.wall-image')){
-    const img = document.createElement('div'); img.className = 'wall-image'; img.textContent = '📷';
+    const img = document.createElement('div'); img.className = 'wall-image'; img.innerHTML = '<img src="_shared/photos/wall-3.jpg" alt="">';
     row.querySelector('.wall-quote').before(img);
   }
   if(wallAdminEntered(row)){
@@ -3865,11 +3872,11 @@ function renderWallImg(which){
   if(!img){ el.innerHTML = ''; }
   else {
     const st = img.status==='uploading' ? '<span style="color:var(--text-muted)">上传中…</span>'
-      : img.status==='fail' ? '<span style="color:var(--danger)">上传失败</span> <button class="action-link" onclick="wallRetry(\''+which+'\')">重试</button>' : '';
+      : img.status==='fail' ? '<span style="color:var(--danger)">上传失败</span> <button class="action-link" onclick="wallRetry(\''+which+'\')">Retry</button>' : '';
     el.innerHTML = '<div class="'+rowCls+'"><span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="'+img.name+'">'+img.name+'</span>'
       + '<span style="color:var(--text-muted)">'+fmtSize(img.size)+'</span>'+st
-      + '<button class="action-link muted" onclick="wallPickImage(\''+which+'\')">重新选择</button>'
-      + '<button class="action-link danger" onclick="wallRemove(\''+which+'\')">删除</button></div>';
+      + '<button class="action-link muted" onclick="wallPickImage(\''+which+'\')">Reselect</button>'
+      + '<button class="action-link danger" onclick="wallRemove(\''+which+'\')">Delete</button></div>';
   }
 }
 function wallDemo(which, kind){
@@ -3926,7 +3933,7 @@ function submitWallMessage(){
     const displayName = anon ? '匿名员工' : '陈思思';
     const meta = anon ? '已开启匿名 · 员工提交' : '产品部 · 员工提交';
     const escaped = msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const imageHtml = '<div class="wall-image">📷</div>';
+    const imageHtml = '<div class="wall-image"><img src="_shared/photos/wall-3.jpg" alt=""></div>';
     const rowId = 'w-new-' + Date.now();
     const row = document.createElement('div');
     row.className = 'wall-row';
@@ -3934,7 +3941,7 @@ function submitWallMessage(){
     row.dataset.activity = '30th';
     row.dataset.status = 'review';
     row.innerHTML =
-      '<div class="wall-avatar">' + (anon ? '🙈' : '👤') + '</div>'
+      '<div class="wall-avatar">' + (anon ? '🙈' : '<img src="_shared/photos/face-6.jpg" alt="">') + '</div>'
       + '<div class="wall-body">'
       +   '<div class="wall-name-row"><span class="wall-name">' + displayName + '</span><span class="wall-meta">' + meta + '</span></div>'
       +   imageHtml

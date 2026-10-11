@@ -76,7 +76,7 @@ var RegSearch = (function () {
     if (mode === 'error') {
       rows.forEach(function (r) { r.style.display = 'none'; });
       table.classList.add('hidden');
-      box('<div class="picker-state">名单加载失败，请检查网络后重试（搜索条件已保留）<br><button class="action-link" style="margin-top:8px" onclick="RegSearch.retry()">重试</button></div>');
+      box('<div class="picker-state">名单加载失败，请检查网络后重试（搜索条件已保留）<br><button class="action-link" style="margin-top:8px" onclick="RegSearch.retry()">Retry</button></div>');
       setStats('—', '—');
       $('regStatHint').textContent = '';
       return;
@@ -98,7 +98,7 @@ var RegSearch = (function () {
       if (inScope === 0) {                            // 所选范围里本来就没有记录：不论是否搜索，都是「尚无人报名」（AC-033）
         box('<div class="picker-state">' + (c.cel === 'all' ? '还没有人报名' : '该 Celebration 尚无人报名') + '</div>');
       } else {
-        box('<div class="picker-state">没有符合搜索条件的报名记录<br><button class="action-link" style="margin-top:8px" onclick="RegSearch.clear()">清空搜索</button></div>');
+        box('<div class="picker-state">没有符合搜索条件的报名记录<br><button class="action-link" style="margin-top:8px" onclick="RegSearch.clear()">Clear search</button></div>');
       }
     } else {
       table.classList.remove('hidden');

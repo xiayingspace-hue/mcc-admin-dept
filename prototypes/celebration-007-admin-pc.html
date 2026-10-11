@@ -45,7 +45,7 @@
     position:sticky; top:0; height:100vh; overflow-y:auto;
   }
   .brand{display:flex; align-items:center; gap:10px; padding:0 8px 24px; color:var(--text-primary); font-weight:600; font-size:17px; letter-spacing:-.01em}
-  .brand-mark{width:32px;height:32px;border-radius:var(--radius);background:var(--accent);flex-shrink:0;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .brand-mark{display:flex;align-items:center;justify-content:center;color:var(--accent);width:32px;height:32px;flex-shrink:0}
   .nav-group-label{font-size:11px; color:var(--text-muted); padding:14px 12px 8px; letter-spacing:.06em}
   .nav-item{
     display:flex; flex-shrink:0; align-items:center; gap:12px; height:40px; padding:0 12px; margin-bottom:4px; border-radius:var(--radius);
@@ -59,7 +59,8 @@
   .top-right{display:flex; align-items:center; gap:16px}
   .top-user{display:flex; align-items:center; gap:12px}
   .notif-wrap + .top-user{padding-left:16px; border-left:0.5px solid var(--border)}
-  .top-user .side-avatar{width:40px; height:40px}
+  .top-user .side-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+  .side-avatar{overflow:hidden;width:40px; height:40px}
   .side-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--accent-tint);color:var(--accent)}
   .side-name{font-size:13.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
   .side-role{font-size:12px;color:var(--text-muted);line-height:1.3}
@@ -102,6 +103,7 @@
     background:var(--surface); font-size:14px; color:var(--text-primary); font-family:inherit;
   }
   textarea{height:auto; padding:8px 12px; resize:vertical}
+  select{appearance:none; -webkit-appearance:none; padding-right:40px; background-repeat:no-repeat; background-position:right 8px center; background-size:16px 16px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")}
   input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-tint)}
 
   .scope-toggle{display:flex; gap:8px}
@@ -563,7 +565,7 @@
   #sponsorsView .activity-table .table-actions{white-space:nowrap}
   /* Icon button with tooltip (actions in tables) */
   .icon-btn{--tone:var(--text-secondary); --tone-tint:var(--bg); position:relative; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; padding:0; border:none; border-radius:var(--radius); background:transparent; color:var(--tone); cursor:pointer; transition:background .15s ease, color .15s ease}
-  .icon-btn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .icon-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
   .icon-btn.tone-view{--tone:var(--accent); --tone-tint:var(--accent-tint)}
   .icon-btn.tone-edit{--tone:#7B4FE0; --tone-tint:#F1EBFD}
   .icon-btn.tone-ok{--tone:var(--st-success); --tone-tint:var(--st-success-tint)}
@@ -834,7 +836,7 @@
 <div class="shell">
 
   <div class="sidebar">
-    <div class="brand"><div class="brand-mark"></div>Activity Ops</div>
+    <div class="brand"><div class="brand-mark"><svg viewBox="0 0 32 32" width="32" height="32" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9.5l11 3.5v15L4 24.5z" opacity=".6"/><path d="M28 9.5L17 13v15l11-3.5z"/><path d="M16 4l3.5 1.8L16 7.6l-3.5-1.8z"/></svg></div>Activity Ops</div>
     <div class="nav-group-label">WORKSPACE</div>
     <a class="nav-item" href="activity-001-admin-pc.html"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></span>Activities</a>
     <a class="nav-item" href="activity-001-admin-pc.html#modules"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span>Module Library</a>
@@ -855,8 +857,8 @@
       <div class="breadcrumb">活动管理 / <b id="celCrumb">Celebrations 管理</b></div>
       <div class="top-right">
       <div class="top-user">
-        <div class="side-avatar">A</div>
-        <div><div class="side-name">Admin Staff</div><div class="side-role">Administrator</div></div>
+        <div class="side-avatar"><img src="_shared/avatar.jpg" alt="Admin Staff"></div>
+        <div><div class="side-name">Admin Staff</div><div class="side-role">P0807207</div></div>
       </div>
       </div>
     </div>
@@ -871,7 +873,7 @@
             <h1 style="margin:0 0 4px">Celebrations 管理</h1>
             <p class="subtitle" style="margin:0">一个活动可在多个 site 分别举办 celebration，每个 celebration 拥有独立的封面、文字描述、图片相册、报名与涂鸦展示，无需单独审批</p>
           </div>
-          <button class="btn primary" onclick="openCelForm()">+ 新建 Celebration</button>
+          <button class="btn primary" onclick="openCelForm()">+ New Celebration</button>
         </div>
 
         <div class="filter-bar">
@@ -900,7 +902,7 @@
               <span>报名 62 · 涂鸦作品 18</span>
               <span style="display:flex; gap:12px">
                 <span class="action-link" onclick="openCelForm(this)">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#sg30" target="_blank">预览 ›</a>
+                <a class="action-link" href="celebration-007-user-h5.html#sg30" target="_blank">Preview ›</a>
               </span>
             </div>
           </div>
@@ -915,7 +917,7 @@
               <span>报名 41 · 涂鸦作品 9</span>
               <span style="display:flex; gap:12px">
                 <span class="action-link" onclick="openCelForm(this)">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#bj30" target="_blank">预览 ›</a>
+                <a class="action-link" href="celebration-007-user-h5.html#bj30" target="_blank">Preview ›</a>
               </span>
             </div>
           </div>
@@ -930,7 +932,7 @@
               <span>报名 0 · 涂鸦作品 0</span>
               <span style="display:flex; gap:12px">
                 <span class="action-link" onclick="openCelForm(this)">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#sh30" target="_blank">预览 ›</a>
+                <a class="action-link" href="celebration-007-user-h5.html#sh30" target="_blank">Preview ›</a>
               </span>
             </div>
           </div>
@@ -945,7 +947,7 @@
               <span>报名 34 · 涂鸦作品 6</span>
               <span style="display:flex; gap:12px">
                 <span class="action-link" onclick="openCelForm(this)">编辑</span>
-                <a class="action-link" href="celebration-007-user-h5.html#q3camp" target="_blank">预览 ›</a>
+                <a class="action-link" href="celebration-007-user-h5.html#q3camp" target="_blank">Preview ›</a>
               </span>
             </div>
           </div>
@@ -955,7 +957,7 @@
 
         <!-- Create / edit page -->
         <div id="celFormPage" class="hidden">
-          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeCelForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回 Celebration 列表</button>
+          <button class="btn btn-back" style="margin-bottom:16px" onclick="closeCelForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to Celebration list</button>
         <div class="upload-panel" id="celebrationFormPanel">
           <p class="upload-panel-title">新建 / 编辑 Celebration</p>
           <div class="row2">
@@ -1044,8 +1046,8 @@
           </div>
 
           <div class="actions end" style="margin-top:20px">
-            <button class="btn" onclick="closeCelForm()">取消</button>
-            <button class="btn primary" onclick="saveCelForm()">保存 Celebration</button>
+            <button class="btn" onclick="closeCelForm()">Cancel</button>
+            <button class="btn primary" onclick="saveCelForm()">Save Celebration</button>
           </div>
         </div>
         </div>
