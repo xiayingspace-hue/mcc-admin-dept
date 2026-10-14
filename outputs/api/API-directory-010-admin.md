@@ -39,6 +39,7 @@
 | `department_name` | string \| null | 该员工在 HR 里的部门名称（末级部门名称，不带上级路径） |
 | `phone` | string \| null | 联系电话；仅管理端行政可见，目前只用于报名管理代报名的自动带出，行政可修改，REQ-004 AC-026 |
 | `email` | string \| null | 邮箱；同上 |
+| `title` | string \| null | 职位（HR 的 Title 字段）；仅管理端行政可见，目前只用于报名管理代报名的自动带出，行政可修改，REQ-004 AC-045；HR 里没有为 `null`（外部人士的职位是行政手填，不经过本接口，AC-046） |
 
 > 与 `API-activity-001-admin.md` 里步骤三选审批人用的 `GET /employee` 是两件事：那个接口不返回部门；本接口返回部门，仅管理端使用。
 

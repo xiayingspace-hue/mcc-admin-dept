@@ -27,7 +27,10 @@
 |---|---|---|
 | `viewer_type` | `viewer_type` | `employee` 时三个参与入口按原有规则显示；`external` 时三个入口不显示，AC-001、AC-002 |
 | `name` | string | 仅 `employee` 返回，员工姓名 |
-| `email` | string \| null | 仅 `employee` 返回，员工在 HR 系统里的邮箱，HR 里没有为 `null`；用于用户端寄语弹窗"通知邮箱"的默认值（员工可改），`wall-005-admin` AC-026，不用于其他用途 |
+| `email` | string \| null | 仅 `employee` 返回，员工在 HR 系统里的邮箱，HR 里没有为 `null`；用于用户端寄语弹窗"通知邮箱"（`wall-005-admin` AC-026）与报名弹窗"邮箱"（`registration-004-admin` AC-040）的默认值，员工可改，不用于其他用途 |
+| `department` | string \| null | 仅 `employee` 返回，员工在 HR 里的部门名称，HR 里没有为 `null`；用于报名弹窗只读展示，`registration-004-admin` AC-039 |
+| `title` | string \| null | 仅 `employee` 返回，员工在 HR 里的职位（HR 的 Title 字段），HR 里没有为 `null`（弹窗显示"—"）；用于报名弹窗只读展示，并作为报名记录的职位，AC-039、AC-043 |
+| `phone` | string \| null | 仅 `employee` 返回，员工在 HR 里的联系电话，HR 里没有为 `null`；用于报名弹窗"联系电话"的默认值，员工可改，AC-040；不对外部人员返回 |
 
 页面打开时调用一次；后端向 HR 系统查询超时 / 查不到时，本接口返回错误（不是 `external`，也不是 `employee`），AC-014。请求失败时页面按「确认失败」处理，入口不显示、在原位置提供重试，不得默认放开，AC-009。官网访问（无令牌）返回 `viewer_type=external`，不返回错误。
 

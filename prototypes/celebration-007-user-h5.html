@@ -255,9 +255,12 @@
       <h3>报名参加</h3>
       <p class="u-modal-sub" id="celRegModalSub">新加坡总部站 · 11 Aug 2026 09:00 - 12:00</p>
       <div class="u-field"><label>姓名</label><input type="text" value="陈思思" disabled></div>
-      <div class="u-field"><label>部门</label><input type="text" value="产品部" disabled></div>
+      <div class="u-field"><label>部门</label><input type="text" id="celRegDept" value="产品部" disabled></div>
+      <div class="u-field"><label>职位</label><input type="text" id="celRegTitle" disabled></div>
       <div class="u-field"><label>联系电话</label><input type="text" id="celRegPhone" placeholder="中国 11 位 / 新加坡 8 位手机号"></div>
       <div class="u-field"><label>邮箱地址</label><input type="text" id="celRegEmail" placeholder="例如：name@company.com"></div>
+      <div style="font-size:11px; color:var(--u-text-muted); margin:-4px 0 10px">姓名、部门、职位来自公司 HR 系统，不能修改；联系电话、邮箱默认取自 HR，可改，只用于本次报名。
+        <button class="u-work-link" onclick="demoRegHr()">原型演示：切换 HR 数据（完整 / 缺职位电话邮箱）</button></div>
       <div class="u-modal-actions">
         <button class="u-modal-cancel" onclick="closeCelRegisterModal()">Cancel</button>
         <button class="u-modal-submit" onclick="submitCelRegistration()">Confirm registration</button>
@@ -617,8 +620,21 @@ function openMyCode(){
   document.getElementById('myCodeOverlay').classList.add('open');
 }
 function closeMyCode(){ document.getElementById('myCodeOverlay').classList.remove('open'); }
+/* REQ-004 AC-039 ～ AC-043：姓名、部门、职位由 HR 带出且只读；电话、邮箱默认从 HR 带出，员工可改，只存本次报名、不回写 HR。
+   原型演示：对应 GET /viewer 返回的 department / title / phone / email；HR 里没有的项为空。 */
+const REG_HR_FULL = {department:'产品部', title:'产品经理', phone:'13800138001', email:'chen.sisi@mcc.example'};
+const REG_HR_EMPTY = {department:'产品部', title:'', phone:'', email:''};
+let regHr = REG_HR_FULL;
+function fillRegFromHr(){                                    // 每次打开都重新从 HR 带出，不沿用上次改过的值（AC-042）
+  document.getElementById('celRegDept').value = regHr.department || '—';
+  document.getElementById('celRegTitle').value = regHr.title || '—';           // HR 里没有职位显示"—"，不影响报名（AC-039）
+  document.getElementById('celRegPhone').value = regHr.phone;
+  document.getElementById('celRegEmail').value = regHr.email;
+}
+function demoRegHr(){ regHr = (regHr === REG_HR_FULL) ? REG_HR_EMPTY : REG_HR_FULL; fillRegFromHr(); }
 function openCelRegisterModal(){
   if(!viewerAllows()) return;
+  fillRegFromHr();
   document.getElementById('celRegModalOverlay').classList.add('open');
 }
 function closeCelRegisterModal(){

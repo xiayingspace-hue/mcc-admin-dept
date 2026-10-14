@@ -13,7 +13,7 @@
 | 枚举 | 取值 | 说明 |
 |---|---|---|
 | `author_type` | `internal`（内部员工） \| `external`（外部人士） | 见需求文档 §6 |
-| `author_org_type` | `department`（HR 部门） \| `project`（HR 项目） \| `free_text`（手填的部门 / 机构，仅外部人士） | 见 `directory-010-admin` §6，AC-003、AC-005 |
+| `author_org_type` | `department`（HR 部门） \| `project`（HR 项目） \| `free_text`（手填的自由文本，仅外部人士；报名里它就是「公司名称」，AC-046；作品仍是部门 / 机构） | 见 `directory-010-admin` §6，AC-003、AC-005；报名的例外见 `registration-004-admin` AC-046 |
 | `check_in_status` | `pending`（未签到） \| `checked_in`（已签到） | 见需求文档 §5 状态机 |
 | `check_in_result` | `success`（签到成功） \| `already_checked_in`（已签到） \| `invalid_code`（无效的签到码） \| `out_of_window`（不在签到时间内） \| `no_permission`（无签到权限） | 扫码签到的五种结果，见需求文档 §8、AC-016～AC-020 |
 
@@ -52,9 +52,10 @@
 | `list[].author_type` | string（枚举） | |
 | `list[].author_name` | string | |
 | `list[].author_employee_id` | string \| null | 仅 `author_type=internal`：HR 员工 ID |
-| `list[].author_org` | string \| null | 所属名称：内部员工为所选部门 / 项目名称，外部人士为手填的部门或头衔；留空展示为"—"，见需求文档 §8 |
+| `list[].author_org` | string \| null | 所属名称：内部员工为所选部门 / 项目名称，外部人士为手填的公司名称（AC-046、AC-047）；留空展示为"—"，见需求文档 §8 |
 | `list[].author_org_type` | string（枚举）\| null | 见枚举总表；未填为 `null` |
 | `list[].author_org_id` | string \| null | 仅 `department` / `project`：HR ID |
+| `list[].title` | string \| null | 职位：员工自主报名时记录的报名当时 HR 里的职位（快照），或行政代报名时带出 / 手填的值；上线前的记录、HR 里没有职位或代报名时留空的为 `null`，名单展示为"—"，AC-043、AC-044、AC-045 |
 | `list[].contact` | string \| null | 联系电话；员工自主报名必有值（中国 11 位或新加坡 8 位手机号，AC-014），行政代报名未填为 `null`，名单展示为"—"，AC-012 |
 | `list[].email` | string \| null | 邮箱地址；员工自主报名必有值，行政代报名未填为 `null`，名单展示为"—"，AC-007 |
 | `list[].remark` | string \| null | 备注 |
@@ -74,11 +75,12 @@
 | `author_name` | string | 外部人士必填 | AC-003。**内部员工不传**，姓名由后端按员工 ID 从 HR 取 |
 | `author_type` | string（枚举） | 否 | |
 | `author_employee_id` | string | 内部员工必填 | HR 员工 ID，AC-025；外部人士传了被拒绝，`directory-010-admin` AC-007 |
-| `author_org` | string | 否 | 仅外部人士：部门 / 头衔，自由文本 |
+| `author_org` | string | 否 | 仅外部人士：公司名称（取代原来的"部门 / 头衔"），自由文本，选填，AC-046 |
 | `author_org_type` | string（枚举） | 否 | 仅内部员工：`department` / `project`，与 `author_org_id` 同传，二选一 |
 | `author_org_id` | string | 否 | 仅内部员工：HR 的部门 / 项目 ID，默认带出所选员工的 HR 部门，可改，可不传 |
 | `contact` | string | 否 | 联系电话，选填，不校验格式（外部人士号码格式不一），AC-012；内部员工由页面从 `GET /hrEmployee` 的 `phone` 带出到输入框，可修改，传的是输入框里的值，AC-026 |
 | `email` | string | 否 | 选填；填写则须符合邮箱格式、≤100 个字符，AC-008；内部员工由页面从 `hrEmployee.email` 带出，可修改，AC-026 |
+| `title` | string | 否 | 职位，选填，自由文本；内部员工由页面从 `hrEmployee.title` 带出，行政可修改或清空，AC-045；外部人士由行政手填，AC-046 |
 | `remark` | string | 否 | |
 
 名额上限已设置且报名人数（含代报名，不论是否已签到）达到上限时，后端拒绝本接口并返回「报名人数已达上限」，不产生记录，AC-013。
@@ -111,7 +113,7 @@
 
 前端据此决定按钮文案：`registered` → 「已报名 ✓」；否则 `is_full` → 「报名人数已达上限」（置灰）；否则「立即报名」。用户端不展示名额的具体数字。
 
-用户端员工自主报名的接口尚未在本清单中；补充时 `email` 为必填（符合邮箱格式、≤100 个字符，前端拦截 + 后端二次校验），AC-006；名额已满时须拒绝并返回「报名人数已达上限」，剩余名额竞争时由后端保证不超额，AC-011。
+用户端员工自主报名的接口尚未在本清单中；补充时：员工的姓名、部门、职位不由请求传入，由后端按登录身份从 HR 取，职位存为报名当时的快照（管理端名单通过 `list[].title` 返回并显示，AC-043、AC-044；扫码页仍不显示）；`phone`、`email` 由员工提交（弹窗默认值来自 `GET /viewer`，员工可改，只存本次报名，不回写 HR，AC-040、AC-042）；`email` 为必填（符合邮箱格式、≤100 个字符，前端拦截 + 后端二次校验），AC-006；名额已满时须拒绝并返回「报名人数已达上限」，剩余名额竞争时由后端保证不超额，AC-011。
 
 ## 获取我的签到码（用户端）
 
