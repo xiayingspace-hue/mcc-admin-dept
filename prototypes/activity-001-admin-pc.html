@@ -1686,12 +1686,12 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published" data-author-type="external" data-company="东京商事" data-position="事业部长" data-notify-email="tanaka@tokyo-shoji.example">
               <div class="wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">田中一郎</span>
-                  <span class="wall-meta">合作伙伴 · 行政代录入</span>
+                  <span class="wall-meta">东京商事 · 事业部长 · 行政代录入</span>
                 </div>
                 <div class="wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                 <p class="wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</p>
@@ -1980,7 +1980,7 @@
                   <div class="u-wall-card">
                     <div class="u-wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                     <div class="u-wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</div>
-                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">合作伙伴</div></div></div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">东京商事 · 事业部长</div></div></div>
                   </div>
                   <div class="u-wall-card">
                     <div class="u-wall-quote">希望公司越来越好，大家一起加油！</div>
@@ -2252,7 +2252,9 @@
         <div id="wedit-int" class="hidden"></div>
         <div id="wedit-ext">
           <div class="field"><label>作者姓名（必填）</label><input type="text" id="editWallName"></div>
-          <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="editWallOrg"></div>
+          <div class="field"><label>公司名称（必填）</label><input type="text" id="editWallOrg"></div>
+          <div class="field"><label>职位（必填）</label><input type="text" id="editWallPos"></div>
+          <div class="field"><label>邮箱地址（必填，审核结果将发送到这里）</label><input type="text" id="editWallEmail" placeholder="例如：name@company.com"></div>
         </div>
       </div>
       <div class="field">
@@ -2332,7 +2334,9 @@
             <div id="wall-int" class="hidden"></div>
             <div id="wall-ext">
               <div class="field"><label>作者姓名（必填）</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
-              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="adminWallOrg" placeholder="例如：合作伙伴 · XX公司"></div>
+              <div class="field"><label>公司名称（必填）</label><input type="text" id="adminWallOrg" placeholder="例如：MCC Engineering"></div>
+              <div class="field"><label>职位（必填）</label><input type="text" id="adminWallPos" placeholder="例如：事业部长"></div>
+              <div class="field"><label>邮箱地址（必填，审核结果将发送到这里）</label><input type="text" id="adminWallEmail" placeholder="例如：name@company.com"></div>
             </div>
             <div class="field">
               <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
@@ -2744,7 +2748,7 @@ function showWall(){
 }
 /* 寄语墙管理：代录入在右侧抽屉里填写，列表始终可见 */
 function resetWallForm(){
-  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallContent').value = '';
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallPos').value = ''; document.getElementById('adminWallEmail').value = ''; document.getElementById('adminWallContent').value = '';
   ppReset('wall');
   wallRemove('admin');
 }
@@ -3136,7 +3140,7 @@ function ppSetType(k, type, keepValues){
   if(!keepValues && st.type !== type){
     st.employees = []; st.org = null; ppErr(k,''); ppRenderChips(k);
     if(k==='reg') ppClearAutoContact();
-    const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept'], wall:['adminWallName','adminWallOrg'], wedit:['editWallName','editWallOrg']}[k];
+    const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept'], wall:['adminWallName','adminWallOrg','adminWallPos','adminWallEmail'], wedit:['editWallName','editWallOrg','editWallPos','editWallEmail']}[k];
     ext.forEach(id=>document.getElementById(id).value = '');
     if(k==='sub') updateAuthorHint();
   }
@@ -3156,7 +3160,16 @@ function ppValue(k){
   if(st.type === 'internal') return {type:'internal', names:st.employees.map(e=>e.name), org: st.org ? st.org.name : ''};
   const nameId = {sub:'subAuthorName', reg:'manualRegName', wall:'adminWallName', wedit:'editWallName'}[k];
   const orgId = {sub:'subExtOrg', reg:'manualRegDept', wall:'adminWallOrg', wedit:'editWallOrg'}[k];
-  return {type:'external', names:[document.getElementById(nameId).value.trim()], org:document.getElementById(orgId).value.trim()};
+  const posId = {wall:'adminWallPos', wedit:'editWallPos'}[k], emailId = {wall:'adminWallEmail', wedit:'editWallEmail'}[k];   // 仅寄语有职位 / 邮箱（REQ-005 AC-031，其余两处不变）
+  return {type:'external', names:[document.getElementById(nameId).value.trim()], org:document.getElementById(orgId).value.trim(),
+          pos: posId ? document.getElementById(posId).value.trim() : '', email: emailId ? document.getElementById(emailId).value.trim() : ''};
+}
+function wallGuestError(who){                           // REQ-005 AC-031：外部人士姓名、公司名称、职位、邮箱地址均必填
+  if(!who.names[0]) return '请填写作者姓名';
+  if(!who.org) return '请填写公司名称';
+  if(!who.pos) return '请填写职位';
+  if(!who.email) return '请填写邮箱地址';
+  return wallEmailCheck(who.email);                     // 格式 / ≤100 字符，同 REQ-004 AC-006
 }
 function ppReset(k){
   const st = PP[k]; st.employees = []; st.org = null; st.orgKind = 'department'; ppSyncKind(k); ppErr(k,''); ppRenderChips(k);
@@ -3760,7 +3773,9 @@ function openWallEdit(id){
     } else {
       ppSetType('wedit','external',true); ppSelectToggle('wedit','external');
       document.getElementById('editWallName').value = name;
-      document.getElementById('editWallOrg').value = orgText;
+      document.getElementById('editWallOrg').value = row.dataset.company || orgText;          // 上线前录入的历史外部人士留言：原部门 / 机构文本带入公司名称（AC-034）
+      document.getElementById('editWallPos').value = row.dataset.position || '';
+      document.getElementById('editWallEmail').value = row.dataset.notifyEmail || '';
     }
   }
   document.getElementById('editWallContent').value = row.querySelector('.wall-quote').textContent;
@@ -3774,16 +3789,26 @@ function saveWallEdit(){
   const content = document.getElementById('editWallContent').value.trim();
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('edit')) return;                                   // AC-012：配图必填，原本没有配图的也要补
+  const whoEdit = wallAdminEntered(row) ? ppValue('wedit') : null;
+  if(whoEdit){
+    const whoErr = whoEdit.type === 'internal' ? (whoEdit.names[0] ? '' : '请先从 HR 里选择员工') : wallGuestError(whoEdit);   // AC-031
+    if(whoErr){ alert(whoErr); return; }
+  }
   row.querySelector('.wall-quote').textContent = content;
   if(!row.querySelector('.wall-image')){
     const img = document.createElement('div'); img.className = 'wall-image'; img.innerHTML = '<img src="_shared/photos/wall-3.jpg" alt="">';
     row.querySelector('.wall-quote').before(img);
   }
-  if(wallAdminEntered(row)){
-    const who = ppValue('wedit');
-    if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
+  if(whoEdit){
+    const who = whoEdit;
     row.querySelector('.wall-name').textContent = who.names[0];
-    row.querySelector('.wall-meta').textContent = (who.org ? who.org + ' · ' : '') + '行政代录入';
+    if(who.type === 'external'){                                         // AC-032：外部人士显示"公司名称 · 职位"，邮箱不在列表展示
+      row.querySelector('.wall-meta').textContent = who.org + ' · ' + who.pos + ' · 行政代录入';
+      row.dataset.company = who.org; row.dataset.position = who.pos; row.dataset.notifyEmail = who.email;
+    } else {                                                             // AC-034：切到内部员工后清空公司 / 职位 / 邮箱，不再发邮件
+      row.querySelector('.wall-meta').textContent = (who.org ? who.org + ' · ' : '') + '行政代录入';
+      delete row.dataset.company; delete row.dataset.position; delete row.dataset.notifyEmail;
+    }
     row.dataset.authorType = who.type;
   }
   const now = new Date(), pad = n => String(n).padStart(2,'0');
@@ -3971,7 +3996,8 @@ function wallImageReady(which){
 function submitWallAdmin(){
   const who = ppValue('wall');                   // REQ-010、REQ-005 AC-017
   const content = document.getElementById('adminWallContent').value.trim();
-  if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
+  const whoErr = who.type === 'internal' ? (who.names[0] ? '' : '请先从 HR 里选择员工') : wallGuestError(who);
+  if(whoErr){ alert(whoErr); return; }
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('admin')) return;                     // AC-008：配图必填
   alert('原型演示：将新建一条留言记录，状态为待审核');
