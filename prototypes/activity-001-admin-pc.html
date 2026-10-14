@@ -468,6 +468,7 @@
   .app-toast.show{opacity:1; transform:translate(-50%,0)}
   .app-toast svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
   tr.row-leaving td{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
+  .wall-row.row-leaving{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
   @keyframes row-flash{from{background:color-mix(in srgb,var(--accent) 14%,var(--surface))} to{background:transparent}}
   tr.row-flash td{animation:row-flash 1.2s ease-out}
 
@@ -658,6 +659,8 @@
   .notif-item-title{font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:space-between; gap:8px}
   .notif-item-sub{font-size:12px; color:var(--text-secondary); margin-top:3px}
   .notif-empty{padding:24px 16px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+  .wall-empty{padding:56px 16px; text-align:center; color:var(--text-muted); font-size:13px}
+  .wall-empty b{display:block; margin-bottom:4px; font-size:14px; font-weight:600; color:var(--text-secondary)}
 
   /* ---- User-facing preview (scoped) ---- */
   .uview-frame{border:0.5px solid var(--border-strong); border-radius:14px; overflow:hidden; background:#fff; position:relative}
@@ -1622,9 +1625,9 @@
           </div>
 
           <div class="stat-row">
-            <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">待审核</div></div>
-            <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">已展示</div></div>
-            <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">已隐藏</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatReview">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatPublished">2</div><div class="stat-label">已展示</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatHidden">1</div><div class="stat-label">已隐藏</div></div>
           </div>
 
           <div class="filter-bar">
@@ -1756,6 +1759,9 @@
             </div>
 
           </div>
+
+          <div class="wall-empty hidden" id="wallEmptyNone"><b>暂无留言</b>该活动的寄语墙还没有留言；员工提交或行政代录入后会显示在这里。</div>
+          <div class="wall-empty hidden" id="wallEmptyFilter"><b>没有符合条件的留言</b>调整所属活动或状态筛选后再试。</div>
           </div>
         </div>
 
@@ -1995,7 +2001,7 @@
               <div class="u-modal">
                 <div id="wallFormBody">
                   <h3>写下你的寄语</h3>
-                  <p class="u-modal-sub">行政审核通过后才会展示在寄语墙</p>
+                  <p class="u-modal-sub">行政审核通过后才会展示在寄语墙，审核结果将通过邮件通知你</p>
                   <div class="u-field">
                     <label>姓名</label>
                     <input type="text" value="陈思思" disabled>
@@ -2003,6 +2009,11 @@
                   <div class="u-field">
                     <label>部门</label>
                     <input type="text" value="产品部" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label>通知邮箱（必填，审核结果将发送到这里）</label>
+                    <input type="text" id="wallNotifyEmail" placeholder="例如：name@company.com" oninput="wallEmailError('')">
+                    <div class="u-img-err" id="wallNotifyEmailError" style="display:none"></div>
                   </div>
                   <div class="u-field">
                     <label style="display:flex; align-items:center; gap:6px; cursor:pointer; margin-bottom:0">
@@ -2036,7 +2047,7 @@
                 <div id="wallSuccessBody" class="u-modal-success hidden">
                   <div class="u-modal-success-icon">✓</div>
                   <h3>提交成功</h3>
-                  <p>行政审核通过后将展示在寄语墙</p>
+                  <p>行政审核通过后将展示在寄语墙，审核结果将发送到你填写的邮箱</p>
                   <button class="u-modal-submit" onclick="closeWallModal()">OK</button>
                 </div>
               </div>
@@ -3686,9 +3697,45 @@ function toggleVote(cardId){
 let wallEditingId = null;
 function wallActionsHtml(id, status){
   const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">Edit</button>';
-  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Show</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">Reject</button>';
+  const del = '<button class="action-link danger" onclick="deleteWallMessage(\''+id+'\')">Delete</button>';     // REQ-005 AC-018：仅待审核 / 已隐藏有删除，已展示没有
+  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Show</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">Reject</button>' + del;
   if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">Hide</button>';
-  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Restore</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">Delete</button>';
+  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Restore</button>' + edit + del;
+}
+/* ---- 删除留言（REQ-005 AC-018 ～ AC-023）：二次确认 → 软删除，行从列表消失，状态统计同步扣减；已展示需先隐藏 ---- */
+function deleteWallMessage(id){
+  const row = document.getElementById(id);
+  if(!row) return;
+  if(row.dataset.status === 'published') return;                         // 已展示没有删除入口（后端同样拒绝，AC-018）
+  const name = row.querySelector('.wall-name').textContent.trim();
+  openConfirm({
+    tone:'danger', title:'删除这条留言？',
+    text:'<b>' + escHtml(name) + '</b> 的留言将从列表中移除，无法在管理端恢复。',
+    okLabel:'确认删除', cancelLabel:'取消', okClass:'danger',
+    onOk:function(){ doDeleteWall(id); }
+  });
+}
+function doDeleteWall(id){
+  const row = document.getElementById(id);
+  if(!row) return;
+  if(row.dataset.status === 'published'){                                // 他人刚把它改成已展示：被拒绝，AC-023
+    showAppToast('留言状态已变化，请刷新');
+    return;
+  }
+  row.classList.add('row-leaving');
+  setTimeout(function(){
+    row.remove();                                                        // 软删除：数据库仍保留，管理端与用户端不再出现、不计入统计（AC-021 / AC-022）
+    refreshWallStats();
+    filterWallMessages();                                                // 当前筛选条件保持
+    showAppToast('留言已删除');
+  }, 260);
+}
+function refreshWallStats(){
+  const rows = Array.from(document.querySelectorAll('#wallList .wall-row'));
+  const n = function(st){ return rows.filter(function(r){ return r.dataset.status === st; }).length; };
+  document.getElementById('wallStatReview').textContent = n('review');
+  document.getElementById('wallStatPublished').textContent = n('published');
+  document.getElementById('wallStatHidden').textContent = n('hidden');
 }
 function wallAdminEntered(row){ return row.querySelector('.wall-meta').textContent.includes('行政代录入'); }
 function openWallEdit(id){
@@ -3759,6 +3806,7 @@ function setWallStatus(rowId, status){
     badge.textContent = '已隐藏';
   }
   actions.innerHTML = wallActionsHtml(rowId, status);
+  refreshWallStats();
   filterWallMessages();
 }
 function filterWallMessages(){
@@ -3769,6 +3817,11 @@ function filterWallMessages(){
     const statusMatch = (statusVal === 'all') || (row.dataset.status === statusVal);
     row.style.display = (activityMatch && statusMatch) ? '' : 'none';
   });
+  // 空态（AC-024）：没有任何留言 → "暂无留言"；有留言但筛选后没有 → "没有符合条件的留言"，两种文案区分
+  const all = document.querySelectorAll('#wallList .wall-row');
+  const shown = Array.from(all).filter(function(r){ return r.style.display !== 'none'; }).length;
+  document.getElementById('wallEmptyNone').classList.toggle('hidden', all.length > 0);
+  document.getElementById('wallEmptyFilter').classList.toggle('hidden', all.length === 0 || shown > 0);
 }
 document.addEventListener('click', function(e){
   if(e.target.id === 'wallModalOverlay') closeWallModal();
@@ -3932,18 +3985,34 @@ function openWallModal(){
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';
   document.getElementById('wallAnonCheck').checked = false;
+  document.getElementById('wallNotifyEmail').value = WALL_VIEWER_HR_EMAIL;      // AC-026：默认带出 HR 邮箱（HR 里没有则为空），可改
+  wallEmailError('');
   wallRemove('user');
   document.getElementById('wallModalOverlay').classList.add('open');
 }
 function closeWallModal(){
   document.getElementById('wallModalOverlay').classList.remove('open');
 }
+const WALL_VIEWER_HR_EMAIL = 'chen.sisi@mcc.example';     // 原型演示：当前员工陈思思在 HR 里的邮箱，对应 GET /viewer 的 email
+function wallEmailError(msg){
+  const e = document.getElementById('wallNotifyEmailError');
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function wallEmailCheck(v){                                // 规则同 REQ-004 AC-006：必填、含 @ 与域名、≤100 个字符
+  if(!v) return '请填写通知邮箱';
+  if(v.length > 100) return '邮箱地址不能超过 100 个字符';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return '请输入有效的邮箱地址（须包含 @ 和域名）';
+  return '';
+}
 function submitWallMessage(){
   const msg = document.getElementById('wallMsgInput').value.trim();
+  const emailErr = wallEmailCheck(document.getElementById('wallNotifyEmail').value.trim());
+  wallEmailError(emailErr);                               // AC-026：邮箱错误在输入框旁提示，与其他错误可同时出现
   if(!msg){
     alert('请填写留言内容');
     return;
   }
+  if(emailErr) return;
   if(!wallImageReady('user')) return;                     // AC-006：配图必填，匿名也一样
   document.getElementById('wallFormBody').classList.add('hidden');
   document.getElementById('wallSuccessBody').classList.remove('hidden');
@@ -3973,8 +4042,8 @@ function submitWallMessage(){
       + '</div>';
     list.prepend(row);
 
-    const pendingStat = document.querySelector('#wallView .stat-row .stat-card:nth-child(1) .stat-num');
-    if(pendingStat) pendingStat.textContent = parseInt(pendingStat.textContent, 10) + 1;
+    refreshWallStats();                                    // 待审核统计 +1，并让"暂无留言"空态消失（AC-024）
+    filterWallMessages();
   }
 }
 showList();

@@ -27,6 +27,7 @@
 |---|---|---|
 | `viewer_type` | `viewer_type` | `employee` 时三个参与入口按原有规则显示；`external` 时三个入口不显示，AC-001、AC-002 |
 | `name` | string | 仅 `employee` 返回，员工姓名 |
+| `email` | string \| null | 仅 `employee` 返回，员工在 HR 系统里的邮箱，HR 里没有为 `null`；用于用户端寄语弹窗"通知邮箱"的默认值（员工可改），`wall-005-admin` AC-026，不用于其他用途 |
 
 页面打开时调用一次；后端向 HR 系统查询超时 / 查不到时，本接口返回错误（不是 `external`，也不是 `employee`），AC-014。请求失败时页面按「确认失败」处理，入口不显示、在原位置提供重试，不得默认放开，AC-009。官网访问（无令牌）返回 `viewer_type=external`，不返回错误。
 
@@ -64,7 +65,7 @@
 | 员工自主报名 / 取消报名 | `API-registration-004-admin.md`（提交接口待补充） | 另有邮箱、电话、名额校验 |
 | 查看我的签到码 `GET /registrationCode`、报名入口状态 `GET /registrationEntry` | `API-registration-004-admin.md` | 外部人员调用 `registrationCode` 被拒绝（`not_employee`）；`registrationEntry` 对外部人员仍可调用，页面据 `viewer` 的结果决定是否显示入口 |
 | 涂鸦投票 / 取消投票 / 换票 | `API-submission-003-admin.md`（用户端投票接口待补充） | |
-| 提交寄语 | `API-wall-005-admin.md`（用户端提交接口待补充） | |
+| 提交寄语 `POST /wallMessage/submit` | `API-wall-005-admin.md` | 外部人员调用被拒绝（`not_employee`），`wall-005-admin` AC-015 |
 
 被拒绝时返回的错误里带 `identity_error`：
 
