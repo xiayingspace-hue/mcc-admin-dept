@@ -115,7 +115,6 @@ PC 与 H5 共用同一个填写页面，按屏宽响应式适配（AC-024），�
 | "2 个工作日内跟进"是否为硬性 SLA，超时是否需要提醒或升级 | 行政 | 开发排期前 |
 | 导出赞助线索是否需要记录操作日志（谁在什么时候导出了什么）；导出文件包含联系人邮箱、电话等个人信息，下载后的保管和使用规范不在系统控制范围内 | 行政 + 合规 | 开发排期前 |
 | 席位数量（Individual Seat）是否设上限（当前只要求大于等于 1 的整数，不设上限） | 行政 | 开发排期前 |
-| 附录 A 中 Gold（SGD 10,000）与 Silver（SGD 3,000）的权益清单完全相同，是否为设计稿笔误 | 行政 | 开发排期前 |
 | 页头 / 页脚导航（CEO Message、History、Activities、Voices）的跳转目标页；其中 CEO Message、History 对应的活动模块已在 REQ-002 下线，当前原型只画导航、点击不跳转 | 行政 / 产品 | 开发排期前 |
 | 附录 A 中文介绍文案由设计稿截图转录，需校对（如"鼎力赞助"的用字）；页面所需的 MCC logo 等图片资源需设计提供 | 行政 / 设计 | 开发排期前 |
 | 电话目前只接受新加坡 / 中国大陆手机号（与报名一致），座机（如新加坡 6 开头 8 位）与其他国家号码会被拦截；赞助商是外部企业，是否需要放开座机 / 海外号码 | 行政 | 开发排期前 |
@@ -145,8 +144,8 @@ PC 与 H5 共用同一个填写页面，按屏宽响应式适配（AC-024），�
 |---|---|---|
 | Diamond | SGD 30,000 | 1 additional table (10 pax) at our 30th appreciation dinner + 1 VIP seat；6 Anniversary Concert tickets；Logo display at Business Partner Appreciation Dinner；On-stage emcee acknowledgement during the appreciation dinner；Logo on the appreciation dinner wall & in the dinner guide；Naming rights for anniversary game |
 | Platinum | SGD 20,000 | 1 additional table (10 pax) at our 30th appreciation dinner；2 Anniversary Concert tickets；Logo display at Business Partner Appreciation Dinner；On-stage emcee acknowledgement during the appreciation dinner；Logo on the appreciation dinner wall & in the dinner guide |
-| Gold | SGD 10,000 | 1 additional table (10 pax) at our 30th appreciation dinner；2 Anniversary Concert tickets；Logo display at Business Partner Appreciation Dinner |
-| Silver | SGD 3,000 | 1 additional table (10 pax) at our 30th appreciation dinner；2 Anniversary Concert tickets；Logo display at Business Partner Appreciation Dinner |
+| Gold | SGD 10,000 | 5 additional seats at our 30th appreciation dinner；Logo display at Business Partner Appreciation Dinner；Logo on the appreciation dinner wall |
+| Silver | SGD 3,000 | Logo display at Business Partner Appreciation Dinner；Logo on the appreciation dinner wall |
 | Individual Seat | SGD 1,000 /Seat | No sponsorship commitment required；1 seat at our 30th Anniversary Business Partner Appreciation Dinner；Opportunity to celebrate and connect with our business partners |
 
 **页头**：左侧 MCC 标识，右侧导航「CEO Message」「History」「Activities」「Voices」。
