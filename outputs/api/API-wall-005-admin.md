@@ -29,7 +29,7 @@
 
 分页：见 `conventions.md`
 
-**通知邮箱**：员工自主提交的通知邮箱不返回（`notify_email` 为 `null`），AC-030；行政代录入的外部人士留言，`notify_email` 返回其邮箱地址，仅用于编辑表单回显，管理端列表不展示，AC-030、AC-034。
+**邮箱**：员工自主提交的邮箱不返回（`email` 为 `null`），AC-030；行政代录入的外部人士留言，`email` 返回其邮箱地址，仅用于编辑表单回显，管理端列表不展示，AC-030、AC-034。邮箱本期只保存，不用于发送邮件。
 
 **已删除的留言不返回**：被行政删除的留言（软删除，见「删除留言」）不出现在本接口的结果里，`status` 枚举也不包含「已删除」，不能作为筛选值，AC-020。
 
@@ -52,7 +52,7 @@
 | `author_employee_id` | string \| null | 仅行政代录入且 `author_type=internal` 的留言：HR 员工 ID |
 | `author_org` | string \| null | 所属名称（内部员工为所选部门 / 项目名称；外部人士为手填的公司名称，AC-031）；上线前没有填的历史留言为 `null` |
 | `author_position` | string \| null | 职位，仅行政代录入的外部人士留言有值，AC-031、AC-032；其余为 `null` |
-| `notify_email` | string \| null | 通知邮箱：仅行政代录入的外部人士留言返回，见上文；其余为 `null` |
+| `email` | string \| null | 邮箱：仅行政代录入的外部人士留言返回，见上文；其余为 `null` |
 | `author_org_type` | string（枚举）\| null | 见枚举总表 |
 | `author_org_id` | string \| null | 仅 `department` / `project`：HR ID |
 | `status` | string（枚举） | 见枚举总表 |
@@ -75,9 +75,9 @@
 | `content` | string | 是 | 留言文本 |
 | `image_url` | string | 是 | 配图，仅 1 张，JPG / PNG、≤5MB，缺失或不符后端拒绝，AC-006、AC-009 |
 | `is_anonymous` | boolean | 否 | 默认 `false` |
-| `notify_email` | string | 是 | 通知邮箱，必填、符合邮箱格式、≤100 个字符，缺失或不符后端拒绝并返回明确原因，不产生留言，AC-026；页面默认带出 `GET /viewer` 的 `email`，员工可改 |
+| `email` | string | 是 | 邮箱，必填、符合邮箱格式、≤100 个字符，缺失或不符后端拒绝并返回明确原因，不产生留言，AC-026；页面默认带出 `GET /viewer` 的 `email`，员工可改；本期只保存，不发送邮件 |
 
-**响应字段**：同「获取留言列表」单条结构（不含通知邮箱）；新建后 `status` 固定为 `review`，AC-025。
+**响应字段**：同「获取留言列表」单条结构（不含邮箱）；新建后 `status` 固定为 `review`，AC-025。
 
 **权限**：见需求文档 §7
 **校验**：见需求文档 §8
@@ -98,7 +98,7 @@
 | `author_type` | string（枚举） | 否 | |
 | `author_org` | string | 外部人士必填 | 仅外部人士：公司名称，自由文本（长度上限见需求文档 §11 缺口），AC-031 |
 | `author_position` | string | 外部人士必填 | 仅外部人士：职位，自由文本（长度上限同上），AC-031 |
-| `notify_email` | string | 外部人士必填 | 仅外部人士：邮箱地址，同时是该留言的通知邮箱，符合邮箱格式、≤100 个字符，缺失或不符后端拒绝并返回明确原因，AC-031；内部员工传了被拒绝 |
+| `email` | string | 外部人士必填 | 仅外部人士：邮箱地址，符合邮箱格式、≤100 个字符，缺失或不符后端拒绝并返回明确原因，AC-031；本期只保存，不发送邮件；内部员工传了被拒绝 |
 | `author_org_type` | string（枚举） | 否 | 仅内部员工：`department` / `project`，与 `author_org_id` 同传，二选一 |
 | `author_org_id` | string | 否 | 仅内部员工：HR 的部门 / 项目 ID，默认带出所选员工的 HR 部门，可改，可不传 |
 
@@ -124,9 +124,9 @@
 | `author_employee_id` | string | 否 | 仅行政代录入的内部员工留言可传，AC-017 |
 | `author_type` | string（枚举） | 否 | 同上 |
 | `author_org` / `author_org_type` / `author_org_id` | 同代录入 | 否 | 同上，仅行政代录入的留言可传；外部人士的 `author_org` 即公司名称 |
-| `author_position` / `notify_email` | 同代录入 | 外部人士必填 | 仅行政代录入的外部人士留言可传，缺失或邮箱不合格后端拒绝；修改 `notify_email` 后，之后才触发的审核结果邮件发往新邮箱，已发送的不重发，AC-034；员工自主提交的留言传了被后端拒绝，AC-011 |
+| `author_position` / `email` | 同代录入 | 外部人士必填 | 仅行政代录入的外部人士留言可传，缺失或邮箱不合格后端拒绝，AC-031、AC-034；员工自主提交的留言传了被后端拒绝，AC-011 |
 
-员工自主提交留言的通知邮箱不可通过本接口修改（传 `notify_email` 被后端拒绝），需求文档 §7。
+员工自主提交留言的邮箱不可通过本接口修改（传 `email` 被后端拒绝），需求文档 §7。
 
 **响应字段**：同「获取留言列表」单条结构；`status` 不变，`is_anonymous` 与真实提交人关联不变（AC-014），`edited=true`，`edited_by`、`edited_at` 更新。
 
@@ -148,7 +148,7 @@
 
 隐藏（含拒绝）为软删除，原文保留，见 `conventions.md`。
 
-**审核结果邮件**（需求文档 §5、AC-027～AC-029）：只有 `publish`（`review` → `published`）与 `reject`（`review` → `hidden`）在后端成功改状态后，向该留言的通知邮箱各发一封邮件（通过 / 未通过，不含原因），每条留言只发一次；`hide`、`restore`、编辑、删除不发；没有通知邮箱的留言（行政代录入的内部员工留言、上线前的历史留言）不发；行政代录入的外部人士留言发往其 `notify_email`，AC-033。邮件发送失败不影响本接口的返回，状态照常变化，由后端自动重试；本期没有接口返回邮件发送结果。邮件模板见需求文档 §11 缺口。
+**不发邮件**：`publish`、`reject`、`hide`、`restore`、编辑、删除都不向任何邮箱发送邮件，审核结果不通知提交人（需求文档 §5、AC-030）。
 
 **权限**：见需求文档 §7
 

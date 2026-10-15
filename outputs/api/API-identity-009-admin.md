@@ -27,7 +27,7 @@
 |---|---|---|
 | `viewer_type` | `viewer_type` | `employee` 时三个参与入口按原有规则显示；`external` 时三个入口不显示，AC-001、AC-002 |
 | `name` | string | 仅 `employee` 返回，员工姓名 |
-| `email` | string \| null | 仅 `employee` 返回，员工在 HR 系统里的邮箱，HR 里没有为 `null`；用于用户端寄语弹窗"通知邮箱"（`wall-005-admin` AC-026）与报名弹窗"邮箱"（`registration-004-admin` AC-040）的默认值，员工可改，不用于其他用途 |
+| `email` | string \| null | 仅 `employee` 返回，员工在 HR 系统里的邮箱，HR 里没有为 `null`；用于用户端寄语弹窗"邮箱"（`wall-005-admin` AC-026）与报名弹窗"邮箱"（`registration-004-admin` AC-040）的默认值，员工可改，不用于其他用途 |
 | `department` | string \| null | 仅 `employee` 返回，员工在 HR 里的部门名称，HR 里没有为 `null`；用于报名弹窗只读展示，`registration-004-admin` AC-039 |
 | `title` | string \| null | 仅 `employee` 返回，员工在 HR 里的职位（HR 的 Title 字段），HR 里没有为 `null`（弹窗显示"—"）；用于报名弹窗只读展示，并作为报名记录的职位，AC-039、AC-043 |
 | `phone` | string \| null | 仅 `employee` 返回，员工在 HR 里的联系电话，HR 里没有为 `null`；用于报名弹窗"联系电话"的默认值，员工可改，AC-040；不对外部人员返回 |
