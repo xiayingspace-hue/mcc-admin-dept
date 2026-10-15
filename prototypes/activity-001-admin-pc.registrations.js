@@ -43,7 +43,7 @@ var RegSearch = (function () {
       if (org.indexOf(c.org) === -1 && type.indexOf(c.org) === -1) return false;
     }
     if (c.phone) {                                                                                             // 没有联系电话（「—」）的记录不命中（AC-030）
-      var digits = tr.children[3].textContent.replace(/\D/g, '');
+      var digits = tr.children[4].textContent.replace(/\D/g, '');      // 第 4 列是联系电话（第 3 列是职位，不参与搜索，AC-044）
       if (!digits || digits.indexOf(c.phone) === -1) return false;
     }
     return true;
@@ -124,21 +124,22 @@ var RegSearch = (function () {
 
   /* ---------- 原型演示：示例记录、状态切换 ---------- */
   var SEED = [   // celebration: sg30（新加坡总部站）；type 为 internal / external
-    { id: 'r5',  name: '张伟',  org: '技术部', type: 'internal', phone: '13900139001', email: 'zhang.wei@mcc.example', at: '2026-09-11 09:10', done: true },
-    { id: 'r6',  name: '赵敏',  org: '市场部', type: 'internal', phone: '13900139002', email: 'zhao.min@mcc.example', at: '2026-09-11 11:30', done: true },
-    { id: 'r7',  name: '孙浩',  org: '财务部', type: 'internal', phone: '13900139003', email: 'sun.hao@mcc.example', at: '2026-09-11 15:45' },
-    { id: 'r8',  name: '周婷',  org: '人力资源部', type: 'internal', phone: '13900139004', email: 'zhou.ting@mcc.example', at: '2026-09-12 10:20' },
-    { id: 'r9',  name: '刘洋',  org: '产品部', type: 'internal', phone: '13900139005', email: 'liu.yang@mcc.example', at: '2026-09-12 13:05' },
-    { id: 'r10', name: '吴磊',  org: '技术部', type: 'internal', phone: '13900139006', email: 'wu.lei@mcc.example', at: '2026-09-13 09:40' },
-    { id: 'r11', name: 'Sarah Tan', org: 'Orchid Pte Ltd', type: 'external', phone: '+65 9123 4567', email: 'sarah@orchid.example', at: '2026-09-13 14:15' },
-    { id: 'r12', name: 'Michael Lim', org: 'Lim & Co', type: 'external', phone: '', email: '', at: '2026-09-13 16:50' }
+    { id: 'r5',  name: '张伟',  title: '软件工程师', org: '技术部', type: 'internal', phone: '13900139001', email: 'zhang.wei@mcc.example', at: '2026-09-11 09:10', done: true },
+    { id: 'r6',  name: '赵敏',  title: '市场经理', org: '市场部', type: 'internal', phone: '13900139002', email: 'zhao.min@mcc.example', at: '2026-09-11 11:30', done: true },
+    { id: 'r7',  name: '孙浩',  title: '财务主管', org: '财务部', type: 'internal', phone: '13900139003', email: 'sun.hao@mcc.example', at: '2026-09-11 15:45' },
+    { id: 'r8',  name: '周婷',  title: 'HRBP', org: '人力资源部', type: 'internal', phone: '13900139004', email: 'zhou.ting@mcc.example', at: '2026-09-12 10:20' },
+    { id: 'r9',  name: '刘洋',  title: '产品经理', org: '产品部', type: 'internal', phone: '13900139005', email: 'liu.yang@mcc.example', at: '2026-09-12 13:05' },
+    { id: 'r10', name: '吴磊',  title: '高级工程师', org: '技术部', type: 'internal', phone: '13900139006', email: 'wu.lei@mcc.example', at: '2026-09-13 09:40' },
+    { id: 'r11', name: 'Sarah Tan', title: 'Director', org: 'Orchid Pte Ltd', type: 'external', phone: '+65 9123 4567', email: 'sarah@orchid.example', at: '2026-09-13 14:15' },
+    { id: 'r12', name: 'Michael Lim', title: '', org: 'Lim & Co', type: 'external', phone: '', email: '', at: '2026-09-13 16:50' }
   ];
   (function () {   // 补一批示例记录，让名单超过 20 条、能演示分页（分页见 activity-001-admin-pc.pager.js）
     var f = ['陈', '王', '李', '张', '刘', '杨', '黄', '赵', '周', '吴'], g = ['明', '芳', '伟', '婷', '磊', '洋', '静', '浩', '敏', '杰'];
     var orgs = ['技术部', '市场部', '财务部', '人力资源部', '产品部', '行政部', '运营部'];
+    var titles = ['工程师', '专员', '经理', '主管', '', '高级专员', '助理'];     // 空串：HR 里没有职位，展示"—"
     function p2(n) { return (n < 10 ? '0' : '') + n; }
     for (var i = 0; i < 35; i++) {
-      SEED.push({ id: 'rg' + i, name: f[i % 10] + g[(i * 3) % 10] + (i % 4 ? '' : g[(i + 5) % 10]), org: orgs[i % orgs.length], type: 'internal',
+      SEED.push({ id: 'rg' + i, title: titles[i % titles.length], name: f[i % 10] + g[(i * 3) % 10] + (i % 4 ? '' : g[(i + 5) % 10]), org: orgs[i % orgs.length], type: 'internal',
         phone: '1380013' + (8000 + i), email: 'staff' + i + '@mcc.example',
         at: '2026-09-' + p2(1 + (i % 9)) + ' ' + p2(8 + (i % 10)) + ':' + p2((i * 11) % 60), done: i % 4 === 0 });
     }
@@ -149,6 +150,7 @@ var RegSearch = (function () {
     tr.innerHTML =
       '<td class="title-cell">' + esc(d.name) + '</td><td class="muted-cell">新加坡总部站</td>' +
       '<td>' + esc(d.org) + (d.type === 'external' ? ' · 外部' : '') + '</td>' +
+      '<td>' + (d.title ? esc(d.title) : '—') + '</td>' +
       '<td>' + (d.phone ? esc(d.phone) : '—') + '</td><td>' + (d.email ? esc(d.email) : '—') + '</td><td>' + d.at + '</td>' +
       '<td><span class="status-badge draft" id="regstatus-' + d.id + '">未签到</span></td>' +
       '<td><div class="table-actions">' + regIconBtn('qr', 'viewRegCode(this)') +

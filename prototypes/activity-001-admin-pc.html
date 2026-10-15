@@ -468,6 +468,7 @@
   .app-toast.show{opacity:1; transform:translate(-50%,0)}
   .app-toast svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
   tr.row-leaving td{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
+  .wall-row.row-leaving{opacity:0; transform:translateX(-8px); transition:opacity .25s ease, transform .25s ease}
   @keyframes row-flash{from{background:color-mix(in srgb,var(--accent) 14%,var(--surface))} to{background:transparent}}
   tr.row-flash td{animation:row-flash 1.2s ease-out}
 
@@ -658,6 +659,8 @@
   .notif-item-title{font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:space-between; gap:8px}
   .notif-item-sub{font-size:12px; color:var(--text-secondary); margin-top:3px}
   .notif-empty{padding:24px 16px; text-align:center; font-size:12.5px; color:var(--text-muted)}
+  .wall-empty{padding:56px 16px; text-align:center; color:var(--text-muted); font-size:13px}
+  .wall-empty b{display:block; margin-bottom:4px; font-size:14px; font-weight:600; color:var(--text-secondary)}
 
   /* ---- User-facing preview (scoped) ---- */
   .uview-frame{border:0.5px solid var(--border-strong); border-radius:14px; overflow:hidden; background:#fff; position:relative}
@@ -1536,7 +1539,7 @@
           <table class="activity-table">
             <thead>
               <tr>
-                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>联系电话</th><th>邮箱</th><th>报名时间</th><th>签到状态</th><th>操作</th>
+                <th>姓名</th><th>所属 Celebration</th><th>部门 / 类型</th><th>职位</th><th>联系电话</th><th>邮箱</th><th>报名时间</th><th>签到状态</th><th>操作</th>
               </tr>
             </thead>
             <tbody id="regTableBody">
@@ -1544,6 +1547,7 @@
                 <td class="title-cell">陈思思</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>产品部</td>
+                <td>产品经理</td>
                 <td>13800138001</td>
                 <td>chen.sisi@mcc.example</td>
                 <td>2026-09-10 09:20</td>
@@ -1560,6 +1564,7 @@
                 <td class="title-cell">王芳</td>
                 <td class="muted-cell">新加坡总部站</td>
                 <td>行政部</td>
+                <td>行政专员</td>
                 <td>13800138002</td>
                 <td>wang.fang@mcc.example</td>
                 <td>2026-09-10 10:05</td>
@@ -1576,6 +1581,7 @@
                 <td class="title-cell">李强</td>
                 <td class="muted-cell">北京分公司站</td>
                 <td>工程部</td>
+                <td>工程师</td>
                 <td>13800138003</td>
                 <td>li.qiang@mcc.example</td>
                 <td>2026-09-11 14:40</td>
@@ -1591,7 +1597,8 @@
               <tr data-created="2026-09-12 16:00" data-celebration="bj30">
                 <td class="title-cell">田中一郎</td>
                 <td class="muted-cell">北京分公司站</td>
-                <td>合作伙伴 · 外部</td>
+                <td>东京商事 · 外部</td>
+                <td>事业部长</td>
                 <td>+81 90-1234-5678</td>
                 <td>—</td>
                 <td>2026-09-12 16:00</td>
@@ -1622,9 +1629,9 @@
           </div>
 
           <div class="stat-row">
-            <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">待审核</div></div>
-            <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">已展示</div></div>
-            <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">已隐藏</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatReview">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatPublished">2</div><div class="stat-label">已展示</div></div>
+            <div class="stat-card"><div class="stat-num" id="wallStatHidden">1</div><div class="stat-label">已隐藏</div></div>
           </div>
 
           <div class="filter-bar">
@@ -1683,12 +1690,12 @@
               </div>
             </div>
 
-            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published">
+            <div class="wall-row" id="w3" data-created="2026-09-27 09:40" data-activity="30th" data-status="published" data-author-type="external" data-company="东京商事" data-position="事业部长" data-email="tanaka@tokyo-shoji.example">
               <div class="wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div>
               <div class="wall-body">
                 <div class="wall-name-row">
                   <span class="wall-name">田中一郎</span>
-                  <span class="wall-meta">合作伙伴 · 行政代录入</span>
+                  <span class="wall-meta">东京商事 · 事业部长 · 行政代录入</span>
                 </div>
                 <div class="wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                 <p class="wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</p>
@@ -1756,6 +1763,9 @@
             </div>
 
           </div>
+
+          <div class="wall-empty hidden" id="wallEmptyNone"><b>暂无留言</b>该活动的寄语墙还没有留言；员工提交或行政代录入后会显示在这里。</div>
+          <div class="wall-empty hidden" id="wallEmptyFilter"><b>没有符合条件的留言</b>调整所属活动或状态筛选后再试。</div>
           </div>
         </div>
 
@@ -1974,7 +1984,7 @@
                   <div class="u-wall-card">
                     <div class="u-wall-image"><img src="_shared/photos/wall-2.jpg" alt=""></div>
                     <div class="u-wall-quote">合作多年，一直感受到这个团队的专业与真诚，祝三十周年快乐。</div>
-                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">合作伙伴</div></div></div>
+                    <div class="u-wall-author"><div class="u-wall-avatar"><img src="_shared/photos/face-3.jpg" alt=""></div><div><div class="u-wall-name">田中一郎</div><div class="u-wall-role">东京商事 · 事业部长</div></div></div>
                   </div>
                   <div class="u-wall-card">
                     <div class="u-wall-quote">希望公司越来越好，大家一起加油！</div>
@@ -2003,6 +2013,11 @@
                   <div class="u-field">
                     <label>部门</label>
                     <input type="text" value="产品部" disabled>
+                  </div>
+                  <div class="u-field">
+                    <label>邮箱（必填）</label>
+                    <input type="text" id="wallEmail" placeholder="例如：name@company.com" oninput="wallEmailError('')">
+                    <div class="u-img-err" id="wallEmailMsg" style="display:none"></div>
                   </div>
                   <div class="u-field">
                     <label style="display:flex; align-items:center; gap:6px; cursor:pointer; margin-bottom:0">
@@ -2241,7 +2256,9 @@
         <div id="wedit-int" class="hidden"></div>
         <div id="wedit-ext">
           <div class="field"><label>作者姓名（必填）</label><input type="text" id="editWallName"></div>
-          <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="editWallOrg"></div>
+          <div class="field"><label>公司名称（必填）</label><input type="text" id="editWallOrg"></div>
+          <div class="field"><label>职位（必填）</label><input type="text" id="editWallPos"></div>
+          <div class="field"><label>邮箱地址（必填）</label><input type="text" id="editWallEmail" placeholder="例如：name@company.com"></div>
         </div>
       </div>
       <div class="field">
@@ -2293,8 +2310,9 @@
             <div id="reg-int"></div>
             <div id="reg-ext" class="hidden">
               <div class="field"><label>姓名（必填）</label><input type="text" id="manualRegName" placeholder="例如：赵敏"></div>
-              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="manualRegDept" placeholder="例如：合作伙伴 · XX公司"></div>
+              <div class="field"><label>公司名称（选填）</label><input type="text" id="manualRegDept" placeholder="例如：MCC Engineering"></div>
             </div>
+            <div class="field" id="regTitleField"><label>职位（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegTitle" placeholder="例如：产品经理"></div>
             <div class="row2">
               <div class="field"><label>联系电话（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegPhone" placeholder="例如：13800138000"></div>
               <div class="field"><label>邮箱（选填；内部员工从 HR 自动带出，可修改）</label><input type="text" id="manualRegEmail" placeholder="例如：zhao.min@company.com"></div>
@@ -2321,7 +2339,9 @@
             <div id="wall-int" class="hidden"></div>
             <div id="wall-ext">
               <div class="field"><label>作者姓名（必填）</label><input type="text" id="adminWallName" placeholder="例如：田中一郎"></div>
-              <div class="field"><label>部门 / 头衔（选填，自由文本）</label><input type="text" id="adminWallOrg" placeholder="例如：合作伙伴 · XX公司"></div>
+              <div class="field"><label>公司名称（必填）</label><input type="text" id="adminWallOrg" placeholder="例如：MCC Engineering"></div>
+              <div class="field"><label>职位（必填）</label><input type="text" id="adminWallPos" placeholder="例如：事业部长"></div>
+              <div class="field"><label>邮箱地址（必填）</label><input type="text" id="adminWallEmail" placeholder="例如：name@company.com"></div>
             </div>
             <div class="field">
               <label>留言图片（必填，仅 1 张，JPG / PNG，≤5MB）</label>
@@ -2733,7 +2753,7 @@ function showWall(){
 }
 /* 寄语墙管理：代录入在右侧抽屉里填写，列表始终可见 */
 function resetWallForm(){
-  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallContent').value = '';
+  document.getElementById('adminWallName').value = ''; document.getElementById('adminWallOrg').value = ''; document.getElementById('adminWallPos').value = ''; document.getElementById('adminWallEmail').value = ''; document.getElementById('adminWallContent').value = '';
   ppReset('wall');
   wallRemove('admin');
 }
@@ -2962,16 +2982,16 @@ const SUB_NAME_MAX = 10, SUB_NAME_LEN = 30;
    key：sub = 作品上传 / 编辑（多位员工，最多 10 位）；reg = 行政代报名；wall = 留言代录入；wedit = 留言编辑。 */
 const HR_DATA = {                               // 模拟后端已过滤后的结果：只含在职员工、末级部门、有效项目（AC-002、AC-003、AC-011）；离职员工、非末级部门、已关闭项目不会返回
   employees: [
-    {id:'E1001', name:'陈思思', no:'E1001', dept:'产品部', phone:'13800138001', email:'chen.sisi@mcc.example'},
-    {id:'E1002', name:'王芳', no:'E1002', dept:'行政部', phone:'91234567', email:'wang.fang@mcc.example'},
-    {id:'E1003', name:'李强', no:'E1003', dept:'工程部', phone:'13800138003', email:''},
-    {id:'E1004', name:'张伟', no:'E1004', dept:'技术部', phone:'', email:'zhang.wei@mcc.example'},
-    {id:'E1005', name:'赵敏', no:'E1005', dept:'技术部', phone:'81234567', email:'zhao.min@mcc.example'},
-    {id:'E1006', name:'周杰', no:'E1006', dept:'技术部', phone:'', email:''},
-    {id:'E1007', name:'周敏', no:'E1007', dept:'市场部', phone:'91234568', email:'zhou.min@mcc.example'},
-    {id:'E1008', name:'刘洋', no:'E1008', dept:'财务部', phone:'13800138008', email:'liu.yang@mcc.example'},
-    {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部', phone:'', email:'lin.xiaowei@mcc.example'},
-    {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室', phone:'98765432', email:'alexandra.montgomery-richardson@mcc.example'}
+    {id:'E1001', name:'陈思思', no:'E1001', dept:'产品部', title:'产品经理', phone:'13800138001', email:'chen.sisi@mcc.example'},
+    {id:'E1002', name:'王芳', no:'E1002', dept:'行政部', title:'行政专员', phone:'91234567', email:'wang.fang@mcc.example'},
+    {id:'E1003', name:'李强', no:'E1003', dept:'工程部', title:'工程师', phone:'13800138003', email:''},
+    {id:'E1004', name:'张伟', no:'E1004', dept:'技术部', title:'软件工程师', phone:'', email:'zhang.wei@mcc.example'},
+    {id:'E1005', name:'赵敏', no:'E1005', dept:'技术部', title:'市场经理', phone:'81234567', email:'zhao.min@mcc.example'},
+    {id:'E1006', name:'周杰', no:'E1006', dept:'技术部', title:'', phone:'', email:''},
+    {id:'E1007', name:'周敏', no:'E1007', dept:'市场部', title:'市场专员', phone:'91234568', email:'zhou.min@mcc.example'},
+    {id:'E1008', name:'刘洋', no:'E1008', dept:'财务部', title:'财务主管', phone:'13800138008', email:'liu.yang@mcc.example'},
+    {id:'E1009', name:'林晓薇', no:'E1009', dept:'产品部', title:'产品运营', phone:'', email:'lin.xiaowei@mcc.example'},
+    {id:'E1010', name:'Alexandra Montgomery-Richardson（超长姓名示例）', no:'E1010', dept:'集团战略与跨区域业务发展协调办公室', title:'集团战略与跨区域业务发展协调办公室高级总监（超长职位示例）', phone:'98765432', email:'alexandra.montgomery-richardson@mcc.example'}
   ],
   departmentTree: [                          // 后端返回的部门树：children 为空的是末级部门，只有末级部门可选（AC-003、AC-014）
     {id:'D1', name:'总部', children:[
@@ -2993,7 +3013,7 @@ function ppLeaves(nodes, path, out){                 // 末级部门 + 上级路
 }
 HR_DATA.department = ppLeaves(HR_DATA.departmentTree, [], []).map(x=>x.name);   // 末级部门名称，供编辑回填时识别
 let hrState = 'normal';
-let regAuto = {phone:'', email:''};          // 代报名：从 HR 带出的电话 / 邮箱（行政改过的不再算「带出的」，REQ-004 AC-026）                       // 原型演示：正常 / 加载中 / 查询失败
+let regAuto = {phone:'', email:'', title:''};          // 代报名：从 HR 带出的电话 / 邮箱 / 职位（行政改过的不再算「带出的」，REQ-004 AC-026）                       // 原型演示：正常 / 加载中 / 查询失败
 const PP = {};
 const PP_CFG = {sub:{multi:true, max:10}, reg:{multi:false}, wall:{multi:false}, wedit:{multi:false}};
 function ppInit(){
@@ -3089,16 +3109,18 @@ function ppPickEmp(k, id){
 function ppRemoveEmp(k, id){ PP[k].employees = PP[k].employees.filter(e=>e.id!==id); if(k==='reg') ppClearAutoContact(); ppErr(k,''); ppRenderChips(k); }
 /* 代报名：选中员工后，HR 里的联系电话、邮箱自动带出，行政可直接修改；换人 / 移除 / 切换类型时，只清掉仍是带出且没改过的值 */
 function ppClearAutoContact(){
-  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail'), ti = document.getElementById('manualRegTitle');
   if(regAuto.phone && ph.value === regAuto.phone) ph.value = '';
   if(regAuto.email && em.value === regAuto.email) em.value = '';
-  regAuto = {phone:'', email:''};
+  if(regAuto.title && ti.value === regAuto.title) ti.value = '';
+  regAuto = {phone:'', email:'', title:''};
 }
 function ppFillContact(emp){
   ppClearAutoContact();
-  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail');
+  const ph = document.getElementById('manualRegPhone'), em = document.getElementById('manualRegEmail'), ti = document.getElementById('manualRegTitle');
   if(!ph.value && emp.phone){ ph.value = emp.phone; regAuto.phone = emp.phone; }
   if(!em.value && emp.email){ em.value = emp.email; regAuto.email = emp.email; }
+  if(!ti.value && emp.title){ ti.value = emp.title; regAuto.title = emp.title; }      // REQ-004 AC-045：职位同电话、邮箱，自动带出、可改
 }
 function ppOrgKind(k, kind){ PP[k].orgKind = kind; ppSyncKind(k); document.getElementById('pp-'+k+'-org').value=''; ppSearch(k,'org'); }
 function ppSyncKind(k){
@@ -3125,7 +3147,7 @@ function ppSetType(k, type, keepValues){
   if(!keepValues && st.type !== type){
     st.employees = []; st.org = null; ppErr(k,''); ppRenderChips(k);
     if(k==='reg') ppClearAutoContact();
-    const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept'], wall:['adminWallName','adminWallOrg'], wedit:['editWallName','editWallOrg']}[k];
+    const ext = {sub:['subAuthorName','subExtOrg'], reg:['manualRegName','manualRegDept','manualRegTitle'], wall:['adminWallName','adminWallOrg','adminWallPos','adminWallEmail'], wedit:['editWallName','editWallOrg','editWallPos','editWallEmail']}[k];
     ext.forEach(id=>document.getElementById(id).value = '');
     if(k==='sub') updateAuthorHint();
   }
@@ -3145,11 +3167,20 @@ function ppValue(k){
   if(st.type === 'internal') return {type:'internal', names:st.employees.map(e=>e.name), org: st.org ? st.org.name : ''};
   const nameId = {sub:'subAuthorName', reg:'manualRegName', wall:'adminWallName', wedit:'editWallName'}[k];
   const orgId = {sub:'subExtOrg', reg:'manualRegDept', wall:'adminWallOrg', wedit:'editWallOrg'}[k];
-  return {type:'external', names:[document.getElementById(nameId).value.trim()], org:document.getElementById(orgId).value.trim()};
+  const posId = {wall:'adminWallPos', wedit:'editWallPos'}[k], emailId = {wall:'adminWallEmail', wedit:'editWallEmail'}[k];   // 仅寄语有职位 / 邮箱（REQ-005 AC-031，其余两处不变）
+  return {type:'external', names:[document.getElementById(nameId).value.trim()], org:document.getElementById(orgId).value.trim(),
+          pos: posId ? document.getElementById(posId).value.trim() : '', email: emailId ? document.getElementById(emailId).value.trim() : ''};
+}
+function wallGuestError(who){                           // REQ-005 AC-031：外部人士姓名、公司名称、职位、邮箱地址均必填
+  if(!who.names[0]) return '请填写作者姓名';
+  if(!who.org) return '请填写公司名称';
+  if(!who.pos) return '请填写职位';
+  if(!who.email) return '请填写邮箱地址';
+  return wallEmailCheck(who.email);                     // 格式 / ≤100 字符，同 REQ-004 AC-006
 }
 function ppReset(k){
   const st = PP[k]; st.employees = []; st.org = null; st.orgKind = 'department'; ppSyncKind(k); ppErr(k,''); ppRenderChips(k);
-  if(k==='reg') regAuto = {phone:'', email:''};
+  if(k==='reg') regAuto = {phone:'', email:'', title:''};
   const def = (k==='wall'||k==='wedit') ? 'external' : 'internal';
   ppSetType(k, def, true); ppSelectToggle(k, def);
 }
@@ -3505,6 +3536,7 @@ function submitManualRegistration(){
   }
   const phone = document.getElementById('manualRegPhone').value.trim();
   const email = document.getElementById('manualRegEmail').value.trim();
+  const title = document.getElementById('manualRegTitle').value.trim();                              // 内部员工带出、外部人士手填，均选填（AC-045、AC-046）
   if(email && !isValidEmail(email)){ alert('邮箱格式不正确（须包含 @ 和域名，且不超过 100 个字符）'); return; }
   const celSelect = document.getElementById('manualRegCelebration');
   const celId = celSelect.value;
@@ -3522,7 +3554,8 @@ function submitManualRegistration(){
   tr.innerHTML =
     '<td class="title-cell">' + escape(name) + '</td>'
     + '<td class="muted-cell">' + escape(celName) + '</td>'
-    + '<td>' + (dept ? escape(dept) : '—') + '</td>'
+    + '<td>' + (who.type === 'external' ? (dept ? escape(dept) + ' · 外部' : '外部') : (dept ? escape(dept) : '—')) + '</td>'     // 外部人士显示"公司名称 · 外部"（AC-047）
+    + '<td>' + (title ? escape(title) : '—') + '</td>'                      // 内部员工代报名带出 / 填写的职位，留空或外部人士显示"—"（REQ-004 AC-044、AC-045）
     + '<td>' + (phone ? escape(phone) : '—') + '</td>'
     + '<td>' + (email ? escape(email) : '—') + '</td>'
     + '<td>' + stamp + '</td>'
@@ -3539,6 +3572,7 @@ function submitManualRegistration(){
   document.getElementById('manualRegDept').value = '';
   document.getElementById('manualRegPhone').value = '';
   document.getElementById('manualRegEmail').value = '';
+  document.getElementById('manualRegTitle').value = '';
   ppReset('reg');
   closeManualReg();
   updateRegCapacityUI();
@@ -3686,9 +3720,45 @@ function toggleVote(cardId){
 let wallEditingId = null;
 function wallActionsHtml(id, status){
   const edit = '<button class="action-link muted" onclick="openWallEdit(\''+id+'\')">Edit</button>';
-  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Show</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">Reject</button>';
+  const del = '<button class="action-link danger" onclick="deleteWallMessage(\''+id+'\')">Delete</button>';     // REQ-005 AC-018：仅待审核 / 已隐藏有删除，已展示没有
+  if(status === 'review') return edit + '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Show</button><button class="action-link danger" onclick="setWallStatus(\''+id+'\',\'hidden\')">Reject</button>' + del;
   if(status === 'published') return '<button class="action-link muted" onclick="setWallStatus(\''+id+'\',\'hidden\')">Hide</button>';
-  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Restore</button>' + edit + '<button class="action-link danger" onclick="alert(\'原型演示：删除后不可恢复\')">Delete</button>';
+  return '<button class="action-link" onclick="setWallStatus(\''+id+'\',\'published\')">Restore</button>' + edit + del;
+}
+/* ---- 删除留言（REQ-005 AC-018 ～ AC-023）：二次确认 → 软删除，行从列表消失，状态统计同步扣减；已展示需先隐藏 ---- */
+function deleteWallMessage(id){
+  const row = document.getElementById(id);
+  if(!row) return;
+  if(row.dataset.status === 'published') return;                         // 已展示没有删除入口（后端同样拒绝，AC-018）
+  const name = row.querySelector('.wall-name').textContent.trim();
+  openConfirm({
+    tone:'danger', title:'删除这条留言？',
+    text:'<b>' + escHtml(name) + '</b> 的留言将从列表中移除，无法在管理端恢复。',
+    okLabel:'确认删除', cancelLabel:'取消', okClass:'danger',
+    onOk:function(){ doDeleteWall(id); }
+  });
+}
+function doDeleteWall(id){
+  const row = document.getElementById(id);
+  if(!row) return;
+  if(row.dataset.status === 'published'){                                // 他人刚把它改成已展示：被拒绝，AC-023
+    showAppToast('留言状态已变化，请刷新');
+    return;
+  }
+  row.classList.add('row-leaving');
+  setTimeout(function(){
+    row.remove();                                                        // 软删除：数据库仍保留，管理端与用户端不再出现、不计入统计（AC-021 / AC-022）
+    refreshWallStats();
+    filterWallMessages();                                                // 当前筛选条件保持
+    showAppToast('留言已删除');
+  }, 260);
+}
+function refreshWallStats(){
+  const rows = Array.from(document.querySelectorAll('#wallList .wall-row'));
+  const n = function(st){ return rows.filter(function(r){ return r.dataset.status === st; }).length; };
+  document.getElementById('wallStatReview').textContent = n('review');
+  document.getElementById('wallStatPublished').textContent = n('published');
+  document.getElementById('wallStatHidden').textContent = n('hidden');
 }
 function wallAdminEntered(row){ return row.querySelector('.wall-meta').textContent.includes('行政代录入'); }
 function openWallEdit(id){
@@ -3713,7 +3783,9 @@ function openWallEdit(id){
     } else {
       ppSetType('wedit','external',true); ppSelectToggle('wedit','external');
       document.getElementById('editWallName').value = name;
-      document.getElementById('editWallOrg').value = orgText;
+      document.getElementById('editWallOrg').value = row.dataset.company || orgText;          // 上线前录入的历史外部人士留言：原部门 / 机构文本带入公司名称（AC-034）
+      document.getElementById('editWallPos').value = row.dataset.position || '';
+      document.getElementById('editWallEmail').value = row.dataset.email || '';
     }
   }
   document.getElementById('editWallContent').value = row.querySelector('.wall-quote').textContent;
@@ -3727,16 +3799,26 @@ function saveWallEdit(){
   const content = document.getElementById('editWallContent').value.trim();
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('edit')) return;                                   // AC-012：配图必填，原本没有配图的也要补
+  const whoEdit = wallAdminEntered(row) ? ppValue('wedit') : null;
+  if(whoEdit){
+    const whoErr = whoEdit.type === 'internal' ? (whoEdit.names[0] ? '' : '请先从 HR 里选择员工') : wallGuestError(whoEdit);   // AC-031
+    if(whoErr){ alert(whoErr); return; }
+  }
   row.querySelector('.wall-quote').textContent = content;
   if(!row.querySelector('.wall-image')){
     const img = document.createElement('div'); img.className = 'wall-image'; img.innerHTML = '<img src="_shared/photos/wall-3.jpg" alt="">';
     row.querySelector('.wall-quote').before(img);
   }
-  if(wallAdminEntered(row)){
-    const who = ppValue('wedit');
-    if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
+  if(whoEdit){
+    const who = whoEdit;
     row.querySelector('.wall-name').textContent = who.names[0];
-    row.querySelector('.wall-meta').textContent = (who.org ? who.org + ' · ' : '') + '行政代录入';
+    if(who.type === 'external'){                                         // AC-032：外部人士显示"公司名称 · 职位"，邮箱不在列表展示
+      row.querySelector('.wall-meta').textContent = who.org + ' · ' + who.pos + ' · 行政代录入';
+      row.dataset.company = who.org; row.dataset.position = who.pos; row.dataset.email = who.email;
+    } else {                                                             // AC-034：切到内部员工后清空公司 / 职位 / 邮箱，不再发邮件
+      row.querySelector('.wall-meta').textContent = (who.org ? who.org + ' · ' : '') + '行政代录入';
+      delete row.dataset.company; delete row.dataset.position; delete row.dataset.email;
+    }
     row.dataset.authorType = who.type;
   }
   const now = new Date(), pad = n => String(n).padStart(2,'0');
@@ -3759,6 +3841,7 @@ function setWallStatus(rowId, status){
     badge.textContent = '已隐藏';
   }
   actions.innerHTML = wallActionsHtml(rowId, status);
+  refreshWallStats();
   filterWallMessages();
 }
 function filterWallMessages(){
@@ -3769,6 +3852,11 @@ function filterWallMessages(){
     const statusMatch = (statusVal === 'all') || (row.dataset.status === statusVal);
     row.style.display = (activityMatch && statusMatch) ? '' : 'none';
   });
+  // 空态（AC-024）：没有任何留言 → "暂无留言"；有留言但筛选后没有 → "没有符合条件的留言"，两种文案区分
+  const all = document.querySelectorAll('#wallList .wall-row');
+  const shown = Array.from(all).filter(function(r){ return r.style.display !== 'none'; }).length;
+  document.getElementById('wallEmptyNone').classList.toggle('hidden', all.length > 0);
+  document.getElementById('wallEmptyFilter').classList.toggle('hidden', all.length === 0 || shown > 0);
 }
 document.addEventListener('click', function(e){
   if(e.target.id === 'wallModalOverlay') closeWallModal();
@@ -3918,7 +4006,8 @@ function wallImageReady(which){
 function submitWallAdmin(){
   const who = ppValue('wall');                   // REQ-010、REQ-005 AC-017
   const content = document.getElementById('adminWallContent').value.trim();
-  if(!who.names[0]){ alert(who.type === 'internal' ? '请先从 HR 里选择员工' : '请填写作者姓名'); return; }
+  const whoErr = who.type === 'internal' ? (who.names[0] ? '' : '请先从 HR 里选择员工') : wallGuestError(who);
+  if(whoErr){ alert(whoErr); return; }
   if(!content){ alert('请填写留言内容'); return; }
   if(!wallImageReady('admin')) return;                     // AC-008：配图必填
   alert('原型演示：将新建一条留言记录，状态为待审核');
@@ -3932,18 +4021,34 @@ function openWallModal(){
   document.getElementById('wallSuccessBody').classList.add('hidden');
   document.getElementById('wallMsgInput').value = '';
   document.getElementById('wallAnonCheck').checked = false;
+  document.getElementById('wallEmail').value = WALL_VIEWER_HR_EMAIL;      // AC-026：默认带出 HR 邮箱（HR 里没有则为空），可改
+  wallEmailError('');
   wallRemove('user');
   document.getElementById('wallModalOverlay').classList.add('open');
 }
 function closeWallModal(){
   document.getElementById('wallModalOverlay').classList.remove('open');
 }
+const WALL_VIEWER_HR_EMAIL = 'chen.sisi@mcc.example';     // 原型演示：当前员工陈思思在 HR 里的邮箱，对应 GET /viewer 的 email
+function wallEmailError(msg){
+  const e = document.getElementById('wallEmailMsg');
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+}
+function wallEmailCheck(v){                                // 规则同 REQ-004 AC-006：必填、含 @ 与域名、≤100 个字符
+  if(!v) return '请填写邮箱';
+  if(v.length > 100) return '邮箱地址不能超过 100 个字符';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return '请输入有效的邮箱地址（须包含 @ 和域名）';
+  return '';
+}
 function submitWallMessage(){
   const msg = document.getElementById('wallMsgInput').value.trim();
+  const emailErr = wallEmailCheck(document.getElementById('wallEmail').value.trim());
+  wallEmailError(emailErr);                               // AC-026：邮箱错误在输入框旁提示，与其他错误可同时出现
   if(!msg){
     alert('请填写留言内容');
     return;
   }
+  if(emailErr) return;
   if(!wallImageReady('user')) return;                     // AC-006：配图必填，匿名也一样
   document.getElementById('wallFormBody').classList.add('hidden');
   document.getElementById('wallSuccessBody').classList.remove('hidden');
@@ -3973,8 +4078,8 @@ function submitWallMessage(){
       + '</div>';
     list.prepend(row);
 
-    const pendingStat = document.querySelector('#wallView .stat-row .stat-card:nth-child(1) .stat-num');
-    if(pendingStat) pendingStat.textContent = parseInt(pendingStat.textContent, 10) + 1;
+    refreshWallStats();                                    // 待审核统计 +1，并让"暂无留言"空态消失（AC-024）
+    filterWallMessages();
   }
 }
 showList();
