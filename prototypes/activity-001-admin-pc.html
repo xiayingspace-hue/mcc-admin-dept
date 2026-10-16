@@ -555,6 +555,97 @@
   #wallView .wall-row:last-child{border-bottom:0.5px solid var(--border)}
   #wallView .wall-row:hover{background:var(--surface); border-color:color-mix(in srgb,var(--accent) 35%,var(--border)); box-shadow:0 2px 4px color-mix(in srgb,var(--text-primary) 6%,transparent), 0 10px 24px color-mix(in srgb,var(--text-primary) 9%,transparent)}
 
+  /* Sponsor form page opened in its own tab (REQ-008 AC-019)：去掉管理端壳，只留用户端页面 */
+  body.solo-page .sidebar, body.solo-page .topbar{display:none}
+  body.solo-page .content{padding:0; display:block}     /* 整页直接就是用户端页面，不画浏览器外框 */
+  body.solo-page .panel{max-width:none}
+  body.solo-page #userSponsorView .uview-frame{border:none; border-radius:0; background:transparent}
+  body.solo-page #userSponsorView .uview-chrome{display:none}
+  body.solo-page #userSponsorView .uview-body{max-height:none; min-height:100vh}
+  /* Sponsor 填写页（设计稿定稿，REQ-008 附录 A）。配色取自设计稿，仅作用于 .sp-page */
+  .sp-page{--sp-yellow:#FDCB73; --sp-red:#D5251D; --sp-blue:#1F5FAE; --sp-cream:#FEF7EA; --sp-ink:#111; --sp-muted:#555; --sp-line:#D9D9D9; background:#fff !important; color:var(--sp-ink); padding:0 !important}
+  .sp-header{display:flex; align-items:center; justify-content:space-between; padding:14px 32px; background:#fff; border-bottom:0.5px solid var(--sp-line)}
+  .sp-logo-mcc{font-size:22px; font-weight:900; letter-spacing:.02em; color:var(--sp-blue)}     /* logo 图片待设计提供，暂用文字占位 */
+  .sp-nav{display:flex; gap:36px}
+  .sp-nav a{font-size:12px; color:var(--sp-ink); text-decoration:none; font-weight:500}
+  .sp-nav a:hover{text-decoration:underline}
+  .sp-footer{display:flex; align-items:center; justify-content:space-between; padding:20px 32px; background:var(--sp-red)}
+  .sp-footer .sp-nav a{color:#fff}
+  .sp-logo-30{display:flex; flex-direction:column; line-height:1.1; color:var(--sp-yellow)}
+  .sp-logo-30 b{font-size:26px; font-weight:900; letter-spacing:.08em}
+  .sp-logo-30 small{font-size:8px; letter-spacing:.16em; margin-top:2px}
+  .sp-page h1{font-size:44px; line-height:1.2; margin:0; font-weight:800; text-align:center}
+  .sp-page h1 span{color:var(--sp-red)}
+  .sp-hero{background:var(--sp-yellow); padding:56px 24px 60px}
+  .sp-hero-text{max-width:880px; margin:28px auto 0; text-align:center; font-size:12.5px; line-height:1.6; color:var(--sp-ink)}
+  .sp-hero-text p{margin:0 0 14px}
+  .sp-hero-text p.zh{font-size:12.5px}
+  .sp-tiers{max-width:1000px; margin:0 auto; padding:48px 24px 8px}
+  .sp-tier-grid{display:flex; justify-content:center; gap:20px}      /* flex：末屏只有 2 张时居中 */
+  .sp-tier{flex:0 0 calc((100% - 40px) / 3); box-sizing:border-box; background:var(--sp-cream); padding:20px 18px 24px}
+  .sp-tier.sp-tier-hi{background:var(--sp-yellow)}
+  .sp-tier.sp-off{display:none}
+  .sp-tier-name{font-size:10.5px; letter-spacing:.12em; font-weight:700}
+  .sp-tier-price{font-size:28px; font-weight:800; margin:8px 0 12px; padding-bottom:12px; border-bottom:1.5px solid var(--sp-ink)}
+  .sp-tier-price small{font-size:12px; font-weight:500; margin-left:4px}
+  .sp-tier ul{list-style:none; margin:0; padding:0}
+  .sp-tier li{position:relative; padding:9px 0 9px 22px; font-size:11.5px; line-height:1.5; border-bottom:0.5px solid var(--sp-line)}
+  .sp-tier li:last-child{border-bottom:none}
+  .sp-tier li::before{content:"✓"; position:absolute; left:2px; top:8px; font-weight:700}
+  .sp-tier-hi li::before{color:var(--sp-red)}
+  .sp-tier-nav{display:flex; justify-content:center; gap:16px; margin:32px 0 8px}
+  .sp-tier-nav button{width:36px; height:36px; border-radius:50%; border:1.5px solid var(--sp-ink); background:#fff; font-size:16px; cursor:pointer}
+  .sp-tier-nav button:disabled{opacity:.3; cursor:default}
+  .sp-form-sec{max-width:880px; margin:0 auto; padding:40px 24px 24px}
+  .sp-form-sec h2{font-size:34px; font-weight:800; text-align:center; margin:16px 0 14px; letter-spacing:-.01em}
+  .sp-form-sub{text-align:center; color:var(--sp-muted); font-size:13px; line-height:1.7; max-width:440px; margin:0 auto 44px}
+  .sp-form-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px 32px}
+  .sp-field label{display:block; font-size:10.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--sp-muted); margin-bottom:10px}
+  .sp-field input, .sp-field select, .sp-field textarea{width:100%; box-sizing:border-box; border:1px solid transparent; border-radius:10px; padding:14px 16px; font-size:14px; font-weight:500; font-family:inherit; color:var(--sp-ink); background-color:var(--sp-cream); outline:none; transition:border-color .15s ease, box-shadow .15s ease, background-color .15s ease}
+  .sp-field input:hover, .sp-field select:hover, .sp-field textarea:hover{border-color:var(--sp-yellow)}
+  .sp-field input:focus, .sp-field select:focus, .sp-field textarea:focus{background-color:#fff; border-color:var(--sp-yellow); box-shadow:0 0 0 4px rgba(253,203,115,.35)}
+  .sp-field select{appearance:none; -webkit-appearance:none; padding-right:42px; cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center}
+  .sp-page .sp-field input, .sp-page .sp-field select{height:50px; line-height:1.4}
+  .sp-page .sp-field select{font-size:14px; color:var(--sp-ink)}
+  .sp-field textarea{line-height:1.6}
+  .sp-field textarea{resize:vertical; min-height:120px}
+  .sp-full{grid-column:1 / -1}
+  .sp-hint{font-size:12px; color:var(--sp-muted); line-height:1.6; margin:-2px 0 10px}
+  .sp-zh{margin-left:6px; letter-spacing:.04em; text-transform:none; font-weight:500}
+  .sp-req{color:var(--sp-red); font-weight:700; margin-left:4px; text-transform:none}
+  .sp-field input.sp-bad{border-color:var(--danger); background-color:#fff}
+  .sp-field input.sp-bad:focus{box-shadow:0 0 0 4px rgba(178,58,52,.15)}
+  .sp-count{font-weight:400; color:var(--sp-muted)}
+  .sp-err{color:var(--danger); font-size:11.5px; margin-top:5px}
+  .sp-submit-err{text-align:center; margin:12px 0 0}
+  .sp-submit{text-align:center; margin-top:40px}
+  .sp-submit button{background:var(--sp-yellow); color:var(--sp-ink); border:none; border-radius:999px; padding:16px 48px; font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; box-shadow:0 6px 18px rgba(253,203,115,.55); transition:transform .15s ease, box-shadow .15s ease}
+  .sp-submit button:hover:not(:disabled){transform:translateY(-1px); box-shadow:0 10px 24px rgba(253,203,115,.7)}
+  .sp-submit button:disabled{opacity:.55; cursor:default; box-shadow:none}
+  .sp-field ::placeholder{color:var(--sp-muted); opacity:.6}
+  .sp-success{text-align:center; padding:24px 0 8px}
+  .sp-success-icon{width:48px; height:48px; border-radius:50%; background:var(--sp-yellow); font-size:22px; line-height:48px; margin:0 auto 12px}
+  .sp-success h2{margin-top:0}
+  .sp-success p{font-size:13px; line-height:1.7; margin:0 0 10px}
+  .sp-success a{color:var(--sp-muted)}
+  .sp-contact{max-width:880px; margin:0 auto; padding:24px 24px 56px}
+  .sp-contact h3{font-size:22px; font-weight:800; margin:24px 0 10px}
+  .sp-contact div{display:flex; flex-wrap:wrap; gap:8px 48px; font-size:11.5px; color:var(--sp-muted)}
+  .sp-contact a{color:var(--sp-ink); text-decoration:underline}
+  .sp-invalid{text-align:center; padding:96px 24px}
+  .sp-invalid h3{margin:0 0 6px}
+  .sp-invalid p{font-size:12.5px; color:var(--sp-muted); margin:0}
+  @media (max-width:640px){                       /* REQ-008 AC-024：PC 与 H5 共用同一填写页，窄屏单列 */
+    .sp-page h1{font-size:30px}
+    .sp-header, .sp-footer{padding:12px 16px}
+    .sp-nav{gap:14px}
+    .sp-nav a{font-size:11px}
+    .sp-footer{flex-direction:column; align-items:flex-start; gap:12px}
+    .sp-hero{padding:36px 16px 40px}
+    .sp-tier{flex-basis:100%}
+    .sp-tiers, .sp-form-sec, .sp-contact{padding-left:16px; padding-right:16px}
+    .sp-form-grid{grid-template-columns:1fr; gap:20px}
+  }
   /* Sponsors page */
   #sponsorsView .activity-table th, #sponsorsView .activity-table td{padding-left:12px; padding-right:12px; white-space:normal}
   #sponsorsView .activity-table th:first-child, #sponsorsView .activity-table td:first-child{padding-left:24px}
@@ -1996,7 +2087,7 @@
               <div class="u-cta" style="background:var(--u-ivory); color:var(--u-text)">
                 <h3 style="color:var(--u-text)">Become a Sponsor</h3>
                 <p style="color:var(--u-text-muted)">Together, We Build the Next 30 Years · 携手共建下一个三十年</p>
-                <button class="u-cta-btn" onclick="openSponsorModal()">Become a Sponsor</button>
+                <button class="u-cta-btn" onclick="openSponsorForm()">Become a Sponsor</button>
               </div>
 
             </div>
@@ -2056,60 +2147,125 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div class="u-modal-overlay" id="sponsorModalOverlay">
-              <div class="u-modal" style="max-width:420px">
-                <div id="sponsorFormBody">
-                  <h3 style="margin-bottom:2px">Become a Sponsor</h3>
-                  <p class="u-modal-sub" style="margin-bottom:2px">成为赞助商 —— 携手共建下一个三十年</p>
-                  <p class="u-modal-sub" style="margin-bottom:14px">Together, We Build the Next 30 Years</p>
-                  <p style="font-size:12px; color:var(--u-text); line-height:1.7; margin:0 0 4px">Join us in celebrating 30 years of building Singapore's skyline.</p>
-                  <p style="font-size:12px; color:var(--u-text-muted); line-height:1.7; margin:0 0 14px">与我们一同庆祝三十载，共筑新加坡城市天际线。</p>
-                  <p style="font-size:12px; color:var(--u-text); line-height:1.7; margin:0 0 16px">We'd love to have you join us on this milestone journey. Fill in your details below and we'll be in touch soon.<br>诚挚邀请您加入这段里程碑之旅。请填写下方信息，我们将尽快与您联系。</p>
-
-                  <div class="u-field"><label>Company Name 公司名称 *</label><input type="text" id="sponsorCompany"></div>
-                  <div class="u-field"><label>Contact Person 联系人 *</label><input type="text" id="sponsorContact"></div>
-                  <div class="u-field"><label>Designation 职位 *</label><input type="text" id="sponsorTitle"></div>
-                  <div class="u-field"><label>Email 邮箱 *</label><input type="text" id="sponsorEmail"></div>
-                  <div class="u-field"><label>Phone 电话 *</label><input type="text" id="sponsorPhone"></div>
-                  <div class="u-field">
-                    <label>Preferred Sponsorship Tier 意向赞助等级（选填）</label>
-                    <select id="sponsorTier" onchange="onSponsorTierChange()">
-                      <option value="">请选择</option>
-                      <option>Silver</option>
-                      <option>Gold</option>
-                      <option>Platinum</option>
-                      <option>Custom</option>
-                    </select>
-                  </div>
-                  <div class="u-field hidden" id="sponsorCustomWrap">
-                    <label>Custom Details 自定义赞助说明 * <span id="sponsorCustomCount" style="color:var(--u-text-muted); font-weight:400">0 / 200</span></label>
-                    <textarea rows="2" id="sponsorCustom" placeholder="请描述您希望的赞助方式或金额 / Describe your preferred sponsorship" oninput="updateSponsorCustomCount()"></textarea>
-                    <div class="u-img-err" id="sponsorCustomError" style="display:none"></div>
-                  </div>
-                  <div class="u-field"><label>Message / Special Requests 留言 / 特殊需求（选填）</label><textarea rows="2" id="sponsorMessage"></textarea></div>
-
-                  <p style="font-size:11.5px; color:var(--u-text-muted); line-height:1.7; margin:14px 0 18px; padding-top:12px; border-top:0.5px solid var(--u-gold-tint)">
-                    For enquiries, please contact / 如有疑问，请联系：<br>
-                    📧 admincorpculture@mccsingapore.com.sg<br>
-                    📞 +65 6766 6883
-                  </p>
-
-                  <div class="u-modal-actions">
-                    <button class="u-modal-cancel" onclick="closeSponsorModal()">Cancel</button>
-                    <button class="u-modal-submit" onclick="submitSponsorForm()">Submit</button>
-                  </div>
-                </div>
-                <div id="sponsorSuccessBody" class="u-modal-success hidden">
-                  <div class="u-modal-success-icon">✓</div>
-                  <h3>Thank you for your support!</h3>
-                  <p style="margin-bottom:4px">Our team will reach out within 2 working days.<br>感谢您的支持，我们的团队将在 2 个工作日内与您联系。</p>
-                  <p style="font-size:11.5px; color:var(--u-text-muted); margin-bottom:18px">
-                    For urgent matters, please contact / 如需紧急协助，请联系：<br>📧 admincorpculture@mccsingapore.com.sg
-                  </p>
-                  <button class="u-modal-submit" onclick="closeSponsorModal()">OK</button>
-                </div>
+        <!-- User-facing: Sponsor form page (REQ-008 AC-019～AC-028)。详情页按钮在新标签页打开 #sponsor-form/<activity_id>，页头页脚属官网壳，不画 -->
+        <div id="userSponsorView" class="hidden">
+          <div class="uview-frame">
+            <div class="uview-chrome"></div>
+            <div class="uview-body sp-page">
+              <header class="sp-header"><div class="sp-logo-mcc">MCC</div><nav class="sp-nav" aria-label="Site"><a href="#" onclick="return false">CEO Message</a><a href="#" onclick="return false">History</a><a href="#" onclick="return false">Activities</a><a href="#" onclick="return false">Voices</a></nav></header>
+              <div id="sponsorInvalid" class="hidden sp-invalid">
+                <h3>链接无效 · Invalid link</h3>
+                <p>请从活动详情页进入 / Please open this page from the activity page.</p>
               </div>
+              <div id="sponsorPageCard">
+                <section class="sp-hero">
+                  <h1><span>Build the Next 30 Years.</span><br>Become a Sponsor.</h1>
+                  <div class="sp-hero-text">
+                    <p>As MCC Singapore proudly marks its 30th Anniversary, we take this special occasion to reflect with gratitude and pride on three decades of growth, achievements and enduring partnerships.</p>
+                    <p>Throughout these remarkable 30 years, the trust, confidence and continued support of our valued business partners have been instrumental to our journey. Together, we have contributed to shaping Singapore's built environment and creating a lasting legacy of progress and excellence.</p>
+                    <p>To commemorate this significant milestone, we are honoured to extend a cordial invitation to your esteemed organisation to participate as a valued sponsor of our 30th Anniversary Celebration, contributing to a memorable and meaningful occasion that celebrates our collective achievements.</p>
+                    <p>Your meaningful contribution would add special significance to this celebration, while reflecting the spirit of mutual trust, close collaboration and longstanding partnership that we have built and greatly valued over the years.</p>
+                    <p>As we celebrate this important chapter in MCC Singapore's history, we wish to express our sincere appreciation for your continued trust and support. We look forward to strengthening our partnership and exploring new opportunities for collaboration and shared success in the years ahead.</p>
+                    <p class="zh">值此中冶新加坡成立三十周年之际，我们满怀感恩与喜悦，回望三十载砥砺奋进的辉煌历程。感念各界合作伙伴的信任和支持，我们携手并进、共同谱写了新加坡城市建设与发展的精彩篇章。</p>
+                    <p class="zh">为庆祝这一意义非凡的重要里程碑，我们诚挚邀请贵司鼎力赞助、共襄盛举，携手呈献一场隆重而难忘的三十周年庆典。</p>
+                    <p class="zh">您的慷慨支持，不仅将为本次盛典增添光彩，更是双方深厚合作情谊的珍贵见证。我们期待与您并肩开创更加辉煌的未来。</p>
+                  </div>
+                </section>
+
+                <section class="sp-tiers">
+                  <div class="sp-tier-grid" id="spTierGrid">
+                    <div class="sp-tier sp-tier-hi" data-tier="Diamond">
+                      <div class="sp-tier-name">DIAMOND</div>
+                      <div class="sp-tier-price">SGD 30,000</div>
+                      <ul><li>1 additional table (10 pax) at our 30th appreciation dinner + 1 VIP seat</li><li>6 Anniversary Concert tickets</li><li>Logo display at Business Partner Appreciation Dinner</li><li>On-stage emcee acknowledgement during the appreciation dinner</li><li>Logo on the appreciation dinner wall &amp; in the dinner guide</li><li>Naming rights for anniversary game</li></ul>
+                    </div>
+                    <div class="sp-tier" data-tier="Platinum">
+                      <div class="sp-tier-name">PLATINUM</div>
+                      <div class="sp-tier-price">SGD 20,000</div>
+                      <ul><li>1 additional table (10 pax) at our 30th appreciation dinner</li><li>2 Anniversary Concert tickets</li><li>Logo display at Business Partner Appreciation Dinner</li><li>On-stage emcee acknowledgement during the appreciation dinner</li><li>Logo on the appreciation dinner wall &amp; in the dinner guide</li></ul>
+                    </div>
+                    <div class="sp-tier" data-tier="Gold">
+                      <div class="sp-tier-name">GOLD</div>
+                      <div class="sp-tier-price">SGD 10,000</div>
+                      <ul><li>5 additional seats at our 30th appreciation dinner</li><li>Logo display at Business Partner Appreciation Dinner</li><li>Logo on the appreciation dinner wall</li></ul>
+                    </div>
+                    <div class="sp-tier" data-tier="Silver">
+                      <div class="sp-tier-name">SILVER</div>
+                      <div class="sp-tier-price">SGD 3,000</div>
+                      <ul><li>Logo display at Business Partner Appreciation Dinner</li><li>Logo on the appreciation dinner wall</li></ul>
+                    </div>
+                    <div class="sp-tier" data-tier="Individual Seat">
+                      <div class="sp-tier-name">INDIVIDUAL SEAT</div>
+                      <div class="sp-tier-price">SGD 1,000<small>/Seat</small></div>
+                      <ul><li>No sponsorship commitment required</li><li>1 seat at our 30th Anniversary Business Partner Appreciation Dinner</li><li>Opportunity to celebrate and connect with our business partners</li></ul>
+                    </div>
+                  </div>
+                  <div class="sp-tier-nav">
+                    <button type="button" id="spTierPrev" aria-label="Previous" onclick="spTierPage(-1)">←</button>
+                    <button type="button" id="spTierNext" aria-label="Next" onclick="spTierPage(1)">→</button>
+                  </div>
+                </section>
+
+                <section class="sp-form-sec">
+                  <div id="sponsorFormBody">
+                    <h2>Sponsor Now</h2>
+                    <p class="sp-form-sub">We warmly invite you to join this milestone journey. Please complete the form below and our team will be in touch shortly.</p>
+                    <div class="sp-form-grid">
+                      <div class="sp-field"><label for="sponsorCompany">Company Name <span class="sp-zh">公司名称</span><span class="sp-req" aria-hidden="true">*</span></label><input type="text" id="sponsorCompany"></div>
+                      <div class="sp-field"><label for="sponsorContact">Contact Person <span class="sp-zh">联系人</span><span class="sp-req" aria-hidden="true">*</span></label><input type="text" id="sponsorContact"></div>
+                      <div class="sp-field"><label for="sponsorTitle">Designation <span class="sp-zh">职位</span><span class="sp-req" aria-hidden="true">*</span></label><input type="text" id="sponsorTitle"></div>
+                      <div class="sp-field"><label for="sponsorEmail">Email <span class="sp-zh">邮箱</span><span class="sp-req" aria-hidden="true">*</span></label><input type="text" id="sponsorEmail" inputmode="email" autocomplete="email" oninput="sponsorEmailCheck(false)" onblur="sponsorEmailCheck(true)"><div class="sp-err" id="sponsorEmailError" style="display:none"></div></div>
+                      <div class="sp-field"><label for="sponsorPhone">Phone <span class="sp-zh">电话</span><span class="sp-req" aria-hidden="true">*</span></label><input type="text" id="sponsorPhone" inputmode="numeric" autocomplete="tel" maxlength="11" oninput="sponsorPhoneInput()" onblur="sponsorPhoneCheck(true)"><div class="sp-err" id="sponsorPhoneError" style="display:none"></div></div>
+                      <div class="sp-field">
+                        <label for="sponsorTier">Preferred Sponsorship Tier <span class="sp-zh">意向赞助等级</span></label>
+                        <select id="sponsorTier" onchange="onSponsorTierChange()">
+                          <option value="">Please select</option>
+                          <option>Diamond</option>
+                          <option>Platinum</option>
+                          <option>Gold</option>
+                          <option>Silver</option>
+                          <option>Individual Seat</option>
+                          <option>Custom</option>
+                        </select>
+                      </div>
+                      <div class="sp-field hidden" id="sponsorSeatWrap">
+                        <label for="sponsorSeat">Number of Seats <span class="sp-zh">席位数量</span><span class="sp-req" aria-hidden="true">*</span></label>
+                        <input type="text" id="sponsorSeat" inputmode="numeric" oninput="updateSponsorSeatError(false)">
+                        <div class="sp-err" id="sponsorSeatError" style="display:none"></div>
+                      </div>
+                      <div class="sp-field sp-full hidden" id="sponsorCustomWrap">
+                        <label for="sponsorCustom">Custom Details <span class="sp-zh">自定义赞助说明</span><span class="sp-req" aria-hidden="true">*</span> <span id="sponsorCustomCount" class="sp-count">0 / 200</span></label>
+                        <textarea rows="2" id="sponsorCustom" placeholder="请描述您希望的赞助方式或金额 / Describe your preferred sponsorship" oninput="updateSponsorCustomCount()"></textarea>
+                        <div class="sp-err" id="sponsorCustomError" style="display:none"></div>
+                      </div>
+                      <div class="sp-field sp-full">
+                        <label for="sponsorMessage">Message / Special Requests <span class="sp-zh">留言 / 特殊需求</span></label>
+                        <p class="sp-hint">Tell us anything we should know – branding materials, dietary requirements, special requests...</p>
+                        <textarea rows="4" id="sponsorMessage"></textarea>
+                      </div>
+                    </div>
+                    <div class="sp-err sp-submit-err" id="sponsorSubmitError" style="display:none"></div>
+                    <div class="sp-submit"><button type="button" id="sponsorSubmitBtn" onclick="submitSponsorForm()">Submit Application</button></div>
+                  </div>
+                  <div id="sponsorSuccessBody" class="hidden sp-success">
+                    <div class="sp-success-icon">✓</div>
+                    <h2>Thank you for your support!</h2>
+                    <p>Our team will reach out within 2 working days.<br>感谢您的支持，我们的团队将在 2 个工作日内与您联系。</p>
+                    <p class="sp-hint">For urgent matters, please contact / 如需紧急协助，请联系：<br>admincorpculture@mccsingapore.com.sg</p>
+                    <div class="sp-submit"><button type="button" onclick="backToActivity()">Back to activity 返回活动详情</button></div>
+                    <p class="sp-hint" style="margin-top:14px"><a id="sponsorDemoLink" href="#sponsors" target="_blank">Demo: 在管理端查看该线索（线索通过链接传递）</a></p>
+                  </div>
+                </section>
+
+                <section class="sp-contact">
+                  <h3>Contact Us</h3>
+                  <div><span>For enquiries, please contact:</span><a href="mailto:admincorpculture@mccsingapore.com.sg">admincorpculture@mccsingapore.com.sg</a><span>+65 6766 6883</span></div>
+                </section>
+              </div>
+              <footer class="sp-footer"><div class="sp-logo-30"><b>三十而筑</b><small>BUILDING BEYOND 30</small></div><nav class="sp-nav" aria-label="Site"><a href="#" onclick="return false">CEO Message</a><a href="#" onclick="return false">History</a><a href="#" onclick="return false">Activities</a><a href="#" onclick="return false">Voices</a></nav></footer>
             </div>
           </div>
         </div>
@@ -2801,14 +2957,16 @@ function sponsorExportRows(){
   const f = document.getElementById('sponsorActivityFilter').value;
   return [...document.querySelectorAll('#sponsorTableBody tr')].filter(r=>f==='all' || r.dataset.activity===f).map(r=>{
     const c = r.children, cp = c[1].textContent.split(' · '), contact = c[2].innerHTML.split('<br>');
-    const tierEl = c[3].querySelector('.tier-cell'), tierText = tierEl ? 'Custom' : c[3].textContent.trim();
+    const tierEl = c[3].querySelector('.tier-cell'), rawTier = c[3].textContent.trim();
+    const seatM = rawTier.match(/^Individual Seat × (\d+)$/);                 // AC-028：列表显示 Individual Seat × N，导出拆成等级 + 席位数量两列
+    const tierText = tierEl ? 'Custom' : (seatM ? 'Individual Seat' : rawTier);
     const dash = v => (v === '—' ? '' : v);                         // 空值导出为空，不写「—」
     return [SPONSOR_ACTIVITY_NAMES[r.dataset.activity] || r.dataset.activity, c[0].textContent.trim(), cp[0].trim(), (cp[1]||'').trim(),
-            contact[0].trim(), (contact[1]||'').trim(), dash(tierText), tierEl ? tierEl.title : '', dash(c[4].textContent.trim()),
+            contact[0].trim(), (contact[1]||'').trim(), dash(tierText), tierEl ? tierEl.title : '', seatM ? seatM[1] : '', dash(c[4].textContent.trim()),
             c[5].textContent.trim(), c[6].textContent.trim()];       // 完整全文取 title，不截断
   });
 }
-const SPONSOR_EXPORT_HEAD = ['所属活动','公司名称','联系人','职位','邮箱','电话','意向赞助等级','自定义赞助说明','留言 / 特殊需求','提交时间','跟进状态'];
+const SPONSOR_EXPORT_HEAD = ['所属活动','公司名称','联系人','职位','邮箱','电话','意向赞助等级','自定义赞助说明','席位数量','留言 / 特殊需求','提交时间','跟进状态'];
 function updateSponsorExportBtn(){ document.getElementById('sponsorExportBtn').disabled = sponsorExportRows().length === 0; }   // 没有数据时置灰
 function exportSponsors(){
   const rows = sponsorExportRows();
@@ -3860,10 +4018,9 @@ function filterWallMessages(){
 }
 document.addEventListener('click', function(e){
   if(e.target.id === 'wallModalOverlay') closeWallModal();
-  if(e.target.id === 'sponsorModalOverlay') closeSponsorModal();
 });
 document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){ closeWallModal(); closeSponsorModal(); }
+  if(e.key === 'Escape'){ closeWallModal(); }
 });
 const SPONSOR_CUSTOM_MAX = 200;
 function sponsorCustomLen(){ return Array.from(document.getElementById('sponsorCustom').value).length; }   // 汉字 / 字母 / 标点 / 空格 / 换行各按 1 个计
@@ -3876,74 +4033,173 @@ function updateSponsorCustomCount(){
   e.textContent = over ? '自定义赞助说明超出 ' + SPONSOR_CUSTOM_MAX + ' 个字符上限，请精简后再提交（已输入内容不会被截断）' : '';
   e.style.display = over ? 'block' : 'none';
 }
-function onSponsorTierChange(){                      // REQ-008 AC-007 / AC-009
-  const isCustom = document.getElementById('sponsorTier').value === 'Custom';
-  document.getElementById('sponsorCustomWrap').classList.toggle('hidden', !isCustom);
-  if(!isCustom){ document.getElementById('sponsorCustom').value = ''; updateSponsorCustomCount(); }   // 离开 Custom：隐藏并清除，不提交
+function sponsorSeatCheck(v){                        // REQ-008 AC-027：大于等于 1 的整数
+  return /^[1-9]\d*$/.test(v) ? '' : '席位数量须为大于等于 1 的整数';
 }
-function openSponsorModal(){
-  document.getElementById('sponsorTier').value = ''; onSponsorTierChange();
-  document.getElementById('sponsorFormBody').classList.remove('hidden');
-  document.getElementById('sponsorSuccessBody').classList.add('hidden');
-  document.getElementById('sponsorModalOverlay').classList.add('open');
+function updateSponsorSeatError(show){
+  const v = document.getElementById('sponsorSeat').value.trim();
+  const e = document.getElementById('sponsorSeatError');
+  const msg = (show || v) ? sponsorSeatCheck(v) : '';
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+  return !msg;
 }
-function closeSponsorModal(){
-  document.getElementById('sponsorModalOverlay').classList.remove('open');
+function onSponsorTierChange(){                      // REQ-008 AC-007 / AC-009 / AC-027
+  const tier = document.getElementById('sponsorTier').value;
+  document.getElementById('sponsorCustomWrap').classList.toggle('hidden', tier !== 'Custom');
+  document.getElementById('sponsorSeatWrap').classList.toggle('hidden', tier !== 'Individual Seat');
+  if(tier !== 'Custom'){ document.getElementById('sponsorCustom').value = ''; updateSponsorCustomCount(); }   // 离开 Custom：隐藏并清除，不提交
+  if(tier !== 'Individual Seat'){ document.getElementById('sponsorSeat').value = ''; updateSponsorSeatError(false); }   // 离开 Individual Seat：同上
+}
+/* 赞助等级卡片翻页（AC-026）：宽屏一屏 3 张，窄屏一屏 1 张 */
+let spTierIdx = 0;
+function spTierPerPage(){ return window.innerWidth > 640 ? 3 : 1; }
+function spTierRender(){
+  const cards = Array.from(document.querySelectorAll('#spTierGrid .sp-tier')), per = spTierPerPage();
+  cards.forEach(c=>{ c.classList.remove('sp-off'); c.style.minHeight = ''; });   // 先全部显示、量出最高的一张，所有卡片统一高度（不随当前页变化）
+  const maxH = Math.max.apply(null, cards.map(c=>c.offsetHeight));
+  if(maxH > 0) cards.forEach(c=>{ c.style.minHeight = maxH + 'px'; });
+  const pages = Math.ceil(cards.length / per);
+  spTierIdx = Math.max(0, Math.min(spTierIdx, pages - 1));
+  cards.forEach((c,i)=> c.classList.toggle('sp-off', Math.floor(i / per) !== spTierIdx));
+  document.getElementById('spTierPrev').disabled = spTierIdx === 0;
+  document.getElementById('spTierNext').disabled = spTierIdx >= pages - 1;
+}
+function spTierPage(d){ spTierIdx += d; spTierRender(); }
+window.addEventListener('resize', spTierRender);
+const SPONSOR_PAGE_ACTIVITIES = {'30th':'公司30周年庆典', 'annual':'2026年会'};   // 演示：只有这两个活动标识能提交，其他标识模拟「后端找不到活动」
+function sponsorPageActivityId(){ return (location.hash.split('?')[0].split('/')[1] || '').trim(); }
+function openSponsorForm(){                          // REQ-008 AC-019：浏览器新标签页打开填写页，不弹窗
+  window.open('activity-001-admin-pc.html#sponsor-form/30th', '_blank');
+}
+function showUserSponsorForm(){                      // REQ-008 AC-020～AC-023
+  document.body.classList.add('solo-page');
+  ['listView','editorView','moduleLibraryView','submissionsView','registrationsView','wallView','sponsorsView','statsView','userPreviewView','userWorksView','userSponsorView'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!=='userSponsorView');
+  });
+  document.getElementById('panel').classList.add('wide');
+  const id = sponsorPageActivityId();
+  document.getElementById('sponsorInvalid').classList.toggle('hidden', !!id);     // AC-021：缺少活动标识 → 链接无效，不显示表单
+  document.getElementById('sponsorPageCard').classList.toggle('hidden', !id);
+  spTierIdx = 0; spTierRender();
+  document.title = 'Become a Sponsor';
+  document.getElementById('sponsorTier').value = ''; onSponsorTierChange();       // AC-023：每次进入都是空表单
+}
+function backToActivity(){                           // AC-022：当前标签页跳转到活动详情页
+  document.body.classList.remove('solo-page');
+  document.title = document.title.replace(/^Become a Sponsor$/, 'Activity');
+  location.hash = '#preview';
+  showUserPreview();
+}
+function sponsorEmailMsg(v){                          // REQ-008 AC-002：必填、含 @ 与域名、≤100 字符（规则同 REQ-004 AC-006）
+  if(!v) return 'Email is required 请填写邮箱';
+  if(v.length > 100) return 'Email must not exceed 100 characters 邮箱地址不能超过 100 个字符';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'Please enter a valid email address 请输入有效的邮箱地址（须包含 @ 和域名）';
+  return '';
+}
+function sponsorEmailCheck(show){                    // 输入中只在已有内容时提示，失焦 / 提交时空值也提示
+  const i = document.getElementById('sponsorEmail'), e = document.getElementById('sponsorEmailError');
+  const v = i.value.trim(), msg = (show || v) ? sponsorEmailMsg(v) : '';
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+  i.classList.toggle('sp-bad', !!msg);
+  return !sponsorEmailMsg(v);
+}
+function sponsorPhoneMsg(v){                          // REQ-008 AC-029：只含数字；新加坡 8 位（8 / 9 开头）或中国大陆 11 位（1 开头）
+  if(!v) return 'Phone is required 请填写电话';
+  if(!(/^[89]\d{7}$/.test(v) || /^1\d{10}$/.test(v))) return 'Enter an 8-digit Singapore number starting with 8 or 9, or an 11-digit China number starting with 1 请输入新加坡 8 位（8 或 9 开头）或中国大陆 11 位（1 开头）手机号';
+  return '';
+}
+function sponsorPhoneCheck(show){
+  const i = document.getElementById('sponsorPhone'), e = document.getElementById('sponsorPhoneError');
+  const v = i.value, msg = (show || v) ? sponsorPhoneMsg(v) : '';
+  e.textContent = msg; e.style.display = msg ? 'block' : 'none';
+  i.classList.toggle('sp-bad', !!msg);
+  return !sponsorPhoneMsg(v);
+}
+function sponsorPhoneInput(){                          // 只能输入数字：其他字符（含粘贴内容里的）直接去掉
+  const i = document.getElementById('sponsorPhone');
+  i.value = i.value.replace(/\D/g, '').slice(0, 11);
+  sponsorPhoneCheck(false);
 }
 function submitSponsorForm(){
-  const required = ['sponsorCompany','sponsorContact','sponsorTitle','sponsorEmail','sponsorPhone'];
+  const emailOk = sponsorEmailCheck(true);
+  const phoneOk = sponsorPhoneCheck(true);           // 邮箱错误在输入框下方提示（AC-002）
+  const required = ['sponsorCompany','sponsorContact','sponsorTitle'];
   for(const fid of required){
     if(!document.getElementById(fid).value.trim()){
       alert('请完整填写带 * 的必填项');
       return;
     }
   }
-  const email = document.getElementById('sponsorEmail').value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    alert('请输入有效的邮箱地址');
-    return;
-  }
+  if(!emailOk || !phoneOk) return;
   const isCustom = document.getElementById('sponsorTier').value === 'Custom';
   const customNote = document.getElementById('sponsorCustom').value.trim();
   if(isCustom){                                      // AC-008：选了 Custom 必填，≤200 个字符
     if(!customNote){ alert('选择 Custom 时，请填写自定义赞助说明'); return; }
     if(sponsorCustomLen() > SPONSOR_CUSTOM_MAX){ updateSponsorCustomCount(); return; }
   }
-  document.getElementById('sponsorFormBody').classList.add('hidden');
+  if(document.getElementById('sponsorTier').value === 'Individual Seat' && !updateSponsorSeatError(true)) return;   // AC-027
+  const actId = sponsorPageActivityId();
+  const btn = document.getElementById('sponsorSubmitBtn'), err = document.getElementById('sponsorSubmitError');
+  err.style.display = 'none';
+  btn.disabled = true; btn.textContent = 'Submitting…';                          // AC-022：提交中不可重复点击
+  setTimeout(function(){
+    btn.disabled = false; btn.textContent = 'Submit Application';
+    if(!Object.prototype.hasOwnProperty.call(SPONSOR_PAGE_ACTIVITIES, actId)){
+      err.textContent = '提交失败：找不到该活动，请从活动详情页重新进入（已填内容已保留）'; err.style.display = 'block';   // AC-021：失败保留已填内容
+      return;
+    }
+    finishSponsorSubmit(customNote, actId);
+  }, 400);
+}
+function finishSponsorSubmit(customNote, actId){
+  const val = id => document.getElementById(id).value.trim();
+  const now = new Date(), pad = n => String(n).padStart(2,'0');
+  const lead = {                                                                 // 字段名取自 API-sponsor-008-admin 提交接口
+    id: 's-' + Date.now(), activity_id: actId,
+    company_name: val('sponsorCompany'), contact_person: val('sponsorContact'), designation: val('sponsorTitle'),
+    email: val('sponsorEmail'), phone: val('sponsorPhone'),
+    tier: document.getElementById('sponsorTier').value || null,
+    custom_tier_note: document.getElementById('sponsorTier').value === 'Custom' ? customNote : null,
+    seat_count: document.getElementById('sponsorTier').value === 'Individual Seat' ? Number(val('sponsorSeat')) : null,
+    message: val('sponsorMessage') || null,
+    submitted_at: now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes())
+  };
+  document.getElementById('sponsorFormBody').classList.add('hidden');            // AC-022：原地替换为感谢文案
   document.getElementById('sponsorSuccessBody').classList.remove('hidden');
-
-  // Write the new sponsor lead into 赞助商管理 (admin) — closes the loop end-to-end
+  /* 原型里新标签页与管理端不是同一个页面，没有共享数据：线索通过地址栏链接传递（#sponsor-form/<活动>?lead=…、#sponsors?lead=…），管理端页面读到后追加到列表 */
+  const q = '?lead=' + encodeURIComponent(JSON.stringify(lead));
+  history.replaceState(null, '', location.pathname + location.search + '#sponsor-form/' + actId + q);
+  document.getElementById('sponsorDemoLink').href = location.pathname + '#sponsors' + q;
+  addSponsorLeadRow(lead);
+}
+function addSponsorLeadRow(lead){                                                // 把一条线索追加到赞助商管理列表（已存在则跳过）
   const tbody = document.getElementById('sponsorTableBody');
-  if(tbody){
-    const escape = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const company = escape(document.getElementById('sponsorCompany').value.trim());
-    const contact = escape(document.getElementById('sponsorContact').value.trim());
-    const title = escape(document.getElementById('sponsorTitle').value.trim());
-    const phone = escape(document.getElementById('sponsorPhone').value.trim());
-    const tierVal = document.getElementById('sponsorTier').value;
-    const tier = tierVal === 'Custom' ? '<div class="tier-cell" title="' + escape(customNote) + '">Custom：' + escape(customNote) + '</div>' : (tierVal || '—');
-    const message = document.getElementById('sponsorMessage').value.trim();
-    const now = new Date();
-    const pad = n => String(n).padStart(2,'0');
-    const stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
-    const rowId = 's-' + Date.now();
-    const tr = document.createElement('tr');
-    tr.dataset.activity = '30th';
-    tr.innerHTML =
-      '<td class="title-cell">' + company + '</td>'
-      + '<td>' + contact + ' · ' + title + '</td>'
-      + '<td>' + email + '<br>' + phone + '</td>'
-      + '<td>' + tier + '</td>'
-      + '<td class="muted-cell">' + (message ? escape(message) : '—') + '</td>'
-      + '<td>' + stamp + '</td>'
-      + '<td><span class="status-badge draft" id="sponsorstatus-' + rowId + '">待联系</span></td>'
-      + '<td><div class="table-actions">'
-      +   iconBtn('标记已联系', 'tone-ok', 'checkc', "setSponsorStatus('" + rowId + "','done')")
-      + '</div></td>';
-    tbody.prepend(tr);
-    updateSponsorNavBadge();
-    updateSponsorExportBtn();
-  }
+  if(!tbody || document.getElementById('sponsorstatus-' + lead.id)) return;
+  const escape = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const tier = lead.tier === 'Custom'
+    ? '<div class="tier-cell" title="' + escape(lead.custom_tier_note) + '">Custom：' + escape(lead.custom_tier_note) + '</div>'
+    : (lead.tier === 'Individual Seat' ? 'Individual Seat × ' + escape(lead.seat_count) : (lead.tier || '—'));
+  const tr = document.createElement('tr');
+  tr.dataset.activity = lead.activity_id;
+  tr.innerHTML =
+    '<td class="title-cell">' + escape(lead.company_name) + '</td>'
+    + '<td>' + escape(lead.contact_person) + ' · ' + escape(lead.designation) + '</td>'
+    + '<td>' + escape(lead.email) + '<br>' + escape(lead.phone) + '</td>'
+    + '<td>' + tier + '</td>'
+    + '<td class="muted-cell">' + (lead.message ? escape(lead.message) : '—') + '</td>'
+    + '<td>' + escape(lead.submitted_at) + '</td>'
+    + '<td><span class="status-badge draft" id="sponsorstatus-' + lead.id + '">待联系</span></td>'
+    + '<td><div class="table-actions">'
+    +   iconBtn('标记已联系', 'tone-ok', 'checkc', "setSponsorStatus('" + lead.id + "','done')")
+    + '</div></td>';
+  tbody.prepend(tr);
+  updateSponsorNavBadge();
+  updateSponsorExportBtn();
+}
+function importSponsorLeadFromUrl(){                                             // #sponsors?lead=…：读取链接里的线索
+  const m = location.hash.match(/[?&]lead=([^&]*)/);
+  if(!m) return;
+  try{ addSponsorLeadRow(JSON.parse(decodeURIComponent(m[1]))); }catch(e){}
 }
 let wallDeadlinePassed = false;
 function toggleWallDeadlineDemo(){
@@ -4094,8 +4350,12 @@ const hashRoutes = {
   '#preview': showUserPreview,
   '#works': showUserWorks
 };
-if(hashRoutes[location.hash]){
-  hashRoutes[location.hash]();
+const routeBase = location.hash.split('?')[0];
+if(routeBase.indexOf('#sponsor-form') === 0){
+  showUserSponsorForm();
+} else if(hashRoutes[routeBase]){
+  hashRoutes[routeBase]();
+  if(routeBase === '#sponsors') importSponsorLeadFromUrl();
 }
 </script>
 <div class="cf-overlay" id="cfOverlay" onclick="if(event.target===this) closeConfirm()">

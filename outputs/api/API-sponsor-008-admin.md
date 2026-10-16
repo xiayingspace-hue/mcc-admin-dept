@@ -12,7 +12,7 @@
 
 | 枚举 | 取值 | 说明 |
 |---|---|---|
-| `tier` | `silver` \| `gold` \| `platinum` \| `custom` | 意向赞助等级，见需求文档 §6 |
+| `tier` | `diamond` \| `platinum` \| `gold` \| `silver` \| `individual_seat` \| `custom` | 意向赞助等级，见需求文档 §6 |
 | `follow_up_status` | `pending`（待联系） \| `contacted`（已联系） | 见需求文档 §5 状态机 |
 
 ## 提交赞助意向（用户端）
@@ -27,10 +27,11 @@
 | `company_name` | string | 是 | AC-001 |
 | `contact_person` | string | 是 | AC-001 |
 | `designation` | string | 是 | AC-001 |
-| `email` | string | 是 | 需符合邮箱格式，AC-002 |
-| `phone` | string | 是 | AC-001 |
+| `email` | string | 是 | 含 @ 与域名、不超过 100 个字符，否则拒绝并返回明确原因，AC-002 |
+| `phone` | string | 是 | 仅数字；新加坡 8 位（8 / 9 开头）或中国大陆 11 位（1 开头），不带国家码，否则拒绝并返回明确原因，AC-029 |
 | `tier` | string（枚举） | 否 | |
 | `custom_tier_note` | string | `tier=custom` 时必填 | 自定义赞助说明，不超过 200 个字符（汉字 / 字母 / 标点 / 空格 / 换行各按 1 个计），空格不算内容；`tier` 不是 `custom` 时传了被忽略、不保存，AC-008、AC-011 |
+| `seat_count` | integer | `tier=individual_seat` 时必填 | 席位数量，大于等于 1 的整数；`tier` 不是 `individual_seat` 时传了被忽略、不保存，AC-027 |
 | `message` | string | 否 | |
 
 **响应字段**
@@ -39,6 +40,10 @@
 |---|---|---|
 | `id` | string | 赞助线索ID |
 | `follow_up_status` | string（枚举） | 新建后固定为 `pending`，AC-003 |
+
+**错误**：`activity_id` 找不到对应活动时返回明确原因，填写页提示失败并保留已填内容，AC-021。
+
+**说明**：用户端入口由弹窗改为独立的 Sponsor 填写页（新标签页打开，PC 与 H5 共用同一页面，AC-019、AC-024），接口本身不变；活动结束后仍可提交，不按活动状态拦截，AC-025；填写页从页面地址取得 `activity_id` 并随表单提交，AC-021。
 
 **权限**：见需求文档 §7（无需登录，不做身份校验）
 **校验**：见需求文档 §8
@@ -75,6 +80,7 @@
 | `phone` | string | |
 | `tier` | string（枚举） \| null | |
 | `custom_tier_note` | string \| null | 自定义赞助说明；仅 `tier=custom` 时有值，列表展示为"Custom：xxx"，AC-010 |
+| `seat_count` | integer \| null | 席位数量；仅 `tier=individual_seat` 时有值，列表展示为"Individual Seat × N"，AC-028 |
 | `message` | string \| null | |
 | `submitted_at` | string(ISO 8601) | |
 | `follow_up_status` | string（枚举） | 见枚举总表，AC-004 联动导航角标数字 |
@@ -91,7 +97,7 @@
 
 不分页：返回满足条件的全部线索。后端按导出那一刻的最新数据生成，AC-015。
 
-**响应**：Excel 文件（`.xlsx`）的文件流，文件名 `赞助商线索_<活动名或全部活动>_<导出日期>.xlsx`；列依次为所属活动、公司名称、联系人、职位、邮箱、电话、意向赞助等级、自定义赞助说明、留言 / 特殊需求、提交时间（新加坡时间，`yyyy-MM-dd HH:mm`）、跟进状态（中文），AC-014。
+**响应**：Excel 文件（`.xlsx`）的文件流，文件名 `赞助商线索_<活动名或全部活动>_<导出日期>.xlsx`；列依次为所属活动、公司名称、联系人、职位、邮箱、电话、意向赞助等级、自定义赞助说明、席位数量、留言 / 特殊需求、提交时间（新加坡时间，`yyyy-MM-dd HH:mm`）、跟进状态（中文），AC-014。
 
 **权限**：见需求文档 §7（仅行政；非行政返回无权限，AC-016）
 **校验**：见需求文档 §8
